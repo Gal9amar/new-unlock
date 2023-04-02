@@ -131,7 +131,7 @@
     .banner_bg_main {
         background-size: 100% 100%;
     }
-    .tshirt_img {
+    .item_img {
         margin: 20px 0px;
         min-height: 360px;
     }
@@ -143,15 +143,15 @@
         left: 40px;
         top: 110%;
     }
-    .electronic_img {
+    .RB_img {
         margin: 20px 0px;
         min-height: 280px;
     }
-    #electronic_main_slider a.carousel-control-next {
+    #RB_main_slider a.carousel-control-next {
         right: 40px;
         top: 110%;
     }
-    #electronic_main_slider a.carousel-control-prev {
+    #RB_main_slider a.carousel-control-prev {
         left: 40px;
         top: 110%;
     }
@@ -159,11 +159,11 @@
         margin: 20px 0px;
         min-height: 0;
     }
-    #jewellery_main_slider a.carousel-control-prev {
+    #EVVA_main_slider a.carousel-control-prev {
         left: 40px;
         top: 70%;
     }
-    #jewellery_main_slider a.carousel-control-next {
+    #EVVA_main_slider a.carousel-control-next {
         right: 40px;
         top: 70%;
     }
@@ -179,7 +179,7 @@
     .dropdown {
         display: none;
     }
-    .tshirt_img {
+    .item_img {
         margin: 20px 0px;
         min-height: 320px;
     }
@@ -194,15 +194,15 @@
         left: 40px;
         top: 110%;
     }
-    .electronic_img {
+    .RB_img {
         margin: 20px 0px;
         min-height: 190px;
     }
-    #electronic_main_slider a.carousel-control-next {
+    #RB_main_slider a.carousel-control-next {
         right: 40px;
         top: 110%;
     }
-    #electronic_main_slider a.carousel-control-prev {
+    #RB_main_slider a.carousel-control-prev {
         left: 40px;
         top: 110%;
     }
@@ -210,11 +210,11 @@
         margin: 20px 0px;
         min-height: 0;
     }
-    #jewellery_main_slider a.carousel-control-prev {
+    #EVVA_main_slider a.carousel-control-prev {
         left: 40px;
         top: 70%;
     }
-    #jewellery_main_slider a.carousel-control-next {
+    #EVVA_main_slider a.carousel-control-next {
         right: 40px;
         top: 70%;
     }
@@ -280,17 +280,17 @@
     #my_slider a.carousel-control-next {
         top: -10px;
     }
-    .fashion_taital {
+    .rb_title {
         font-size: 24px;
     }
-    .fashion_section {
+    .rb_section {
         padding-bottom: 100px;
     }
-    .electronic_img {
+    .RB_img {
         margin: 20px 0px;
         min-height: 145px;
     }
-    .tshirt_img {
+    .item_img {
         margin: 20px 0px;
         min-height: 246px;
     }
@@ -313,11 +313,11 @@
     .box_main {
         padding: 20px 10px;
     }
-    #jewellery_main_slider a.carousel-control-prev {
+    #EVVA_main_slider a.carousel-control-prev {
         left: 35px;
         top: 65%;
     }
-    #jewellery_main_slider a.carousel-control-next {
+    #EVVA_main_slider a.carousel-control-next {
         right: 35px;
         top: 65%;
     }
@@ -329,11 +329,11 @@
         right: 33px;
         top: 101%;
     }
-    #electronic_main_slider a.carousel-control-prev {
+    #RB_main_slider a.carousel-control-prev {
         left: 33px;
         top: 101%;
     }
-    #electronic_main_slider a.carousel-control-next {
+    #RB_main_slider a.carousel-control-next {
         right: 33px;
         top: 101%;
     }
@@ -409,17 +409,17 @@
     #my_slider a.carousel-control-next {
         top: -10px;
     }
-    .fashion_taital {
+    .rb_title {
         font-size: 24px;
     }
-    .fashion_section {
+    .rb_section {
         padding-bottom: 100px;
     }
-    .electronic_img {
+    .RB_img {
         margin: 20px 0px;
         min-height: 0;
     }
-    .tshirt_img {
+    .item_img {
         margin: 20px 0px;
         min-height: 0;
     }
@@ -427,11 +427,11 @@
         margin: 20px 0px;
         min-height: 0;
     }
-    #jewellery_main_slider a.carousel-control-prev {
+    #EVVA_main_slider a.carousel-control-prev {
         left: 15px;
         top: 86%;
     }
-    #jewellery_main_slider a.carousel-control-next {
+    #EVVA_main_slider a.carousel-control-next {
         right: 15px;
         top: 86%;
     }
@@ -443,11 +443,11 @@
         right: 15px;
         top: 101%;
     }
-    #electronic_main_slider a.carousel-control-prev {
+    #RB_main_slider a.carousel-control-prev {
         left: 15px;
         top: 101%;
     }
-    #electronic_main_slider a.carousel-control-next {
+    #RB_main_slider a.carousel-control-next {
         right: 15px;
         top: 101%;
     }
