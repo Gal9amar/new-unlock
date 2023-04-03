@@ -493,7 +493,7 @@ a:hover {
 
 .banner_taital {
   width: 100%;
-  font-size: 60px;
+  font-size: 50px;
   color: #ffffff;
   text-align: center;
   text-transform: uppercase;
@@ -536,8 +536,8 @@ a:hover {
 
 #my_slider .carousel-control-next,
 #my_slider .carousel-control-prev {
-  width: 45px;
-  height: 45px;
+  width: 35px;
+  height: 35px;
   background: rgb(247, 168, 37);
   opacity: 1;
   font-size: 20px;
@@ -581,7 +581,7 @@ a:hover {
   height: auto;
   padding: 20px;
   box-shadow: 0px 0 30px 10px #f0f0f0;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .item_text {
