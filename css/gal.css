@@ -26,4 +26,42 @@
   align-items: center;
 }
 
-
+#back-to-top-btn {
+  position: fixed;
+  width: 50px;
+  bottom: 20px;
+  right: 20px;
+  display: none;
+  z-index: 999;
+  background-color: transparent;
+}
+.rb_title {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  width: 160px;
+  text-align: center;
+  margin: auto;
+  white-space: nowrap;
+  padding-bottom: 13px;
+}
+.rb_title:before {
+  background-color: rgb(16, 61, 92);
+  content: "";
+  display: block;
+  height: 4px;
+  width: 100px;
+  margin-bottom: 5px;
+}
+.rb_title:after {
+  background-color: rgb(247, 168, 37);
+  content: "";
+  display: block;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: 4px;
+  width: 100px;
+  margin-bottom: 0.25em;
+}

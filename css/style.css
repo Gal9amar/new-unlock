@@ -202,6 +202,7 @@ button {
 .layout_padding {
   padding-top: 90px;
   padding-bottom: 0px;
+  margin-bottom: 30px;
 }
 
 .padding_0 {
@@ -562,13 +563,13 @@ a:hover {
   padding-bottom: 150px;
 }
 
-.rb_title {
+/* .rb_title {
   width: 100%;
   font-size: 40px;
   color: #30302e;
   text-align: center;
   font-weight: bold;
-}
+} */
 
 .rb_section_2 {
   width: 100%;

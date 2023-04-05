@@ -47,6 +47,8 @@
   </head>
 
   <body>
+    <button id="back-to-top-btn" onclick="scrollToTop()"><img src="images\top.png" alt="" /></button>
+
     <!-- banner bg main start -->
     <div class="banner_bg_main">
       <div class="container">
@@ -72,7 +74,7 @@
           <div class="row">
             <div class="col-sm-12">
               <div class="logo">
-                <a href="index.html"><img src="images/logo.png" /></a>
+                <a id="start" href="index.html"><img src="images/logo.png" /></a>
               </div>
             </div>
           </div>
@@ -85,10 +87,12 @@
           <div class="containt_main">
             <div id="mySidenav" class="sidenav">
               <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-              <a href="index.html">בית</a>
-              <a href="rb.html">רב בריח</a>
-              <a href="multilock.html">מולטילוק</a>
-              <a href="evva.html">EVVA</a>
+              <a href="#start">בית</a>
+              <a href="#rb">רב בריח</a>
+              <a href="#multilock">מולטילוק</a>
+              <a href="#evva">EVVA</a>
+              <a href="#hamsa">חמסה</a>
+              <a href="#magnum">MAGNUM</a>
             </div>
             <span class="toggle_icon" onclick="openNav()"><img src="images/toggle-icon.png" /></span>
             <div class="header_box">
@@ -101,7 +105,7 @@
       </div>
       <!-- header section end -->
       <!-- banner section start -->
-      <div class="banner_section layout_padding">
+      <div class="layout_padding">
         <div class="container">
           <div id="my_slider" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
@@ -152,6 +156,7 @@
         <div class="carousel-inner">
           <div class="carousel-item active">
             <div class="container">
+              <br />
               <h1 id="rb" class="rb_title">רב בריח</h1>
               <div class="rb_section_2">
                 <div class="row">
@@ -379,12 +384,12 @@
         </div>
         <div class="footer_menu">
           <ul>
+            <li><a href="#start">בית</a></li>
+            <li><a href="#rb">רב בריח</a></li>
+            <li><a href="#multilock">מולטילוק</a></li>
+            <li><a href="#evva">EVVA</a></li>
             <li><a href="#hamsa">חמסה</a></li>
             <li><a href="#magnum">MAGNUM</a></li>
-            <li><a href="#evva">EVVA</a></li>
-            <li><a href="#multilock">מולטילוק</a></li>
-            <li><a href="#rb">רב בריח</a></li>
-            <li><a href="index.html">בית</a></li>
           </ul>
         </div>
         <div class="location_main">ייעוץ טלפוני : <a href="tel:0533888381">053-388-83-81</a></div>
@@ -412,8 +417,18 @@
     <script src="js/custom.js"></script>
     <script>
       function openNav() {
-        document.getElementById("mySidenav").style.width = "250px";
+        document.getElementById("mySidenav").style.width = "100%";
       }
+      // Get all the li elements inside the mySidenav element
+      var menuItems = document.querySelectorAll("#mySidenav a");
+
+      // Add an event listener to each li element
+      menuItems.forEach(function (menuItem) {
+        menuItem.addEventListener("click", function () {
+          // Call the closeNav function to close the nav
+          closeNav();
+        });
+      });
 
       function closeNav() {
         document.getElementById("mySidenav").style.width = "0";
