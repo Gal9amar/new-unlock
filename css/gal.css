@@ -22,7 +22,7 @@ body::before {
   /* left: 0; */
   width: 100%;
   height: 100%;
-  opacity: 0.2; /* Set the opacity of the pseudo-element */
+  opacity: 0.3; /* Set the opacity of the pseudo-element */
   background-image: url(../images/sitebg.jpg);
   background-repeat: no-repeat;
   background-size: cover;
