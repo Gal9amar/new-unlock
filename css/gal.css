@@ -5,30 +5,30 @@
   background-position: center center;
   background-attachment: fixed;
 } */
-body {
+/* body { */
   /* width: 100%; */
   /* float: left; */
-  position: relative; /* Add position relative to the parent */
+  /* position: relative; Add position relative to the parent */
   /* height: auto; */
-  background-size: cover;
+  /* background-size: cover; */
   /* background-color: black; */
-}
+/* } */
 
-body::before {
+/* body::before {
   content: "";
   display: block;
   position: absolute; /* Position the pseudo-element on top of the parent */
   /* top: 0; */
   /* left: 0; */
-  width: 100%;
-  height: 100%;
-  opacity: 1; /* Set the opacity of the pseudo-element */
-  background-image: url(../images/sitebg.jpg);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;
-  background-attachment: fixed;
-}
+  /* width: 100%; */
+  /* height: 100%; */
+  /* opacity: 1; Set the opacity of the pseudo-element */
+  /* background-image: url(../images/sitebg.jpg); */
+  /* background-repeat: no-repeat; */
+  /* background-size: cover; */
+  /* background-position: center center; */
+  /* background-attachment: fixed; */
+
 
 .cart-items {
   list-style-type: none;
