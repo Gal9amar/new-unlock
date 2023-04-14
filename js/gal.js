@@ -1,4 +1,4 @@
-window.onscroll = function() {scrollFunction()};
+window.onscroll = function () { scrollFunction() };
 
 function scrollFunction() {
   if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
@@ -26,17 +26,27 @@ function buyWithWhatsApp(item, price) {
   window.open(whatsappLink);
 }
 
+window.addEventListener('load', function() {
+// floating menu
+  const menuBtn = document.querySelector('.menu-btn');
+  const menuContainer = document.querySelector('.menu-container');
+  const menuItems = menuContainer.querySelectorAll('ul li a');
 
+  function toggleMenu() {
+    menuContainer.classList.toggle('open');
+  }
 
-const buyNowButton = document.querySelector('.buy-now-button');
-buyNowButton.addEventListener('click', buyWithWhatsApp);
+  menuBtn.addEventListener('click', toggleMenu);
 
-$(document).ready(function(){
-  $('#my_slider').carousel({
-    interval: 3000, // set the interval between slides in milliseconds
-    pause: 'hover', // pause the carousel on mouse hover
-    wrap: true // allow the carousel to loop back to the beginning
+  menuItems.forEach(function(item) {
+    item.addEventListener('click', function() {
+      toggleMenu();
+    });
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!menuContainer.contains(event.target)) {
+      menuContainer.classList.remove('open');
+    }
   });
 });
-
-
