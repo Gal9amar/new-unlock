@@ -582,9 +582,10 @@ a:hover {
   width: 100%;
   background-color: white;
   height: auto;
-  padding: 20px;
+  padding: 30px;
   box-shadow: 0px 0 30px 10px #f0f0f0;
   margin-bottom: 10px;
+
 }
 
 .item_text {
