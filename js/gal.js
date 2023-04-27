@@ -20,7 +20,7 @@ function scrollToTop() {
 
 
 function buyWithWhatsApp(item, price) {
-  const message = `היי, אני מעוניין לקנות את המוצר ${item} במחיר של ${price}`;
+  const message = `היי, יש לי שאלה בנוגע למוצר זה ${item} במחיר של ${price}`;
   const encodedMessage = encodeURIComponent(message);
   const whatsappLink = `https://wa.me/+972533888381?text=${encodedMessage}`;
   window.open(whatsappLink);
