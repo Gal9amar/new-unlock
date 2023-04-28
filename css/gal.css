@@ -123,3 +123,315 @@
 .menu-container.open .custom-menu {
   display: block;
 }
+
+/*
+=====
+LEVEL 1. RESET STYLES
+=====
+*/
+
+.button1 {
+  border: none;
+  background-color: transparent;
+  padding: 0;
+  font-family: inherit;
+}
+
+.button2 {
+  cursor: pointer;
+  color: var(--colorWhite);
+}
+
+.l_1 {
+  display: inline-block;
+  text-decoration: none;
+}
+
+.kishor {
+  color: inherit;
+}
+
+.reshima {
+  padding-left: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+  list-style: none;
+}
+
+/*
+=====
+LEVEL 2. MENU STYLES
+=====
+*/
+
+/* menu */
+
+.rashi {
+  box-sizing: border-box;
+  width: 100%;
+  color: var(--colorWhite);
+
+  display: flex;
+  justify-content: center;
+
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 9998;
+}
+
+.tafrit {
+  box-sizing: border-box;
+  width: 100%;
+  padding-bottom: 55px;
+
+  height: 0;
+  transform: translate3d(0, -100%, 0);
+  opacity: 0;
+
+  display: flex;
+  align-items: center;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.tafrit_reshima {
+  box-sizing: border-box;
+  width: 100%;
+  max-height: 100%;
+  display: none;
+  padding-top: 30px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tafrit_kvoza {
+  padding: 0.5rem 3rem;
+  /* font-size: 3.2rem; */
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.tafrit_kvoza_active {
+  background-color: var(--colorWhite);
+  color: var(--colorBlack);
+}
+
+.menu__item {
+  padding: 8px 25px;
+  display: block;
+}
+
+/* hamburger */
+
+.kaftor_tafrit {
+  position: relative;
+  line-height: 1;
+  padding-bottom: 0.5em;
+}
+
+.kaftor_tafrit:before {
+  content: "";
+  width: 100px;
+  height: 90px;
+  background-color: var(--colorMain);
+  border-radius: 20%;
+
+  position: absolute;
+  bottom: -55px;
+  left: -35px;
+}
+
+.kaftor_l {
+  width: 1.4em;
+  height: 1em;
+  font-size: 20px;
+  top: 6px;
+
+  position: relative;
+  text-indent: -9999px;
+  z-index: 2;
+}
+
+.kaftor_l:before,
+.kaftor_l:after,
+.kaftor_shem {
+  width: 100%;
+  height: 20%;
+  border-radius: 5px;
+  background-color: currentColor;
+
+  position: absolute;
+  left: 0;
+}
+
+.kaftor_l:before,
+.kaftor_l:after {
+  content: "";
+}
+
+.kaftor_l:before {
+  top: 0;
+}
+
+.kaftor_l:after {
+  bottom: 0;
+}
+
+.kaftor_l:focus {
+  outline: none;
+}
+
+.kaftor_shem {
+  margin-top: -0.1em;
+  top: 50%;
+}
+
+/* activated state */
+
+.js-menu_activated {
+  overflow: hidden;
+}
+
+.js-menu_activated .tafrit {
+  height: 100%;
+  transform: translate3d(0, 0, 0);
+  opacity: 1;
+}
+
+.js-menu_activated .kaftor_tafrit:before {
+  width: 100vh;
+  height: 100vh;
+  transform: translate3d(-50vh, -50vh, 0) scale(5);
+}
+
+.js-menu_activated .tafrit_reshima {
+  display: block;
+}
+
+.js-menu_activated .kaftor_l:before {
+  transform: translate3d(0, -50%, 0) rotate(45deg);
+  top: 50%;
+}
+
+.js-menu_activated .kaftor_l:after {
+  transform: translate3d(0, -50%, 0) rotate(135deg);
+  top: 50%;
+}
+
+.js-menu_activated .kaftor_shem {
+  transform: rotate(-45deg) translate3d(-5.71429px, -6px, 0);
+  opacity: 0;
+}
+
+/*
+=====
+LEVEL 3. MOBILE ANIMATION STYLES
+=====
+*/
+
+.tafrit {
+  transition: opacity 0.2s ease-out;
+}
+
+.js-menu_activated .tafrit {
+  will-change: opacity;
+  transition-duration: 0.2s;
+  transition-delay: 0.3s;
+}
+
+.kaftor_tafrit:before {
+  will-change: width, height;
+  transition: transform 0.3s cubic-bezier(0.04, -0.1, 0.29, 0.98), width 0.3s cubic-bezier(0.04, -0.1, 0.29, 0.98), height 0.3s cubic-bezier(0.04, -0.1, 0.29, 0.98);
+}
+
+.js-menu_activated .kaftor_tafrit:before {
+  transition-duration: 1s;
+}
+
+.kaftor_l:before,
+.kaftor_l:after {
+  transition-property: transform;
+}
+
+.kaftor_l:before,
+.kaftor_l:after,
+.kaftor_shem {
+  transition-timing-function: ease;
+  transition-duration: 0.15s;
+}
+
+.kaftor_shem {
+  transition-property: transform, opacity;
+}
+
+/*
+* demo page
+*/
+
+@media (min-width: 768px) {
+  .tt {
+    font-size: 62.5%;
+  }
+}
+
+@media (max-width: 767px) {
+  .tt {
+    font-size: 50%;
+  }
+}
+
+.bd {
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Open Sans, Ubuntu, Fira Sans, Helvetica Neue, sans-serif;
+  font-size: 1.6rem;
+  /* color: var(--colorBlack); */
+  text-align: end;
+
+  margin: 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+:root {
+  --colorBlack: #222;
+  --colorWhite: #fff;
+  --colorGray: #f0f0f0;
+  --colorMain: #113956;
+  --colorMainLight: #8491d8;
+  --colorMainDark: #233286;
+}
+
+/* .l_1 {
+  color: var(--colorMain);
+} */
+
+.page {
+  min-height: 100vh;
+  display: flex;
+}
+
+.page__demo {
+  display: flex;
+  flex-grow: 1;
+}
+
+.page__container {
+  max-width: 370px;
+  padding: 10px;
+  margin: auto;
+  text-align: center;
+}
+
+.page__name {
+  display: block;
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.page__hint {
+  display: block;
+  line-height: 1.45;
+  margin-bottom: 0.5rem;
+}

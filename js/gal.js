@@ -50,3 +50,40 @@ window.addEventListener('load', function() {
     }
   });
 });
+
+window.addEventListener('DOMContentLoaded', (event) => {
+  // your JavaScript code here
+  (function(){
+    'use strict';
+
+    class Menu {
+      constructor(settings) {
+        this.nodeMenu = settings.nodeMenu;
+        this.toggleMenu = this.toggle.bind(this);
+        settings.nodeMenuButton.addEventListener('click', this.toggleMenu);
+      }
+
+      toggle() {
+        return this.nodeMenu.classList.toggle('js-menu_activated');
+      }
+
+      close() {
+        this.nodeMenu.classList.remove('js-menu_activated');
+      }
+    }
+
+    let nodeMenu = document.querySelector('body');
+    let menu = new Menu({
+      nodeMenu: nodeMenu,
+      nodeMenuButton: nodeMenu.querySelector('.js-menu__toggle')
+    });
+
+    // Create a new function to close the menu
+    function closeMenu() {
+      menu.close();
+    }
+
+    // Export the closeMenu function
+    window.closeMenu = closeMenu;
+  })();
+});

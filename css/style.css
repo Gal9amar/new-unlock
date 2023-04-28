@@ -937,6 +937,7 @@ input.mail_bt::placeholder {
   float: left;
   background-color: #252525;
   height: auto;
+  padding-bottom: 40px;
 }
 
 .copyright_text {
