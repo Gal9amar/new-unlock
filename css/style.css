@@ -264,7 +264,7 @@ a:focus {
   margin-bottom: 20px;
 }
 .slider_section .detail-box .btn-box {
-  display: flex;
+  /* display: flex; */
   margin: 0 -5px;
   margin-top: 15px;
 }
