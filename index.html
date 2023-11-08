@@ -92,7 +92,7 @@
     </header>
     <!-- end header section -->
     <!-- slider section -->
-    <section class="slider_section">
+    <section class="slider_section radiusclass">
       <div id="customCarousel1" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
           <div class="carousel-item active">
@@ -396,7 +396,7 @@
 
   <!-- about section -->
 
-  <section class="about_section layout_padding">
+  <section class="about_section layout_padding radiusclass">
     <div class="container">
       <h1 class="maalit">חיפוי מעליות</h1>
       <br>
@@ -516,22 +516,34 @@
     <div class="container">
       <div class="row">
         <div class="col-md-6">
-          <div class="form_container">
+          <div class="form_container container">
             <div class="heading_container">
               <h2>צור קשר</h2>
             </div>
             <form name="unlock-contact" method="POST" data-netlify="true" class="formg" action="/index">
-              <div>
-                <input type="text" name="name" placeholder="שם מלא " required />
+              <div class="group">
+                <input type="text" name="name" placeholder="" required />
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>שם</label>
               </div>
-              <div>
-                <input type="email" name="email" placeholder="מייל" required />
+              <div class="group">
+                <input type="email" name="email" placeholder="" required />
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>מייל</label>
               </div>
-              <div>
-                <input type="tel" name="phone" placeholder="מספר טלפון" required />
+              <div class="group">
+                <input type="tel" name="phone" dir="rtl" placeholder="" required />
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>טלפון</label>
               </div>
-              <div>
-                <input type="text" name="msg" class="message-box" placeholder="הודעה" required />
+              <div class="group">
+                <input type="text" name="msg" class="message-box" placeholder="" required />
+                <span class="highlight"></span>
+                <span class="bar"></span>
+                <label>הודעה</label>
               </div>
               <div class="d-flex">
                 <button type="submit">שלח</button>
@@ -599,7 +611,7 @@
   <!-- end client section -->
 
   <!-- footer section -->
-  <footer class="footer_section">
+  <footer class="footer_section radiusclass">
     <div class="container">
       <div class="row">
         <div class="col-md-6 col-lg-6 footer-col">

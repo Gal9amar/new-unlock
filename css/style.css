@@ -1,4 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
+html {
+  max-width: 1400px;
+  margin: 0 auto; /* Center the container horizontally */
+}
+
 body {
   font-family: "Poppins", sans-serif;
   color: #0c0c0c;
@@ -17,12 +22,107 @@ footer {
   height: 55vh;
 }
 
+.formg {
+  direction: rtl;
+}
 @media (max-width: 600px) {
   .bbx {
     height: 40vh;
   }
 }
+/* form styles */
+.group {
+  position: relative;
+  margin-bottom: 45px;
+}
+input {
+  font-size: 18px;
+  padding: 10px 10px 10px 5px;
+  display: block;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #757575;
+}
+input:focus {
+  outline: none;
+}
 
+/* LABEL =================== */
+label {
+  color: #999;
+  font-size: 18px;
+  font-weight: normal;
+  position: absolute;
+  pointer-events: none;
+  right: 5px;
+  top: 10px;
+  transition: 0.2s ease all;
+}
+
+/* active state */
+input:focus ~ label,
+input:valid ~ label {
+  top: -20px;
+  font-size: 14px;
+  color: #5264ae;
+}
+
+/* BOTTOM BARS ================ */
+.bar {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+.bar:before,
+.bar:after {
+  content: "";
+  position: absolute;
+  height: 2px;
+  width: 0;
+  bottom: 1px;
+  background: #5264ae;
+  transition: 0.2s ease all;
+}
+.bar:before {
+  left: 50%;
+}
+.bar:after {
+  right: 50%;
+}
+
+/* active state */
+input:focus ~ .bar:before,
+input:focus ~ .bar:after {
+  width: 50%;
+}
+
+/* HIGHLIGHTER ================== */
+.highlight {
+  position: absolute;
+  top: 25%;
+  left: 0;
+  height: 60%;
+  width: 100px;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* active state */
+input:focus ~ .highlight {
+  animation: inputHighlighter 0.3s ease;
+}
+
+/* ANIMATIONS ================ */
+
+@keyframes inputHighlighter {
+  from {
+    background: #5264ae;
+  }
+  to {
+    width: 0;
+    background: transparent;
+  }
+}
 /* .maalit-text{
   font-size: 1.2rem;
 } */
@@ -91,7 +191,7 @@ a:focus {
 /*header section*/
 .hero_area {
   position: relative;
-  min-height: 100vh;
+  min-height: 50vh;
   display: flex;
   flex-direction: column;
   padding-left: 45px;
@@ -241,12 +341,11 @@ a:focus {
 /*end header section*/
 /* slider section */
 .slider_section {
-  flex: 1;
+  /* flex: 1; */
   display: flex;
   align-items: center;
-  padding: 45px 0;
+  padding: 10px 0;
   background-color: #f0d43a;
-  border-radius: 0 0 0 250px;
   background: #3b4a6b;
 }
 .slider_section .row {
@@ -415,6 +514,21 @@ a:focus {
   background-color: #3b4a6b;
   color: #ffffff;
 }
+/* For big screens */
+@media screen and (min-width: 768px) {
+  .radiusclass {
+    border-radius: 50px;
+  }
+}
+
+/* For mobile sizes */
+@media screen and (max-width: 767px) {
+  .radiusclass {
+    border-radius: 20px;
+    margin: 10px;
+  }
+}
+
 .about_section .row {
   align-items: center;
 }
@@ -517,7 +631,7 @@ a:focus {
 .contact_section form {
   margin-top: 45px;
 }
-.contact_section input {
+/* .contact_section input {
   width: 100%;
   border: none;
   height: 50px;
@@ -526,7 +640,8 @@ a:focus {
   background-color: transparent;
   outline: none;
   color: #000000;
-  border: 1px solid #a5a5a5;
+  border: 1px solid #d4d4d4;
+  border-radius: 20px;
 }
 .contact_section input::-moz-placeholder {
   color: #1c1b1b;
@@ -536,7 +651,7 @@ a:focus {
 }
 .contact_section input.message-box {
   height: 120px;
-}
+} */
 .contact_section button {
   font-family: "Poppins", sans-serif;
   display: inline-block;
@@ -555,6 +670,7 @@ a:focus {
 }
 .contact_section .img-box img {
   width: 100%;
+  border-radius: 20px;
 }
 
 .client_section .box {
@@ -621,6 +737,7 @@ a:focus {
   background-color: #3b4a6b;
   color: #ffffff;
   padding-top: 60px;
+  margin: 10px;
 }
 .footer_section h4 {
   font-weight: 600;
