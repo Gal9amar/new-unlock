@@ -27,7 +27,7 @@ footer {
 }
 @media (max-width: 600px) {
   .bbx {
-    height: 40vh;
+    height: 45vh;
   }
 }
 /* form styles */
@@ -452,6 +452,7 @@ a:focus {
   display: flex;
   justify-content: space-between;
 }
+
 .shop_section .box .detail-box h6 span {
   color: #3b4a6b;
   font-weight: 600;
