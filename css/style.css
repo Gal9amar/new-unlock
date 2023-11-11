@@ -127,7 +127,7 @@ input:focus ~ .highlight {
   font-size: 1.2rem;
 } */
 .layout_padding {
-  padding: 90px 0;
+  padding: 10px 0;
 }
 
 .layout_margin {
@@ -409,7 +409,7 @@ a:focus {
 }
 
 .shop_section .heading_container {
-  margin-bottom: 20px;
+  margin-bottom: 5px;
 }
 .shop_section .box {
   /* background-color: #e9e9e9; */
@@ -594,7 +594,7 @@ a:focus {
   align-items: center;
 }
 .feature_section .box {
-  margin-top: 45px;
+  margin-top: 20px;
   padding: 15px;
   border-radius: 10px;
   box-shadow: 5px 5px 5px 0 rgba(0, 0, 0, 0.25), -2px -2px 3px 0 rgba(0, 0, 0, 0.05);
