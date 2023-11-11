@@ -543,6 +543,19 @@ a:focus {
     margin: 35px;
   }
 }
+@media screen and (min-width: 768px) {
+  .radiusclass2 {
+    border-radius: 50px;
+  }
+}
+
+/* For mobile sizes */
+@media screen and (max-width: 767px) {
+  .radiusclass2 {
+    border-radius: 20px;
+    margin: 10px;
+  }
+}
 
 .about_section .row {
   align-items: center;
