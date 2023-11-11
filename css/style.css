@@ -17,7 +17,35 @@ footer {
 .maalit {
   text-align: center;
 }
+.call-in-product {
+ /* padding: 10px 60px; */
+ width: 100%;
+ height: 35px;
+ border-radius: 50px;
+ border: solid 1px rgb(199, 198, 198);
+ background-color: white;
+ box-shadow: rgb(0 0 0 / 5%) 0 0 8px;
+ letter-spacing: 1.5px;
+ text-transform: uppercase;
+ font-size: 15px;
+ transition: all .5s ease;
+}
 
+.call-in-product:hover {
+ letter-spacing: 10px;
+ background-color: #506aa0;
+ color: hsl(0, 0%, 100%);
+ box-shadow: rgb(24, 109, 220)0px 1px 22px 0px;
+}
+
+/* .call-in-product:active {
+ letter-spacing: 3px;
+ background-color: hsl(214deg 80% 48%);
+ color: hsl(0, 0%, 100%);
+ box-shadow: rgb(24 24 220) 0px 0px 0px 0px;
+ transform: translateY(10px);
+ transition: 100ms;
+} */
 .bbx {
   height: 55vh;
 }
@@ -347,6 +375,7 @@ a:focus {
   padding: 10px 0;
   background-color: #f0d43a;
   background: #3b4a6b;
+  
 }
 .slider_section .row {
   align-items: center;
@@ -457,7 +486,7 @@ a:focus {
   color: #3b4a6b;
   font-weight: 600;
 }
-.shop_section .box .new {
+.shop_section .box .hot {
   padding: 7px 15px;
   position: absolute;
   top: 0;
@@ -555,6 +584,21 @@ a:focus {
   .radiusclass2 {
     border-radius: 20px;
     margin: 10px;
+    height: 700px;
+  }
+}
+@media screen and (min-width: 768px) {
+  .radiusclass3 {
+    border-radius: 50px;
+  }
+}
+
+/* For mobile sizes */
+@media screen and (max-width: 767px) {
+  .radiusclass3 {
+    border-radius: 20px;
+    margin: 10px;
+    height: 870px;
   }
 }
 
