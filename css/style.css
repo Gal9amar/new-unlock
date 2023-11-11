@@ -412,13 +412,28 @@ a:focus {
   margin-bottom: 20px;
 }
 .shop_section .box {
-  background-color: #faf9fa;
+  /* background-color: #e9e9e9; */
+  /* border: solid 1px rgb(168, 168, 168); */
   position: relative;
   padding: 10px 15px;
   margin-top: 25px;
   border-radius: 15px;
   overflow: hidden;
+  box-shadow: 5px 5px 5px 0 rgba(0, 0, 0, 0.25), -2px -2px 3px 0 rgba(0, 0, 0, 0.05);
+  height: 300px;
+  color: black;
 }
+.box:hover {
+  background-color: #f8f7f7;
+  /* color: #ffffff; */
+}
+
+@media (max-width: 575px) {
+  .box {
+    margin: 0px 25px 30px 25px;
+  }
+}
+
 .shop_section .box a {
   color: #000000;
 }
@@ -525,7 +540,7 @@ a:focus {
 @media screen and (max-width: 767px) {
   .radiusclass {
     border-radius: 20px;
-    margin: 10px;
+    margin: 35px;
   }
 }
 
@@ -671,6 +686,7 @@ a:focus {
 .contact_section .img-box img {
   width: 100%;
   border-radius: 20px;
+  margin-bottom: 10px;
 }
 
 .client_section .box {
@@ -737,7 +753,7 @@ a:focus {
   background-color: #3b4a6b;
   color: #ffffff;
   padding-top: 60px;
-  margin: 10px;
+  /* margin: 10px; */
 }
 .footer_section h4 {
   font-weight: 600;
