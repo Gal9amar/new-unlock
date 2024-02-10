@@ -13,9 +13,7 @@
   <meta name="description" content="" />
   <meta name="author" content="" />
   <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon" />
-
   <title>גבי המנעולן</title>
-
   <!-- bootstrap core css -->
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
   <!--owl slider stylesheet -->
@@ -26,6 +24,7 @@
 
   <!-- Custom styles for this template -->
   <link href="css/style.css" rel="stylesheet" />
+  <link href="css/newstyle.css" rel="stylesheet" />
   <!-- responsive style -->
   <link href="css/responsive.css" rel="stylesheet" />
   <script src="js/bthm.js"></script>
@@ -33,6 +32,7 @@
 <div id="bthn" lang="he"></div>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-EBZQ66PKCX"></script>
+<script src="js/script.js"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag() {
@@ -44,63 +44,19 @@
 </script>
 
 <body>
+
+  <div class="call-buton"><a class="cc-calto-action-ripple" href="tel:0533888381"><i class="fa fa-phone"></i><span class="num"></span>
+    </a>
+  </div>
+
   <div class="hero_area">
-    <!-- <div class="hero_social">
-      <a href="">
-        <i class="fa fa-facebook" aria-hidden="true"></i>
-      </a>
-      <a href="">
-        <i class="fa fa-twitter" aria-hidden="true"></i>
-      </a>
-      <a href="">
-        <i class="fa fa-linkedin" aria-hidden="true"></i>
-      </a>
-      <a href="">
-        <i class="fa fa-instagram" aria-hidden="true"></i>
-      </a>
-    </div> -->
-    <!-- header section strats -->
     <header class="header_section">
       <div class="container-fluid">
         <nav class="navbar navbar-expand-lg custom_nav-container">
           <a class="navbar-brand" href="index.html">
             <span> Unlock - גבי המנעולן </span>
           </a>
-
-          <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class=""> </span>
-          </button> -->
-
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <!-- <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link" href="#"> שירות לוועד בית </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="watches.html"> צילינדרים </a>
-              </li>
-              <li class="nav-item active">
-                <a class="nav-link" href="index.html">בית <span class="sr-only">(current)</span></a>
-              </li> -->
-            <!-- <li class="nav-item">
-                  <a class="nav-link" href="about.html"> About </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="contact.html">Contact Us</a> -->
-            <!-- </li>
-            </ul> -->
-            <!-- <div class="user_option-box">
-                <a href="">
-                  <i class="fa fa-user" aria-hidden="true"></i>
-                </a>
-                <a href="">
-                  <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                </a>
-                <a href="">
-                  <i class="fa fa-search" aria-hidden="true"></i>
-                </a>
-              </div> -->
-          </div>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent"></div>
         </nav>
       </div>
     </header>
@@ -179,248 +135,161 @@
     </section>
     <!-- end slider section -->
   </div>
-
   <!-- shop section -->
-
   <section class="shop_section layout_padding">
     <div class="container">
       <div class="heading_container heading_center">
         <h2>מוצרים מובילים</h2>
       </div>
-      <div class="row">
+      <div class="row row2">
         <!-- התחלה של מוצר -->
-        <div class="col-sm-6 col-xl-4">
-          <div class="box">
-            <!-- <a href="tel:0533888381"> -->
-            <div class="hot">
-              <span>מוצר חם</span>
-            </div>
-            <div class="img-box">
-              <img src="images/locxis.png" alt="" />
-            </div>
-            <div class="detail-box">
-              <h6>
-                מחיר:
-                <span> ₪400 </span>
-              </h6>
-              <h6>Locxis רב בריח</h6>
-            </div>
-            <a href="tel:0533888381"><a href="tel:0533888381"><button class="call-in-product">חייג</button></a></a>
-            <!-- </a> -->
-          </div>
+        <div class="product col-sm-6 col-xl-5 col-md-5">
+          <span class="product__price">₪400</span>
+          <img class="imgtag product__image" src="images/locxis.png">
+          <h1 class="product__title">Locxis רב בריח</h1>
+          <hr />
+          <p>
+            נותן מענה מיטבי לניסיונות פריצה אלימים ול"פריצות שקטות
+            המתאפשרות בעקבות אובדן המפתח או שכפולו ע"י
+            נותני שירות השוהים בבית כגון שמרטפית שיפוצניק עוזרת בית ועוד
+          </p>
+          <div class="מומלץ btn"></div>
+          <!-- <a href="tel:0533888381" class="product__btn btn">הזמן עכשיו</a> -->
         </div>
         <!-- סוף של מוצר -->
         <!-- התחלה של מוצר -->
-        <div class="col-sm-6 col-xl-4">
-          <div class="box">
-            <!-- <a href="tel:0533888381"> -->
-            <div class="hot">
-              <span>מוצר חם</span>
-            </div>
-            <div class="img-box">
-              <img src="images/800.png" alt="" />
-            </div>
-            <div class="detail-box">
-              <h6>
-                מחיר:
-                <span> ₪700 </span>
-              </h6>
-              <h6>MTL800 מולטילוק</h6>
-            </div>
-            <a href="tel:0533888381"><button class="call-in-product">חייג</button></a>
-            <!-- </a> -->
-          </div>
+        <div class="product col-sm-6 col-xl-5 col-md-5">
+          <span class="product__price">₪700</span>
+          <img class="imgtag product__image" src="images/800.png">
+          <h1 class="product__title">MTL™800 מולטילוק</h1>
+          <hr />
+          <p>
+            מערכת נעילה ייחודית מוגנת פטנט
+            שמשלבת אלמנטים חדשניים ושלוש מערכות הגנה המאפשרת רמת אבטחה גבוהה ביותר
+          </p>
+          <div class="מבצע btn"></div>
+          <!-- <a href="tel:0533888381" class="product__btn btn">הזמן עכשיו</a> -->
         </div>
         <!-- סוף של מוצר -->
         <!-- התחלה של מוצר -->
-        <div class="col-sm-6 col-xl-4">
-          <div class="box">
-            <!-- <a href="tel:0533888381"> -->
-            <div class="discount">
-              <span> בהנחה </span>
-            </div>
-            <div class="img-box">
-              <img src="images/600.png" alt="" />
-            </div>
-            <div class="detail-box">
-              <h6>
-                מחיר:
-                <span> ₪500 </span>
-              </h6>
-              <h6>MTL600 מולטילוק</h6>
-            </div>
-            <a href="tel:0533888381"><button class="call-in-product">חייג</button></a>
-            <!-- </a> -->
-          </div>
+        <div class="product col-sm-6 col-xl-5 col-md-5">
+          <span class="product__price">₪500</span>
+          <img class="imgtag product__image" src="images/600.jpg">
+          <h1 class="product__title">MTL™600 מולטילוק</h1>
+          <hr />
+          <p>
+            צילינדר לעמידות גבוהה בפני שיטות פריצה אלימות.
+            מערכת פינים טלסקופיים בצילינדר בשילוב עם פין צף במפתח, מגבירים את עמידותו בפני שיטות פריצה שונות. הצילינדר מתאים לשימוש במגוון
+            יישומים. הצילינדר מגיע עם כרטיס מגנטי אישי לשכפול מפתחות להגברת הבקרה על שכפול מפתחות.
+          </p>
+          <div class="חם btn"></div>
+          <!-- <a href="tel:0533888381" class="product__btn btn">הזמן עכשיו</a> -->
+        </div>
+        <!-- סוף של מוצר -->
+
+        <!-- התחלה של מוצר -->
+        <div class="product col-sm-6 col-xl-5 col-md-5">
+          <span class="product__price">₪700</span>
+          <img class="imgtag product__image" src="images/juwel.jpg">
+          <h1 class="product__title">JUWEL מולטילוק</h1>
+          <hr />
+          <p>
+            נותן מענה מיטבי לניסיונות פריצה אלימים ול"פריצות שקטות
+            המתאפשרות בעקבות אובדן המפתח או שכפולו ע"י
+            נותני שירות השוהים בבית כגון שמרטפית שיפוצניק עוזרת בית ועוד
+          </p>
+          <div class="מומלץ btn"></div>
+          <!-- <a href="tel:0533888381" class="product__btn btn">הזמן עכשיו</a> -->
         </div>
         <!-- סוף של מוצר -->
         <!-- התחלה של מוצר -->
-        <div class="col-sm-6 col-xl-4">
-          <div class="box">
-            <!-- <a href="tel:0533888381"> -->
-            <div class="recommend">
-              <span> מומלץ </span>
-            </div>
-            <div class="img-box">
-              <img src="images/juwel.png" alt="" />
-            </div>
-            <div class="detail-box">
-              <h6>
-                החל מ:
-                <span> ₪700 </span>
-              </h6>
-              <h6>מנעול כספת JUWEL</h6>
-            </div>
-            <a href="tel:0533888381"><button class="call-in-product">חייג</button></a>
-            <!-- </a> -->
-          </div>
+        <div class="product col-sm-6 col-xl-5 col-md-5">
+          <span class="product__price">₪650</span>
+          <img class="imgtag product__image" src="images/כספת.jpg" style="width: 60%;">
+          <h1 class="product__title">רב בריח מנעול כספת עליון</h1>
+          <hr />
+          <p>
+            פתרון איכותי ברמת מיגון מצויינת, המעניק את הביטחון הטוב ביותר לבית או לעסק. מתאים גם לשיפור נוסף של מיגון שערים וארגזים חובקים מפלדה,
+            לשילוב במערכות נעילה בעלות צילנדרים ומנעולי תליה במפתח אחיד ו/או במערכות מאסטר. שיכפול מפתחות המוצר מצריך איש מקצוע.
+          </p>
+          <div class="חם btn"></div>
+          <!-- <a href="tel:0533888381" class="product__btn btn">הזמן עכשיו</a> -->
         </div>
         <!-- סוף של מוצר -->
         <!-- התחלה של מוצר -->
-        <div class="col-sm-6 col-xl-4">
-          <div class="box">
-            <!-- <a href="tel:0533888381"> -->
-            <div class="hot">
-              <span>מוצר חם</span>
-            </div>
-            <div class="img-box">
-              <img src="images/כספת-רב-בריח.png" alt="" />
-            </div>
-            <div class="detail-box">
-              <h6>
-                החל מ:
-                <span> ₪650 </span>
-              </h6>
-              <h6>רב בריח מנעול כספת</h6>
-            </div>
-            <a href="tel:0533888381"><button class="call-in-product">חייג</button></a>
-            <!-- </a> -->
-          </div>
+        <div class="product col-sm-6 col-xl-5 col-md-5">
+          <span class="product__price">₪1200</span>
+          <img class="imgtag product__image" src="images/4ks.jpg">
+          <h1 class="product__title">EVVA 4KS</h1>
+          <hr />
+          <p>
+            הדגם הנמכר בישראל! צילינדר ללא קפיצים מבטיח עמידות שיא בתנאי מזג אויר מאתגרים.
+            מוגן מפני כלי הפריצה הנפוצים בישראל. בקרת שכפול בלעדית – שכפול מפתח אך ורק במשרדי החברה בישראל!
+          </p>
+          <div class="חם btn"></div>
+          <!-- <a href="tel:0533888381" class="product__btn btn">הזמן עכשיו</a> -->
         </div>
         <!-- סוף של מוצר -->
         <!-- התחלה של מוצר -->
-        <div class="col-sm-6 col-xl-4">
-          <div class="box">
-            <!-- <a href="tel:0533888381"> -->
-            <div class="hot">
-              <span>מוצר חם</span>
-            </div>
-            <div class="img-box">
-              <img src="images/evva.png" alt="" />
-            </div>
-            <div class="detail-box">
-              <h6>
-                החל מ:
-                <span> ₪600 </span>
-              </h6>
-              <h6>מגוון דגמים EVVA</h6>
-            </div>
-            <a href="tel:0533888381"><button class="call-in-product">חייג</button></a>
-            <!-- </a> -->
-          </div>
+        <div class="product col-sm-6 col-xl-5 col-md-5">
+          <span class="product__price">₪300</span>
+          <img class="imgtag product__image" src="images/dy.png">
+          <h1 class="product__title">Dynamic+ רב בריח</h1>
+          <hr />
+          <p>
+            צילינדר זה כולל 5 מפתחות.
+            ניתן לקבל את הצילינדר גם עם מפתח קבוע (כפתור) מצידו הפנימי של הבית המאפשר נעילה ללא צורך במפתח על מנת לאפשר יציאה מהירה במקרי חירום כגון שריפה.
+          </p>
+          <div class="מבצע btn"></div>
+          <!-- <a href="tel:0533888381" class="product__btn btn">הזמן עכשיו</a> -->
         </div>
         <!-- סוף של מוצר -->
         <!-- התחלה של מוצר -->
-        <div class="col-sm-6 col-xl-4">
-          <div class="box">
-            <!-- <a href="tel:0533888381"> -->
-            <div class="discount">
-              <span> בהנחה </span>
-            </div>
-            <div class="img-box">
-              <img src="images/dynamic.png" alt="" />
-            </div>
-            <div class="detail-box">
-              <h6>
-                מחיר:
-                <span> ₪300 </span>
-              </h6>
-              <h6>Dynamic רב בריח</h6>
-            </div>
-            <a href="tel:0533888381"><button class="call-in-product">חייג</button></a>
-            <!-- </a> -->
-          </div>
+        <div class="product col-sm-6 col-xl-5 col-md-5">
+          <span class="product__price">₪1200</span>
+          <img class="imgtag product__image" src="images/פלדלת.png">
+          <h1 class="product__title">דלת פלדלת תואם רב בריח</h1>
+          <hr />
+          <p>
+            צילינדר זה כולל 5 מפתחות.
+            ניתן לקבל את הצילינדר גם עם מפתח קבוע (כפתור) מצידו הפנימי של הבית המאפשר נעילה ללא צורך במפתח על מנת לאפשר יציאה מהירה במקרי חירום כגון שריפה.
+          </p>
+          <div class="מבצע btn"></div>
+          <!-- <a href="tel:0533888381" class="product__btn btn">הזמן עכשיו</a> -->
         </div>
         <!-- סוף של מוצר -->
         <!-- התחלה של מוצר -->
-        <div class="col-sm-6 col-xl-4">
-          <div class="box">
-            <!-- <a href="tel:0533888381"> -->
-            <div class="discount">
-              <span> בהנחה </span>
-            </div>
-            <div class="img-box">
-              <img src="images/interactive.png" alt="" />
-            </div>
-            <div class="detail-box">
-              <h6>
-                מחיר:
-                <span> ₪400 </span>
-              </h6>
-              <h6>Interactive+ מולטילוק</h6>
-            </div>
-            <a href="tel:0533888381"><button class="call-in-product">חייג</button></a>
-            <!-- </a> -->
-          </div>
+        <div class="product col-sm-6 col-xl-5 col-md-5">
+          <span class="product__price">₪1200</span>
+          <img class="imgtag product__image" src="images/דלת ממד.jpg">
+          <h1 class="product__title">קיצור דלת ממ"ד</h1>
+          <hr />
+          <p>
+            בזמן החלפת ריצוף בדירה יש צורך בביצוע התאמה לגובה דלת הממ"ד שלכם לצורף פתיחה מלאה ללא חריקות על הריצוף
+          </p>
+          <div class="מומלץ btn"></div>
+          <!-- <a href="tel:0533888381" class="product__btn btn">הזמן עכשיו</a> -->
         </div>
         <!-- סוף של מוצר -->
         <!-- התחלה של מוצר -->
-        <div class="col-sm-6 col-xl-4">
-          <div class="box">
-            <!-- <a href="tel:0533888381"> -->
-            <div class="discount">
-              <span> בהנחה </span>
-            </div>
-            <div class="img-box">
-              <img src="images/פלדלת.png" alt="" />
-            </div>
-            <div class="detail-box">
-              <h6>
-                החל מ:
-                <span> ₪1200 </span>
-              </h6>
-              <h6>דלת פלדלת תואם רב בריח</h6>
-            </div>
-            <!-- <small>ניתן להזמין לפי קוד צבע*</small> -->
-            <a href="tel:0533888381"><button class="call-in-product">חייג</button></a>
-            <!-- </a> -->
-          </div>
-        </div>
-        <!-- סוף של מוצר -->
-        <!-- התחלה של מוצר -->
-        <div class="col-sm-6 col-xl-4">
-          <div class="box">
-            <!-- <a href="tel:0533888381"> -->
-            <div class="discount">
-              <span> בהנחה </span>
-            </div>
-            <div class="img-box">
-              <img src="images/דלת ממד.jpg" alt="" />
-            </div>
-            <div class="detail-box">
-              <h6>
-                החל מ:
-                <span> ₪800 </span>
-              </h6>
-              <h6>קיצור דלת ממ"ד</h6>
-            </div>
-            <a href="tel:0533888381"><button class="call-in-product">חייג</button></a>
-            <!-- </a> -->
-          </div>
+        <div class="product col-sm-6 col-xl-5 col-md-5">
+          <span class="product__price">חייגו</span>
+          <img class="imgtag product__image" src="images/שבת.jpg">
+          <h1 class="product__title">מנעול מכאני לשומרי שבת</h1>
+          <hr />
+          <p>
+            מנעול קוד מכני לדלת, מתאים במיוחד לדתיים ושומרי שבת.
+          </p>
+          <div class="מומלץ btn"></div>
+          <!-- <a href="tel:0533888381" class="product__btn btn">הזמן עכשיו</a> -->
         </div>
         <!-- סוף של מוצר -->
       </div>
-      <!-- <div class="btn-box">
-        <a href="tel:0533888381"> View All </a>
-      </div> -->
     </div>
   </section>
   <br />
-
   <!-- end shop section -->
-
   <!-- about section -->
-
   <section class="about_section layout_padding radiusclass3">
     <div class="container">
       <h1 class="maalit">חיפוי מעליות</h1>
@@ -449,89 +318,57 @@
     </div>
   </section>
   <br />
-
   <!-- end about section -->
-
   <!-- feature section -->
-
   <section class="feature_section layout_padding">
     <div class="container">
-      <!-- <div class="heading_container">
-
-
-      </div> -->
-      <div class="row">
-        <div class="col-sm-6 col-lg-4">
-          <div class="box bbx">
-            <div class="img-box">
-              <img src="images/שקל.png" alt="" />
-            </div>
-            <div class="detail-box">
-              <h5>דרכי תשלום</h5>
-              <p>ניתן לשלם אצלינו בכל דרכי התשלום המקובלות כגון העברה בנקאית , ביט, אשראי ,מזומן לוועדי בניין יש גם אפשרות לשלם בהמחאה</p>
-              <!-- <a href="">
-                <span> Read More </span>
-                <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
-              </a> -->
-            </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 col-lg-4">
+        <div class="box bbx">
+          <div class="img-box">
+            <img src="images/שקל.png" alt="" />
           </div>
-        </div>
-        <!-- <div class="col-sm-6 col-lg-3">
-          <div class="box">
-            <div class="img-box">
-              <img src="images/f2.png" alt="" />
-            </div>
-            <div class="detail-box">
-              <h5>Alerts & Notifications</h5>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit,</p>
-              <a href="">
-                <span> Read More </span>
-                <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
-              </a>
-            </div>
-          </div>
-        </div> -->
-        <div class="col-sm-6 col-lg-4">
-          <div class="box bbx">
-            <div class="img-box">
-              <img src="images/whatsapp.png" alt="" />
-            </div>
-            <div class="detail-box qqq">
-              <h5>Whatsapp</h5>
-              <p>אנחנו זמינים גם בהודעת וואטסאפ בכל שעה בכל יום ומשתדלים לענות כמה שיותר מהר</p>
-              <a href="https://wa.me/+972533888381">
-                <span> שלח הודעה </span>
-                <i class="fa fa-brands fa-whatsapp" aria-hidden="true"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="col-sm-6 col-lg-4">
-          <div class="box bbx">
-            <div class="img-box">
-              <img src="images/וועד הבית פנג.png" alt="" />
-            </div>
-            <div class="detail-box">
-              <h5>וועד בית</h5>
-              <p>החלפת ידיות וצילינדרים לפירי אשפה בבניין , מיגון המעלית בלוחות עץ , התקנת מנעולי כספת ליציאה לעלית גג ,החלפת מנעולי תיבות דואר ,החלפת מנעולים לחדרי דיירים ועוד</p>
-              <!-- <a href="">
-                <span> Read More </span>
-                <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
-              </a> -->
-            </div>
+          <div class="detail-box">
+            <h5>דרכי תשלום</h5>
+            <p>ניתן לשלם אצלינו בכל דרכי התשלום המקובלות כגון העברה בנקאית , ביט, אשראי ,מזומן לוועדי בניין יש גם אפשרות לשלם בהמחאה</p>
           </div>
         </div>
       </div>
-      <div class="btn-box">
-        <!-- <a href=""> View More </a> -->
+      <div class="col-sm-6 col-lg-4">
+        <div class="box bbx">
+          <div class="img-box">
+            <img src="images/whatsapp.png" alt="" />
+          </div>
+          <div class="detail-box qqq">
+            <h5>Whatsapp</h5>
+            <p>אנחנו זמינים גם בהודעת וואטסאפ בכל שעה בכל יום ומשתדלים לענות כמה שיותר מהר</p>
+            <a href="https://wa.me/+972533888381">
+              <span> שלח הודעה </span>
+              <i class="fa fa-brands fa-whatsapp" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-lg-4">
+        <div class="box bbx">
+          <div class="img-box">
+            <img src="images/וועד הבית פנג.png" alt="" />
+          </div>
+          <div class="detail-box">
+            <h5>וועד בית</h5>
+            <p>החלפת ידיות וצילינדרים לפירי אשפה בבניין , מיגון המעלית בלוחות עץ , התקנת מנעולי כספת ליציאה לעלית גג ,החלפת מנעולי תיבות דואר ,החלפת מנעולים לחדרי דיירים ועוד</p>
+          </div>
+        </div>
       </div>
     </div>
+    <div class="btn-box">
+      <!-- <a href=""> View More </a> -->
+    </div>
+    </div>
   </section>
-
   <!-- end feature section -->
-
   <!-- contact section -->
-
   <section class="contact_section">
     <div class="container">
       <div class="row">
@@ -586,57 +423,7 @@
     </div>
     <br />
   </section>
-
   <!-- end contact section -->
-
-  <!-- client section -->
-  <!-- <section class="client_section layout_padding">
-    <div class="container">
-      <div class="heading_container heading_center">
-        <h2>Testimonial</h2>
-      </div>
-      <div class="carousel-wrap">
-        <div class="owl-carousel client_owl-carousel">
-          <div class="item">
-            <div class="box">
-              <div class="img-box">
-                <img src="images/c1.jpg" alt="" />
-              </div>
-              <div class="detail-box">
-                <div class="client_info">
-                  <div class="client_name">
-                    <h5>Mark Thomas</h5>
-                    <h6>Customer</h6>
-                  </div>
-                  <i class="fa fa-quote-left" aria-hidden="true"></i>
-                </div>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugia</p>
-              </div>
-            </div>
-          </div>
-          <div class="item">
-            <div class="box">
-              <div class="img-box">
-                <img src="images/c2.jpg" alt="" />
-              </div>
-              <div class="detail-box">
-                <div class="client_info">
-                  <div class="client_name">
-                    <h5>Alina Hans</h5>
-                    <h6>Customer</h6>
-                  </div>
-                  <i class="fa fa-quote-left" aria-hidden="true"></i>
-                </div>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugia</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section> -->
-  <!-- end client section -->
-
   <!-- footer section -->
   <footer class="footer_section radiusclass3">
     <div class="container">
@@ -654,20 +441,6 @@
               <br />
               תודה. גבי
             </p>
-            <!-- <div class="footer_social">
-              <a href="">
-                <i class="fa fa-facebook" aria-hidden="true"></i>
-              </a>
-              <a href="">
-                <i class="fa fa-twitter" aria-hidden="true"></i>
-              </a>
-              <a href="">
-                <i class="fa fa-linkedin" aria-hidden="true"></i>
-              </a>
-              <a href="">
-                <i class="fa fa-instagram" aria-hidden="true"></i>
-              </a>
-            </div> -->
           </div>
         </div>
         <div class="col-md-6 col-lg-6 footer-col">
@@ -693,22 +466,6 @@
             </div>
           </div>
         </div>
-        <!-- <div class="col-md-6 col-lg-3 footer-col">
-          <div class="footer_contact">
-            <h4>Subscribe</h4>
-            <form action="#">
-              <input type="text" placeholder="Enter email" />
-              <button type="submit">Subscribe</button>
-            </form>
-          </div>
-        </div> -->
-        <!-- <div class="col-md-6 col-lg-3 footer-col">
-          <div class="map_container">
-            <div class="map">
-              <div id="googleMap"></div>
-            </div>
-          </div>
-        </div> -->
       </div>
       <div class="footer-info">
         <p>

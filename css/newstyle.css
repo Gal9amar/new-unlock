@@ -1,0 +1,233 @@
+.product__category,
+.product__price,
+.btn {
+  /* font-size: 0.5em; */
+  text-transform: uppercase;
+  letter-spacing: 1.4px;
+  font-weight: 700;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+.imgtag {
+  /* max-width: 100%; */
+  max-height: 220px;
+  vertical-align: top;
+}
+
+hr {
+  border: 0;
+  height: 5px;
+  width: 100px;
+  background-color: #506aa0;
+  margin: 22px 0 20px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+p {
+  margin: 0 0 1.5em 0;
+  /* font-size: 1em; */
+}
+p:last-child {
+  margin-bottom: 0;
+}
+
+.btn {
+  display: inline-block;
+  color: #fff;
+  text-align: center;
+  padding: 1em 2em;
+  white-space: nowrap;
+  border-radius: 5px;
+}
+
+.product {
+  /* position: relative; */
+  width: 100%;
+  padding: 20px;
+  margin: 30px;
+  border-radius: 8px;
+  background-color: #ffffff;
+  transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 30px 25px 10px rgba(0, 0, 0, 0.15);
+}
+
+.product__image {
+  /* width: 100%; */
+  margin-left: 10%;
+  margin-right: 15%;
+  margin-top: -5px;
+  margin-bottom: 30px;
+  max-width: none;
+}
+
+.product__title {
+  font-size: 30px;
+  color: #000;
+  margin: 0 0 0.5em 0;
+  line-height: 1.1;
+}
+
+.product__price {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: -10px;
+  left: -30px;
+  width: 70px;
+  height: 70px;
+  background-color: rgba(0, 0, 0, 0.95);
+  color: #fff;
+  border-radius: 50%;
+}
+@media (max-width: 800px) {
+  .product__price {
+    font-size: 0.9em !important;
+    font-weight: 300;
+    width: 60px;
+    height: 60px;
+    left: -20px;
+  }
+}
+/* 
+.product__category {
+  display: block;
+  color: #506aa0;
+  margin-bottom: 1em;
+} */
+.מומלץ::before {
+  content: "מוצר מומלץ";
+}
+.מומלץ {
+  position: absolute;
+  bottom: -30px;
+  right: 30px;
+  background-color: #506aa0;
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 30px 25px -20px rgba(0, 0, 0, 0.15);
+}
+.מומלץ:hover {
+  box-shadow: 0 36px 28px -20px rgba(0, 0, 0, 0.2);
+  background-color: #23407e;
+  color: white;
+}
+
+.מבצע::before {
+  content: "במחיר מבצע";
+}
+.מבצע {
+  position: absolute;
+  bottom: -30px;
+  right: 30px;
+  background-color: #18aa18;
+  /* color: black; */
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 30px 25px -20px rgba(0, 0, 0, 0.15);
+}
+.מבצע:hover {
+  box-shadow: 0 36px 28px -20px rgba(0, 0, 0, 0.2);
+  background-color: #23407e;
+  color: white;
+}
+.חם::before {
+  content: "מוצר חם";
+}
+.חם {
+  position: absolute;
+  bottom: -30px;
+  right: 30px;
+  background-color: #ffa836;
+  transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 30px 25px -20px rgba(0, 0, 0, 0.15);
+}
+.חם:hover {
+  box-shadow: 0 36px 28px -20px rgba(0, 0, 0, 0.2);
+  background-color: #23407e;
+  color: white;
+}
+
+/* For small screens, the elements will not be shifted */
+.row2 {
+  position: relative;
+}
+
+/* For larger screens (e.g., screens wider than 768px), the elements will be shifted 50px to the right */
+@media (min-width: 768px) {
+  .row2 {
+    left: 50px;
+  }
+}
+
+.call-buton .cc-calto-action-ripple {
+  z-index: 99999;
+  position: fixed;
+  left: 1rem;
+  bottom: 2rem;
+  background: #23407e;
+  width: 4rem;
+  height: 4rem;
+  padding: 1rem;
+  border-radius: 100%;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  color: #ffffff;
+  -webkit-animation: cc-calto-action-ripple 0.6s linear infinite;
+  animation: cc-calto-action-ripple 0.6s linear infinite;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  justify-items: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-decoration: none;
+}
+.call-buton .cc-calto-action-ripple i {
+  -webkit-transition: 0.3s ease;
+  transition: 0.3s ease;
+  font-size: 2.2rem;
+}
+.call-buton .cc-calto-action-ripple:hover i {
+  -webkit-transform: rotate(135deg);
+  transform: rotate(135deg);
+}
+
+@-webkit-keyframes cc-calto-action-ripple {
+  0% {
+    -webkit-box-shadow: 0 4px 10px rgba(236, 47, 0, 0.2), 0 0 0 0 rgba(236, 0, 0, 0.2), 0 0 0 5px rgba(236, 139, 0, 0.2), 0 0 0 10px rgba(236, 139, 0, 0.2);
+    box-shadow: 0 4px 10px rgba(236, 139, 0, 0.2), 0 0 0 0 rgba(236, 139, 0, 0.2), 0 0 0 5px rgba(236, 139, 0, 0.2), 0 0 0 10px rgba(236, 139, 0, 0.2);
+  }
+  100% {
+    -webkit-box-shadow: 0 4px 10px rgba(236, 139, 0, 0.2), 0 0 0 5px rgba(236, 139, 0, 0.2), 0 0 0 10px rgba(236, 139, 0, 0.2), 0 0 0 20px rgba(236, 139, 0, 0);
+    box-shadow: 0 4px 10px rgba(236, 139, 0, 0.2), 0 0 0 5px rgba(236, 139, 0, 0.2), 0 0 0 10px rgba(236, 139, 0, 0.2), 0 0 0 20px rgba(236, 139, 0, 0);
+  }
+}
+
+@keyframes cc-calto-action-ripple {
+  0% {
+    -webkit-box-shadow: 0 4px 10px rgba(236, 139, 0, 0.2), 0 0 0 0 rgba(236, 139, 0, 0.2), 0 0 0 5px rgba(236, 139, 0, 0.2), 0 0 0 10px rgba(236, 139, 0, 0.2);
+    box-shadow: 0 4px 10px rgba(236, 139, 0, 0.2), 0 0 0 0 rgba(236, 139, 0, 0.2), 0 0 0 5px rgba(236, 139, 0, 0.2), 0 0 0 10px rgba(236, 139, 0, 0.2);
+  }
+  100% {
+    -webkit-box-shadow: 0 4px 10px rgba(236, 139, 0, 0.2), 0 0 0 5px rgba(236, 139, 0, 0.2), 0 0 0 10px rgba(236, 139, 0, 0.2), 0 0 0 20px rgba(236, 139, 0, 0);
+    box-shadow: 0 4px 10px rgba(236, 139, 0, 0.2), 0 0 0 5px rgba(236, 139, 0, 0.2), 0 0 0 10px rgba(236, 139, 0, 0.2), 0 0 0 20px rgba(236, 139, 0, 0);
+  }
+}
+
+span.num {
+  position: absolute;
+  color: #ec8b00;
+  left: -30%;
+  bottom: -50%;
+}
