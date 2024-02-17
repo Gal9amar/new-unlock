@@ -552,6 +552,13 @@ a:focus {
   overflow: hidden;
   transition: all 0.2s;
 }
+
+@media (max-width: 768px) {
+  .feature_section .box {
+    height: auto;
+  }
+}
+
 .feature_section .box .img-box {
   display: flex;
   justify-content: center;
