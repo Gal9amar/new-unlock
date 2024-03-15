@@ -70,6 +70,10 @@ p:last-child {
   max-width: none;
 }
 
+.elevetor{
+  border: solid 5px white;
+}
+
 .product__title {
   font-size: 30px;
   color: #000;

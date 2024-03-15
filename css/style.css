@@ -507,9 +507,9 @@ a:focus {
   }
 }
 
-.about_section .row {
+/* .about_section .row {
   align-items: center;
-}
+} */
 .about_section .img-box {
   position: relative;
   display: flex;
