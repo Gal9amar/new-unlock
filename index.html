@@ -49,7 +49,6 @@
     התקן אפליקציה
   </button>
 
-
   <header
     class="relative bg-gradient-to-r from-blue-700 to-blue-500 dark:from-gray-900 dark:to-gray-800 py-5 shadow-md">
     <button id="toggle-dark"
@@ -67,9 +66,7 @@
         <br>
         שירות לוועדי בתים
       </div>
-
   </header>
-
   <!-- פס קטגוריות (מותגים) -->
   <div class="relative w-full max-w-4xl mx-auto mb-4 mt-6">
     <div class="w-full max-w-4xl mx-auto mb-4 mt-6 px-1">
@@ -88,23 +85,59 @@
 
   <footer class="bg-blue-700 dark:bg-gray-900 text-blue-100 dark:text-blue-300 mt-12 py-6">
     <div class="container mx-auto px-4 flex flex-col items-center gap-2 text-center">
-      <!-- שם ולוגו -->
+
       <div class="flex items-center gap-3 mb-2">
         <img src="images/fav.png" class="w-8 h-8" alt="גבי המנעולן" />
         <span class="font-bold text-lg">גבי המנעולן</span>
       </div>
 
-      <div>שירות בכל אזור המרכז • 24/7</div>
+      <div class="mb-2">שירות בכל אזור המרכז • 24/7</div>
 
-      <!-- דרכי תשלום -->
-      <div class="flex flex-col items-center mt-2 w-full">
-        <span class="text-xs text-blue-100 dark:text-blue-300">ניתן לשלם ב-BIT או ב-PayBox בקלות ובבטחה</span><br />
-        <div class="flex items-center gap-4 justify-center mb-1">
-          <img src="images/bit-icon.png" alt="תשלום ב-BIT" class="h-10 w-400 rounded-lg shadow-sm" title="bit"
-            loading="lazy" />
+      <!-- שורת תשלום עם לוגו -->
+      <div class="flex flex-col items-center gap-2 mb-1">
+        <div class="flex items-center gap-2">
+          <!-- לוגו שלך במקום איקון תשלום -->
+          <img src="images/bit-icon.png" class="w-20 h-10  shadow" alt="לוגו גבי המנעולן" />
+          <!-- <span class="text-md font-semibold">דרכי תשלום</span> -->
+        </div>
+        <div class="text-xs text-blue-50 dark:text-blue-200 max-w-xs">
+          ניתן לשלם אצלנו בכל דרכי התשלום המקובלות: העברה בנקאית, ביט, אשראי, מזומן. לוועדי בתים אפשרות גם בהמחאה.
         </div>
       </div>
-      <div class="text-sm mt-3">©2025 כל הזכויות שמורות</div>
+
+      <!-- קישורים לרשתות חברתיות -->
+      <div class="flex gap-4 mt-2 mb-1 justify-center">
+        <a href="https://wa.me/972533888381" target="_blank" rel="noopener" aria-label="וואטסאפ"
+          class="hover:text-green-400 transition">
+          <!-- וואטסאפ -->
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M17.47 14.37c-.26-.13-1.53-.75-1.77-.84-.24-.09-.42-.13-.6.13-.18.26-.69.84-.85 1.01-.16.17-.31.19-.57.06-.26-.13-1.09-.4-2.08-1.29-.77-.69-1.29-1.54-1.44-1.8-.15-.26-.02-.4.11-.52.12-.12.26-.31.39-.47.13-.16.17-.27.26-.44.09-.17.04-.32-.02-.45-.06-.13-.6-1.46-.82-2-.22-.53-.45-.46-.61-.47l-.52-.01c-.18 0-.47.07-.71.32-.24.25-.94.92-.94 2.23 0 1.31.97 2.58 1.11 2.76.14.18 1.92 2.93 4.67 3.99.65.22 1.15.35 1.54.45.65.16 1.23.13 1.69.08.52-.06 1.53-.63 1.75-1.24.22-.61.22-1.13.16-1.24-.06-.11-.24-.18-.5-.31z" />
+          </svg>
+        </a>
+        <a href="https://www.facebook.com/gabihamanulan" target="_blank" rel="noopener" aria-label="פייסבוק"
+          class="hover:text-blue-400 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M22.675 0h-21.35C.596 0 0 .592 0 1.326v21.348C0 23.408.596 24 1.325 24h11.495v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.098 2.797.142v3.24l-1.918.001c-1.504 0-1.797.715-1.797 1.763v2.31h3.587l-.467 3.622h-3.12V24h6.116C23.404 24 24 23.408 24 22.674V1.326C24 .592 23.404 0 22.675 0" />
+          </svg>
+        </a>
+        <a href="https://www.instagram.com/gabi.the.locksmith/" target="_blank" rel="noopener" aria-label="אינסטגרם"
+          class="hover:text-pink-400 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M7.75 2C5.13 2 3 4.13 3 6.75V17.25C3 19.87 5.13 22 7.75 22H16.25C18.87 22 21 19.87 21 17.25V6.75C21 4.13 18.87 2 16.25 2H7.75ZM12 7.25A4.75 4.75 0 1 1 7.25 12 4.75 4.75 0 0 1 12 7.25Zm0 7.5A2.75 2.75 0 1 0 9.25 12 2.75 2.75 0 0 0 12 14.75ZM17.75 7A1.25 1.25 0 1 1 16.5 5.75 1.25 1.25 0 0 1 17.75 7Z" />
+          </svg>
+        </a>
+        <a href="mailto:unlock.yavne@gmail.com" aria-label="אימייל" class="hover:text-red-400 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 2v.01L12 13 4 6.01V6h16zM4 20v-9.99l7.7 7.7c.39.39 1.02.39 1.41 0L20 10.01V20H4z" />
+          </svg>
+        </a>
+      </div>
+
+      <div class="text-sm mt-1">© 2025 כל הזכויות שמורות | נבנה על ידי גל עמר</div>
     </div>
   </footer>
 
