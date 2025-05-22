@@ -223,3 +223,12 @@ style.innerHTML = `
 .animate-fadein { animation: fadein 0.7s cubic-bezier(.4,0,.2,1) forwards;}
 `
 document.head.appendChild(style)
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').then(
+      reg => console.log("SW registered", reg),
+      err => console.warn("SW registration failed", err)
+    );
+  });
+}
