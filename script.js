@@ -232,3 +232,33 @@ if ('serviceWorker' in navigator) {
     );
   });
 }
+let deferredPrompt;
+const installBtn = document.getElementById('installAppBtn');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (installBtn) {
+    installBtn.style.display = 'flex';
+  }
+});
+
+if (installBtn) {
+  installBtn.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      // אפשר להסתיר את הכפתור או להחליף טקסט
+      if (outcome === 'accepted') {
+        installBtn.textContent = 'הותקן!';
+        setTimeout(() => installBtn.style.display = 'none', 1500);
+      }
+      deferredPrompt = null;
+    }
+  });
+}
+
+// אופציונלי: להסתיר את הכפתור לאחר התקנה (לא בכל דפדפן)
+window.addEventListener('appinstalled', () => {
+    if (installBtn) installBtn.style.display = 'none';
+});
