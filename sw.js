@@ -1,4 +1,4 @@
-const CACHE_NAME = "gabi-catalog-v1";
+const CACHE_NAME = "hamanulan";
 const urlsToCache = [
     "/",
     "/index.html",
