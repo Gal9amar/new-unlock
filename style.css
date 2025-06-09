@@ -14,20 +14,3 @@ html {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
-.userway_buttons_wrapper {
-    position: fixed;
-    /* שליש תחתון: 66% מהגובה */
-    top: 70vh !important;
-    left: 90px !important;
-    /* צמוד לשמאל */
-    right: auto !important;
-    z-index: 9999;
-}
-
-/* במובייל – אפשר לקבוע left קטן יותר אם רוצים */
-@media (max-width: 600px) {
-    .userway_buttons_wrapper {
-        left: 80px !important;
-        top: 85vh !important;
-    }
-}
