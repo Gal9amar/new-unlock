@@ -195,9 +195,9 @@ function renderProducts() {
         ? `
                   <a href="${waLink}"
                      class="flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-400 hover:from-green-700 hover:to-green-500 text-white rounded-xl px-5 py-2 font-bold shadow-lg transition focus:outline-none focus:ring-2 focus:ring-green-400"
-                     aria-label="וואטסאפ על המוצר" target="_blank" rel="noopener">
+                     aria-label="הזמן את המוצר" target="_blank" rel="noopener">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-5 h-5"><path fill="currentColor" d="M12 2A10 10 0 0 0 2 12a9.96 9.96 0 0 0 1.44 5.23L2 22l4.93-1.43A9.95 9.95 0 0 0 12 22a10 10 0 1 0 0-20zm0 18c-1.45 0-2.88-.36-4.13-1.05l-.3-.17-2.92.84.83-2.85-.18-.29A7.97 7.97 0 0 1 4 12a8 8 0 1 1 8 8zm4.23-5.36-.75-.37c-.2-.1-.44-.2-.7-.12-.19.06-.42.22-.68.44-.27.22-.53.27-.73.13a6.47 6.47 0 0 1-2.04-2.04c-.14-.2-.09-.46.13-.73.22-.26.37-.49.44-.68.08-.26-.02-.5-.12-.7l-.37-.75c-.18-.37-.6-.52-.94-.39-.98.4-1.57 1.22-1.37 2.18.13.59.54 1.26 1.21 1.92.67.68 1.34 1.08 1.93 1.21.96.2 1.78-.39 2.18-1.37.13-.34-.02-.76-.39-.94z"/></svg>
-                    וואטסאפ
+                    הזמן
                   </a>
                 `
         : ''
