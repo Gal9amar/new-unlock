@@ -11,6 +11,7 @@ const STATUS_CLASSES = {
 let allProducts = [];
 let selectedBrand = null;
 let productOrder = [];
+const COOKIE_CONSENT_KEY = 'unlock_cookie_consent';
 
 // עדכון כפתור מצב כהה/בהיר
 function updateDarkModeButton() {
@@ -63,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
   loadProducts();
+  initCookieBanner();
 })
 
 // טען מוצרים, קטגוריות, והצג
@@ -303,5 +305,27 @@ function renderProducts() {
 
   grid.innerHTML = cards;
   grid.setAttribute('aria-busy', 'false');
+}
+
+function initCookieBanner() {
+  const banner = document.getElementById('cookie-banner');
+  if (!banner) return;
+
+  const acceptBtn = banner.querySelector('[data-cookie-accept]');
+  if (!acceptBtn) return;
+
+  const hasConsent = localStorage.getItem(COOKIE_CONSENT_KEY) === '1';
+  if (hasConsent) {
+    banner.setAttribute('hidden', '');
+    return;
+  }
+
+  banner.removeAttribute('hidden');
+  banner.setAttribute('aria-hidden', 'false');
+
+  acceptBtn.addEventListener('click', () => {
+    localStorage.setItem(COOKIE_CONSENT_KEY, '1');
+    banner.setAttribute('hidden', '');
+  });
 }
 

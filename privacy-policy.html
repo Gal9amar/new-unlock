@@ -25,6 +25,20 @@
     </div>
   </header>
 
+  <div id="cookie-banner" class="cookie-banner" role="dialog" aria-live="polite" aria-label="הודעת שימוש בעוגיות" hidden>
+    <div class="cookie-banner__inner">
+      <div class="cookie-banner__text">
+        <strong class="cookie-banner__title">באתר זה נעשה שימוש בטכנולוגיות איסוף מידע כגון Cookies</strong>
+        <p class="cookie-banner__description">
+          המשך הגלישה באתר מהווה הסכמה לשימוש בעוגיות לצורכי חוויית שימוש, אבטחה והתאמה אישית. למידע נוסף ניתן לעיין ב
+          <a href="privacy-policy.html">מדיניות הפרטיות</a> וב
+          <a href="terms-of-service.html">תנאי השימוש</a>.
+        </p>
+      </div>
+      <button type="button" class="btn btn-primary cookie-banner__button" data-cookie-accept aria-label="אישור שימוש בעוגיות">מאשר</button>
+    </div>
+  </div>
+
   <main id="main-content" class="site-main layout-container content-wrapper" role="main">
     <div class="content-card">
       <div class="content-section">
@@ -291,56 +305,7 @@
     </div>
   </footer>
 
-  <script>
-    function updateDarkModeButton() {
-      const btn = document.getElementById('toggle-dark');
-      const isDark = document.documentElement.classList.contains('dark');
-      if (!btn) return;
-      if (isDark) {
-        btn.innerHTML = '☀️ מצב בהיר';
-        btn.setAttribute('aria-label', 'עבור למצב בהיר');
-        btn.setAttribute('aria-pressed', 'true');
-      } else {
-        btn.innerHTML = '🌙 מצב כהה';
-        btn.setAttribute('aria-label', 'עבור למצב כהה');
-        btn.setAttribute('aria-pressed', 'false');
-      }
-    }
-
-    function setDarkMode(enabled) {
-      if (enabled) {
-        document.documentElement.classList.add('dark');
-        localStorage.setItem('darkMode', '1');
-      } else {
-        document.documentElement.classList.remove('dark');
-        localStorage.setItem('darkMode', '0');
-      }
-      updateDarkModeButton();
-    }
-
-    (function () {
-      const fromStorage = localStorage.getItem('darkMode');
-      if (
-        fromStorage === '1' ||
-        (fromStorage === null && window.matchMedia('(prefers-color-scheme: dark)').matches)
-      ) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    })();
-
-    document.addEventListener('DOMContentLoaded', () => {
-      updateDarkModeButton();
-      const btn = document.getElementById('toggle-dark');
-      if (btn) {
-        btn.addEventListener('click', () => {
-          const isDark = document.documentElement.classList.contains('dark');
-          setDarkMode(!isDark);
-        });
-      }
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 
 </html>
