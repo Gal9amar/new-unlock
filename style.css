@@ -1478,3 +1478,43 @@ html.dark .cookie-banner__description a {
     padding-bottom: calc(10px + env(safe-area-inset-bottom));
   }
 }
+
+@media (max-width: 430px) {
+  .layout-container {
+    width: min(100% - 12px, 420px);
+  }
+
+  .content-wrapper {
+    padding: 36px 0 52px;
+  }
+
+  .content-card {
+    padding: 1.35rem;
+    gap: 26px;
+  }
+
+  .content-card > .content-section {
+    padding: 1.05rem;
+  }
+
+  .products-grid {
+    gap: 18px;
+  }
+
+  .product-card {
+    max-width: 100%;
+    padding: 24px 20px;
+    min-height: 460px;
+  }
+
+  .product-image-wrapper {
+    height: 156px;
+    border-radius: 16px;
+  }
+
+  .mobile-sticky-cta {
+    width: calc(100% - 12px);
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
