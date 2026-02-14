@@ -1,215 +1,258 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#2563eb" />
-  <title>הצהרת נגישות - גבי המנעולן</title>
-  <meta name="description" content="הצהרת הנגישות של אתר גבי המנעולן בהתאם לתקנות שוויון זכויות לאנשים עם מוגבלות בישראל." />
+  <meta name="theme-color" content="#1d4ed8" />
+
+  <title>הצהרת נגישות | UNLOCK - גבי המנעולן</title>
+  <meta name="description" content="הצהרת נגישות של UNLOCK - מחויבות לשירות נגיש בהתאם לתקנות שוויון זכויות לאנשים עם מוגבלות" />
+
   <link rel="icon" href="images/fav.png" />
-  <script src="accessibility.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/main.css?v=2.0" />
 </head>
 
-<body class="site-body">
+<body>
   <a href="#main-content" class="skip-link">דלג לתוכן הראשי</a>
-  <header class="site-header">
-    <button id="toggle-dark" class="dark-toggle btn btn-secondary" aria-label="החלף מצב תאורה">
-      🌙 מצב כהה
-    </button>
-    <div class="layout-container header-content">
-      <h1 class="hero-title">הצהרת נגישות</h1>
-      <div class="hero-subtitle">גבי המנעולן - מחויבות לשירות נגיש</div>
+
+  <!-- Header -->
+  <header class="legal-page-header">
+    <div class="container">
+      <a href="index.html" class="back-link">
+        ← חזרה לדף הבית
+      </a>
+      <div class="legal-header-content">
+        <img src="images/fav.png" alt="UNLOCK" class="legal-logo" />
+        <h1>הצהרת נגישות</h1>
+        <p>מחויבות לשירות נגיש לכולם</p>
+      </div>
     </div>
   </header>
 
-  <div id="cookie-banner" class="cookie-banner" role="dialog" aria-live="polite" aria-label="הודעת שימוש בעוגיות" hidden>
-    <div class="cookie-banner__inner">
-      <div class="cookie-banner__text">
-        <strong class="cookie-banner__title">באתר זה נעשה שימוש בטכנולוגיות איסוף מידע כגון Cookies</strong>
-        <p class="cookie-banner__description">
-          המשך הגלישה באתר מהווה הסכמה לשימוש בעוגיות לצורכי חוויית שימוש, אבטחה והתאמה אישית. למידע נוסף ניתן לעיין ב
-          <a href="privacy-policy.html">מדיניות הפרטיות</a> וב
-          <a href="terms-of-service.html">תנאי השימוש</a>.
-        </p>
-      </div>
-      <button type="button" class="btn btn-primary cookie-banner__button" data-cookie-accept aria-label="אישור שימוש בעוגיות">מאשר</button>
-    </div>
-  </div>
+  <main id="main-content" class="legal-page-main">
+    <div class="container">
+      <article class="legal-content">
 
-  <main id="main-content" class="site-main layout-container content-wrapper" role="main">
-    <div class="content-card">
-      <div class="content-section">
-        <h2 class="content-section-title">הקדמה</h2>
-        <p class="content-text">
-          אתר "גבי המנעולן" פועל בהתאם לתקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות), תשע"ג-2013,
-          ולתקן הישראלי 5568. אנו משקיעים מאמצים רבים כדי להבטיח שכל אדם יוכל ליהנות מהשירותים ומהמידע באתר ללא
-          תלות במוגבלות או טכנולוגיה מסייעת.
-        </p>
-      </div>
-
-      <div class="content-section">
-        <h2 class="content-section-title">התאמות שבוצעו באתר</h2>
-        <ul class="content-list">
-          <li>מבנה סמנטי העושה שימוש בכותרות, אזורי `main`, `header` ו-`footer` מוסדרים.</li>
-          <li>קיצורי דרך לדילוג מהיר לתוכן המרכזי באמצעות מקש `Tab` ראשון.</li>
-          <li>כפתורי מצב כהה וסינון מותגים עם תגיות ARIA לעבודה מלאה עם מקלדת וקוראי מסך.</li>
-          <li>ניגודיות צבעים העומדת בדרישות AA עבור טקסטים, כפתורים וקישורים.</li>
-          <li>תמונות ואלמנטים גרפיים עם טקסט חלופי או תיאור נגיש.</li>
-          <li>התראות דינמיות (כגון טעינת מוצרים, שגיאות והודעות מערכת) המסומנות כ-`aria-live` לעדכון קוראי מסך.</li>
-          <li>תמיכה בהגדלה עד 200% ללא אובדן מידע או פונקציונליות.</li>
-          <li>אפשרות ניווט מלאה באמצעות מקלדת בלבד, כולל פוקוס גלוי וברור.</li>
-        </ul>
-      </div>
-
-      <div class="content-section">
-        <h2 class="content-section-title">תאימות לטכנולוגיות מסייעות</h2>
-        <p class="content-text">
-          האתר נבחן עם הטכנולוגיות הבאות:
-        </p>
-        <ul class="content-list">
-          <li>דפדפנים: Chrome, Firefox, Edge, Safari</li>
-          <li>מערכות הפעלה: Windows 11, Android 14, iOS 17</li>
-          <li>קוראי מסך: NVDA, JAWS, VoiceOver</li>
-        </ul>
-        <p class="content-text">
-          אנו ממשיכים בבדיקות שוטפות כדי להבטיח תאימות לעדכוני מערכת עתידיים.
-        </p>
-      </div>
-
-      <div class="content-section">
-        <h2 class="content-section-title">פניות בנושא נגישות</h2>
-        <div class="content-highlight">
-          <p class="content-text">
-            נציג הנגישות: גבי המנעולן<br>
-            טלפון: <a href="tel:0533888381">053-388-8381</a><br>
-            אימייל: <a href="mailto:unlock.yavne@gmail.com">unlock.yavne@gmail.com</a><br>
-            זמינות מענה: א'-ה' 08:00-18:00
+        <!-- הקדמה -->
+        <section class="legal-section">
+          <h2>הקדמה</h2>
+          <p>
+            אתר "UNLOCK - גבי המנעולן" פועל בהתאם לתקנות שוויון זכויות לאנשים עם מוגבלות (התאמות נגישות לשירות), תשע"ג-2013,
+            ולתקן הישראלי 5568. אנו משקיעים מאמצים רבים כדי להבטיח שכל אדם יוכל ליהנות מהשירותים ומהמידע באתר ללא
+            תלות במוגבלות או טכנולוגיה מסייעת.
           </p>
+          <p class="legal-date"><strong>תאריך עדכון אחרון:</strong> פברואר 2026</p>
+        </section>
+
+        <!-- התאמות שבוצעו -->
+        <section class="legal-section">
+          <h2>התאמות נגישות שבוצעו באתר</h2>
+
+          <h3>מבנה ונגישות:</h3>
+          <ul class="legal-list">
+            <li>מבנה סמנטי העושה שימוש בכותרות מסודרות (H1-H6)</li>
+            <li>אזורי main, header ו-footer מוסדרים בצורה נכונה</li>
+            <li>קיצורי דרך לדילוג מהיר לתוכן המרכזי (Skip Link)</li>
+            <li>תגיות ARIA לעבודה מלאה עם מקלדת וקוראי מסך</li>
+          </ul>
+
+          <h3>עיצוב וצבעים:</h3>
+          <ul class="legal-list">
+            <li>ניגודיות צבעים העומדת בדרישות AA</li>
+            <li>טקסטים, כפתורים וקישורים בניגודיות גבוהה</li>
+            <li>תמיכה בהגדלה עד 200% ללא אובדן מידע</li>
+            <li>פונטים ברורים וקריאים</li>
+          </ul>
+
+          <h3>תמונות ומדיה:</h3>
+          <ul class="legal-list">
+            <li>תמונות ואלמנטים גרפיים עם טקסט חלופי (Alt Text)</li>
+            <li>תיאור נגיש לכל התוכן הוויזואלי</li>
+            <li>אייקונים עם תגיות aria-label מתאימות</li>
+          </ul>
+
+          <h3>ניווט ופונקציונליות:</h3>
+          <ul class="legal-list">
+            <li>אפשרות ניווט מלאה באמצעות מקלדת בלבד</li>
+            <li>פוקוס גלוי וברור על כל אלמנט אינטראקטיבי</li>
+            <li>התראות דינמיות עם סימון aria-live</li>
+            <li>טפסים נגישים עם תוויות ברורות</li>
+          </ul>
+        </section>
+
+        <!-- תאימות לטכנולוגיות מסייעות -->
+        <section class="legal-section">
+          <h2>תאימות לטכנולוגיות מסייעות</h2>
+          <p>האתר נבחן ונמצא תואם עם הטכנולוגיות הבאות:</p>
+
+          <h3>דפדפנים:</h3>
+          <ul class="legal-list">
+            <li>Google Chrome (גרסה עדכנית)</li>
+            <li>Mozilla Firefox (גרסה עדכנית)</li>
+            <li>Microsoft Edge (גרסה עדכנית)</li>
+            <li>Apple Safari (גרסה עדכנית)</li>
+          </ul>
+
+          <h3>מערכות הפעלה:</h3>
+          <ul class="legal-list">
+            <li>Windows 11</li>
+            <li>Android 14+</li>
+            <li>iOS 17+</li>
+            <li>macOS Sonoma+</li>
+          </ul>
+
+          <h3>קוראי מסך:</h3>
+          <ul class="legal-list">
+            <li>NVDA (Windows)</li>
+            <li>JAWS (Windows)</li>
+            <li>VoiceOver (iOS/macOS)</li>
+            <li>TalkBack (Android)</li>
+          </ul>
+
+          <p>
+            אנו ממשיכים בבדיקות שוטפות כדי להבטיח תאימות לעדכוני מערכת עתידיים ולטכנולוגיות מסייעות חדשות.
+          </p>
+        </section>
+
+        <!-- פניות בנושא נגישות -->
+        <section class="legal-section">
+          <h2>פניות בנושא נגישות</h2>
+          <p>
+            אם נתקלת בבעיית נגישות באתר או שיש לך הצעה לשיפור, נשמח לשמוע ממך.
+          </p>
+
+          <div class="legal-contact-box">
+            <p><strong>נציג נגישות:</strong> גבי המנעולן</p>
+            <p><strong>טלפון:</strong> <a href="tel:0533888381">053-388-8381</a></p>
+            <p><strong>אימייל:</strong> <a href="mailto:unlock.yavne@gmail.com">unlock.yavne@gmail.com</a></p>
+            <p><strong>WhatsApp:</strong> <a href="https://wa.me/972533888381" target="_blank">053-388-8381</a></p>
+            <p><strong>זמינות מענה:</strong> 24/7</p>
+          </div>
+
+          <div class="legal-highlight">
+            <h3>התחייבות למענה:</h3>
+            <p>
+              <strong>אנו מתחייבים לטפל בכל פנייה ולהשיב בתוך 14 ימי עבודה בהתאם לחוק.</strong>
+              נשמח לקבל כל הצעה לשיפור או דיווח על בעיית נגישות.
+            </p>
+          </div>
+        </section>
+
+        <!-- אחריות והתאמות נוספות -->
+        <section class="legal-section">
+          <h2>אחריות והתאמות נוספות</h2>
+          <p>
+            על אף מאמצינו להנגיש את כלל דפי האתר, ייתכן שחלקים מסוימים עדיין אינם נגישים באופן מלא.
+            במידה ונתקלת בדף, מסמך או שירות שאינו נגיש, אנא צור קשר.
+          </p>
+
+          <h3>שירותים נוספים שאנו מציעים:</h3>
+          <ul class="legal-list">
+            <li><strong>התאמות פרטניות:</strong> נבצע התאמות לפי דרישה אישית</li>
+            <li><strong>פורמטים חלופיים:</strong> שליחת מסמכים בפורמטים נגישים</li>
+            <li><strong>סיוע טלפוני:</strong> שירות לסיוע בביצוע פעולות באתר</li>
+            <li><strong>תיעוד פניות:</strong> שמירת תיעוד של הפניות והפתרונות שניתנו</li>
+          </ul>
+        </section>
+
+        <!-- תקני נגישות -->
+        <section class="legal-section">
+          <h2>תקני נגישות ועמידה בדרישות</h2>
+          <p>האתר עומד בדרישות הבאות:</p>
+          <ul class="legal-list">
+            <li><strong>תקן ישראלי 5568:</strong> תקן ישראלי לנגישות תכנים באינטרנט</li>
+            <li><strong>WCAG 2.1 רמת AA:</strong> תקן בינלאומי לנגישות תכנים באינטרנט</li>
+            <li><strong>תקנות שוויון זכויות:</strong> תקנות התאמות נגישות לשירות, תשע"ג-2013</li>
+          </ul>
+        </section>
+
+        <!-- סיוע נוסף -->
+        <section class="legal-section">
+          <h2>מידע נוסף על נגישות</h2>
+          <p>למידע נוסף על נגישות ועל זכויות אנשים עם מוגבלות:</p>
+          <ul class="legal-list">
+            <li><a href="https://www.gov.il/he/Departments/Topics/digital_israel_accessibility" target="_blank" rel="noopener">אתר משרד המשפטים - נגישות דיגיטלית</a></li>
+            <li><a href="https://www.isoc.org.il/accessibility" target="_blank" rel="noopener">האגודה הישראלית לאינטרנט - נגישות</a></li>
+            <li><a href="https://www.w3.org/WAI/" target="_blank" rel="noopener">W3C Web Accessibility Initiative</a></li>
+          </ul>
+        </section>
+
+        <!-- עדכון ההצהרה -->
+        <section class="legal-section">
+          <h2>עדכון ההצהרה</h2>
+          <p>
+            הצהרת נגישות זו עודכנה לאחרונה בפברואר 2026. אנו בודקים ומשפרים את התאמות הנגישות מעת לעת,
+            וכאשר מתבצעים שינויים מהותיים במבנה האתר או בתכניו, נעדכן את ההצהרה בהתאם.
+          </p>
+          <p>
+            אנו מחויבים לשיפור מתמיד של נגישות האתר ולהבטחת חוויית שימוש שווה לכל המשתמשים.
+          </p>
+        </section>
+
+        <!-- יצירת קשר -->
+        <section class="legal-section">
+          <h2>יצירת קשר</h2>
+          <p>לכל שאלה או פנייה בנושא נגישות:</p>
+          <div class="legal-contact-box">
+            <p><strong>אימייל:</strong> <a href="mailto:unlock.yavne@gmail.com">unlock.yavne@gmail.com</a></p>
+          </div>
+        </section>
+
+        <!-- כפתור חזרה -->
+        <div class="legal-back">
+          <a href="index.html" class="btn btn-primary">← חזרה לדף הבית</a>
         </div>
-        <p class="content-text">
-          נשמח לקבל כל פנייה, הצעה לשיפור או דיווח על בעיית נגישות. אנו מתחייבים לטפל בבקשה ולהשיב בתוך 14 ימי עבודה
-          בהתאם לחוק.
-        </p>
-      </div>
 
-      <div class="content-section">
-        <h2 class="content-section-title">אחריות והתאמות נוספות</h2>
-        <p class="content-text">
-          על אף מאמצינו להנגיש את כלל דפי האתר, ייתכן שחלקים מסוימים עדיין אינם נגישים באופן מלא. במידה ונתקלתם
-          בדף, מסמך או שירות שאינו נגיש, אנא צרו קשר:
-        </p>
-        <ul class="content-list">
-          <li>נבצע התאמות פרטניות לפי דרישה, כולל שליחת מסמכים בפורמטים חלופיים.</li>
-          <li>נעמיד לרשותכם שירות טלפוני לסיוע בביצוע פעולות באתר.</li>
-          <li>נעדכן בהתמדה את כלי הנגישות ונשמור תיעוד של הפניות והפתרונות שניתנו.</li>
-        </ul>
-      </div>
-
-      <div class="content-section">
-        <h2 class="content-section-title">עדכון ההצהרה</h2>
-        <p class="content-text">
-          הצהרה זו עודכנה לאחרונה בתאריך 10 בנובמבר 2025. אנו בודקים ומשפרים את התאמות הנגישות מעת לעת, וכאשר
-          מתבצעים שינויים מהותיים במבנה האתר או בתכניו, נעדכן את ההצהרה בהתאם.
-        </p>
-      </div>
-
-      <div class="content-back">
-        <a href="index.html" class="btn btn-primary" aria-label="חזרה לדף הבית">
-          <svg xmlns="http://www.w3.org/2000/svg" class="install-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-          </svg>
-          חזרה לדף הבית
-        </a>
-      </div>
+      </article>
     </div>
   </main>
 
+  <!-- Footer -->
   <footer class="site-footer">
-    <div class="layout-container footer-content">
-      <!-- מידע העסק -->
-      <div class="footer-summary">
-        <div class="footer-brand">
-          <img src="images/fav.png" class="footer-logo" alt="גבי המנעולן" />
-          <div class="footer-brand-text">
-            <h3 class="footer-title">גבי המנעולן</h3>
-            <p class="footer-tagline">שירותי מנעולנות מקצועיים</p>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <img src="images/fav.png" alt="UNLOCK" class="footer-logo" />
+          <p>שירותי מנעולנות מקצועיים<br>זמין 24/7 באזור המרכז</p>
+        </div>
+
+        <div class="footer-section">
+          <h3>צור קשר</h3>
+          <ul>
+            <li>📞 <a href="tel:0533888381">053-388-8381</a></li>
+            <li>📧 <a href="mailto:unlock.yavne@gmail.com">unlock.yavne@gmail.com</a></li>
+            <li>📍 אזור המרכז</li>
+            <li>🕐 24/7 - זמין תמיד</li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h3>עקבו אחרינו</h3>
+          <div class="footer-social">
+            <a href="https://www.facebook.com/gabihamanulan" target="_blank">Facebook</a>
+            <a href="https://www.instagram.com/gabi.the.locksmith/" target="_blank">Instagram</a>
+            <a href="https://wa.me/972533888381" target="_blank">WhatsApp</a>
           </div>
         </div>
 
-        <!-- פרטי קשר -->
-        <div class="footer-contact">
-          <div class="footer-contact-item">
-            <svg class="footer-contact-icon" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-            </svg>
-            <span>אזור המרכז</span>
-          </div>
-          <div class="footer-contact-item">
-            <svg class="footer-contact-icon" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" />
-            </svg>
-            <span>053-388-8381</span>
-          </div>
-          <div class="footer-contact-item">
-            <svg class="footer-contact-icon" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 2v.01L12 13 4 6.01V6h16zM4 20v-9.99l7.7 7.7c.39.39 1.02.39 1.41 0L20 10.01V20H4z" />
-            </svg>
-            <span>unlock.yavne@gmail.com</span>
-          </div>
-        </div>
-
-        <!-- שעות פעילות -->
-        <div class="footer-hours">
-          <div class="footer-hours-title">24/7</div>
-          <div class="footer-hours-subtitle">שירות בכל אזור המרכז</div>
-        </div>
-
-        <!-- רשתות חברתיות -->
-        <div class="social-links" aria-label="קישורים לרשתות חברתיות">
-          <a href="https://wa.me/972533888381" target="_blank" rel="noopener" class="social-link social-link--whatsapp" aria-label="ווטסאפ">
-            <svg class="social-icon" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M17.47 14.37c-.26-.13-1.53-.75-1.77-.84-.24-.09-.42-.13-.6.13-.18.26-.69.84-.85 1.01-.16.17-.31.19-.57.06-.26-.13-1.09-.4-2.08-1.29-.77-.69-1.29-1.54-1.44-1.8-.15-.26-.02-.4.11-.52.12-.12.26-.31.39-.47.13-.16.17-.27.26-.44.09-.17.04-.32-.02-.45-.06-.13-.6-1.46-.82-2-.22-.53-.45-.46-.61-.47l-.52-.01c-.18 0-.47.07-.71.32-.24.25-.94.92-.94 2.23 0 1.31.97 2.58 1.11 2.76.14.18 1.92 2.93 4.67 3.99.65.22 1.15.35 1.54.45.65.16 1.23.13 1.69.08.52-.06 1.53-.63 1.75-1.24.22-.61.22-1.13.16-1.24-.06-.11-.24-.18-.5-.31z" />
-            </svg>
-          </a>
-          <a href="https://www.facebook.com/gabihamanulan" target="_blank" rel="noopener" class="social-link social-link--facebook" aria-label="פייסבוק">
-            <svg class="social-icon" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M22.675 0h-21.35C.596 0 0 .592 0 1.326v21.348C0 23.408.596 24 1.325 24h11.495v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.098 2.797.142v3.24l-1.918.001c-1.504 0-1.797.715-1.797 1.763v2.31h3.587l-.467 3.622h-3.12V24h6.116C23.404 24 24 23.408 24 22.674V1.326C24 .592 23.404 0 22.675 0" />
-            </svg>
-          </a>
-          <a href="https://www.instagram.com/gabi.the.locksmith/" target="_blank" rel="noopener" class="social-link social-link--instagram" aria-label="אינסטגרם">
-            <svg class="social-icon" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M7.75 2C5.13 2 3 4.13 3 6.75V17.25C3 19.87 5.13 22 7.75 22H16.25C18.87 22 21 19.87 21 17.25V6.75C21 4.13 18.87 2 16.25 2H7.75ZM12 7.25A4.75 4.75 0 1 1 7.25 12 4.75 4.75 0 0 1 12 7.25Zm0 7.5A2.75 2.75 0 1 0 9.25 12 2.75 2.75 0 0 0 12 14.75ZM17.75 7A1.25 1.25 0 1 1 16.5 5.75 1.25 1.25 0 0 1 17.75 7Z" />
-            </svg>
-          </a>
-          <a href="mailto:unlock.yavne@gmail.com" class="social-link social-link--email" aria-label="שליחת אימייל">
-            <svg class="social-icon" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 2v.01L12 13 4 6.01V6h16zM4 20v-9.99l7.7 7.7c.39.39 1.02.39 1.41 0L20 10.01V20H4z" />
-            </svg>
-          </a>
+        <div class="footer-section">
+          <h3>מידע משפטי</h3>
+          <ul>
+            <li><a href="privacy-policy.html">מדיניות פרטיות</a></li>
+            <li><a href="terms-of-service.html">תנאי שימוש</a></li>
+            <li><a href="accessibility.html">הצהרת נגישות</a></li>
+          </ul>
         </div>
       </div>
 
-      <!-- קו מפריד -->
-      <div class="footer-divider">
-        <div class="footer-bottom">
-          <div class="footer-copy">
-            © 2025 כל הזכויות שמורות | נבנה על ידי גל עמר
-          </div>
-          <div class="footer-links">
-            <a href="privacy-policy.html">מדיניות פרטיות</a>
-            <a href="terms-of-service.html">תנאי שימוש</a>
-            <a href="accessibility.html" aria-current="page">הצהרת נגישות</a>
-          </div>
-        </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 UNLOCK - גבי המנעולן. כל הזכויות שמורות.</p>
       </div>
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="scripts/main.js?v=2.0"></script>
+  <script src="accessibility.js?v=2.0"></script>
 </body>
-
 </html>
-

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#1d4ed8" />
+
+  <title id="pageTitle">מוצר | UNLOCK - גבי המנעולן</title>
+  <meta name="description" id="pageDesc" content="מוצרי מנעולנות מקצועיים עם התקנה" />
+
+  <link rel="icon" href="images/fav.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/main.css?v=2.0" />
+</head>
+
+<body class="product-page">
+  <a href="#main-content" class="skip-link">דלג לתוכן הראשי</a>
+
+  <!-- Quick Header -->
+  <header class="product-header">
+    <div class="container">
+      <a href="index.html" class="back-btn">
+        ← חזרה לכל המוצרים
+      </a>
+      <a href="index.html" class="logo-link">
+        <img src="images/fav.png" alt="UNLOCK" class="header-logo" />
+      </a>
+      <a href="tel:0533888381" class="quick-call-btn">
+        📞 התקשר עכשיו
+      </a>
+    </div>
+  </header>
+
+  <main id="main-content" class="product-main">
+    <div class="container">
+      <!-- Product Loading State -->
+      <div id="productLoading" class="product-loading">
+        <div class="spinner"></div>
+        <p>טוען פרטי מוצר...</p>
+      </div>
+
+      <!-- Product Not Found -->
+      <div id="productNotFound" class="product-not-found" hidden>
+        <h2>המוצר לא נמצא</h2>
+        <p>מצטערים, לא הצלחנו למצוא את המוצר שחיפשת.</p>
+        <a href="index.html#products" class="btn btn-primary">חזרה לכל המוצרים</a>
+      </div>
+
+      <!-- Product Details Container -->
+      <div id="productDetails" class="product-details" hidden>
+        <!-- Product Gallery -->
+        <div class="product-gallery">
+          <div class="product-image-main">
+            <img id="productImage" src="" alt="" />
+            <span id="productStatus" class="product-status-badge"></span>
+          </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="product-info-main">
+          <div class="product-breadcrumb">
+            <a href="index.html">דף הבית</a>
+            <span>/</span>
+            <a href="index.html#products">מוצרים</a>
+            <span>/</span>
+            <span id="productBrand"></span>
+          </div>
+
+          <h1 id="productTitle" class="product-title"></h1>
+
+          <div class="product-meta">
+            <span class="product-brand-badge">
+              מותג: <strong id="productBrandName"></strong>
+            </span>
+            <span class="product-category-badge" id="productCategory"></span>
+          </div>
+
+          <div class="product-pricing-main">
+            <div id="productPricing" class="pricing-wrapper"></div>
+            <p class="product-note" id="productNote"></p>
+          </div>
+
+          <div class="product-description">
+            <h2>תיאור המוצר</h2>
+            <p id="productDesc"></p>
+          </div>
+
+          <div class="product-tags" id="productTags"></div>
+
+          <div class="product-cta">
+            <a id="productWhatsAppBtn" href="" class="btn btn-primary btn-large" target="_blank">
+              💬 הזמן עכשיו ב-WhatsApp
+            </a>
+            <a href="tel:0533888381" class="btn btn-secondary btn-large">
+              📞 התקשר: 053-388-8381
+            </a>
+          </div>
+
+          <div class="product-features">
+            <h3>יתרונות</h3>
+            <ul>
+              <li>✓ התקנה מקצועית על ידי טכנאי מוסמך</li>
+              <li>✓ מוצרים מקוריים בלבד</li>
+              <li>✓ אחריות יצרן מלאה</li>
+              <li>✓ שירות 24/7</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Related Products -->
+      <section id="relatedProducts" class="related-products" hidden>
+        <h2>מוצרים נוספים מאותו מותג</h2>
+        <div id="relatedGrid" class="products-grid"></div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <img src="images/fav.png" alt="UNLOCK" class="footer-logo" />
+          <p>שירותי מנעולנות מקצועיים<br>זמין 24/7 באזור המרכז</p>
+        </div>
+
+        <div class="footer-section">
+          <h3>צור קשר</h3>
+          <ul>
+            <li>📞 <a href="tel:0533888381">053-388-8381</a></li>
+            <li>📧 <a href="mailto:unlock.yavne@gmail.com">unlock.yavne@gmail.com</a></li>
+            <li>📍 אזור המרכז</li>
+            <li>🕐 24/7 - זמין תמיד</li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h3>עקבו אחרינו</h3>
+          <div class="footer-social">
+            <a href="https://www.facebook.com/gabihamanulan" target="_blank">Facebook</a>
+            <a href="https://www.instagram.com/gabi.the.locksmith/" target="_blank">Instagram</a>
+            <a href="https://wa.me/972533888381" target="_blank">WhatsApp</a>
+          </div>
+        </div>
+
+        <div class="footer-section">
+          <h3>מידע משפטי</h3>
+          <ul>
+            <li><a href="privacy-policy.html">מדיניות פרטיות</a></li>
+            <li><a href="terms-of-service.html">תנאי שימוש</a></li>
+            <li><a href="accessibility.html">הצהרת נגישות</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 UNLOCK - גבי המנעולן. כל הזכויות שמורות.</p>
+      </div>
+    </div>
+  </footer>
+
+  <button id="scrollToTop" class="scroll-to-top" hidden>↑</button>
+
+  <script src="scripts/product.js?v=2.0"></script>
+  <script src="accessibility.js?v=2.0"></script>
+</body>
+</html>
