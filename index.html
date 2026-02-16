@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#1d4ed8" />
+  <meta name="theme-color" content="#0a1628" />
 
   <title>UNLOCK - מנעולן מקצועי באזור המרכז | שירות 24/7</title>
-  <meta name="description" content="שירותי מנעולנות מקצועיים 24/7 באזור המרכז. פריצת דלתות, החלפת צילינדרים, מיגון מעליות ועוד. 15 שנות ניסיון. הגעה תוך 30 דקות. ☎ 053-388-8381" />
+  <meta name="description" content="שירותי מנעולנות מקצועיים 24/7 באזור המרכז והדרום. פריצת דלתות, החלפת צילינדרים, מיגון מעליות ועוד. 15 שנות ניסיון. הגעה תוך 30 דקות. ☎ 053-388-8381" />
 
   <link rel="icon" href="images/fav.png" />
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles/main.css?v=2.0" />
+  <link rel="stylesheet" href="styles/main.css?v=3.0" />
 
   <script type="application/ld+json">
   {
@@ -21,7 +21,7 @@
     "email": "unlock.yavne@gmail.com",
     "address": {
       "@type": "PostalAddress",
-      "addressRegion": "המרכז",
+      "addressRegion": "המרכז והדרום",
       "addressCountry": "IL"
     },
     "openingHours": "Mo-Su 00:00-23:59"
@@ -32,14 +32,34 @@
 <body>
   <a href="#main-content" class="skip-link">דלג לתוכן הראשי</a>
 
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="#" class="navbar-logo">
+        <img src="images/fav.png" alt="UNLOCK" />
+      </a>
+      <div class="navbar-links">
+        <a href="#services">שירותים</a>
+        <a href="#products">מוצרים</a>
+        <a href="#why-us">למה אנחנו</a>
+      </div>
+      <a href="tel:0533888381" class="navbar-cta">053-388-8381</a>
+    </div>
+  </nav>
+
   <!-- Hero Section -->
   <header class="hero-section">
-    <div class="container">
+    <!-- Decorative Elements -->
+    <div class="hero-decoration hero-decoration-1"></div>
+    <div class="hero-decoration hero-decoration-2"></div>
+    <div class="hero-decoration hero-decoration-3"></div>
+
+    <div class="container hero-container">
       <div class="hero-logo">
         <img src="images/fav.png" alt="UNLOCK - גבי המנעולן" />
       </div>
 
-      <h1 class="hero-title">UNLOCK - פתרונות מנעולנות מקצועיים</h1>
+      <h1 class="hero-title"><span class="highlight">UNLOCK</span> - פתרונות מנעולנות מקצועיים</h1>
 
       <div class="hero-badges">
         <span class="badge">✓ 15 שנות ניסיון</span>
@@ -47,18 +67,33 @@
         <span class="badge">🔧 ציוד מקורי</span>
       </div>
 
-      <p class="hero-subtitle">שירותי מנעולנות מובילים לפרטיים ולעסקים<br>זמין 24/7 בכל אזור המרכז</p>
+      <p class="hero-subtitle">שירותי מנעולנות מובילים לפרטיים ולעסקים<br>זמין 24/7 באזור המרכז והדרום</p>
 
       <div class="hero-cta">
-        <a href="tel:0533888381" class="btn btn-primary">
+        <a href="tel:0533888381" class="btn btn-primary btn-large">
           📞 התקשר עכשיו: 053-388-8381
         </a>
-        <a href="https://wa.me/972533888381?text=שלום%20גבי,%20אני%20צריך%20עזרה%20במנעול" class="btn btn-whatsapp" target="_blank">
+        <a href="https://wa.me/972533888381?text=שלום%20גבי,%20אני%20צריך%20עזרה%20במנעול" class="btn btn-whatsapp btn-large" target="_blank">
           💬 שלח הודעת WhatsApp
         </a>
       </div>
 
-      <p class="hero-trust"><strong>שקיפות ושקט נפשי:</strong> הצעת מחיר ברורה מראש, טכנאי מוסמך עם ציוד מקורי</p>
+      <p class="hero-trust"><strong>שקיפות מלאה ושקט נפשי:</strong> הצעת מחיר מפורטת מראש, טכנאי מוסמך עם ציוד מקורי בלבד</p>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <span class="hero-stat-number" data-target="15">0</span>
+          <span class="hero-stat-label">שנות ניסיון</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-number" data-target="30">0</span>
+          <span class="hero-stat-label">דקות הגעה</span>
+        </div>
+        <div class="hero-stat">
+          <span class="hero-stat-number" data-target="1000">0</span>
+          <span class="hero-stat-label">לקוחות מרוצים</span>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -67,13 +102,13 @@
     <section id="services" class="services-section">
       <div class="container">
         <h2 class="section-title">השירותים שלנו</h2>
-        <p class="section-subtitle">מעל 15 שנות ניסיון בפריצה, החלפה ושדרוג מערכות נעילה</p>
+        <p class="section-subtitle">למעלה מ-15 שנות ניסיון בפתיחה, החלפה ושדרוג מערכות נעילה</p>
 
         <div class="services-grid">
-          <div class="service-card">
+          <div class="service-card reveal">
             <div class="service-icon">🚪</div>
             <h3>פריצת דלתות ללא נזק</h3>
-            <p>מענה מהיר לכל סוג דלת: פלדלת, זכוכית, ממ"ד. פתיחה מקצועית ללא שריטות או נזקים.</p>
+            <p>מענה מהיר לכל סוגי הדלתות: פלדלת, זכוכית וממ"ד. פתיחה מקצועית ללא שריטות ונזקים.</p>
             <ul>
               <li>הגעה תוך 30 דקות</li>
               <li>ציוד מקצועי ומתקדם</li>
@@ -82,10 +117,10 @@
             <a href="tel:0533888381" class="btn btn-secondary">התקשר עכשיו</a>
           </div>
 
-          <div class="service-card">
+          <div class="service-card reveal">
             <div class="service-icon">🔐</div>
             <h3>החלפת צילינדרים מתקדמים</h3>
-            <p>מנעולים מכניים, חכמים וביומטריים בהתאמה אישית. מותגים מובילים: מולטילוק, רב בריח, EVVA.</p>
+            <p>צילינדרים מכניים, חכמים וביומטריים בהתאמה אישית. מותגים מובילים בלבד: מולטילוק, רב בריח ו-EVVA.</p>
             <ul>
               <li>מותגים מובילים בלבד</li>
               <li>התאמה אישית מלאה</li>
@@ -94,10 +129,10 @@
             <a href="tel:0533888381" class="btn btn-secondary">התקשר עכשיו</a>
           </div>
 
-          <div class="service-card">
+          <div class="service-card reveal">
             <div class="service-icon">🏢</div>
             <h3>מיגון מעליות</h3>
-            <p>התקנה ותחזוקה של מערכות נעילה מתקדמות למעליות בבנייני מגורים ומשרדים.</p>
+            <p>התקנה ותחזוקה שוטפת של מערכות נעילה מתקדמות למעליות בבנייני מגורים ומשרדים.</p>
             <ul>
               <li>התקנה מקצועית</li>
               <li>תחזוקה שוטפת</li>
@@ -106,10 +141,10 @@
             <a href="tel:0533888381" class="btn btn-secondary">התקשר עכשיו</a>
           </div>
 
-          <div class="service-card">
+          <div class="service-card reveal">
             <div class="service-icon">🔑</div>
             <h3>ניהול מערך מפתחות</h3>
-            <p>מיפוי, סימון ותיעוד מאורגן לכל דייר או עובד. פתרון מושלם לוועדי בתים ועסקים.</p>
+            <p>מיפוי, סימון ותיעוד מאורגן של מפתחות לכל דייר או עובד. פתרון מושלם לוועדי בתים ולעסקים.</p>
             <ul>
               <li>מיפוי מקצועי</li>
               <li>תיעוד דיגיטלי</li>
@@ -118,7 +153,7 @@
             <a href="tel:0533888381" class="btn btn-secondary">התקשר עכשיו</a>
           </div>
 
-          <div class="service-card">
+          <div class="service-card reveal">
             <div class="service-icon">🚪</div>
             <h3>החלפת דלתות לבית או לעסק</h3>
             <p>דלתות פלדלת איכותיות מתוצרת מובילה עם מגוון רחב של עיצובים וגימורים. אפשרות לבחירת קוד צבע מותאם אישית, לוחות דקורטיביים ופרזול מקצועי.</p>
@@ -130,7 +165,7 @@
             <a href="tel:0533888381" class="btn btn-secondary">התקשר עכשיו</a>
           </div>
 
-          <div class="service-card">
+          <div class="service-card reveal">
             <div class="service-icon">🏢</div>
             <h3>תחזוקה מקיפה לוועדי בתים</h3>
             <p>שירות תחזוקה מקצועי לבנייני מגורים ומשרדים. הגעה קבועה לבדיקה ותחזוקה של כל מערכות הבניין: החלפת נורות שרופות, בדיקת תקינות דלתות ומנעולים בשטחים הציבוריים, חדרי דיירים, מחסנים, פירי אשפה וכניסות לבניין.</p>
@@ -165,30 +200,30 @@
     </section>
 
     <!-- Why Choose Us Section -->
-    <section class="why-choose-section">
+    <section id="why-us" class="why-choose-section">
       <div class="container">
         <h2 class="section-title">למה לבחור ב-UNLOCK?</h2>
 
         <div class="why-grid">
-          <div class="why-card">
+          <div class="why-card reveal">
             <div class="why-icon">🎖️</div>
             <h3>15 שנות ניסיון</h3>
             <p>מנעולן מוסמך עם ציוד מקצועי ומומחיות בכל סוגי המנעולים</p>
           </div>
 
-          <div class="why-card">
+          <div class="why-card reveal">
             <div class="why-icon">⚡</div>
             <h3>זמינות 24/7</h3>
-            <p>הגעה תוך 30 דקות בכל אזור המרכז ימים כולל שבתות וחגים</p>
+            <p>הגעה תוך 30 דקות באזור המרכז והדרום, כולל שבתות וחגים</p>
           </div>
 
-          <div class="why-card">
+          <div class="why-card reveal">
             <div class="why-icon">💰</div>
             <h3>שקיפות מחירים</h3>
             <p>הצעת מחיר ברורה מראש ללא עלויות נסתרות או הפתעות</p>
           </div>
 
-          <div class="why-card">
+          <div class="why-card reveal">
             <div class="why-icon">🔧</div>
             <h3>ציוד מקורי</h3>
             <p>רק מותגים מובילים: מולטילוק, רב בריח, EVVA</p>
@@ -204,7 +239,7 @@
       <div class="footer-content">
         <div class="footer-section">
           <img src="images/fav.png" alt="UNLOCK" class="footer-logo" />
-          <p>שירותי מנעולנות מקצועיים<br>זמין 24/7 באזור המרכז</p>
+          <p>שירותי מנעולנות מקצועיים<br>זמין 24/7 באזור המרכז והדרום</p>
         </div>
 
         <div class="footer-section">
@@ -212,7 +247,7 @@
           <ul>
             <li>📞 <a href="tel:0533888381">053-388-8381</a></li>
             <li>📧 <a href="mailto:unlock.yavne@gmail.com">unlock.yavne@gmail.com</a></li>
-            <li>📍 אזור המרכז</li>
+            <li>📍 אזור המרכז והדרום</li>
             <li>🕐 24/7 - זמין תמיד</li>
           </ul>
         </div>
@@ -237,14 +272,14 @@
       </div>
 
       <div class="footer-bottom">
-        <p>&copy; 2025 UNLOCK - גבי המנעולן. כל הזכויות שמורות.</p>
+        <p>&copy; 2026 UNLOCK - גבי המנעולן. כל הזכויות שמורות.</p>
       </div>
     </div>
   </footer>
 
   <button id="scrollToTop" class="scroll-to-top" hidden>↑</button>
 
-  <script src="scripts/main.js?v=2.0"></script>
+  <script src="scripts/main.js?v=3.0"></script>
   <script src="accessibility.js?v=2.0"></script>
 </body>
 </html>

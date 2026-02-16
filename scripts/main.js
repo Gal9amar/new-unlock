@@ -1,5 +1,5 @@
 // ========================================
-// UNLOCK - Main JavaScript
+// UNLOCK - Main JavaScript (Luxury Edition)
 // ========================================
 
 // Global Variables
@@ -8,10 +8,98 @@ let currentBrand = 'all';
 
 // ========== Initialize ==========
 document.addEventListener('DOMContentLoaded', () => {
+  initNavbar();
   initProducts();
   initScrollToTop();
   initSmoothScroll();
+  initRevealAnimations();
+  initCounterAnimation();
 });
+
+// ========== Navbar Scroll Effect ==========
+function initNavbar() {
+  const navbar = document.getElementById('navbar');
+  if (!navbar) return;
+
+  const updateNavbar = () => {
+    if (window.scrollY > 80) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+  };
+
+  window.addEventListener('scroll', updateNavbar, { passive: true });
+  updateNavbar();
+}
+
+// ========== Counter Animation ==========
+function initCounterAnimation() {
+  const counters = document.querySelectorAll('.hero-stat-number[data-target]');
+  if (counters.length === 0) return;
+
+  const animateCounter = (el) => {
+    const target = parseInt(el.dataset.target);
+    const duration = 2000;
+    const startTime = performance.now();
+
+    const step = (currentTime) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // Ease out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = Math.round(eased * target);
+
+      el.textContent = current >= 1000 ? current.toLocaleString() + '+' : current + '+';
+
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      }
+    };
+
+    requestAnimationFrame(step);
+  };
+
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCounter(entry.target);
+        counterObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  counters.forEach(counter => counterObserver.observe(counter));
+}
+
+// ========== Reveal on Scroll Animations ==========
+function initRevealAnimations() {
+  const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+  if (revealElements.length === 0) return;
+
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index) => {
+      if (entry.isIntersecting) {
+        // Stagger the reveal for siblings
+        const parent = entry.target.parentElement;
+        const siblings = parent.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+        const siblingIndex = Array.from(siblings).indexOf(entry.target);
+        const delay = siblingIndex * 120;
+
+        setTimeout(() => {
+          entry.target.classList.add('revealed');
+        }, delay);
+
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  revealElements.forEach(el => revealObserver.observe(el));
+}
 
 // ========== Load and Display Products ==========
 async function initProducts() {
@@ -36,7 +124,7 @@ function displayProducts(products) {
   }
 
   grid.innerHTML = products.map((product, index) => `
-    <div class="product-card fade-in" onclick="goToProduct(${index})" style="animation-delay: ${index * 0.1}s">
+    <div class="product-card fade-in" onclick="goToProduct(${index})" style="animation-delay: ${index * 0.08}s">
       <div class="product-image-container">
         <img src="${product.image || 'images/fav.png'}" alt="${product.title}" loading="lazy" onerror="this.src='images/fav.png'" />
         ${product.status ? `<span class="product-status-badge status-${getStatusClass(product.status)}">${product.status}</span>` : ''}
@@ -149,32 +237,12 @@ function initScrollToTop() {
     } else {
       scrollBtn.setAttribute('hidden', '');
     }
-  });
+  }, { passive: true });
 
   scrollBtn.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 }
-
-// ========== Animate on Scroll ==========
-const observerOptions = {
-  threshold: 0.1,
-  rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('fade-in');
-      observer.unobserve(entry.target);
-    }
-  });
-}, observerOptions);
-
-// Observe service and why cards
-document.querySelectorAll('.service-card, .why-card').forEach(el => {
-  observer.observe(el);
-});
 
 // ========== Error Handling ==========
 function showProductsError() {
