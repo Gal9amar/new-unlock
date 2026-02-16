@@ -14,9 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
 // ========== Load Product from URL Parameter ==========
 async function loadProduct() {
   const urlParams = new URLSearchParams(window.location.search);
+  const productName = urlParams.get('name');
   const productId = urlParams.get('id');
 
-  if (!productId) {
+  if (!productName && !productId) {
     showProductNotFound();
     return;
   }
@@ -26,9 +27,12 @@ async function loadProduct() {
     const response = await fetch('products.json');
     allProducts = await response.json();
 
-    // Get specific product
-    const index = parseInt(productId);
-    currentProduct = allProducts[index];
+    // Get specific product by name or fallback to id
+    if (productName) {
+      currentProduct = allProducts.find(p => p.title === decodeURIComponent(productName));
+    } else {
+      currentProduct = allProducts[parseInt(productId)];
+    }
 
     if (!currentProduct) {
       showProductNotFound();

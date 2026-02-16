@@ -104,8 +104,24 @@ function initRevealAnimations() {
 // ========== Load and Display Products ==========
 async function initProducts() {
   try {
-    const response = await fetch('products.json');
-    allProducts = await response.json();
+    const [productsRes, orderRes] = await Promise.all([
+      fetch('products.json'),
+      fetch('product_order.json').catch(() => null)
+    ]);
+    allProducts = await productsRes.json();
+
+    if (orderRes && orderRes.ok) {
+      const order = await orderRes.json();
+      allProducts.sort((a, b) => {
+        const idxA = order.indexOf(a.title);
+        const idxB = order.indexOf(b.title);
+        if (idxA === -1 && idxB === -1) return 0;
+        if (idxA === -1) return 1;
+        if (idxB === -1) return 1;
+        return idxA - idxB;
+      });
+    }
+
     displayProducts(allProducts);
     initBrandFilters();
   } catch (error) {
@@ -193,13 +209,8 @@ function goToProduct(index) {
     ? allProducts[index]
     : allProducts.filter(p => p.brand === currentBrand)[index];
 
-  // Find the actual index in allProducts
-  const productIndex = allProducts.findIndex(p =>
-    p.title === product.title && p.brand === product.brand
-  );
-
-  // Navigate to product page with index
-  window.location.href = `product.html?id=${productIndex}`;
+  // Navigate to product page with title as identifier
+  window.location.href = `product.html?name=${encodeURIComponent(product.title)}`;
 }
 
 // ========== Smooth Scroll ==========
