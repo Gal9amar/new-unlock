@@ -518,10 +518,16 @@
     .bank-row {
       display: flex;
       justify-content: space-between;
-      padding: 0.25rem 0;
+      align-items: center;
+      padding: 0.35rem 0;
       font-size: 0.88rem;
       color: #1e40af;
       border-bottom: 1px solid #dbeafe;
+    }
+    .bank-value {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
     html.dark .bank-row { color: #93c5fd; border-bottom-color: #1e3a8a; }
     .bank-row:last-child { border-bottom: none; }
@@ -619,8 +625,8 @@
               <!-- Bank details (shown only for transfer) -->
               <div class="bank-details" id="bankDetails">
                 <div class="bank-row"><span class="bank-label">בנק</span><span>מזרחי טפחות</span></div>
-                <div class="bank-row"><span class="bank-label">סניף</span><span>540 <button type="button" class="copy-btn" onclick="copyText('540', this)">העתק</button></span></div>
-                <div class="bank-row"><span class="bank-label">חשבון</span><span>121889 <button type="button" class="copy-btn" onclick="copyText('121889', this)">העתק</button></span></div>
+                <div class="bank-row"><span class="bank-label">סניף</span><span class="bank-value">540 <button type="button" class="copy-btn" onclick="copyText('540', this)">העתק</button></span></div>
+                <div class="bank-row"><span class="bank-label">חשבון</span><span class="bank-value">121889 <button type="button" class="copy-btn" onclick="copyText('121889', this)">העתק</button></span></div>
                 <div class="bank-row"><span class="bank-label">שם</span><span>גל עמר</span></div>
               </div>
             </div>
