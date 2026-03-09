@@ -157,6 +157,7 @@ function displayProducts(products) {
           ` : `
             <span class="product-price-sale">${product.price_from ? 'החל מ-' : ''}₪${product.price}</span>
           `}
+          <span class="vat-indicator">${product.including_vat === 'n' ? 'לא כולל מע״מ' : 'כולל מע״מ'}</span>
         </div>
 
         ${product.tags && product.tags.length > 0 ? `
