@@ -1066,6 +1066,7 @@ button {
   flex-wrap: wrap;
   gap: 6px;
   margin-top: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
 }
 
 .product-tag {
