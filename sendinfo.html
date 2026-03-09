@@ -480,6 +480,26 @@
       box-shadow: 0 4px 12px rgba(37,99,235,0.25);
     }
 
+    /* ── Copy button ── */
+    .copy-btn {
+      font-family: 'Heebo', Arial, sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.15rem 0.55rem;
+      border-radius: 6px;
+      border: 1.5px solid #bfdbfe;
+      background: #fff;
+      color: #1d4ed8;
+      cursor: pointer;
+      margin-right: 0.4rem;
+      transition: all 0.18s;
+      vertical-align: middle;
+    }
+    .copy-btn:hover { background: #1d4ed8; color: #fff; border-color: #1d4ed8; }
+    .copy-btn.copied { background: #16a34a; color: #fff; border-color: #16a34a; }
+    html.dark .copy-btn { background: #1e293b; border-color: #3b82f6; color: #60a5fa; }
+    html.dark .copy-btn:hover { background: #3b82f6; color: #fff; }
+
     /* ── Bank details ── */
     .bank-details {
       display: none;
@@ -599,8 +619,8 @@
               <!-- Bank details (shown only for transfer) -->
               <div class="bank-details" id="bankDetails">
                 <div class="bank-row"><span class="bank-label">בנק</span><span>מזרחי טפחות</span></div>
-                <div class="bank-row"><span class="bank-label">סניף</span><span>540</span></div>
-                <div class="bank-row"><span class="bank-label">חשבון</span><span>121889</span></div>
+                <div class="bank-row"><span class="bank-label">סניף</span><span>540 <button type="button" class="copy-btn" onclick="copyText('540', this)">העתק</button></span></div>
+                <div class="bank-row"><span class="bank-label">חשבון</span><span>121889 <button type="button" class="copy-btn" onclick="copyText('121889', this)">העתק</button></span></div>
                 <div class="bank-row"><span class="bank-label">שם</span><span>גל עמר</span></div>
               </div>
             </div>
@@ -658,6 +678,18 @@
     }
     function closePopup(id) {
       document.getElementById(id).classList.remove('visible');
+    }
+
+    // Copy to clipboard
+    function copyText(text, btn) {
+      navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = '✓ הועתק';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'העתק';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
     }
 
     // VAT toggle
