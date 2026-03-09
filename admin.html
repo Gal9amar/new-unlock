@@ -871,7 +871,12 @@
       const getData = await getRes.json();
       const sha = getData.sha;
 
-      const content = btoa(unescape(encodeURIComponent(JSON.stringify(products, null, 4))));
+      // Encode Hebrew properly
+      const jsonStr = JSON.stringify(products, null, 4);
+      const bytes = new TextEncoder().encode(jsonStr);
+      let binary = '';
+      bytes.forEach(b => binary += String.fromCharCode(b));
+      const content = btoa(binary);
 
       const putRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}`, {
         method: 'PUT',
