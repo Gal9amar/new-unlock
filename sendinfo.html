@@ -344,12 +344,11 @@
         <!-- Heading -->
         <div class="form-heading">
           <div class="badge-row">
-            <span class="badge">⚡ תגובה מהירה</span>
+            <span class="badge">🧾 הוצאת חשבונית</span>
             <span class="badge">🔒 מידע מאובטח</span>
-            <span class="badge">24/7 זמין</span>
           </div>
-          <h1>שלחו פרטים<br/>ל<span class="highlight">UNLOCK</span></h1>
-          <p>מלאו את הטופס ונחזור אליכם בהקדם האפשרי</p>
+          <h1>פרטי הלקוח<br/>ל<span class="highlight">הוצאת חשבונית</span></h1>
+          <p>מלאו את הפרטים ונפיק את החשבונית בהקדם</p>
         </div>
 
         <!-- Card -->
@@ -357,47 +356,45 @@
 
           <form id="contactForm">
             <input type="hidden" name="access_key" value="8f6811e4-edba-4ca8-8776-e39c6eaf1b72"/>
-            <input type="hidden" name="subject" value="פנייה חדשה – UNLOCK גבי המנעולן"/>
+            <input type="hidden" name="subject" value="פרטי לקוח לחשבונית – UNLOCK גבי המנעולן"/>
             <input type="hidden" name="from_name" value="טופס האתר"/>
             <input type="checkbox" name="botcheck" style="display:none"/>
 
-            <div class="field-row">
-              <div class="field">
-                <label>שם מלא <span class="req">*</span></label>
-                <input type="text" name="name" placeholder="ישראל ישראלי" required/>
-              </div>
-              <div class="field">
-                <label>טלפון <span class="req">*</span></label>
-                <input type="tel" name="phone" placeholder="050-0000000" required/>
-              </div>
+            <div class="field">
+              <label>שם מלא <span class="req">*</span></label>
+              <input type="text" name="name" placeholder="ישראל ישראלי" required/>
             </div>
-
-            <div class="field-row">
-              <div class="field">
-                <label>כתובת מייל</label>
-                <input type="email" name="email" placeholder="mail@example.com"/>
-              </div>
-              <div class="field">
-                <label>ח.פ / ת.ז</label>
-                <input type="text" name="id_number" placeholder="000000000"/>
-              </div>
-            </div>
-
-            <div class="section-divider"><span>פרטי הפנייה</span></div>
 
             <div class="field">
-              <label>הודעה חופשית <span class="req">*</span></label>
-              <textarea name="message" placeholder="תארו את הבעיה, הבקשה, או כל פרט רלוונטי..." required></textarea>
+              <label>טלפון <span class="req">*</span></label>
+              <input type="tel" name="phone" placeholder="050-0000000" required/>
             </div>
 
-            <button type="submit" class="submit-btn" id="submitBtn">📨 שלח פנייה</button>
+            <div class="field">
+              <label>כתובת מייל <span class="req">*</span></label>
+              <input type="email" name="email" placeholder="mail@example.com" required/>
+            </div>
+
+            <div class="field">
+              <label>ח.פ / ת.ז</label>
+              <input type="text" name="id_number" placeholder="000000000"/>
+            </div>
+
+            <div class="section-divider"><span>פרטי השירות</span></div>
+
+            <div class="field">
+              <label>תיאור השירות</label>
+              <textarea name="message" placeholder="תארו את השירות שבוצע..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">📨 שלח פרטים</button>
             <p class="form-note">הפרטים ישלחו ישירות לגבי · ללא שמירה במאגרי צד שלישי</p>
           </form>
 
           <div class="success-screen" id="successScreen">
             <div class="success-icon">✅</div>
-            <h2>הפנייה נשלחה בהצלחה!</h2>
-            <p>תודה! קיבלנו את הפרטים שלך.<br/>גבי יחזור אליך בהקדם האפשרי.</p>
+            <h2>הפרטים נשלחו בהצלחה!</h2>
+            <p>תודה! החשבונית תופק ותישלח אליך בהקדם.</p>
             <a href="/" class="back-btn">← חזרה לאתר</a>
           </div>
 
