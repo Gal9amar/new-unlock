@@ -422,6 +422,91 @@
     html.dark .spinner { border-color: #1e293b; border-top-color: #3b82f6; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
+
+    /* ── Amount row ── */
+    .amount-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .vat-toggles, .payment-toggles {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .vat-btn, .pay-btn {
+      flex: 1;
+      min-width: 100px;
+      padding: 0.6rem 0.75rem;
+      font-family: 'Heebo', Arial, sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      background: #f8fafc;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+    }
+    html.dark .vat-btn, html.dark .pay-btn {
+      background: #1e293b;
+      border-color: #334155;
+      color: #94a3b8;
+    }
+    .vat-btn:hover, .pay-btn:hover {
+      border-color: #93c5fd;
+      color: #1d4ed8;
+      background: #eff6ff;
+    }
+    html.dark .vat-btn:hover, html.dark .pay-btn:hover {
+      border-color: #3b82f6;
+      color: #60a5fa;
+      background: #1e3a5f;
+    }
+    .vat-btn.active {
+      background: linear-gradient(135deg, #1d4ed8, #2563eb);
+      border-color: #1d4ed8;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(37,99,235,0.25);
+    }
+    .pay-btn.active {
+      background: linear-gradient(135deg, #1d4ed8, #2563eb);
+      border-color: #1d4ed8;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(37,99,235,0.25);
+    }
+
+    /* ── Bank details ── */
+    .bank-details {
+      display: none;
+      margin-top: 0.6rem;
+      background: #f0f7ff;
+      border: 1.5px solid #bfdbfe;
+      border-radius: 10px;
+      padding: 1rem 1.1rem;
+      animation: fadeUp 0.25s ease both;
+    }
+    html.dark .bank-details {
+      background: #1e3a5f;
+      border-color: #1e40af;
+    }
+    .bank-details.visible { display: block; }
+    .bank-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.25rem 0;
+      font-size: 0.88rem;
+      color: #1e40af;
+      border-bottom: 1px solid #dbeafe;
+    }
+    html.dark .bank-row { color: #93c5fd; border-bottom-color: #1e3a8a; }
+    .bank-row:last-child { border-bottom: none; }
+    .bank-label { font-weight: 700; }
+
   </style>
 </head>
 <body class="site-body">
@@ -482,6 +567,44 @@
               <textarea name="message" placeholder="תארו את השירות שבוצע..."></textarea>
             </div>
 
+            <!-- Amount + VAT -->
+            <div class="field">
+              <label>סכום <span class="req">*</span></label>
+              <div class="amount-row">
+                <input type="text" name="amount" id="amountInput" placeholder="0.00" inputmode="decimal" pattern="[0-9]*\.?[0-9]*" required/>
+                <div class="vat-toggles">
+                  <button type="button" class="vat-btn active" id="vatIncluded" onclick="selectVat('included')">כולל מע"מ</button>
+                  <button type="button" class="vat-btn" id="vatExcluded" onclick="selectVat('excluded')">לפני מע"מ</button>
+                </div>
+              </div>
+              <input type="hidden" name="vat_type" id="vatType" value="כולל מע״מ"/>
+            </div>
+
+            <!-- Payment method -->
+            <div class="field">
+              <label>שיטת תשלום <span class="req">*</span></label>
+              <div class="payment-toggles">
+                <button type="button" class="pay-btn" id="payBit" onclick="selectPayment('bit')">
+                  <span class="pay-icon">💜</span> ביט
+                </button>
+                <button type="button" class="pay-btn" id="payCheck" onclick="selectPayment('check')">
+                  <span class="pay-icon">📝</span> המחאה
+                </button>
+                <button type="button" class="pay-btn" id="payTransfer" onclick="selectPayment('transfer')">
+                  <span class="pay-icon">🏦</span> העברה בנקאית
+                </button>
+              </div>
+              <input type="hidden" name="payment_method" id="paymentMethod" value=""/>
+
+              <!-- Bank details (shown only for transfer) -->
+              <div class="bank-details" id="bankDetails">
+                <div class="bank-row"><span class="bank-label">בנק</span><span>מזרחי טפחות</span></div>
+                <div class="bank-row"><span class="bank-label">סניף</span><span>540</span></div>
+                <div class="bank-row"><span class="bank-label">חשבון</span><span>121889</span></div>
+                <div class="bank-row"><span class="bank-label">שם</span><span>גל עמר</span></div>
+              </div>
+            </div>
+
             <button type="submit" class="submit-btn" id="submitBtn">📨 שלח פרטים</button>
             <p class="form-note">הפרטים ישלחו ישירות לגבי · ללא שמירה במאגרי צד שלישי</p>
           </form>
@@ -537,11 +660,39 @@
       document.getElementById(id).classList.remove('visible');
     }
 
+    // VAT toggle
+    function selectVat(type) {
+      document.getElementById('vatIncluded').classList.toggle('active', type === 'included');
+      document.getElementById('vatExcluded').classList.toggle('active', type === 'excluded');
+      document.getElementById('vatType').value = type === 'included' ? 'כולל מע"מ' : 'לפני מע"מ';
+    }
+
+    // Payment toggle
+    let selectedPayment = '';
+    function selectPayment(type) {
+      ['bit','check','transfer'].forEach(t => {
+        document.getElementById('pay' + t.charAt(0).toUpperCase() + t.slice(1)).classList.remove('active');
+      });
+      document.getElementById('pay' + type.charAt(0).toUpperCase() + type.slice(1)).classList.add('active');
+      selectedPayment = type;
+      document.getElementById('paymentMethod').value = type === 'bit' ? 'ביט' : type === 'check' ? 'המחאה' : 'העברה בנקאית';
+      document.getElementById('bankDetails').classList.toggle('visible', type === 'transfer');
+    }
+
+    // Amount: numbers and dot only
+    document.getElementById('amountInput').addEventListener('input', function() {
+      this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+    });
+
     const form = document.getElementById('contactForm');
     const btn = document.getElementById('submitBtn');
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      if (!selectedPayment) {
+        alert('יש לבחור שיטת תשלום');
+        return;
+      }
       btn.disabled = true;
       btn.textContent = '⏳ שולח...';
       showPopup('popupLoading');
