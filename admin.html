@@ -712,7 +712,12 @@
         headers: { 'Authorization': `token ${getToken()}` }
       });
       const data = await res.json();
-      products = JSON.parse(atob(data.content.replace(/\n/g, '')));
+      // Decode Hebrew properly
+      const base64 = data.content.replace(/\n/g, '');
+      const binary = atob(base64);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+      products = JSON.parse(new TextDecoder('utf-8').decode(bytes));
       window._fileSha = data.sha;
       renderProducts();
     } catch(e) {
