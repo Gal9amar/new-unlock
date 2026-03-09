@@ -286,6 +286,7 @@ function renderProducts() {
             <p class="product-description">${product.desc || ''}</p>
             <div class="product-price">
               ${priceHtml}
+              ${(product.price || product.discount_price) ? `<span class="vat-indicator">${product.note && product.note.includes('לא כולל') ? 'לא כולל מע״מ' : 'כולל מע״מ'}</span>` : ''}
             </div>
             ${noteHtml}
           </div>
