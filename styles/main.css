@@ -1337,10 +1337,35 @@ button {
 .quick-call-btn {
   background: var(--gradient-gold);
   color: var(--color-primary-900);
-  padding: var(--spacing-xs) var(--spacing-sm);
+  padding: 8px 12px;
   border-radius: var(--radius-md);
-  font-size: var(--font-size-sm);
+  font-size: 13px;
   font-weight: 700;
+  white-space: nowrap;
+}
+
+.product-header .container {
+  gap: 8px;
+}
+
+.header-logo {
+  max-width: 52px;
+  flex-shrink: 0;
+}
+
+.back-btn {
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+@media (max-width: 480px) {
+  .quick-call-btn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+  .back-btn {
+    font-size: 12px;
+  }
 }
 
 .product-main {
