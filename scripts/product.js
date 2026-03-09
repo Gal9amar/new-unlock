@@ -65,7 +65,7 @@ function displayProduct(product) {
   // Product Status Badge
   const statusBadge = document.getElementById('productStatus');
   if (product.status) {
-    statusBadge.textContent = product.status;
+    statusBadge.textContent = `מוצר ${product.status}`;
     statusBadge.className = `product-status-badge status-${getStatusClass(product.status)}`;
     statusBadge.style.display = 'block';
   } else {
