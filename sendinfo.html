@@ -296,6 +296,16 @@
     }
     .back-btn:hover { transform: translateY(-1px); }
 
+    .nav-phone {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #1d4ed8;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .nav-phone:hover { opacity: 0.75; }
+    html.dark .nav-phone { color: #60a5fa; }
+
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(12px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -329,11 +339,7 @@
         <img src="images/fav.png" alt="UNLOCK" />
         UNLOCK
       </a>
-      <div class="nav-links">
-        <a href="/#services">שירותים</a>
-        <a href="/#products">מוצרים</a>
-        <a href="tel:0533888381">053-388-8381</a>
-      </div>
+      <a href="tel:0533888381" class="nav-phone">📞 053-388-8381</a>
     </div>
   </nav>
 
@@ -413,47 +419,7 @@
     <!-- Footer -->
     <footer class="site-footer">
       <div class="container">
-        <div class="footer-content">
-          <div class="footer-section">
-            <img src="images/fav.png" alt="UNLOCK" class="footer-logo" />
-            <p>שירותי מנעולנות מקצועיים<br>זמין 24/7 באזור המרכז והדרום</p>
-          </div>
-          <div class="footer-section">
-            <h3>צור קשר</h3>
-            <ul>
-              <li>📞 <a href="tel:0533888381">053-388-8381</a></li>
-              <li>📧 <a href="mailto:unlock.yavne@gmail.com">unlock.yavne@gmail.com</a></li>
-              <li>📍 אזור המרכז והדרום</li>
-              <li>🕐 24/7 - זמין תמיד</li>
-            </ul>
-          </div>
-          <div class="footer-section">
-            <h3>עקבו אחרינו</h3>
-            <div class="footer-social">
-              <a href="https://www.facebook.com/gabihamanulan" target="_blank" rel="noopener noreferrer">Facebook</a>
-              <a href="https://www.instagram.com/gabi.the.locksmith/" target="_blank" rel="noopener noreferrer">Instagram</a>
-              <a href="https://wa.me/972533888381" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-            </div>
-          </div>
-          <div class="footer-section">
-            <h3>מידע משפטי</h3>
-            <ul>
-              <li><a href="/privacy-policy">מדיניות פרטיות</a></li>
-              <li><a href="/terms-of-service">תנאי שימוש</a></li>
-              <li><a href="/accessibility">הצהרת נגישות</a></li>
-            </ul>
-          </div>
-        </div>
-        <div class="footer-bottom">
-          <p>&copy; 2026 UNLOCK - גבי המנעולן. כל הזכויות שמורות.</p>
-        </div>
-      </div>
-    </footer>
-  </div>
-
-  <script>
-    const form = document.getElementById('contactForm');
-    const btn = document.getElementById('submitBtn');
+        <div class="footElementById('submitBtn');
     const success = document.getElementById('successScreen');
 
     form.addEventListener('submit', async (e) => {
