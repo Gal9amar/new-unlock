@@ -1012,6 +1012,10 @@ button {
   background: linear-gradient(135deg, rgba(30, 77, 140, 0.9), rgba(26, 54, 93, 0.9));
 }
 
+.product-status-badge.status-hot {
+  background: linear-gradient(135deg, rgba(251, 146, 60, 0.9), rgba(234, 88, 12, 0.9));
+}
+
 .product-status-badge.status-special {
   background: linear-gradient(135deg, rgba(139, 92, 246, 0.9), rgba(124, 58, 237, 0.9));
 }
