@@ -483,17 +483,19 @@
     /* ── Copy button ── */
     .copy-btn {
       font-family: 'Heebo', Arial, sans-serif;
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 0.15rem 0.55rem;
+      font-size: 1rem;
+      line-height: 1;
+      padding: 0.2rem 0.3rem;
       border-radius: 6px;
       border: 1.5px solid #bfdbfe;
       background: #fff;
       color: #1d4ed8;
       cursor: pointer;
-      margin-right: 0.4rem;
       transition: all 0.18s;
-      vertical-align: middle;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
     }
     .copy-btn:hover { background: #1d4ed8; color: #fff; border-color: #1d4ed8; }
     .copy-btn.copied { background: #16a34a; color: #fff; border-color: #16a34a; }
@@ -528,6 +530,7 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      flex-direction: row-reverse;
     }
     html.dark .bank-row { color: #93c5fd; border-bottom-color: #1e3a8a; }
     .bank-row:last-child { border-bottom: none; }
@@ -625,8 +628,8 @@
               <!-- Bank details (shown only for transfer) -->
               <div class="bank-details" id="bankDetails">
                 <div class="bank-row"><span class="bank-label">בנק</span><span>מזרחי טפחות</span></div>
-                <div class="bank-row"><span class="bank-label">סניף</span><span class="bank-value">540 <button type="button" class="copy-btn" onclick="copyText('540', this)">העתק</button></span></div>
-                <div class="bank-row"><span class="bank-label">חשבון</span><span class="bank-value">121889 <button type="button" class="copy-btn" onclick="copyText('121889', this)">העתק</button></span></div>
+                <div class="bank-row"><span class="bank-label">סניף</span><span class="bank-value"><button type="button" class="copy-btn" onclick="copyText('540', this)">&#10697;</button>540</span></div>
+                <div class="bank-row"><span class="bank-label">חשבון</span><span class="bank-value"><button type="button" class="copy-btn" onclick="copyText('121889', this)">&#10697;</button>121889</span></div>
                 <div class="bank-row"><span class="bank-label">שם</span><span>גל עמר</span></div>
               </div>
             </div>
@@ -689,10 +692,10 @@
     // Copy to clipboard
     function copyText(text, btn) {
       navigator.clipboard.writeText(text).then(() => {
-        btn.textContent = '✓ הועתק';
+        btn.innerHTML = '✓';
         btn.classList.add('copied');
         setTimeout(() => {
-          btn.textContent = 'העתק';
+          btn.innerHTML = '&#10697;';
           btn.classList.remove('copied');
         }, 2000);
       });
