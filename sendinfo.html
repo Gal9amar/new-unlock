@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>גבי המנעולן – יצירת קשר</title>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f7f6f3;
+      --surface: #ffffff;
+      --border: #e2e0db;
+      --text: #1a1a18;
+      --muted: #8a8880;
+      --accent: #2c2c2a;
+      --focus: #b8a882;
+      --success: #4a7c59;
+    }
+
+    body {
+      font-family: 'Heebo', sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .card {
+      background: var(--surface);
+      width: 100%;
+      max-width: 480px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .header {
+      padding: 2.5rem 2.5rem 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      color: var(--accent);
+    }
+
+    .brand {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .header h1 {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+    }
+
+    .header p {
+      font-size: 0.9rem;
+      color: var(--muted);
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    form {
+      padding: 2rem 2.5rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    label {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--text);
+      letter-spacing: 0.04em;
+    }
+
+    label .req {
+      color: var(--focus);
+      margin-right: 2px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 0.7rem 0.9rem;
+      font-family: 'Heebo', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 300;
+      color: var(--text);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      direction: rtl;
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: #c0bdb7;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--focus);
+      background: #fff;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+      line-height: 1.6;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0.25rem 0;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 0.85rem;
+      background: var(--accent);
+      color: #fff;
+      font-family: 'Heebo', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+      margin-top: 0.25rem;
+    }
+
+    .submit-btn:hover { opacity: 0.85; }
+    .submit-btn:active { transform: scale(0.99); }
+    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .note {
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-align: center;
+      font-weight: 300;
+    }
+
+    /* Success state */
+    .success-screen {
+      display: none;
+      padding: 3rem 2.5rem;
+      text-align: center;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .success-screen.visible { display: flex; }
+    form.hidden { display: none; }
+
+    .check-circle {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: #f0f5f1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
+
+    .check-circle svg { color: var(--success); }
+
+    .success-screen h2 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .success-screen p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      font-weight: 300;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+<div class="card">
+
+  <div class="header">
+    <div class="logo-row">
+      <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>
+      </svg>
+      <span class="brand">גבי המנעולן</span>
+    </div>
+    <h1>השאירו פרטים<br/>ונחזור אליכם</h1>
+    <p>שירות מנעולנות מקצועי · זמין 24/7</p>
+  </div>
+
+  <form id="contactForm">
+    <!-- Hidden fields for Web3Forms -->
+    <input type="hidden" name="access_key" value="8f6811e4-edba-4ca8-8776-e39c6eaf1b72"/>
+    <input type="hidden" name="subject" value="פנייה חדשה – גבי המנעולן"/>
+    <input type="hidden" name="from_name" value="טופס האתר"/>
+    <input type="checkbox" name="botcheck" style="display:none"/>
+
+    <div class="field-row">
+      <div class="field">
+        <label>שם מלא <span class="req">*</span></label>
+        <input type="text" name="name" placeholder="ישראל ישראלי" required/>
+      </div>
+      <div class="field">
+        <label>טלפון <span class="req">*</span></label>
+        <input type="tel" name="phone" placeholder="050-0000000" required/>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>מייל</label>
+        <input type="email" name="email" placeholder="mail@example.com"/>
+      </div>
+      <div class="field">
+        <label>ח.פ / ת.ז</label>
+        <input type="text" name="id_number" placeholder="000000000"/>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="field">
+      <label>הודעה חופשית <span class="req">*</span></label>
+      <textarea name="message" placeholder="תארו את הבעיה או הבקשה שלכם..." required></textarea>
+    </div>
+
+    <button type="submit" class="submit-btn" id="submitBtn">שלח פנייה</button>
+    <p class="note">הפרטים יישלחו ישירות למייל של גבי</p>
+  </form>
+
+  <div class="success-screen" id="successScreen">
+    <div class="check-circle">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+    <h2>הפנייה נשלחה!</h2>
+    <p>תודה, קיבלנו את הפרטים שלך.<br/>גבי יחזור אליך בהקדם.</p>
+  </div>
+
+</div>
+
+<script>
+  const form = document.getElementById('contactForm');
+  const btn = document.getElementById('submitBtn');
+  const success = document.getElementById('successScreen');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    btn.disabled = true;
+    btn.textContent = 'שולח...';
+
+    const data = new FormData(form);
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: data
+      });
+      const json = await res.json();
+      if (json.success) {
+        form.classList.add('hidden');
+        success.classList.add('visible');
+      } else {
+        alert('שגיאה בשליחה, נסה שוב.');
+        btn.disabled = false;
+        btn.textContent = 'שלח פנייה';
+      }
+    } catch {
+      alert('שגיאת רשת, נסה שוב.');
+      btn.disabled = false;
+      btn.textContent = 'שלח פנייה';
+    }
+  });
+</script>
+</body>
+</html>
