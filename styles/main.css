@@ -1065,7 +1065,8 @@ button {
   display: block;
   font-size: 11px;
   color: #94a3b8;
-  margin-top: 2px;
+  margin-top: -4px;
+  margin-bottom: 4px;
   font-weight: 400;
 }
 
