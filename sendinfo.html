@@ -1,321 +1,486 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>גבי המנעולן – יצירת קשר</title>
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0a1628" />
+  <title>שליחת פרטים – UNLOCK מנעולן מקצועי</title>
+  <meta name="description" content="שלחו פרטים לגבי המנעולן – שירות מנעולנות מקצועי 24/7 באזור המרכז והדרום" />
+  <link rel="icon" href="images/fav.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/main.css?v=3.0" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #f7f6f3;
-      --surface: #ffffff;
-      --border: #e2e0db;
-      --text: #1a1a18;
-      --muted: #8a8880;
-      --accent: #2c2c2a;
-      --focus: #b8a882;
-      --success: #4a7c59;
+    /* ── Nav bar ── */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #e2e8f0;
+      padding: 0.75rem 0;
     }
+    html.dark .top-nav {
+      background: rgba(2,6,23,0.92);
+      border-bottom-color: #1e293b;
+    }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: #1d4ed8;
+      text-decoration: none;
+    }
+    .nav-logo img { width: 32px; height: 32px; }
+    .nav-links { display: flex; gap: 1.5rem; }
+    .nav-links a {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #475569;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: #1d4ed8; }
+    html.dark .nav-links a { color: #94a3b8; }
+    html.dark .nav-links a:hover { color: #60a5fa; }
 
-    body {
-      font-family: 'Heebo', sans-serif;
-      background: var(--bg);
+    /* ── Page layout ── */
+    .page-wrapper {
       min-height: 100vh;
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      background: #f8fafc;
+    }
+    html.dark .page-wrapper { background: #020617; }
+
+    .form-section {
+      flex: 1;
+      padding: 3rem 1rem 4rem;
+    }
+
+    .form-container {
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    /* ── Page heading ── */
+    .form-heading {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .form-heading .badge-row {
+      display: flex;
       justify-content: center;
-      padding: 2rem 1rem;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
     }
-
-    .card {
-      background: var(--surface);
-      width: 100%;
-      max-width: 480px;
-      border: 1px solid var(--border);
-      border-radius: 2px;
-      overflow: hidden;
-      animation: fadeUp 0.5s ease both;
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .header {
-      padding: 2.5rem 2.5rem 2rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .logo-row {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin-bottom: 1.25rem;
-    }
-
-    .logo-icon {
-      width: 36px;
-      height: 36px;
-      color: var(--accent);
-    }
-
-    .brand {
-      font-size: 0.75rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      color: var(--muted);
-      text-transform: uppercase;
-    }
-
-    .header h1 {
-      font-size: 1.6rem;
+    .form-heading .badge {
+      background: linear-gradient(135deg, #eff6ff, #dbeafe);
+      color: #1d4ed8;
+      padding: 0.3rem 0.9rem;
+      border-radius: 20px;
+      font-size: 0.78rem;
       font-weight: 600;
-      color: var(--text);
-      line-height: 1.2;
+    }
+    html.dark .form-heading .badge {
+      background: linear-gradient(135deg, #1e3a5f, #1e40af);
+      color: #bfdbfe;
+    }
+    .form-heading h1 {
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: #0f172a;
       margin-bottom: 0.5rem;
+      line-height: 1.25;
+    }
+    html.dark .form-heading h1 { color: #f1f5f9; }
+    .form-heading h1 .highlight {
+      background: linear-gradient(135deg, #1d4ed8, #2563eb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .form-heading p {
+      color: #64748b;
+      font-size: 0.95rem;
+    }
+    html.dark .form-heading p { color: #94a3b8; }
+
+    /* ── Card ── */
+    .form-card {
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 4px 24px rgba(15,23,42,0.08);
+      padding: 2rem;
+      border: 1px solid #e2e8f0;
+    }
+    html.dark .form-card {
+      background: #0f172a;
+      border-color: #1e293b;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.35);
     }
 
-    .header p {
-      font-size: 0.9rem;
-      color: var(--muted);
-      font-weight: 300;
-      line-height: 1.6;
-    }
-
-    form {
-      padding: 2rem 2.5rem 2.5rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
-
+    /* ── Fields ── */
     .field-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 1rem;
     }
-
+    @media (max-width: 480px) {
+      .field-row { grid-template-columns: 1fr; }
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-bottom: 1rem;
+    }
     label {
-      font-size: 0.78rem;
-      font-weight: 500;
-      color: var(--text);
-      letter-spacing: 0.04em;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #374151;
     }
+    html.dark label { color: #cbd5e1; }
+    label .req { color: #ef4444; margin-right: 2px; }
 
-    label .req {
-      color: var(--focus);
-      margin-right: 2px;
-    }
-
-    input, textarea {
+    input[type="text"],
+    input[type="tel"],
+    input[type="email"],
+    textarea {
       width: 100%;
-      padding: 0.7rem 0.9rem;
-      font-family: 'Heebo', sans-serif;
-      font-size: 0.92rem;
-      font-weight: 300;
-      color: var(--text);
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 2px;
+      padding: 0.7rem 1rem;
+      font-family: 'Heebo', Arial, sans-serif;
+      font-size: 0.95rem;
+      color: #0f172a;
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
       outline: none;
-      transition: border-color 0.2s, background 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
       direction: rtl;
     }
-
-    input::placeholder, textarea::placeholder {
-      color: #c0bdb7;
+    html.dark input[type="text"],
+    html.dark input[type="tel"],
+    html.dark input[type="email"],
+    html.dark textarea {
+      background: #1e293b;
+      border-color: #334155;
+      color: #e2e8f0;
     }
-
+    input::placeholder, textarea::placeholder { color: #cbd5e1; }
+    html.dark input::placeholder, html.dark textarea::placeholder { color: #475569; }
     input:focus, textarea:focus {
-      border-color: var(--focus);
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
       background: #fff;
     }
-
+    html.dark input:focus, html.dark textarea:focus {
+      background: #0f172a;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+    }
     textarea {
       resize: vertical;
-      min-height: 100px;
+      min-height: 110px;
       line-height: 1.6;
     }
 
-    .divider {
-      height: 1px;
-      background: var(--border);
-      margin: 0.25rem 0;
+    /* ── Divider ── */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 0.5rem 0 1rem;
     }
+    .section-divider span {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #94a3b8;
+      white-space: nowrap;
+      letter-spacing: 0.05em;
+    }
+    .section-divider::before,
+    .section-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #e2e8f0;
+    }
+    html.dark .section-divider::before,
+    html.dark .section-divider::after { background: #1e293b; }
 
+    /* ── Submit button ── */
     .submit-btn {
       width: 100%;
       padding: 0.85rem;
-      background: var(--accent);
+      background: linear-gradient(135deg, #1d4ed8, #2563eb);
       color: #fff;
-      font-family: 'Heebo', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 500;
-      letter-spacing: 0.06em;
+      font-family: 'Heebo', Arial, sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
       border: none;
-      border-radius: 2px;
+      border-radius: 10px;
       cursor: pointer;
-      transition: opacity 0.2s, transform 0.15s;
-      margin-top: 0.25rem;
+      box-shadow: 0 10px 18px rgba(37,99,235,0.25);
+      transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+      margin-top: 0.5rem;
     }
+    .submit-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 24px rgba(37,99,235,0.3);
+    }
+    .submit-btn:active { transform: translateY(0); }
+    .submit-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
 
-    .submit-btn:hover { opacity: 0.85; }
-    .submit-btn:active { transform: scale(0.99); }
-    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-
-    .note {
-      font-size: 0.75rem;
-      color: var(--muted);
+    .form-note {
       text-align: center;
-      font-weight: 300;
+      font-size: 0.78rem;
+      color: #94a3b8;
+      margin-top: 0.75rem;
     }
 
-    /* Success state */
+    /* ── Success screen ── */
     .success-screen {
       display: none;
-      padding: 3rem 2.5rem;
       text-align: center;
+      padding: 2rem 1rem;
       flex-direction: column;
       align-items: center;
-      gap: 1rem;
+      gap: 0.75rem;
+      animation: fadeUp 0.4s ease both;
     }
-
     .success-screen.visible { display: flex; }
     form.hidden { display: none; }
-
-    .check-circle {
-      width: 52px;
-      height: 52px;
+    .success-icon {
+      width: 64px; height: 64px;
       border-radius: 50%;
-      background: #f0f5f1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
       margin: 0 auto;
     }
-
-    .check-circle svg { color: var(--success); }
-
     .success-screen h2 {
-      font-size: 1.3rem;
-      font-weight: 600;
-      color: var(--text);
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #0f172a;
     }
-
+    html.dark .success-screen h2 { color: #f1f5f9; }
     .success-screen p {
-      font-size: 0.88rem;
-      color: var(--muted);
-      font-weight: 300;
+      color: #64748b;
+      font-size: 0.9rem;
       line-height: 1.6;
     }
+    html.dark .success-screen p { color: #94a3b8; }
+    .back-btn {
+      display: inline-block;
+      margin-top: 0.5rem;
+      padding: 0.65rem 1.5rem;
+      background: linear-gradient(135deg, #1d4ed8, #2563eb);
+      color: #fff;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-decoration: none;
+      transition: transform 0.2s;
+    }
+    .back-btn:hover { transform: translateY(-1px); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Trust strip ── */
+    .trust-strip {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-top: 1.5rem;
+    }
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      color: #64748b;
+      font-weight: 500;
+    }
+    html.dark .trust-item { color: #94a3b8; }
   </style>
 </head>
-<body>
-<div class="card">
+<body class="site-body">
 
-  <div class="header">
-    <div class="logo-row">
-      <svg class="logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>
-      </svg>
-      <span class="brand">גבי המנעולן</span>
+  <!-- Nav -->
+  <nav class="top-nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <img src="images/fav.png" alt="UNLOCK" />
+        UNLOCK
+      </a>
+      <div class="nav-links">
+        <a href="/#services">שירותים</a>
+        <a href="/#products">מוצרים</a>
+        <a href="tel:0533888381">053-388-8381</a>
+      </div>
     </div>
-    <h1>השאירו פרטים<br/>ונחזור אליכם</h1>
-    <p>שירות מנעולנות מקצועי · זמין 24/7</p>
+  </nav>
+
+  <div class="page-wrapper">
+    <main class="form-section" id="main-content">
+      <div class="form-container">
+
+        <!-- Heading -->
+        <div class="form-heading">
+          <div class="badge-row">
+            <span class="badge">⚡ תגובה מהירה</span>
+            <span class="badge">🔒 מידע מאובטח</span>
+            <span class="badge">24/7 זמין</span>
+          </div>
+          <h1>שלחו פרטים<br/>ל<span class="highlight">UNLOCK</span></h1>
+          <p>מלאו את הטופס ונחזור אליכם בהקדם האפשרי</p>
+        </div>
+
+        <!-- Card -->
+        <div class="form-card">
+
+          <form id="contactForm">
+            <input type="hidden" name="access_key" value="8f6811e4-edba-4ca8-8776-e39c6eaf1b72"/>
+            <input type="hidden" name="subject" value="פנייה חדשה – UNLOCK גבי המנעולן"/>
+            <input type="hidden" name="from_name" value="טופס האתר"/>
+            <input type="checkbox" name="botcheck" style="display:none"/>
+
+            <div class="field-row">
+              <div class="field">
+                <label>שם מלא <span class="req">*</span></label>
+                <input type="text" name="name" placeholder="ישראל ישראלי" required/>
+              </div>
+              <div class="field">
+                <label>טלפון <span class="req">*</span></label>
+                <input type="tel" name="phone" placeholder="050-0000000" required/>
+              </div>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label>כתובת מייל</label>
+                <input type="email" name="email" placeholder="mail@example.com"/>
+              </div>
+              <div class="field">
+                <label>ח.פ / ת.ז</label>
+                <input type="text" name="id_number" placeholder="000000000"/>
+              </div>
+            </div>
+
+            <div class="section-divider"><span>פרטי הפנייה</span></div>
+
+            <div class="field">
+              <label>הודעה חופשית <span class="req">*</span></label>
+              <textarea name="message" placeholder="תארו את הבעיה, הבקשה, או כל פרט רלוונטי..." required></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">📨 שלח פנייה</button>
+            <p class="form-note">הפרטים ישלחו ישירות לגבי · ללא שמירה במאגרי צד שלישי</p>
+          </form>
+
+          <div class="success-screen" id="successScreen">
+            <div class="success-icon">✅</div>
+            <h2>הפנייה נשלחה בהצלחה!</h2>
+            <p>תודה! קיבלנו את הפרטים שלך.<br/>גבי יחזור אליך בהקדם האפשרי.</p>
+            <a href="/" class="back-btn">← חזרה לאתר</a>
+          </div>
+
+        </div>
+
+        <!-- Trust strip -->
+        <div class="trust-strip">
+          <span class="trust-item">🎖️ 15 שנות ניסיון</span>
+          <span class="trust-item">⚡ הגעה תוך 30 דק'</span>
+          <span class="trust-item">📞 053-388-8381</span>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <img src="images/fav.png" alt="UNLOCK" class="footer-logo" />
+            <p>שירותי מנעולנות מקצועיים<br>זמין 24/7 באזור המרכז והדרום</p>
+          </div>
+          <div class="footer-section">
+            <h3>צור קשר</h3>
+            <ul>
+              <li>📞 <a href="tel:0533888381">053-388-8381</a></li>
+              <li>📧 <a href="mailto:unlock.yavne@gmail.com">unlock.yavne@gmail.com</a></li>
+              <li>📍 אזור המרכז והדרום</li>
+              <li>🕐 24/7 - זמין תמיד</li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h3>עקבו אחרינו</h3>
+            <div class="footer-social">
+              <a href="https://www.facebook.com/gabihamanulan" target="_blank" rel="noopener noreferrer">Facebook</a>
+              <a href="https://www.instagram.com/gabi.the.locksmith/" target="_blank" rel="noopener noreferrer">Instagram</a>
+              <a href="https://wa.me/972533888381" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+            </div>
+          </div>
+          <div class="footer-section">
+            <h3>מידע משפטי</h3>
+            <ul>
+              <li><a href="/privacy-policy">מדיניות פרטיות</a></li>
+              <li><a href="/terms-of-service">תנאי שימוש</a></li>
+              <li><a href="/accessibility">הצהרת נגישות</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 UNLOCK - גבי המנעולן. כל הזכויות שמורות.</p>
+        </div>
+      </div>
+    </footer>
   </div>
 
-  <form id="contactForm">
-    <!-- Hidden fields for Web3Forms -->
-    <input type="hidden" name="access_key" value="8f6811e4-edba-4ca8-8776-e39c6eaf1b72"/>
-    <input type="hidden" name="subject" value="פנייה חדשה – גבי המנעולן"/>
-    <input type="hidden" name="from_name" value="טופס האתר"/>
-    <input type="checkbox" name="botcheck" style="display:none"/>
+  <script>
+    const form = document.getElementById('contactForm');
+    const btn = document.getElementById('submitBtn');
+    const success = document.getElementById('successScreen');
 
-    <div class="field-row">
-      <div class="field">
-        <label>שם מלא <span class="req">*</span></label>
-        <input type="text" name="name" placeholder="ישראל ישראלי" required/>
-      </div>
-      <div class="field">
-        <label>טלפון <span class="req">*</span></label>
-        <input type="tel" name="phone" placeholder="050-0000000" required/>
-      </div>
-    </div>
-
-    <div class="field-row">
-      <div class="field">
-        <label>מייל</label>
-        <input type="email" name="email" placeholder="mail@example.com"/>
-      </div>
-      <div class="field">
-        <label>ח.פ / ת.ז</label>
-        <input type="text" name="id_number" placeholder="000000000"/>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="field">
-      <label>הודעה חופשית <span class="req">*</span></label>
-      <textarea name="message" placeholder="תארו את הבעיה או הבקשה שלכם..." required></textarea>
-    </div>
-
-    <button type="submit" class="submit-btn" id="submitBtn">שלח פנייה</button>
-    <p class="note">הפרטים יישלחו ישירות למייל של גבי</p>
-  </form>
-
-  <div class="success-screen" id="successScreen">
-    <div class="check-circle">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20 6 9 17 4 12"/>
-      </svg>
-    </div>
-    <h2>הפנייה נשלחה!</h2>
-    <p>תודה, קיבלנו את הפרטים שלך.<br/>גבי יחזור אליך בהקדם.</p>
-  </div>
-
-</div>
-
-<script>
-  const form = document.getElementById('contactForm');
-  const btn = document.getElementById('submitBtn');
-  const success = document.getElementById('successScreen');
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    btn.disabled = true;
-    btn.textContent = 'שולח...';
-
-    const data = new FormData(form);
-    try {
-      const res = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        body: data
-      });
-      const json = await res.json();
-      if (json.success) {
-        form.classList.add('hidden');
-        success.classList.add('visible');
-      } else {
-        alert('שגיאה בשליחה, נסה שוב.');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      btn.disabled = true;
+      btn.textContent = '⏳ שולח...';
+      const data = new FormData(form);
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: data });
+        const json = await res.json();
+        if (json.success) {
+          form.classList.add('hidden');
+          success.classList.add('visible');
+        } else {
+          alert('שגיאה בשליחה, נסה שוב.');
+          btn.disabled = false;
+          btn.textContent = '📨 שלח פנייה';
+        }
+      } catch {
+        alert('שגיאת רשת, נסה שוב.');
         btn.disabled = false;
-        btn.textContent = 'שלח פנייה';
+        btn.textContent = '📨 שלח פנייה';
       }
-    } catch {
-      alert('שגיאת רשת, נסה שוב.');
-      btn.disabled = false;
-      btn.textContent = 'שלח פנייה';
-    }
-  });
-</script>
+    });
+  </script>
 </body>
 </html>
