@@ -328,6 +328,100 @@
       font-weight: 500;
     }
     html.dark .trust-item { color: #94a3b8; }
+
+    /* ── Popup overlay ── */
+    .popup-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,0.55);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      padding: 1rem;
+    }
+    .popup-overlay.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .popup-box {
+      background: #fff;
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      max-width: 360px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 24px 48px rgba(15,23,42,0.18);
+      transform: translateY(16px) scale(0.97);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      opacity: 0;
+    }
+    html.dark .popup-box {
+      background: #0f172a;
+      box-shadow: 0 24px 48px rgba(0,0,0,0.5);
+    }
+    .popup-overlay.visible .popup-box {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+    .popup-icon {
+      font-size: 3rem;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+    .popup-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 0.5rem;
+    }
+    html.dark .popup-title { color: #f1f5f9; }
+    .popup-msg {
+      font-size: 0.9rem;
+      color: #64748b;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+    html.dark .popup-msg { color: #94a3b8; }
+    .popup-btn {
+      display: inline-block;
+      padding: 0.7rem 2rem;
+      border-radius: 10px;
+      font-family: 'Heebo', Arial, sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.2s, opacity 0.2s;
+      text-decoration: none;
+    }
+    .popup-btn:hover { transform: translateY(-1px); opacity: 0.9; }
+    .popup-btn-success {
+      background: linear-gradient(135deg, #1d4ed8, #2563eb);
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(37,99,235,0.25);
+    }
+    .popup-btn-error {
+      background: linear-gradient(135deg, #dc2626, #ef4444);
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(239,68,68,0.25);
+    }
+    /* Spinner */
+    .spinner {
+      width: 48px; height: 48px;
+      border: 4px solid #e2e8f0;
+      border-top-color: #2563eb;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 1rem;
+    }
+    html.dark .spinner { border-color: #1e293b; border-top-color: #3b82f6; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
   </style>
 </head>
 <body class="site-body">
@@ -410,29 +504,64 @@
 
     <!-- Footer -->
     <footer class="site-footer">
+  <!-- Popups -->
+  <div class="popup-overlay" id="popupLoading">
+    <div class="popup-box">
+      <div class="spinner"></div>
+      <div class="popup-title">שולח פרטים...</div>
+      <div class="popup-msg">אנא המתן, הפרטים בדרך לגבי</div>
+    </div>
+  </div>
+
+  <div class="popup-overlay" id="popupSuccess">
+    <div class="popup-box">
+      <span class="popup-icon">✅</span>
+      <div class="popup-title">הפרטים נשלחו בהצלחה!</div>
+      <div class="popup-msg">תודה! החשבונית תופק ותישלח אליך בהקדם.</div>
+      <a href="/" class="popup-btn popup-btn-success">← חזרה לאתר</a>
+    </div>
+  </div>
+
+  <div class="popup-overlay" id="popupError">
+    <div class="popup-box">
+      <span class="popup-icon">❌</span>
+      <div class="popup-title">שגיאה בשליחה</div>
+      <div class="popup-msg">משהו השתבש. בדוק את החיבור לאינטרנט ונסה שוב.</div>
+      <button class="popup-btn popup-btn-error" onclick="closePopup('popupError')">נסה שוב</button>
+    </div>
+  </div>
+
   <script>
+    function showPopup(id) {
+      document.getElementById(id).classList.add('visible');
+    }
+    function closePopup(id) {
+      document.getElementById(id).classList.remove('visible');
+    }
+
     const form = document.getElementById('contactForm');
     const btn = document.getElementById('submitBtn');
-    const success = document.getElementById('successScreen');
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       btn.disabled = true;
       btn.textContent = '⏳ שולח...';
+      showPopup('popupLoading');
       const data = new FormData(form);
       try {
         const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: data });
         const json = await res.json();
+        closePopup('popupLoading');
         if (json.success) {
-          form.classList.add('hidden');
-          success.classList.add('visible');
+          showPopup('popupSuccess');
         } else {
-          alert('שגיאה בשליחה, נסה שוב.');
+          showPopup('popupError');
           btn.disabled = false;
           btn.textContent = '📨 שלח פרטים';
         }
       } catch {
-        alert('שגיאת רשת, נסה שוב.');
+        closePopup('popupLoading');
+        showPopup('popupError');
         btn.disabled = false;
         btn.textContent = '📨 שלח פרטים';
       }
