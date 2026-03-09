@@ -97,6 +97,12 @@ function displayProduct(product) {
     `;
   }
 
+  // VAT Indicator
+  const vatEl = document.getElementById('productVat');
+  if (vatEl) {
+    vatEl.textContent = product.including_vat === 'n' ? 'לא כולל מע״מ' : 'כולל מע״מ';
+  }
+
   // Product Note
   const noteEl = document.getElementById('productNote');
   noteEl.textContent = product.note || '';
