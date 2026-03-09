@@ -410,8 +410,9 @@
 
     <!-- Footer -->
     <footer class="site-footer">
-      <div class="container">
-        <div class="footElementById('submitBtn');
+  <script>
+    const form = document.getElementById('contactForm');
+    const btn = document.getElementById('submitBtn');
     const success = document.getElementById('successScreen');
 
     form.addEventListener('submit', async (e) => {
@@ -428,12 +429,12 @@
         } else {
           alert('שגיאה בשליחה, נסה שוב.');
           btn.disabled = false;
-          btn.textContent = '📨 שלח פנייה';
+          btn.textContent = '📨 שלח פרטים';
         }
       } catch {
         alert('שגיאת רשת, נסה שוב.');
         btn.disabled = false;
-        btn.textContent = '📨 שלח פנייה';
+        btn.textContent = '📨 שלח פרטים';
       }
     });
   </script>
