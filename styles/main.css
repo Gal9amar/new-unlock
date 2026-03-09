@@ -1061,6 +1061,14 @@ button {
   font-weight: 700;
 }
 
+.vat-indicator {
+  display: block;
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 2px;
+  font-weight: 400;
+}
+
 .product-tags {
   display: flex;
   flex-wrap: wrap;
