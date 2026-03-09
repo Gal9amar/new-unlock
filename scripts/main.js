@@ -143,7 +143,7 @@ function displayProducts(products) {
     <div class="product-card fade-in" onclick="goToProduct(${index})" style="animation-delay: ${index * 0.08}s">
       <div class="product-image-container">
         <img src="${product.image || 'images/fav.png'}" alt="${product.title}" loading="lazy" onerror="this.src='images/fav.png'" />
-        ${product.status ? `<span class="product-status-badge status-${getStatusClass(product.status)}">מוצר ${product.status}</span>` : ''}
+        ${product.status ? `<span class="product-status-badge status-${getStatusClass(product.status)}">${product.status === 'מבצע' ? 'מוצר במבצע' : 'מוצר ' + product.status}</span>` : ''}
       </div>
       <div class="product-info-card">
         <h3 class="product-name">${product.title}</h3>
