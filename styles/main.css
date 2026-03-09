@@ -1070,6 +1070,10 @@ button {
   font-weight: 400;
 }
 
+.product-pricing-main .vat-indicator {
+  margin-top: 6px;
+}
+
 .product-tags {
   display: flex;
   flex-wrap: wrap;
