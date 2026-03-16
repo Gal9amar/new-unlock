@@ -54,9 +54,8 @@
     .stars-row { display:flex;gap:0.5rem; }
     .star-btn { width:46px;height:46px;border:1.5px solid #e2e8f0;border-radius:10px;background:#f8fafc;cursor:pointer;color:#94a3b8;font-family:'Heebo',Arial,sans-serif;transition:all .18s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:0; }
     html.dark .star-btn { background:#1e293b;border-color:#334155;color:#64748b; }
-    .star-btn:hover { border-color:#facc15;color:#facc15;background:#fefce8; }
-    html.dark .star-btn:hover { background:#2d2a00;border-color:#facc15; }
     .star-btn.lit { background:#facc15;border-color:#facc15;color:#fff;box-shadow:0 3px 10px rgba(250,204,21,0.4); }
+    .star-btn:hover { border-color:#facc15;color:#facc15;background:#fefce8; }
     .section-divider { position:relative;margin:1.4rem 0; }
     .section-divider::before { content:'';display:block;height:1px;background:#e2e8f0; }
     html.dark .section-divider::before { background:#1e293b; }
@@ -125,11 +124,11 @@
             <div class="field">
               <label>דירוג כללי <span class="req">*</span></label>
               <div class="stars-row" id="starsRow">
-                <button type="button" class="star-btn" data-val="5" onclick="pickStar(5)"><span style="font-size:1.1rem;line-height:1">★</span><span style="font-size:0.65rem;font-weight:700">5</span></button>
-                <button type="button" class="star-btn" data-val="4" onclick="pickStar(4)"><span style="font-size:1.1rem;line-height:1">★</span><span style="font-size:0.65rem;font-weight:700">4</span></button>
-                <button type="button" class="star-btn" data-val="3" onclick="pickStar(3)"><span style="font-size:1.1rem;line-height:1">★</span><span style="font-size:0.65rem;font-weight:700">3</span></button>
-                <button type="button" class="star-btn" data-val="2" onclick="pickStar(2)"><span style="font-size:1.1rem;line-height:1">★</span><span style="font-size:0.65rem;font-weight:700">2</span></button>
                 <button type="button" class="star-btn" data-val="1" onclick="pickStar(1)"><span style="font-size:1.1rem;line-height:1">★</span><span style="font-size:0.65rem;font-weight:700">1</span></button>
+                <button type="button" class="star-btn" data-val="2" onclick="pickStar(2)"><span style="font-size:1.1rem;line-height:1">★</span><span style="font-size:0.65rem;font-weight:700">2</span></button>
+                <button type="button" class="star-btn" data-val="3" onclick="pickStar(3)"><span style="font-size:1.1rem;line-height:1">★</span><span style="font-size:0.65rem;font-weight:700">3</span></button>
+                <button type="button" class="star-btn" data-val="4" onclick="pickStar(4)"><span style="font-size:1.1rem;line-height:1">★</span><span style="font-size:0.65rem;font-weight:700">4</span></button>
+                <button type="button" class="star-btn" data-val="5" onclick="pickStar(5)"><span style="font-size:1.1rem;line-height:1">★</span><span style="font-size:0.65rem;font-weight:700">5</span></button>
               </div>
             </div>
 
@@ -202,7 +201,10 @@
     function pickStar(n){
       selStars=n;
       document.getElementById('hiddenStars').value=n;
-      document.querySelectorAll('.star-btn').forEach(b=>b.classList.toggle('lit',Number(b.dataset.val)<=n));
+      document.querySelectorAll('.star-btn').forEach(b=>{
+        b.classList.toggle('lit', Number(b.dataset.val)<=n);
+      });
+    });
     }
 
     const sel={arrival:null,price:null,recommend:null};
