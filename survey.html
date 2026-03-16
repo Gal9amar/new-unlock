@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>סקר שביעות רצון — UNLOCK מנעולנות</title>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Rubik', sans-serif;
+  min-height: 100vh;
+  background: #f0ede8;
+  background-image:
+    radial-gradient(ellipse at 20% 0%, rgba(212,165,116,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 100%, rgba(139,101,63,0.12) 0%, transparent 50%);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px 16px;
+}
+.card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 40px 36px;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0 4px 40px rgba(0,0,0,0.10), 0 1px 4px rgba(0,0,0,0.06);
+}
+.logo-row { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; }
+.logo-icon { width:40px;height:40px;background:#1a1a1a;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px; }
+.logo-text { font-size:18px;font-weight:700;color:#1a1a1a;letter-spacing:-0.5px; }
+.logo-sub  { font-size:11px;color:#999;font-weight:400; }
+h1 { font-size:22px;font-weight:700;color:#1a1a1a;margin-bottom:6px;line-height:1.3; }
+.subtitle { font-size:14px;color:#888;margin-bottom:32px;line-height:1.5; }
+.q-block { margin-bottom:28px; }
+.q-label { font-size:15px;font-weight:600;color:#222;margin-bottom:12px;display:block; }
+.stars { display:flex;gap:6px;flex-direction:row-reverse;justify-content:flex-end; }
+.stars input { display:none; }
+.stars label { font-size:38px;cursor:pointer;color:#ddd;transition:color .15s,transform .1s;line-height:1; }
+.stars label:hover,.stars label:hover ~ label,.stars input:checked ~ label { color:#f5a623; }
+.stars label:hover { transform:scale(1.15); }
+.choices { display:flex;gap:8px;flex-wrap:wrap; }
+.choice-btn { flex:1;min-width:80px;padding:11px 14px;border:2px solid #e8e8e8;border-radius:10px;background:#fafafa;font-family:'Rubik',sans-serif;font-size:14px;font-weight:500;color:#555;cursor:pointer;transition:all .18s;text-align:center; }
+.choice-btn:hover { border-color:#bbb;background:#f3f3f3;color:#222; }
+.choice-btn.selected { border-color:#1a1a1a;background:#1a1a1a;color:#fff; }
+.choice-btn.sel-green { border-color:#2ecc71!important;background:#2ecc71!important; }
+.choice-btn.sel-red   { border-color:#e74c3c!important;background:#e74c3c!important; }
+.choice-btn.sel-amber { border-color:#f39c12!important;background:#f39c12!important; }
+textarea { width:100%;border:2px solid #e8e8e8;border-radius:10px;padding:12px 14px;font-family:'Rubik',sans-serif;font-size:14px;color:#333;resize:vertical;min-height:90px;outline:none;transition:border-color .18s;background:#fafafa; }
+textarea:focus { border-color:#1a1a1a;background:#fff; }
+textarea::placeholder { color:#bbb; }
+.divider { height:1px;background:#f0f0f0;margin:4px 0 28px; }
+.submit-btn { width:100%;padding:16px;background:#1a1a1a;color:#fff;border:none;border-radius:12px;font-family:'Rubik',sans-serif;font-size:16px;font-weight:600;cursor:pointer;transition:background .18s,transform .1s;margin-top:8px; }
+.submit-btn:hover { background:#333; }
+.submit-btn:active { transform:scale(0.99); }
+.submit-btn:disabled { background:#ccc;cursor:not-allowed; }
+#thankyou { display:none;text-align:center;padding:20px 0; }
+.ty-icon { font-size:56px;margin-bottom:16px; }
+.ty-title { font-size:24px;font-weight:700;color:#1a1a1a;margin-bottom:8px; }
+.ty-sub { font-size:15px;color:#888;line-height:1.6; }
+.error-msg { color:#e74c3c;font-size:13px;margin-top:10px;display:none; }
+@media(max-width:480px) { .card{padding:28px 20px;border-radius:16px;} h1{font-size:20px;} .stars label{font-size:32px;} }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo-row">
+    <div class="logo-icon">🔐</div>
+    <div>
+      <div class="logo-text">UNLOCK</div>
+      <div class="logo-sub">מנעולנות מקצועית</div>
+    </div>
+  </div>
+
+  <div id="form-section">
+    <h1>איך היה השירות?</h1>
+    <p class="subtitle">30 שניות מזמנך יעזרו לנו להשתפר ולהעניק שירות עוד יותר טוב</p>
+
+    <div class="q-block">
+      <label class="q-label">דירוג כללי</label>
+      <div class="stars">
+        <input type="radio" name="stars" id="s5" value="5"><label for="s5">★</label>
+        <input type="radio" name="stars" id="s4" value="4"><label for="s4">★</label>
+        <input type="radio" name="stars" id="s3" value="3"><label for="s3">★</label>
+        <input type="radio" name="stars" id="s2" value="2"><label for="s2">★</label>
+        <input type="radio" name="stars" id="s1" value="1"><label for="s1">★</label>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="q-block">
+      <label class="q-label">זמן הגעת הטכנאי</label>
+      <div class="choices" id="g-arrival">
+        <button class="choice-btn" data-val="מהיר"  data-color="green" onclick="pick('arrival',this)">⚡ מהיר</button>
+        <button class="choice-btn" data-val="סביר"  data-color="amber" onclick="pick('arrival',this)">👍 סביר</button>
+        <button class="choice-btn" data-val="איחר"  data-color="red"   onclick="pick('arrival',this)">⏳ איחר</button>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="q-block">
+      <label class="q-label">תחושתך לגבי המחיר</label>
+      <div class="choices" id="g-price">
+        <button class="choice-btn" data-val="שווה את המחיר" data-color="green" onclick="pick('price',this)">✅ שווה</button>
+        <button class="choice-btn" data-val="יקר"           data-color="red"   onclick="pick('price',this)">💸 יקר</button>
+        <button class="choice-btn" data-val="זול"           data-color="green" onclick="pick('price',this)">🤑 זול</button>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="q-block">
+      <label class="q-label">האם תמליץ עלינו לחבר?</label>
+      <div class="choices" id="g-recommend">
+        <button class="choice-btn" data-val="כן" data-color="green" onclick="pick('recommend',this)">❤️ בהחלט כן</button>
+        <button class="choice-btn" data-val="לא" data-color="red"   onclick="pick('recommend',this)">👎 לא</button>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="q-block">
+      <label class="q-label">הערות נוספות <span style="color:#bbb;font-weight:400;font-size:13px">(אופציונלי)</span></label>
+      <textarea id="comment" placeholder="ספר לנו עוד..."></textarea>
+    </div>
+
+    <p class="error-msg" id="error-msg">אנא ענה על כל השאלות לפני שליחה</p>
+    <button class="submit-btn" id="submit-btn" onclick="submitSurvey()">שלח משוב ←</button>
+  </div>
+
+  <div id="thankyou">
+    <div class="ty-icon">🙏</div>
+    <div class="ty-title">תודה רבה!</div>
+    <p class="ty-sub">המשוב שלך חשוב לנו מאוד<br>ועוזר לנו לשפר את השירות</p>
+  </div>
+</div>
+
+<script>
+// ← הכנס כאן את ה-URL של Apps Script שלך
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwJAYb3ehXaSl9Ir8KJilJy4PAbIixkRWR6aCTN1CJEsqVl4mT7iwG6YKZp6f_MqRelOQ/exec';
+
+const answers = { stars: null, arrival: null, price: null, recommend: null };
+
+document.querySelectorAll('.stars input').forEach(inp => {
+  inp.addEventListener('change', () => answers.stars = inp.value);
+});
+
+function pick(group, btn) {
+  document.querySelectorAll(`#g-${group} .choice-btn`).forEach(b => {
+    b.classList.remove('selected','sel-green','sel-red','sel-amber');
+  });
+  btn.classList.add('selected', 'sel-' + btn.dataset.color);
+  answers[group] = btn.dataset.val;
+}
+
+async function submitSurvey() {
+  if (!answers.stars || !answers.arrival || !answers.price || !answers.recommend) {
+    document.getElementById('error-msg').style.display = 'block';
+    return;
+  }
+  document.getElementById('error-msg').style.display = 'none';
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'שולח...';
+
+  const payload = {
+    stars:     answers.stars,
+    arrival:   answers.arrival,
+    price:     answers.price,
+    recommend: answers.recommend,
+    comment:   document.getElementById('comment').value.trim()
+  };
+
+  try {
+    await fetch(SHEET_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  } catch(e) { console.error(e); }
+
+  document.getElementById('form-section').style.display = 'none';
+  document.getElementById('thankyou').style.display = 'block';
+}
+</script>
+</body>
+</html>

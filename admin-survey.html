@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ניהול סקרים — UNLOCK</title>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:'Rubik',sans-serif; background:#0f1117; color:#e8eaf0; min-height:100vh; }
+header { background:#161920; border-bottom:1px solid rgba(255,255,255,.07); padding:16px 28px; display:flex; align-items:center; gap:14px; }
+.h-logo { font-size:16px; font-weight:700; }
+.h-logo span { color:#f5a623; }
+.h-sub { font-size:12px; color:#555; }
+.h-right { margin-right:auto; display:flex; gap:8px; }
+.btn { background:none; border:1px solid rgba(255,255,255,.12); border-radius:6px; padding:6px 14px; color:#888; font-family:'Rubik',sans-serif; font-size:12px; cursor:pointer; transition:all .15s; }
+.btn:hover { color:#fff; border-color:rgba(255,255,255,.25); }
+.btn-danger { border-color:rgba(231,76,60,.3); color:#e74c3c; }
+.btn-danger:hover { background:rgba(231,76,60,.1); color:#e74c3c; }
+main { max-width:1000px; margin:0 auto; padding:28px 20px; }
+.stats { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:28px; }
+@media(max-width:640px) { .stats { grid-template-columns:repeat(2,1fr); } }
+.stat { background:#161920; border:1px solid rgba(255,255,255,.07); border-radius:12px; padding:18px 20px; }
+.stat-n { font-size:30px; font-weight:700; line-height:1; margin-bottom:5px; }
+.stat-l { font-size:12px; color:#555; }
+.sec-title { font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; color:#444; margin-bottom:12px; }
+.cards { display:flex; flex-direction:column; gap:10px; }
+.resp { background:#161920; border:1px solid rgba(255,255,255,.07); border-radius:12px; padding:16px 20px; display:grid; grid-template-columns:auto 1fr; gap:14px; transition:border-color .15s; }
+.resp:hover { border-color:rgba(255,255,255,.15); }
+.resp-left { display:flex; flex-direction:column; align-items:center; gap:4px; min-width:60px; }
+.resp-stars { font-size:16px; white-space:nowrap; }
+.resp-date { font-size:10px; color:#444; text-align:center; }
+.resp-time { font-size:10px; color:#555; }
+.tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px; }
+.tag { font-size:12px; padding:3px 10px; border-radius:20px; font-weight:500; }
+.g  { background:rgba(46,204,113,.15); color:#2ecc71; }
+.r  { background:rgba(231,76,60,.15);  color:#e74c3c; }
+.a  { background:rgba(243,156,18,.15); color:#f39c12; }
+.b  { background:rgba(52,152,219,.15); color:#3498db; }
+.comment { font-size:13px; color:#888; font-style:italic; line-height:1.5; }
+.empty { text-align:center; padding:60px 20px; color:#444; }
+.empty-icon { font-size:48px; margin-bottom:12px; }
+#msg { text-align:center; padding:40px; color:#555; font-size:14px; }
+.url-setup { background:#161920; border:1px solid rgba(245,166,35,.3); border-radius:12px; padding:20px 24px; margin-bottom:24px; }
+.url-setup p { font-size:13px; color:#888; margin-bottom:12px; line-height:1.6; }
+.url-input { width:100%; background:#0f1117; border:1px solid rgba(255,255,255,.12); border-radius:8px; padding:10px 14px; font-family:'Rubik',sans-serif; font-size:13px; color:#fff; outline:none; margin-bottom:10px; }
+.url-input::placeholder { color:#444; }
+.url-save { background:#f5a623; border:none; border-radius:8px; padding:9px 20px; font-family:'Rubik',sans-serif; font-size:13px; font-weight:600; color:#1a1a1a; cursor:pointer; }
+</style>
+</head>
+<body>
+<header>
+  <div style="width:36px;height:36px;background:#1a1a1a;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px">🔐</div>
+  <div>
+    <div class="h-logo">UNLOCK <span>ניהול</span></div>
+    <div class="h-sub">סקרי שביעות רצון</div>
+  </div>
+  <div class="h-right">
+    <button class="btn" onclick="loadData()">↻ רענן</button>
+  </div>
+</header>
+
+<main>
+  <!-- URL Setup -->
+  <div class="url-setup" id="url-setup">
+    <p>🔧 <strong style="color:#f5a623">הגדרה חד-פעמית</strong> — הכנס את ה-URL של Google Apps Script שלך כדי לטעון את התגובות:</p>
+    <input class="url-input" id="url-input" placeholder="https://script.google.com/macros/s/..." value="">
+    <br>
+    <button class="url-save" onclick="saveUrl()">שמור והתחל</button>
+  </div>
+
+  <div id="msg">הכנס URL כדי לטעון נתונים</div>
+
+  <div id="content" style="display:none">
+    <div class="stats">
+      <div class="stat"><div class="stat-n" id="sn-total" style="color:#3498db">0</div><div class="stat-l">סה״כ תגובות</div></div>
+      <div class="stat"><div class="stat-n" id="sn-stars" style="color:#f5a623">—</div><div class="stat-l">דירוג ממוצע</div></div>
+      <div class="stat"><div class="stat-n" id="sn-rec"   style="color:#2ecc71">—</div><div class="stat-l">ממליצים</div></div>
+      <div class="stat"><div class="stat-n" id="sn-fast"  style="color:#a8e050">—</div><div class="stat-l">הגעה מהירה</div></div>
+    </div>
+    <div class="sec-title">כל התגובות</div>
+    <div class="cards" id="cards"></div>
+  </div>
+</main>
+
+<script>
+let SHEET_URL = 'https://script.google.com/macros/s/AKfycbwJAYb3ehXaSl9Ir8KJilJy4PAbIixkRWR6aCTN1CJEsqVl4mT7iwG6YKZp6f_MqRelOQ/exec';
+
+if (SHEET_URL) {
+  document.getElementById('url-input').value = SHEET_URL;
+  document.getElementById('url-setup').style.display = 'none';
+  loadData();
+}
+
+function saveUrl() {
+  const v = document.getElementById('url-input').value.trim();
+  if (!v) return;
+  SHEET_URL = v;
+  localStorage.setItem('unlock_sheet_url', v);
+  document.getElementById('url-setup').style.display = 'none';
+  loadData();
+}
+
+function stars(n) {
+  return '<span style="color:#f5a623">' + '★'.repeat(n) + '</span><span style="color:#333">' + '☆'.repeat(5-n) + '</span>';
+}
+
+function tagColor(key, val) {
+  const map = {
+    'מהיר':'g','סביר':'a','איחר':'r',
+    'שווה את המחיר':'g','יקר':'r','זול':'b',
+    'כן':'g','לא':'r'
+  };
+  return map[val] || 'a';
+}
+
+async function loadData() {
+  if (!SHEET_URL) return;
+  document.getElementById('msg').textContent = 'טוען...';
+  document.getElementById('content').style.display = 'none';
+
+  try {
+    const res  = await fetch(SHEET_URL);
+    const data = await res.json();
+
+    document.getElementById('msg').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
+
+    const total = data.length;
+    document.getElementById('sn-total').textContent = total;
+
+    if (total > 0) {
+      const avg  = (data.reduce((s,r) => s + Number(r['כוכבים']), 0) / total).toFixed(1);
+      const rec  = Math.round(data.filter(r => r['ממליץ'] === 'כן').length / total * 100);
+      const fast = Math.round(data.filter(r => r['זמן הגעה'] === 'מהיר').length / total * 100);
+      document.getElementById('sn-stars').textContent = avg + ' ★';
+      document.getElementById('sn-rec').textContent   = rec + '%';
+      document.getElementById('sn-fast').textContent  = fast + '%';
+    }
+
+    const el = document.getElementById('cards');
+    if (total === 0) {
+      el.innerHTML = '<div class="empty"><div class="empty-icon">📋</div>אין תגובות עדיין</div>';
+      return;
+    }
+
+    el.innerHTML = data.map((r, i) => `
+      <div class="resp">
+        <div class="resp-left">
+          <div class="resp-stars">${stars(Number(r['כוכבים']))}</div>
+          <div class="resp-date">${r['תאריך']}</div>
+          <div class="resp-time">${r['שעה']}</div>
+        </div>
+        <div>
+          <div class="tags">
+            <span class="tag ${tagColor('arrival', r['זמן הגעה'])}">⏱ ${r['זמן הגעה']}</span>
+            <span class="tag ${tagColor('price',   r['מחיר'])}">💰 ${r['מחיר']}</span>
+            <span class="tag ${tagColor('rec',     r['ממליץ'])}">👍 ממליץ: ${r['ממליץ']}</span>
+          </div>
+          ${r['הערות'] ? `<div class="comment">"${r['הערות']}"</div>` : ''}
+        </div>
+      </div>
+    `).join('');
+
+  } catch(e) {
+    document.getElementById('msg').textContent = 'שגיאה בטעינת נתונים — בדוק את ה-URL';
+    document.getElementById('msg').style.color = '#e74c3c';
+    console.error(e);
+  }
+}
+</script>
+</body>
+</html>
