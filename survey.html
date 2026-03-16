@@ -45,17 +45,18 @@
     .toggle-row { display:flex;gap:0.5rem;flex-wrap:wrap; }
     .toggle-btn { flex:1;min-width:80px;padding:0.6rem 0.75rem;font-family:'Heebo',Arial,sans-serif;font-size:0.88rem;font-weight:600;border:1.5px solid #e2e8f0;border-radius:10px;background:#f8fafc;color:#475569;cursor:pointer;transition:all 0.18s;display:flex;align-items:center;justify-content:center;gap:0.3rem; }
     html.dark .toggle-btn { background:#1e293b;border-color:#334155;color:#94a3b8; }
-    .toggle-btn:hover { border-color:#93c5fd;color:#1d4ed8;background:#eff6ff; }
-    html.dark .toggle-btn:hover { border-color:#3b82f6;color:#60a5fa;background:#1e3a5f; }
+    .toggle-btn:not([class*="active"]):hover { border-color:#93c5fd;color:#1d4ed8;background:#eff6ff; }
+    html.dark .toggle-btn:not([class*="active"]):hover { border-color:#3b82f6;color:#60a5fa;background:#1e3a5f; }
     .toggle-btn.active { background:linear-gradient(135deg,#1d4ed8,#2563eb);border-color:#1d4ed8;color:#fff;box-shadow:0 4px 12px rgba(37,99,235,0.25); }
     .toggle-btn.active-green { background:linear-gradient(135deg,#10b981,#22c55e);border-color:#10b981;color:#fff;box-shadow:0 4px 12px rgba(16,185,129,0.25); }
     .toggle-btn.active-red { background:linear-gradient(135deg,#dc2626,#ef4444);border-color:#dc2626;color:#fff;box-shadow:0 4px 12px rgba(239,68,68,0.2); }
     .toggle-btn.active-amber { background:linear-gradient(135deg,#d97706,#f59e0b);border-color:#d97706;color:#fff;box-shadow:0 4px 12px rgba(245,158,11,0.25); }
-    .stars-row { display:flex;gap:0.4rem;flex-direction:row-reverse;justify-content:flex-end; }
-    .star-btn { font-size:2.2rem;line-height:1;background:none;border:none;cursor:pointer;color:#e2e8f0;transition:color .15s,transform .1s;padding:0; }
-    html.dark .star-btn { color:#334155; }
-    .star-btn.lit { color:#facc15; }
-    .star-btn:hover { color:#facc15;transform:scale(1.15); }
+    .stars-row { display:flex;gap:0.5rem; }
+    .star-btn { width:46px;height:46px;border:1.5px solid #e2e8f0;border-radius:10px;background:#f8fafc;cursor:pointer;color:#94a3b8;font-family:'Heebo',Arial,sans-serif;transition:all .18s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:0; }
+    html.dark .star-btn { background:#1e293b;border-color:#334155;color:#64748b; }
+    .star-btn:hover { border-color:#facc15;color:#facc15;background:#fefce8; }
+    html.dark .star-btn:hover { background:#2d2a00;border-color:#facc15; }
+    .star-btn.lit { background:#facc15;border-color:#facc15;color:#fff;box-shadow:0 3px 10px rgba(250,204,21,0.4); }
     .section-divider { position:relative;margin:1.4rem 0; }
     .section-divider::before { content:'';display:block;height:1px;background:#e2e8f0; }
     html.dark .section-divider::before { background:#1e293b; }
@@ -124,11 +125,11 @@
             <div class="field">
               <label>דירוג כללי <span class="req">*</span></label>
               <div class="stars-row" id="starsRow">
-                <button type="button" class="star-btn" data-val="5" onclick="pickStar(5)">★</button>
-                <button type="button" class="star-btn" data-val="4" onclick="pickStar(4)">★</button>
-                <button type="button" class="star-btn" data-val="3" onclick="pickStar(3)">★</button>
-                <button type="button" class="star-btn" data-val="2" onclick="pickStar(2)">★</button>
-                <button type="button" class="star-btn" data-val="1" onclick="pickStar(1)">★</button>
+                <button type="button" class="star-btn" data-val="5" onclick="pickStar(5)"><span style="font-size:1.1rem;line-height:1">★</span><span style="font-size:0.65rem;font-weight:700">5</span></button>
+                <button type="button" class="star-btn" data-val="4" onclick="pickStar(4)"><span style="font-size:1.1rem;line-height:1">★</span><span style="font-size:0.65rem;font-weight:700">4</span></button>
+                <button type="button" class="star-btn" data-val="3" onclick="pickStar(3)"><span style="font-size:1.1rem;line-height:1">★</span><span style="font-size:0.65rem;font-weight:700">3</span></button>
+                <button type="button" class="star-btn" data-val="2" onclick="pickStar(2)"><span style="font-size:1.1rem;line-height:1">★</span><span style="font-size:0.65rem;font-weight:700">2</span></button>
+                <button type="button" class="star-btn" data-val="1" onclick="pickStar(1)"><span style="font-size:1.1rem;line-height:1">★</span><span style="font-size:0.65rem;font-weight:700">1</span></button>
               </div>
             </div>
 
