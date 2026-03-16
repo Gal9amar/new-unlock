@@ -1,247 +1,237 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>סקר שביעות רצון — UNLOCK מנעולנות</title>
-<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-* { box-sizing:border-box; margin:0; padding:0; }
-body {
-  font-family:'Rubik',sans-serif;
-  min-height:100vh;
-  background:#0f172a;
-  background-image:
-    radial-gradient(ellipse at 20% 10%, rgba(29,78,216,0.25) 0%, transparent 55%),
-    radial-gradient(ellipse at 80% 90%, rgba(37,99,235,0.15) 0%, transparent 50%);
-  display:flex; align-items:center; justify-content:center;
-  padding:24px 16px;
-}
-.card {
-  background:#1e293b;
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:20px;
-  padding:40px 36px;
-  max-width:480px;
-  width:100%;
-  box-shadow:0 24px 60px rgba(0,0,0,0.5);
-}
-.logo-row { display:flex; align-items:center; gap:12px; margin-bottom:28px; }
-.logo-icon {
-  width:44px; height:44px;
-  background:linear-gradient(135deg,#1d4ed8,#2563eb);
-  border-radius:12px;
-  display:flex; align-items:center; justify-content:center;
-  font-size:22px;
-  box-shadow:0 4px 14px rgba(29,78,216,0.4);
-}
-.logo-text { font-size:19px; font-weight:700; color:#f1f5f9; letter-spacing:-0.5px; }
-.logo-sub  { font-size:11px; color:#64748b; }
-h1 { font-size:22px; font-weight:700; color:#f1f5f9; margin-bottom:6px; line-height:1.3; }
-.subtitle { font-size:14px; color:#94a3b8; margin-bottom:32px; line-height:1.6; }
-
-.q-block { margin-bottom:26px; }
-.q-label { font-size:14px; font-weight:600; color:#cbd5e1; margin-bottom:12px; display:block; }
-
-/* STARS */
-.stars { display:flex; gap:8px; flex-direction:row-reverse; justify-content:flex-end; }
-.stars input { display:none; }
-.stars label { font-size:38px; cursor:pointer; color:#334155; transition:color .15s,transform .1s; line-height:1; }
-.stars label:hover,
-.stars label:hover ~ label,
-.stars input:checked ~ label { color:#facc15; }
-.stars label:hover { transform:scale(1.15); }
-
-/* CHOICES */
-.choices { display:flex; gap:8px; flex-wrap:wrap; }
-.choice-btn {
-  flex:1; min-width:80px;
-  padding:11px 12px;
-  border:1.5px solid #334155;
-  border-radius:10px;
-  background:#0f172a;
-  font-family:'Rubik',sans-serif;
-  font-size:13px; font-weight:500;
-  color:#94a3b8;
-  cursor:pointer;
-  transition:all .18s;
-  text-align:center;
-}
-.choice-btn:hover { border-color:#2563eb; color:#e2e8f0; background:#1e293b; }
-.choice-btn.sel-green { border-color:#10b981; background:rgba(16,185,129,0.15); color:#10b981; }
-.choice-btn.sel-red   { border-color:#ef4444; background:rgba(239,68,68,0.12);  color:#ef4444; }
-.choice-btn.sel-amber { border-color:#f59e0b; background:rgba(245,158,11,0.12); color:#f59e0b; }
-.choice-btn.sel-blue  { border-color:#2563eb; background:rgba(37,99,235,0.15);  color:#60a5fa; }
-
-/* TEXTAREA */
-textarea {
-  width:100%;
-  border:1.5px solid #334155;
-  border-radius:10px;
-  padding:12px 14px;
-  font-family:'Rubik',sans-serif;
-  font-size:14px; color:#e2e8f0;
-  resize:vertical; min-height:88px;
-  outline:none;
-  transition:border-color .18s;
-  background:#0f172a;
-}
-textarea:focus { border-color:#2563eb; }
-textarea::placeholder { color:#475569; }
-
-.divider { height:1px; background:rgba(255,255,255,0.06); margin:4px 0 26px; }
-
-.submit-btn {
-  width:100%; padding:15px;
-  background:linear-gradient(135deg,#1d4ed8,#2563eb);
-  color:#fff; border:none; border-radius:12px;
-  font-family:'Rubik',sans-serif;
-  font-size:16px; font-weight:600;
-  cursor:pointer;
-  transition:opacity .18s, transform .1s;
-  margin-top:8px;
-  box-shadow:0 4px 20px rgba(29,78,216,0.4);
-}
-.submit-btn:hover { opacity:.9; }
-.submit-btn:active { transform:scale(0.99); }
-.submit-btn:disabled { background:#334155; box-shadow:none; cursor:not-allowed; }
-
-#thankyou { display:none; text-align:center; padding:20px 0; }
-.ty-icon  { font-size:56px; margin-bottom:16px; }
-.ty-title { font-size:24px; font-weight:700; color:#f1f5f9; margin-bottom:8px; }
-.ty-sub   { font-size:15px; color:#94a3b8; line-height:1.7; }
-.ty-badge {
-  display:inline-block; margin-top:20px;
-  background:rgba(250,204,21,0.12); border:1px solid rgba(250,204,21,0.3);
-  border-radius:20px; padding:6px 16px;
-  font-size:13px; color:#facc15;
-}
-
-.error-msg { color:#f87171; font-size:13px; margin-top:10px; display:none; }
-
-@media(max-width:480px) {
-  .card { padding:28px 18px; border-radius:16px; }
-  h1 { font-size:20px; }
-  .stars label { font-size:34px; }
-}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0a1628" />
+  <title>סקר שביעות רצון – UNLOCK מנעולן מקצועי</title>
+  <meta name="description" content="שתף אותנו בחוויית השירות שלך – UNLOCK מנעולנות מקצועית" />
+  <link rel="icon" href="images/fav.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/main.css?v=3.0" />
+  <style>
+    .top-nav { position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);border-bottom:1px solid #e2e8f0;padding:0.75rem 0; }
+    html.dark .top-nav { background:rgba(2,6,23,0.92);border-bottom-color:#1e293b; }
+    .nav-inner { max-width:1100px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between; }
+    .nav-logo { display:flex;align-items:center;gap:0.6rem;font-weight:800;font-size:1.1rem;color:#1d4ed8;text-decoration:none; }
+    .nav-logo img { width:32px;height:32px; }
+    .nav-phone { font-size:0.9rem;font-weight:600;color:#1d4ed8;text-decoration:none; }
+    html.dark .nav-phone { color:#60a5fa; }
+    .page-wrapper { min-height:100vh;display:flex;flex-direction:column;background:#f8fafc; }
+    html.dark .page-wrapper { background:#020617; }
+    .form-section { flex:1;padding:3rem 1rem 4rem; }
+    .form-container { max-width:540px;margin:0 auto; }
+    .form-heading { text-align:center;margin-bottom:2rem; }
+    .form-heading .badge-row { display:flex;justify-content:center;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem; }
+    .form-heading .badge { background:linear-gradient(135deg,#eff6ff,#dbeafe);color:#1d4ed8;padding:0.3rem 0.9rem;border-radius:20px;font-size:0.78rem;font-weight:600; }
+    html.dark .form-heading .badge { background:linear-gradient(135deg,#1e3a5f,#1e40af);color:#bfdbfe; }
+    .form-heading h1 { font-size:clamp(1.6rem,4vw,2rem);font-weight:800;color:#0f172a;line-height:1.25;margin-bottom:0.6rem; }
+    html.dark .form-heading h1 { color:#f1f5f9; }
+    .form-heading h1 .highlight { color:#1d4ed8; }
+    .form-heading p { font-size:0.95rem;color:#64748b; }
+    html.dark .form-heading p { color:#94a3b8; }
+    .form-card { background:#fff;border-radius:18px;border:1px solid #e2e8f0;padding:2rem 1.75rem;box-shadow:0 4px 24px rgba(15,23,42,0.07); }
+    html.dark .form-card { background:#0f172a;border-color:#1e293b;box-shadow:0 4px 24px rgba(0,0,0,0.3); }
+    .field { margin-bottom:1.3rem; }
+    label { display:block;font-size:0.88rem;font-weight:600;color:#374151;margin-bottom:0.4rem; }
+    html.dark label { color:#cbd5e1; }
+    .req { color:#ef4444; }
+    input[type="text"],input[type="tel"],input[type="email"],textarea { width:100%;padding:0.7rem 0.9rem;border:1.5px solid #e2e8f0;border-radius:10px;font-family:'Heebo',Arial,sans-serif;font-size:0.95rem;color:#0f172a;background:#f8fafc;outline:none;transition:border-color 0.2s,box-shadow 0.2s; }
+    html.dark input[type="text"],html.dark input[type="tel"],html.dark input[type="email"],html.dark textarea { background:#1e293b;border-color:#334155;color:#f1f5f9; }
+    input:focus,textarea:focus { border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,0.12);background:#fff; }
+    html.dark input:focus,html.dark textarea:focus { background:#1e293b; }
+    textarea { resize:vertical;min-height:80px; }
+    input::placeholder,textarea::placeholder { color:#94a3b8; }
+    .toggle-row { display:flex;gap:0.5rem;flex-wrap:wrap; }
+    .toggle-btn { flex:1;min-width:80px;padding:0.6rem 0.75rem;font-family:'Heebo',Arial,sans-serif;font-size:0.88rem;font-weight:600;border:1.5px solid #e2e8f0;border-radius:10px;background:#f8fafc;color:#475569;cursor:pointer;transition:all 0.18s;display:flex;align-items:center;justify-content:center;gap:0.3rem; }
+    html.dark .toggle-btn { background:#1e293b;border-color:#334155;color:#94a3b8; }
+    .toggle-btn:hover { border-color:#93c5fd;color:#1d4ed8;background:#eff6ff; }
+    html.dark .toggle-btn:hover { border-color:#3b82f6;color:#60a5fa;background:#1e3a5f; }
+    .toggle-btn.active { background:linear-gradient(135deg,#1d4ed8,#2563eb);border-color:#1d4ed8;color:#fff;box-shadow:0 4px 12px rgba(37,99,235,0.25); }
+    .toggle-btn.active-green { background:linear-gradient(135deg,#10b981,#22c55e);border-color:#10b981;color:#fff;box-shadow:0 4px 12px rgba(16,185,129,0.25); }
+    .toggle-btn.active-red { background:linear-gradient(135deg,#dc2626,#ef4444);border-color:#dc2626;color:#fff;box-shadow:0 4px 12px rgba(239,68,68,0.2); }
+    .toggle-btn.active-amber { background:linear-gradient(135deg,#d97706,#f59e0b);border-color:#d97706;color:#fff;box-shadow:0 4px 12px rgba(245,158,11,0.25); }
+    .stars-row { display:flex;gap:0.4rem;flex-direction:row-reverse;justify-content:flex-end; }
+    .star-btn { font-size:2.2rem;line-height:1;background:none;border:none;cursor:pointer;color:#e2e8f0;transition:color .15s,transform .1s;padding:0; }
+    html.dark .star-btn { color:#334155; }
+    .star-btn.lit { color:#facc15; }
+    .star-btn:hover { color:#facc15;transform:scale(1.15); }
+    .section-divider { position:relative;margin:1.4rem 0; }
+    .section-divider::before { content:'';display:block;height:1px;background:#e2e8f0; }
+    html.dark .section-divider::before { background:#1e293b; }
+    .submit-btn { width:100%;padding:0.9rem;background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;border:none;border-radius:12px;font-family:'Heebo',Arial,sans-serif;font-size:1.05rem;font-weight:700;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s,opacity 0.2s;box-shadow:0 6px 20px rgba(37,99,235,0.35);margin-top:0.5rem; }
+    .submit-btn:hover { transform:translateY(-1px);box-shadow:0 8px 24px rgba(37,99,235,0.4); }
+    .submit-btn:active { transform:translateY(0); }
+    .submit-btn:disabled { opacity:0.55;cursor:not-allowed;transform:none; }
+    .form-note { font-size:0.78rem;color:#94a3b8;text-align:center;margin-top:0.75rem; }
+    .popup-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:9999;padding:1rem; }
+    .popup-overlay.visible { display:flex; }
+    .popup-box { background:#fff;border-radius:20px;padding:2.5rem 2rem;max-width:360px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.2);animation:fadeUp 0.3s ease both; }
+    html.dark .popup-box { background:#1e293b; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)} }
+    .popup-icon { font-size:3rem;display:block;margin-bottom:1rem; }
+    .popup-title { font-size:1.3rem;font-weight:800;color:#0f172a;margin-bottom:0.5rem; }
+    html.dark .popup-title { color:#f1f5f9; }
+    .popup-msg { font-size:0.95rem;color:#64748b;margin-bottom:1.5rem;line-height:1.6; }
+    .popup-btn { display:inline-block;padding:0.75rem 2rem;border-radius:12px;font-family:'Heebo',Arial,sans-serif;font-size:1rem;font-weight:700;text-decoration:none;cursor:pointer;border:none;transition:transform 0.2s,opacity 0.2s; }
+    .popup-btn:hover { transform:translateY(-1px);opacity:0.9; }
+    .popup-btn-success { background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;box-shadow:0 8px 18px rgba(37,99,235,0.25); }
+    .popup-btn-error { background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;box-shadow:0 8px 18px rgba(239,68,68,0.25); }
+    .spinner { width:48px;height:48px;border:4px solid #e2e8f0;border-top-color:#2563eb;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 1rem; }
+    html.dark .spinner { border-color:#1e293b;border-top-color:#3b82f6; }
+    @keyframes spin { to{transform:rotate(360deg)} }
+    @media(max-width:480px) { .form-card{padding:1.4rem 1.1rem;} .star-btn{font-size:1.9rem;} }
+  </style>
 </head>
-<body>
-<div class="card">
-  <div class="logo-row">
-    <div class="logo-icon">🔐</div>
-    <div>
-      <div class="logo-text">UNLOCK</div>
-      <div class="logo-sub">מנעולנות מקצועית</div>
+<body class="site-body">
+
+  <nav class="top-nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo"><img src="images/fav.png" alt="UNLOCK"/>UNLOCK</a>
+      <a href="tel:0533888381" class="nav-phone">📞 053-388-8381</a>
     </div>
+  </nav>
+
+  <div class="page-wrapper">
+    <main class="form-section" id="main-content">
+      <div class="form-container">
+
+        <div class="form-heading">
+          <div class="badge-row">
+            <span class="badge">⭐ משוב לקוחות</span>
+            <span class="badge">30 שניות בלבד</span>
+          </div>
+          <h1>איך היה<br/><span class="highlight">השירות שלנו?</span></h1>
+          <p>המשוב שלך עוזר לנו להשתפר ולהעניק שירות עוד יותר טוב</p>
+        </div>
+
+        <div class="form-card">
+          <form id="surveyForm">
+            <input type="hidden" name="access_key"  value="8f6811e4-edba-4ca8-8776-e39c6eaf1b72"/>
+            <input type="hidden" name="subject"     value="סקר שביעות רצון – UNLOCK"/>
+            <input type="hidden" name="from_name"   value="סקר לקוחות"/>
+            <input type="checkbox" name="botcheck"  style="display:none"/>
+            <input type="hidden" name="stars"       id="hiddenStars"/>
+            <input type="hidden" name="arrival"     id="hiddenArrival"/>
+            <input type="hidden" name="price"       id="hiddenPrice"/>
+            <input type="hidden" name="recommend"   id="hiddenRecommend"/>
+
+            <div class="field">
+              <label>שם מלא <span class="req">*</span></label>
+              <input type="text" name="customer_name" placeholder="ישראל ישראלי" required/>
+            </div>
+
+            <div class="field">
+              <label>דירוג כללי <span class="req">*</span></label>
+              <div class="stars-row" id="starsRow">
+                <button type="button" class="star-btn" data-val="5" onclick="pickStar(5)">★</button>
+                <button type="button" class="star-btn" data-val="4" onclick="pickStar(4)">★</button>
+                <button type="button" class="star-btn" data-val="3" onclick="pickStar(3)">★</button>
+                <button type="button" class="star-btn" data-val="2" onclick="pickStar(2)">★</button>
+                <button type="button" class="star-btn" data-val="1" onclick="pickStar(1)">★</button>
+              </div>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <div class="field">
+              <label>זמן הגעת הטכנאי <span class="req">*</span></label>
+              <div class="toggle-row" id="arrivalRow">
+                <button type="button" class="toggle-btn" data-val="מהיר"  data-color="green" onclick="pickToggle('arrival',this)">⚡ מהיר</button>
+                <button type="button" class="toggle-btn" data-val="סביר"  data-color=""      onclick="pickToggle('arrival',this)">👍 סביר</button>
+                <button type="button" class="toggle-btn" data-val="איחר"  data-color="red"   onclick="pickToggle('arrival',this)">⏳ איחר</button>
+              </div>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <div class="field">
+              <label>תחושתך לגבי המחיר <span class="req">*</span></label>
+              <div class="toggle-row" id="priceRow">
+                <button type="button" class="toggle-btn" data-val="שווה את המחיר" data-color="green" onclick="pickToggle('price',this)">✅ שווה</button>
+                <button type="button" class="toggle-btn" data-val="יקר"           data-color="red"   onclick="pickToggle('price',this)">💸 יקר</button>
+                <button type="button" class="toggle-btn" data-val="זול"           data-color=""      onclick="pickToggle('price',this)">🤑 זול</button>
+              </div>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <div class="field">
+              <label>האם תמליץ עלינו לחבר? <span class="req">*</span></label>
+              <div class="toggle-row" id="recommendRow">
+                <button type="button" class="toggle-btn" data-val="כן" data-color="green" onclick="pickToggle('recommend',this)">❤️ בהחלט כן</button>
+                <button type="button" class="toggle-btn" data-val="לא" data-color="red"   onclick="pickToggle('recommend',this)">👎 לא</button>
+              </div>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <div class="field">
+              <label>הערות נוספות <span style="color:#94a3b8;font-weight:400">(אופציונלי)</span></label>
+              <textarea name="comment" placeholder="ספר לנו עוד..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">📨 שלח משוב</button>
+            <p class="form-note">המשוב נשלח ישירות לגבי · תודה על הזמן!</p>
+          </form>
+        </div>
+
+      </div>
+    </main>
   </div>
 
-  <div id="form-section">
-    <h1>איך היה השירות?</h1>
-    <p class="subtitle">30 שניות מזמנך יעזרו לנו להשתפר<br>ולהעניק שירות עוד יותר טוב</p>
-
-    <div class="q-block">
-      <label class="q-label">דירוג כללי</label>
-      <div class="stars">
-        <input type="radio" name="stars" id="s5" value="5"><label for="s5">★</label>
-        <input type="radio" name="stars" id="s4" value="4"><label for="s4">★</label>
-        <input type="radio" name="stars" id="s3" value="3"><label for="s3">★</label>
-        <input type="radio" name="stars" id="s2" value="2"><label for="s2">★</label>
-        <input type="radio" name="stars" id="s1" value="1"><label for="s1">★</label>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="q-block">
-      <label class="q-label">זמן הגעת הטכנאי</label>
-      <div class="choices" id="g-arrival">
-        <button class="choice-btn" data-val="מהיר"  data-color="green" onclick="pick('arrival',this)">⚡ מהיר</button>
-        <button class="choice-btn" data-val="סביר"  data-color="amber" onclick="pick('arrival',this)">👍 סביר</button>
-        <button class="choice-btn" data-val="איחר"  data-color="red"   onclick="pick('arrival',this)">⏳ איחר</button>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="q-block">
-      <label class="q-label">תחושתך לגבי המחיר</label>
-      <div class="choices" id="g-price">
-        <button class="choice-btn" data-val="שווה את המחיר" data-color="green" onclick="pick('price',this)">✅ שווה</button>
-        <button class="choice-btn" data-val="יקר"           data-color="red"   onclick="pick('price',this)">💸 יקר</button>
-        <button class="choice-btn" data-val="זול"           data-color="blue"  onclick="pick('price',this)">🤑 זול</button>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="q-block">
-      <label class="q-label">האם תמליץ עלינו לחבר?</label>
-      <div class="choices" id="g-recommend">
-        <button class="choice-btn" data-val="כן" data-color="green" onclick="pick('recommend',this)">❤️ בהחלט כן</button>
-        <button class="choice-btn" data-val="לא" data-color="red"   onclick="pick('recommend',this)">👎 לא</button>
-      </div>
-    </div>
-
-    <div class="divider"></div>
-
-    <div class="q-block">
-      <label class="q-label">הערות נוספות <span style="color:#475569;font-weight:400;font-size:12px">(אופציונלי)</span></label>
-      <textarea id="comment" placeholder="ספר לנו עוד..."></textarea>
-    </div>
-
-    <p class="error-msg" id="error-msg">אנא ענה על כל השאלות לפני שליחה</p>
-    <button class="submit-btn" id="submit-btn" onclick="submitSurvey()">שלח משוב ←</button>
+  <div class="popup-overlay" id="popupLoading">
+    <div class="popup-box"><div class="spinner"></div><div class="popup-title">שולח משוב...</div><div class="popup-msg">אנא המתן רגע</div></div>
+  </div>
+  <div class="popup-overlay" id="popupSuccess">
+    <div class="popup-box"><span class="popup-icon">🙏</span><div class="popup-title">תודה רבה!</div><div class="popup-msg">המשוב שלך התקבל ועוזר לנו להשתפר.</div><a href="/" class="popup-btn popup-btn-success">← חזרה לאתר</a></div>
+  </div>
+  <div class="popup-overlay" id="popupError">
+    <div class="popup-box"><span class="popup-icon">❌</span><div class="popup-title">שגיאה בשליחה</div><div class="popup-msg">משהו השתבש. בדוק את החיבור ונסה שוב.</div><button class="popup-btn popup-btn-error" onclick="closePopup('popupError')">נסה שוב</button></div>
   </div>
 
-  <div id="thankyou">
-    <div class="ty-icon">🙏</div>
-    <div class="ty-title">תודה רבה!</div>
-    <p class="ty-sub">המשוב שלך חשוב לנו מאוד<br>ועוזר לנו לשפר את השירות</p>
-    <div class="ty-badge">⭐ UNLOCK — מנעולנות מקצועית</div>
-  </div>
-</div>
+  <script>
+    if (localStorage.getItem('theme')==='dark'||(!localStorage.getItem('theme')&&window.matchMedia('(prefers-color-scheme: dark)').matches))
+      document.documentElement.classList.add('dark');
 
-<script>
-const SHEET_URL = 'https://script.google.com/macros/s/AKfycbwJAYb3ehXaSl9Ir8KJilJy4PAbIixkRWR6aCTN1CJEsqVl4mT7iwG6YKZp6f_MqRelOQ/exec';
-const answers = { stars:null, arrival:null, price:null, recommend:null };
+    function showPopup(id){document.getElementById(id).classList.add('visible');}
+    function closePopup(id){document.getElementById(id).classList.remove('visible');}
 
-document.querySelectorAll('.stars input').forEach(inp =>
-  inp.addEventListener('change', () => answers.stars = inp.value)
-);
+    let selStars=0;
+    function pickStar(n){
+      selStars=n;
+      document.getElementById('hiddenStars').value=n;
+      document.querySelectorAll('.star-btn').forEach(b=>b.classList.toggle('lit',Number(b.dataset.val)<=n));
+    }
 
-function pick(group, btn) {
-  document.querySelectorAll(`#g-${group} .choice-btn`).forEach(b =>
-    b.classList.remove('selected','sel-green','sel-red','sel-amber','sel-blue')
-  );
-  btn.classList.add('selected','sel-' + btn.dataset.color);
-  answers[group] = btn.dataset.val;
-}
+    const sel={arrival:null,price:null,recommend:null};
+    function pickToggle(group,btn){
+      document.querySelectorAll('#'+group+'Row .toggle-btn').forEach(b=>b.classList.remove('active','active-green','active-red','active-amber'));
+      const c=btn.dataset.color;
+      btn.classList.add(c?'active-'+c:'active');
+      sel[group]=btn.dataset.val;
+      document.getElementById('hidden'+group.charAt(0).toUpperCase()+group.slice(1)).value=btn.dataset.val;
+    }
 
-async function submitSurvey() {
-  if (!answers.stars || !answers.arrival || !answers.price || !answers.recommend) {
-    document.getElementById('error-msg').style.display = 'block';
-    return;
-  }
-  document.getElementById('error-msg').style.display = 'none';
-  const btn = document.getElementById('submit-btn');
-  btn.disabled = true; btn.textContent = 'שולח...';
-
-  try {
-    await fetch(SHEET_URL, {
-      method:'POST', mode:'no-cors',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        stars: answers.stars, arrival: answers.arrival,
-        price: answers.price, recommend: answers.recommend,
-        comment: document.getElementById('comment').value.trim()
-      })
+    document.getElementById('surveyForm').addEventListener('submit',async(e)=>{
+      e.preventDefault();
+      if(!selStars){alert('אנא בחר דירוג כוכבים');return;}
+      if(!sel.arrival){alert('אנא בחר זמן הגעה');return;}
+      if(!sel.price){alert('אנא בחר תחושה לגבי המחיר');return;}
+      if(!sel.recommend){alert('אנא ענה על שאלת ההמלצה');return;}
+      const btn=document.getElementById('submitBtn');
+      btn.disabled=true;btn.textContent='⏳ שולח...';
+      showPopup('popupLoading');
+      try{
+        const res=await fetch('https://api.web3forms.com/submit',{method:'POST',body:new FormData(e.target)});
+        const json=await res.json();
+        closePopup('popupLoading');
+        if(json.success){showPopup('popupSuccess');}
+        else{showPopup('popupError');btn.disabled=false;btn.textContent='📨 שלח משוב';}
+      }catch{
+        closePopup('popupLoading');showPopup('popupError');btn.disabled=false;btn.textContent='📨 שלח משוב';
+      }
     });
-  } catch(e) { console.error(e); }
-
-  document.getElementById('form-section').style.display = 'none';
-  document.getElementById('thankyou').style.display = 'block';
-}
-</script>
+  </script>
 </body>
 </html>
