@@ -43,7 +43,7 @@
     textarea { resize:vertical;min-height:80px; }
     input::placeholder,textarea::placeholder { color:#94a3b8; }
     .toggle-row { display:flex;gap:0.5rem;flex-wrap:wrap; }
-    .toggle-btn { flex:1;min-width:80px;padding:0.6rem 0.75rem;font-family:'Heebo',Arial,sans-serif;font-size:0.88rem;font-weight:600;border:1.5px solid #e2e8f0;border-radius:10px;background:#f8fafc;color:#475569;cursor:pointer;transition:all 0.18s;display:flex;align-items:center;justify-content:center;gap:0.3rem; }
+    .toggle-btn { flex:1;min-width:0;padding:0.55rem 0.5rem;font-family:'Heebo',Arial,sans-serif;font-size:0.82rem;font-weight:600;border:1.5px solid #e2e8f0;border-radius:10px;background:#f8fafc;color:#475569;cursor:pointer;transition:all 0.18s;display:flex;align-items:center;justify-content:center;gap:0.25rem;white-space:nowrap; }
     html.dark .toggle-btn { background:#1e293b;border-color:#334155;color:#94a3b8; }
     .toggle-btn:not(.active):not(.active-green):not(.active-red):not(.active-amber):hover { border-color:#93c5fd;color:#1d4ed8;background:#eff6ff; }
     html.dark .toggle-btn:not(.active):not(.active-green):not(.active-red):not(.active-amber):hover { border-color:#3b82f6;color:#60a5fa;background:#1e3a5f; }
@@ -64,8 +64,6 @@
     .submit-btn:active { transform:translateY(0); }
     .submit-btn:disabled { opacity:0.55;cursor:not-allowed;transform:none; }
     .form-note { font-size:0.78rem;color:#94a3b8;text-align:center;margin-top:0.75rem; }
-    .q-sub { font-size:0.82rem;color:#94a3b8;margin-bottom:0.6rem;margin-top:-0.2rem;line-height:1.4; }
-    html.dark .q-sub { color:#64748b; }
     .popup-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:9999;padding:1rem; }
     .popup-overlay.visible { display:flex; }
     .popup-box { background:#fff;border-radius:20px;padding:2.5rem 2rem;max-width:360px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.2);animation:fadeUp 0.3s ease both; }
@@ -110,19 +108,21 @@
         <div class="form-card">
           <form id="surveyForm">
             <input type="hidden" name="access_key"  value="8f6811e4-edba-4ca8-8776-e39c6eaf1b72"/>
-            <input type="hidden" name="subject"     value="סקר שביעות רצון – UNLOCK מנעולנות"/>
+            <input type="hidden" name="subject"     value="סקר שביעות רצון – UNLOCK"/>
             <input type="hidden" name="from_name"   value="סקר לקוחות"/>
             <input type="checkbox" name="botcheck"  style="display:none"/>
-            <input type="hidden" name="stars"    id="hiddenStars"/>
-            <input type="hidden" name="quality"  id="hiddenQuality"/>
-            <input type="hidden" name="arrival"  id="hiddenArrival"/>
-            <input type="hidden" name="price"    id="hiddenPrice"/>
-            <input type="hidden" name="attitude" id="hiddenAttitude"/>
-            <input type="hidden" name="recommend" id="hiddenRecommend"/>
+            <input type="hidden" name="stars"       id="hiddenStars"/>
+            <input type="hidden" name="arrival"     id="hiddenArrival"/>
+            <input type="hidden" name="price"       id="hiddenPrice"/>
+            <input type="hidden" name="recommend"   id="hiddenRecommend"/>
 
-            <!-- Q1: Stars -->
             <div class="field">
-              <label>דירוג כללי לשירות <span class="req">*</span></label>
+              <label>שם מלא <span class="req">*</span></label>
+              <input type="text" name="customer_name" placeholder="ישראל ישראלי" required/>
+            </div>
+
+            <div class="field">
+              <label>דירוג כללי <span class="req">*</span></label>
               <div class="stars-row" id="starsRow">
                 <button type="button" class="star-btn" data-val="1" onclick="pickStar(1)"><span style="font-size:1rem">★</span><span style="font-size:0.6rem">1</span></button>
                 <button type="button" class="star-btn" data-val="2" onclick="pickStar(2)"><span style="font-size:1rem">★</span><span style="font-size:0.6rem">2</span></button>
@@ -134,76 +134,41 @@
 
             <div class="section-divider"></div>
 
-            <!-- Q2: Quality -->
             <div class="field">
-              <label>איכות העבודה הטכנית <span class="req">*</span></label>
-              <p class="q-sub">הטכנאי פתר את הבעיה בצורה מקצועית ויסודית</p>
-              <div class="toggle-row" id="qualityRow">
-                <button type="button" class="toggle-btn" data-val="מקצועי מאוד"  data-color="green" onclick="pickToggle('quality',this)">✅ מקצועי מאוד</button>
-                <button type="button" class="toggle-btn" data-val="טוב"           data-color=""      onclick="pickToggle('quality',this)">👍 טוב</button>
-                <button type="button" class="toggle-btn" data-val="יש מקום לשיפור" data-color="amber" onclick="pickToggle('quality',this)">📋 יש לשפר</button>
-                <button type="button" class="toggle-btn" data-val="לא מספק"       data-color="red"   onclick="pickToggle('quality',this)">❌ לא מספק</button>
-              </div>
-            </div>
-
-            <div class="section-divider"></div>
-
-            <!-- Q3: Arrival -->
-            <div class="field">
-              <label>זמן הגעה ומהירות טיפול <span class="req">*</span></label>
-              <p class="q-sub">הטכנאי הגיע בזמן שסוכם וטיפל ביעילות</p>
+              <label>זמן הגעת הטכנאי <span class="req">*</span></label>
               <div class="toggle-row" id="arrivalRow">
-                <button type="button" class="toggle-btn" data-val="הגיע בזמן"       data-color="green" onclick="pickToggle('arrival',this)">⚡ הגיע בזמן</button>
-                <button type="button" class="toggle-btn" data-val="איחור קטן"        data-color="amber" onclick="pickToggle('arrival',this)">🕐 איחור קטן</button>
-                <button type="button" class="toggle-btn" data-val="איחור משמעותי"   data-color="red"   onclick="pickToggle('arrival',this)">⏳ איחר משמעותית</button>
+                <button type="button" class="toggle-btn" data-val="מהיר"  data-color="green" onclick="pickToggle('arrival',this)">⚡ מהיר</button>
+                <button type="button" class="toggle-btn" data-val="סביר"  data-color=""      onclick="pickToggle('arrival',this)">👍 סביר</button>
+                <button type="button" class="toggle-btn" data-val="איחר"  data-color="red"   onclick="pickToggle('arrival',this)">⏳ איחר</button>
               </div>
             </div>
 
             <div class="section-divider"></div>
 
-            <!-- Q4: Price -->
             <div class="field">
-              <label>מחיר ושקיפות <span class="req">*</span></label>
-              <p class="q-sub">המחיר שסוכם תאם את מה שנגבה בפועל</p>
+              <label>תחושתך לגבי המחיר <span class="req">*</span></label>
               <div class="toggle-row" id="priceRow">
-                <button type="button" class="toggle-btn" data-val="תאם לחלוטין"   data-color="green" onclick="pickToggle('price',this)">✅ תאם לחלוטין</button>
-                <button type="button" class="toggle-btn" data-val="הפרש קטן"       data-color="amber" onclick="pickToggle('price',this)">💬 היה הפרש קטן</button>
-                <button type="button" class="toggle-btn" data-val="לא תאם"         data-color="red"   onclick="pickToggle('price',this)">❌ לא תאם</button>
+                <button type="button" class="toggle-btn" data-val="שווה את המחיר" data-color="green" onclick="pickToggle('price',this)">✅ שווה</button>
+                <button type="button" class="toggle-btn" data-val="יקר"           data-color="red"   onclick="pickToggle('price',this)">💸 יקר</button>
+                <button type="button" class="toggle-btn" data-val="זול"           data-color=""      onclick="pickToggle('price',this)">🤑 זול</button>
               </div>
             </div>
 
             <div class="section-divider"></div>
 
-            <!-- Q5: Attitude -->
             <div class="field">
-              <label>שירות ויחס אישי <span class="req">*</span></label>
-              <p class="q-sub">הטכנאי היה מנומס, סבלני והסביר את העבודה</p>
-              <div class="toggle-row" id="attitudeRow">
-                <button type="button" class="toggle-btn" data-val="מעולה"   data-color="green" onclick="pickToggle('attitude',this)">⭐ מעולה</button>
-                <button type="button" class="toggle-btn" data-val="טוב"     data-color=""      onclick="pickToggle('attitude',this)">👍 טוב</button>
-                <button type="button" class="toggle-btn" data-val="סביר"    data-color="amber" onclick="pickToggle('attitude',this)">😐 סביר</button>
-                <button type="button" class="toggle-btn" data-val="לא מספק" data-color="red"   onclick="pickToggle('attitude',this)">👎 לא מספק</button>
-              </div>
-            </div>
-
-            <div class="section-divider"></div>
-
-            <!-- Q6: Recommend -->
-            <div class="field">
-              <label>האם תפנה אלינו שוב או תמליץ לחבר? <span class="req">*</span></label>
+              <label>האם תמליץ עלינו לחבר? <span class="req">*</span></label>
               <div class="toggle-row" id="recommendRow">
-                <button type="button" class="toggle-btn" data-val="בהחלט כן" data-color="green" onclick="pickToggle('recommend',this)">❤️ בהחלט כן</button>
-                <button type="button" class="toggle-btn" data-val="אולי"     data-color="amber" onclick="pickToggle('recommend',this)">🤔 אולי</button>
-                <button type="button" class="toggle-btn" data-val="לא"       data-color="red"   onclick="pickToggle('recommend',this)">❌ לא</button>
+                <button type="button" class="toggle-btn" data-val="כן" data-color="green" onclick="pickToggle('recommend',this)">❤️ בהחלט כן</button>
+                <button type="button" class="toggle-btn" data-val="לא" data-color="red"   onclick="pickToggle('recommend',this)">👎 לא</button>
               </div>
             </div>
 
             <div class="section-divider"></div>
 
-            <!-- Q7: Comment -->
             <div class="field">
-              <label>יש משהו נוסף שתרצה לשתף אותנו? <span style="color:#94a3b8;font-weight:400">(אופציונלי)</span></label>
-              <textarea name="comment" placeholder="כל הערה תתקבל בברכה..."></textarea>
+              <label>הערות נוספות <span style="color:#94a3b8;font-weight:400">(אופציונלי)</span></label>
+              <textarea name="comment" placeholder="ספר לנו עוד..."></textarea>
             </div>
 
             <button type="submit" class="submit-btn" id="submitBtn">📨 שלח משוב</button>
@@ -239,7 +204,7 @@
       document.querySelectorAll('.star-btn').forEach(b=>b.classList.toggle('lit',Number(b.dataset.val)<=n));
     }
 
-    const sel={quality:null,arrival:null,price:null,attitude:null,recommend:null};
+    const sel={arrival:null,price:null,recommend:null};
     function pickToggle(group,btn){
       document.querySelectorAll('#'+group+'Row .toggle-btn').forEach(b=>b.classList.remove('active','active-green','active-red','active-amber'));
       const c=btn.dataset.color;
@@ -250,11 +215,11 @@
 
     document.getElementById('surveyForm').addEventListener('submit',async(e)=>{
       e.preventDefault();
+      if(!e.target.customer_name.value.trim()){alert('אנא הכנס שם מלא');return;}
+      if(!e.target.phone.value.trim()){alert('אנא הכנס מספר טלפון');return;}
       if(!selStars){alert('אנא בחר דירוג כוכבים');return;}
-      if(!sel.quality){alert('אנא דרג את איכות העבודה');return;}
-      if(!sel.arrival){alert('אנא דרג את זמן ההגעה');return;}
-      if(!sel.price){alert('אנא דרג את המחיר');return;}
-      if(!sel.attitude){alert('אנא דרג את היחס האישי');return;}
+      if(!sel.arrival){alert('אנא בחר זמן הגעה');return;}
+      if(!sel.price){alert('אנא בחר תחושה לגבי המחיר');return;}
       if(!sel.recommend){alert('אנא ענה על שאלת ההמלצה');return;}
       const btn=document.getElementById('submitBtn');
       btn.disabled=true;btn.textContent='⏳ שולח...';
