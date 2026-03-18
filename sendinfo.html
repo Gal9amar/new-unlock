@@ -679,8 +679,9 @@
     <div class="popup-box">
       <span class="popup-icon">✅</span>
       <div class="popup-title">הפרטים נשלחו בהצלחה!</div>
-      <div class="popup-msg">תודה! החשבונית תופק ותישלח אליך בהקדם.</div>
-      <a href="/" class="popup-btn popup-btn-success">← חזרה לאתר</a>
+      <div class="popup-msg">הפרטים הועברו. לחץ כדי לאשר ולהפיק את המסמך.</div>
+      <a id="approve-link" href="/approve.html" class="popup-btn popup-btn-success" style="display:block;margin-bottom:0.75rem">📄 פתח לאישור והפקה ←</a>
+      <a href="/" class="popup-btn" style="background:#e2e8f0;color:#374151;display:block">חזרה לאתר</a>
     </div>
   </div>
 
@@ -755,6 +756,20 @@
         const json = await res.json();
         closePopup('popupLoading');
         if (json.success) {
+          // Build approve URL with all form data
+          const params = new URLSearchParams({
+            name:    data.get('name')    || '',
+            phone:   data.get('phone')   || '',
+            email:   data.get('email')   || '',
+            id:      data.get('id_number') || '',
+            address: data.get('service_address') || '',
+            desc:    data.get('message') || '',
+            amount:  data.get('amount')  || '',
+            vat:     data.get('vat_type') || '',
+            payment: data.get('payment_method') || '',
+          });
+          const approveUrl = '/approve.html?' + params.toString();
+          document.getElementById('approve-link').href = approveUrl;
           showPopup('popupSuccess');
         } else {
           showPopup('popupError');
