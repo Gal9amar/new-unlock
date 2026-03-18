@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>אישור הפקת מסמך — UNLOCK</title>
+  <link rel="icon" href="images/fav.png"/>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles/main.css?v=3.0"/>
+  <style>
+    .top-nav { position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);border-bottom:1px solid #e2e8f0;padding:0.75rem 0; }
+    html.dark .top-nav { background:rgba(2,6,23,0.92);border-bottom-color:#1e293b; }
+    .nav-inner { max-width:1100px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between; }
+    .nav-logo { display:flex;align-items:center;gap:0.6rem;font-weight:800;font-size:1.1rem;color:#1d4ed8;text-decoration:none; }
+    .nav-logo img { width:32px;height:32px; }
+    .page-wrapper { min-height:100vh;background:#f8fafc; }
+    html.dark .page-wrapper { background:#020617; }
+    .form-section { padding:3rem 1rem 4rem; }
+    .form-container { max-width:580px;margin:0 auto; }
+    .form-heading { text-align:center;margin-bottom:2rem; }
+    .form-heading h1 { font-size:1.8rem;font-weight:800;color:#0f172a;margin-bottom:0.5rem; }
+    html.dark .form-heading h1 { color:#f1f5f9; }
+    .form-heading p { color:#64748b;font-size:0.95rem; }
+    html.dark .form-heading p { color:#94a3b8; }
+    .form-card { background:#fff;border-radius:18px;border:1px solid #e2e8f0;padding:2rem 1.75rem;box-shadow:0 4px 24px rgba(15,23,42,0.07); }
+    html.dark .form-card { background:#0f172a;border-color:#1e293b; }
+    label { display:block;font-size:0.85rem;font-weight:600;color:#374151;margin-bottom:0.35rem; }
+    html.dark label { color:#cbd5e1; }
+    input[type="password"],input[type="text"],input[type="email"],select,textarea {
+      width:100%;padding:0.7rem 0.9rem;border:1.5px solid #e2e8f0;border-radius:10px;
+      font-family:'Heebo',Arial,sans-serif;font-size:0.95rem;color:#0f172a;background:#f8fafc;outline:none;
+      transition:border-color 0.2s;
+    }
+    html.dark input, html.dark select, html.dark textarea { background:#1e293b;border-color:#334155;color:#f1f5f9; }
+    input:focus,select:focus,textarea:focus { border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,0.12); }
+    textarea { resize:vertical;min-height:70px; }
+    .field { margin-bottom:1.2rem; }
+    .section-divider { height:1px;background:#e2e8f0;margin:1.5rem 0; }
+    html.dark .section-divider { background:#1e293b; }
+    .section-label { font-size:0.75rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#94a3b8;margin-bottom:1rem; }
+    .row-2 { display:grid;grid-template-columns:1fr 1fr;gap:1rem; }
+    @media(max-width:480px) { .row-2{grid-template-columns:1fr;} }
+    /* Doc type buttons */
+    .doc-row { display:flex;gap:0.5rem;flex-wrap:wrap; }
+    .doc-btn { flex:1;min-width:120px;padding:0.65rem 0.75rem;border:1.5px solid #e2e8f0;border-radius:10px;background:#f8fafc;font-family:'Heebo',Arial,sans-serif;font-size:0.85rem;font-weight:600;color:#475569;cursor:pointer;transition:all 0.18s;text-align:center; }
+    html.dark .doc-btn { background:#1e293b;border-color:#334155;color:#94a3b8; }
+    .doc-btn.active { background:#1d4ed8;border-color:#1d4ed8;color:#fff; }
+    /* Submit */
+    .submit-btn { width:100%;padding:0.9rem;background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;border:none;border-radius:12px;font-family:'Heebo',Arial,sans-serif;font-size:1.05rem;font-weight:700;cursor:pointer;transition:transform 0.2s,opacity 0.2s;box-shadow:0 6px 20px rgba(37,99,235,0.35);margin-top:0.5rem; }
+    .submit-btn:hover { transform:translateY(-1px); }
+    .submit-btn:disabled { opacity:0.5;cursor:not-allowed;transform:none; }
+    .form-note { font-size:0.78rem;color:#94a3b8;text-align:center;margin-top:0.75rem; }
+    /* Login screen */
+    #login-screen { display:flex;align-items:center;justify-content:center;min-height:80vh; }
+    .login-box { background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:2.5rem 2rem;max-width:360px;width:100%;text-align:center;box-shadow:0 4px 24px rgba(15,23,42,0.07); }
+    html.dark .login-box { background:#0f172a;border-color:#1e293b; }
+    .login-box h2 { font-size:1.4rem;font-weight:800;color:#0f172a;margin-bottom:0.5rem; }
+    html.dark .login-box h2 { color:#f1f5f9; }
+    .login-box p { color:#64748b;font-size:0.9rem;margin-bottom:1.5rem; }
+    .login-err { color:#ef4444;font-size:0.85rem;margin-top:0.75rem;display:none; }
+    /* Result */
+    .result-box { border-radius:12px;padding:1.25rem 1.5rem;margin-top:1rem;display:none; }
+    .result-box.success { background:rgba(16,185,129,0.1);border:1px solid #10b981;color:#065f46; }
+    html.dark .result-box.success { color:#6ee7b7; }
+    .result-box.error { background:rgba(239,68,68,0.1);border:1px solid #ef4444;color:#7f1d1d; }
+    html.dark .result-box.error { color:#fca5a5; }
+    .result-box a { color:#1d4ed8;font-weight:600;text-decoration:none; }
+    /* Popups */
+    .popup-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:9999; }
+    .popup-overlay.visible { display:flex; }
+    .popup-box { background:#fff;border-radius:20px;padding:2.5rem 2rem;max-width:340px;width:100%;text-align:center; }
+    html.dark .popup-box { background:#1e293b; }
+    .spinner { width:48px;height:48px;border:4px solid #e2e8f0;border-top-color:#2563eb;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 1rem; }
+    @keyframes spin { to{transform:rotate(360deg)} }
+    .popup-title { font-size:1.2rem;font-weight:800;color:#0f172a; }
+    html.dark .popup-title { color:#f1f5f9; }
+  </style>
+</head>
+<body class="site-body">
+
+  <nav class="top-nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo"><img src="images/fav.png" alt="UNLOCK"/>UNLOCK</a>
+      <span style="font-size:0.85rem;color:#64748b;font-weight:600">🔒 אישור הפקת מסמך</span>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+
+    <!-- LOGIN SCREEN -->
+    <div id="login-screen">
+      <div class="login-box">
+        <div style="font-size:2.5rem;margin-bottom:0.75rem">🔐</div>
+        <h2>כניסה מאובטחת</h2>
+        <p>הזן סיסמה לגישה לדף האישור</p>
+        <div class="field">
+          <input type="password" id="pwd-input" placeholder="סיסמה" onkeydown="if(event.key==='Enter')checkPwd()"/>
+        </div>
+        <button class="submit-btn" onclick="checkPwd()">כניסה</button>
+        <div class="login-err" id="login-err">סיסמה שגויה</div>
+      </div>
+    </div>
+
+    <!-- APPROVE SCREEN -->
+    <div id="approve-screen" style="display:none">
+      <main class="form-section">
+        <div class="form-container">
+          <div class="form-heading">
+            <h1>אישור הפקת מסמך</h1>
+            <p>בדוק את הפרטים, בחר סוג מסמך ולחץ אישור</p>
+          </div>
+
+          <div class="form-card">
+
+            <!-- Doc type -->
+            <div class="section-label">סוג מסמך</div>
+            <div class="doc-row" id="docRow">
+              <button type="button" class="doc-btn active" data-type="320" onclick="pickDoc(this)">חשבונית מס קבלה</button>
+              <button type="button" class="doc-btn" data-type="305" onclick="pickDoc(this)">חשבונית מס</button>
+              <button type="button" class="doc-btn" data-type="400" onclick="pickDoc(this)">קבלה</button>
+              <button type="button" class="doc-btn" data-type="9999" onclick="pickDoc(this)">הצעת מחיר</button>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <!-- Customer details -->
+            <div class="section-label">פרטי לקוח</div>
+            <div class="row-2">
+              <div class="field">
+                <label>שם לקוח</label>
+                <input type="text" id="f-name" placeholder="שם מלא"/>
+              </div>
+              <div class="field">
+                <label>טלפון</label>
+                <input type="text" id="f-phone" placeholder="050-0000000"/>
+              </div>
+            </div>
+            <div class="row-2">
+              <div class="field">
+                <label>מייל</label>
+                <input type="email" id="f-email" placeholder="mail@example.com"/>
+              </div>
+              <div class="field">
+                <label>ח.פ / ת.ז</label>
+                <input type="text" id="f-id" placeholder="אופציונלי"/>
+              </div>
+            </div>
+            <div class="field">
+              <label>כתובת</label>
+              <input type="text" id="f-address" placeholder="רחוב, מספר, עיר"/>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <!-- Service details -->
+            <div class="section-label">פרטי שירות</div>
+            <div class="field">
+              <label>תיאור השירות</label>
+              <textarea id="f-desc" placeholder="תיאור השירות שבוצע..."></textarea>
+            </div>
+            <div class="row-2">
+              <div class="field">
+                <label>סכום</label>
+                <input type="text" id="f-amount" placeholder="0.00"/>
+              </div>
+              <div class="field">
+                <label>מע"מ</label>
+                <select id="f-vat">
+                  <option value='כולל מע"מ'>כולל מע"מ</option>
+                  <option value='לפני מע"מ'>לפני מע"מ</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label>שיטת תשלום</label>
+              <input type="text" id="f-payment" placeholder="ביט / המחאה / העברה בנקאית"/>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <button class="submit-btn" id="approve-btn" onclick="approveDoc()">✅ אשר והפק מסמך</button>
+            <p class="form-note">המסמך יופק ב-EZcount וישלח ללקוח אוטומטית</p>
+
+            <div class="result-box success" id="result-ok"></div>
+            <div class="result-box error" id="result-err"></div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Loading popup -->
+  <div class="popup-overlay" id="popupLoading">
+    <div class="popup-box"><div class="spinner"></div><div class="popup-title">מפיק מסמך...</div></div>
+  </div>
+
+  <script>
+    if(localStorage.getItem('theme')==='dark'||(!localStorage.getItem('theme')&&window.matchMedia('(prefers-color-scheme: dark)').matches))
+      document.documentElement.classList.add('dark');
+
+    const PASS = '201020';
+
+    function checkPwd() {
+      const v = document.getElementById('pwd-input').value;
+      if(v === PASS) {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('approve-screen').style.display = 'block';
+        loadFromUrl();
+      } else {
+        document.getElementById('login-err').style.display = 'block';
+      }
+    }
+
+    // Load params from URL if sendinfo redirects here
+    function loadFromUrl() {
+      const p = new URLSearchParams(window.location.search);
+      if(p.get('name'))    document.getElementById('f-name').value    = p.get('name');
+      if(p.get('phone'))   document.getElementById('f-phone').value   = p.get('phone');
+      if(p.get('email'))   document.getElementById('f-email').value   = p.get('email');
+      if(p.get('id'))      document.getElementById('f-id').value      = p.get('id');
+      if(p.get('address')) document.getElementById('f-address').value = p.get('address');
+      if(p.get('desc'))    document.getElementById('f-desc').value    = p.get('desc');
+      if(p.get('amount'))  document.getElementById('f-amount').value  = p.get('amount');
+      if(p.get('vat'))     document.getElementById('f-vat').value     = p.get('vat');
+      if(p.get('payment')) document.getElementById('f-payment').value = p.get('payment');
+    }
+
+    let selectedDocType = '320';
+    function pickDoc(btn) {
+      document.querySelectorAll('.doc-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedDocType = btn.dataset.type;
+    }
+
+    async function approveDoc() {
+      const name   = document.getElementById('f-name').value.trim();
+      const amount = document.getElementById('f-amount').value.trim();
+      if(!name)   { alert('אנא הכנס שם לקוח'); return; }
+      if(!amount) { alert('אנא הכנס סכום'); return; }
+
+      document.getElementById('approve-btn').disabled = true;
+      document.getElementById('popupLoading').classList.add('visible');
+      document.getElementById('result-ok').style.display = 'none';
+      document.getElementById('result-err').style.display = 'none';
+
+      const payload = {
+        type:             selectedDocType,
+        customer_name:    name,
+        customer_email:   document.getElementById('f-email').value.trim(),
+        customer_phone:   document.getElementById('f-phone').value.trim(),
+        customer_address: document.getElementById('f-address').value.trim(),
+        description:      document.getElementById('f-desc').value.trim() || 'שירות מנעולנות',
+        amount:           amount,
+        vat_type:         document.getElementById('f-vat').value,
+        payment_method:   document.getElementById('f-payment').value.trim(),
+      };
+
+      try {
+        const res  = await fetch('/.netlify/functions/create-doc', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const json = await res.json();
+
+        document.getElementById('popupLoading').classList.remove('visible');
+
+        if(json.success || json.doc_url || json.url) {
+          const url = json.doc_url || json.url || '';
+          document.getElementById('result-ok').innerHTML =
+            '✅ המסמך הופק בהצלחה!' + (url ? ` <a href="${url}" target="_blank">לצפייה במסמך →</a>` : '');
+          document.getElementById('result-ok').style.display = 'block';
+          document.getElementById('approve-btn').textContent = '✅ הופק!';
+        } else {
+          const msg = json.error || json.message || JSON.stringify(json);
+          document.getElementById('result-err').textContent = '❌ שגיאה: ' + msg;
+          document.getElementById('result-err').style.display = 'block';
+          document.getElementById('approve-btn').disabled = false;
+        }
+      } catch(e) {
+        document.getElementById('popupLoading').classList.remove('visible');
+        document.getElementById('result-err').textContent = '❌ שגיאת חיבור: ' + e.message;
+        document.getElementById('result-err').style.display = 'block';
+        document.getElementById('approve-btn').disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>
