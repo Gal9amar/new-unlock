@@ -755,20 +755,6 @@
         const json = await res.json();
         closePopup('popupLoading');
         if (json.success) {
-          // Build approve URL with all form data
-          const params = new URLSearchParams({
-            name:    data.get('name')    || '',
-            phone:   data.get('phone')   || '',
-            email:   data.get('email')   || '',
-            id:      data.get('id_number') || '',
-            address: data.get('service_address') || '',
-            desc:    data.get('message') || '',
-            amount:  data.get('amount')  || '',
-            vat:     data.get('vat_type') || '',
-            payment: data.get('payment_method') || '',
-          });
-          document.getElementById('approveHidden').value =
-            'https://billaprovment.netlify.app?' + params.toString();
           showPopup('popupSuccess');
         } else {
           showPopup('popupError');
