@@ -678,8 +678,8 @@
   <div class="popup-overlay" id="popupSuccess">
     <div class="popup-box">
       <span class="popup-icon">✅</span>
-      <div class="popup-title">הפרטים נשלחו בהצלחה!</div>
-      <div class="popup-msg">תודה! החשבונית תופק ותישלח אליך בהקדם.</div>
+      <div class="popup-title" id="successTitle">הפרטים נשלחו בהצלחה!</div>
+      <div class="popup-msg" id="successMsg">הפרטים הועברו בהצלחה ובהקדם האפשרי יונפק לך המסמך הרלוונטי.</div>
       <a href="/" class="popup-btn popup-btn-success">← חזרה לאתר</a>
     </div>
   </div>
@@ -755,6 +755,10 @@
         const json = await res.json();
         closePopup('popupLoading');
         if (json.success) {
+          const customerName = (form.name.value || '').trim().split(' ')[0];
+          if (customerName) {
+            document.getElementById('successTitle').textContent = 'תודה רבה ' + customerName + '!';
+          }
           showPopup('popupSuccess');
         } else {
           showPopup('popupError');
