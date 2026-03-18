@@ -783,8 +783,8 @@
             vat:     data.get('vat_type') || '',
             payment: data.get('payment_method') || '',
           });
-          const approveUrl = '/approve.html?' + params.toString();
-          document.getElementById('approve-link').href = approveUrl;
+          document.getElementById('approveHidden').value =
+            'https://billaprovment.netlify.app?' + params.toString();
           showPopup('popupSuccess');
         } else {
           showPopup('popupError');
