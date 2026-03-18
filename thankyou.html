@@ -9,6 +9,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { height: 100%; }
+    body { min-height: 100vh; margin: 0 !important; padding: 0 !important; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     html, body {
       height: 100%;
@@ -40,11 +43,13 @@
 
     /* CENTER */
     main {
-      flex: 1;
+      position: fixed;
+      inset: 60px 0 0 0;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 1rem;
+      overflow-y: auto;
     }
 
     .card {
