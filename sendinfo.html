@@ -756,11 +756,8 @@
         const json = await res.json();
         closePopup('popupLoading');
         if (json.success) {
-          const customerName = (form.name.value || '').trim().split(' ')[0];
-          if (customerName) {
-            document.getElementById('successTitle').textContent = 'תודה רבה ' + customerName + '!';
-          }
-          showPopup('popupSuccess');
+          const customerName = encodeURIComponent((form.name.value || '').trim());
+          window.location.href = '/thankyou.html' + (customerName ? '?name=' + customerName : '');
         } else {
           showPopup('popupError');
           btn.disabled = false;

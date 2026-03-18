@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="robots" content="noindex,nofollow"/>
+  <title>תודה רבה — UNLOCK מנעולנות</title>
+  <link rel="icon" href="images/fav.png"/>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles/main.css?v=3.0"/>
+  <style>
+    .top-nav { position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);border-bottom:1px solid #e2e8f0;padding:0.75rem 0; }
+    html.dark .top-nav { background:rgba(2,6,23,0.92);border-bottom-color:#1e293b; }
+    .nav-inner { max-width:1100px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between; }
+    .nav-logo { display:flex;align-items:center;gap:0.6rem;font-weight:800;font-size:1.1rem;color:#1d4ed8;text-decoration:none; }
+    .nav-logo img { width:32px;height:32px; }
+    .nav-phone { font-size:0.9rem;font-weight:600;color:#1d4ed8;text-decoration:none; }
+    html.dark .nav-phone { color:#60a5fa; }
+
+    .page-wrapper {
+      min-height:calc(100vh - 60px);
+      background:#f8fafc;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:2rem 1rem;
+    }
+    html.dark .page-wrapper { background:#020617; }
+
+    .card {
+      background:#fff;
+      border-radius:24px;
+      border:1px solid #e2e8f0;
+      padding:3rem 2.5rem;
+      max-width:480px;
+      width:100%;
+      text-align:center;
+      box-shadow:0 8px 40px rgba(15,23,42,0.10);
+      animation:fadeUp 0.5s ease both;
+    }
+    html.dark .card { background:#0f172a;border-color:#1e293b; }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)} }
+
+    .check-icon {
+      width:80px;height:80px;
+      background:linear-gradient(135deg,#10b981,#22c55e);
+      border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      margin:0 auto 1.75rem;
+      box-shadow:0 8px 24px rgba(16,185,129,0.35);
+      font-size:2.2rem;
+    }
+
+    .title {
+      font-size:1.75rem;
+      font-weight:800;
+      color:#0f172a;
+      margin-bottom:0.75rem;
+      line-height:1.25;
+    }
+    html.dark .title { color:#f1f5f9; }
+
+    .msg {
+      font-size:1rem;
+      color:#64748b;
+      line-height:1.7;
+      margin-bottom:2rem;
+    }
+    html.dark .msg { color:#94a3b8; }
+
+    .signature {
+      font-size:0.9rem;
+      color:#94a3b8;
+      margin-bottom:2rem;
+      line-height:1.8;
+    }
+    .signature strong { color:#0f172a;font-weight:700; }
+    html.dark .signature strong { color:#f1f5f9; }
+
+    .divider { height:1px;background:#e2e8f0;margin:0 0 2rem; }
+    html.dark .divider { background:#1e293b; }
+
+    .back-btn {
+      display:inline-block;
+      padding:0.85rem 2rem;
+      background:linear-gradient(135deg,#1d4ed8,#2563eb);
+      color:#fff;
+      border-radius:12px;
+      font-family:'Heebo',Arial,sans-serif;
+      font-size:1rem;
+      font-weight:700;
+      text-decoration:none;
+      transition:transform 0.2s,box-shadow 0.2s;
+      box-shadow:0 6px 20px rgba(37,99,235,0.35);
+    }
+    .back-btn:hover { transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,99,235,0.4); }
+
+    .contact-row {
+      margin-top:1.5rem;
+      font-size:0.85rem;
+      color:#94a3b8;
+    }
+    .contact-row a { color:#1d4ed8;text-decoration:none;font-weight:600; }
+
+    @media(max-width:480px) {
+      .card { padding:2rem 1.25rem; }
+      .title { font-size:1.5rem; }
+    }
+  </style>
+</head>
+<body class="site-body">
+
+  <nav class="top-nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo"><img src="images/fav.png" alt="UNLOCK"/>UNLOCK</a>
+      <a href="tel:0533888381" class="nav-phone">📞 053-388-8381</a>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+    <div class="card">
+      <div class="check-icon">✅</div>
+
+      <h1 class="title" id="thank-title">תודה רבה!</h1>
+
+      <p class="msg">
+        קיבלנו את הפרטים. המסמך יונפק וישלח אליך בהקדם האפשרי —
+        תודה שבחרת בשירות שלנו.
+      </p>
+
+      <div class="divider"></div>
+
+      <div class="signature">
+        בברכה,<br/>
+        <strong>גבי המנעולן</strong> 🔐
+      </div>
+
+      <a href="/" class="back-btn">← חזרה לאתר הבית</a>
+
+      <div class="contact-row">
+        שאלות? <a href="tel:0533888381">053-388-8381</a>
+        &nbsp;·&nbsp;
+        <a href="https://wa.me/972533888381">WhatsApp</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    if(localStorage.getItem('theme')==='dark'||(!localStorage.getItem('theme')&&window.matchMedia('(prefers-color-scheme: dark)').matches))
+      document.documentElement.classList.add('dark');
+
+    // Show customer name if passed in URL
+    const name = new URLSearchParams(window.location.search).get('name');
+    if (name) {
+      const first = name.trim().split(' ')[0];
+      document.getElementById('thank-title').textContent = 'תודה רבה ' + first + '!';
+    }
+  </script>
+</body>
+</html>
