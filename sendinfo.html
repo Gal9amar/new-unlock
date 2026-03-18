@@ -570,7 +570,6 @@
             <input type="hidden" name="subject" value="פרטי לקוח לחשבונית – UNLOCK גבי המנעולן"/>
             <input type="hidden" name="from_name" value="טופס האתר"/>
             <input type="checkbox" name="botcheck" style="display:none"/>
-            <input type="hidden" name="approve_link" id="approveHidden" value=""/>
 
             <div class="field">
               <label>שם מלא <span class="req">*</span></label>
@@ -747,21 +746,6 @@
         alert('יש לבחור שיטת תשלום');
         return;
       }
-      // Build approve URL and inject into hidden field
-      const approveParams = new URLSearchParams({
-        name:    form.name.value || '',
-        phone:   form.phone.value || '',
-        email:   form.email.value || '',
-        id:      form.id_number.value || '',
-        address: form.service_address.value || '',
-        desc:    form.message.value || '',
-        amount:  form.amount.value || '',
-        vat:     document.getElementById('vatType').value || '',
-        payment: document.getElementById('paymentMethod').value || '',
-      });
-      document.getElementById('approveHidden').value =
-        'https://billaprovment.netlify.app?' + approveParams.toString();
-
       btn.disabled = true;
       btn.textContent = '⏳ שולח...';
       showPopup('popupLoading');
