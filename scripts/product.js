@@ -164,12 +164,57 @@ function loadRelatedProducts(brand) {
 
 // ========== Update Meta Tags for SEO ==========
 function updateMetaTags(product) {
-  document.title = `${product.title} | UNLOCK - גבי המנעולן`;
+  const title = `${product.title} | UNLOCK - גבי המנעולן`;
+  const desc = product.desc.length > 155 ? product.desc.substring(0, 152) + '...' : product.desc;
+  const imageUrl = product.image ? `https://www.hamanulan.com/${product.image}` : 'https://www.hamanulan.com/images/fav.png';
+  const productUrl = `https://www.hamanulan.com/product.html?name=${encodeURIComponent(product.title)}`;
+  const price = product.discount_price || product.price;
 
-  const metaDesc = document.getElementById('pageDesc');
-  if (metaDesc) {
-    metaDesc.content = `${product.desc.substring(0, 150)}...`;
-  }
+  // Title & description
+  document.title = title;
+  document.getElementById('pageDesc').content = desc;
+
+  // Canonical
+  document.getElementById('canonicalUrl').href = productUrl;
+
+  // Open Graph
+  document.getElementById('ogTitle').content = title;
+  document.getElementById('ogDesc').content = desc;
+  document.getElementById('ogUrl').content = productUrl;
+  document.getElementById('ogImage').content = imageUrl;
+
+  // Twitter Card
+  document.getElementById('twitterTitle').content = title;
+  document.getElementById('twitterDesc').content = desc;
+  document.getElementById('twitterImage').content = imageUrl;
+
+  // Schema.org Product
+  const schema = {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": product.title,
+    "description": product.desc,
+    "image": imageUrl,
+    "brand": {
+      "@type": "Brand",
+      "name": product.brand
+    },
+    "category": product.category,
+    "offers": {
+      "@type": "Offer",
+      "url": productUrl,
+      "priceCurrency": "ILS",
+      "price": price,
+      "priceValidUntil": "2027-01-01",
+      "availability": "https://schema.org/InStock",
+      "seller": {
+        "@type": "LocalBusiness",
+        "name": "UNLOCK - גבי המנעולן",
+        "telephone": "+972533888381"
+      }
+    }
+  };
+  document.getElementById('productSchema').textContent = JSON.stringify(schema);
 }
 
 // ========== Show Product Not Found ==========
