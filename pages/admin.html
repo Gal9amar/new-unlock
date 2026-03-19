@@ -84,6 +84,12 @@
         UNLOCK Admin
       </div>
     </div>
+    <!-- Desktop nav tabs -->
+    <nav class="topbar-nav">
+      <button class="topbar-nav-btn active" id="tab-products" onclick="switchSection('products')">📦 מוצרים</button>
+      <button class="topbar-nav-btn" id="tab-surveys" onclick="switchSection('surveys')">⭐ סקרי לקוח</button>
+      <button class="topbar-nav-btn" id="tab-invoices" onclick="switchSection('invoices')">📄 חשבוניות</button>
+    </nav>
     <div class="topbar-actions">
       <a href="/" class="btn btn-outline" target="_blank">← האתר</a>
       <button class="btn btn-outline" onclick="doLogout()">יציאה</button>
@@ -282,8 +288,12 @@
     currentSection = section;
     document.querySelectorAll('.admin-section').forEach(el => el.classList.add('hidden'));
     document.getElementById('section-' + section).classList.remove('hidden');
+    // sidebar items
     document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
     document.getElementById('nav-' + section).classList.add('active');
+    // topbar tabs
+    document.querySelectorAll('.topbar-nav-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById('tab-' + section).classList.add('active');
     closeSidebar();
     if (section === 'surveys') loadSurveys();
     if (section === 'invoices') loadInvoices();

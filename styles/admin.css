@@ -140,7 +140,7 @@ body {
 
 .topbar-actions { display: flex; gap: 0.75rem; align-items: center; }
 
-/* ── Hamburger ── */
+/* ── Hamburger (mobile only) ── */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -153,6 +153,7 @@ body {
   cursor: pointer;
   padding: 4px;
   border-radius: 8px;
+  flex-shrink: 0;
   transition: background 0.2s;
 }
 .hamburger:hover { background: var(--surface2); }
@@ -161,28 +162,41 @@ body {
   height: 2px;
   background: var(--text);
   border-radius: 2px;
-  transition: all 0.2s;
 }
 
-/* ── Layout: sidebar + main ── */
-.admin-layout {
+/* ── Topbar nav tabs (desktop only) ── */
+.topbar-nav {
   display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.topbar-nav-btn {
+  padding: 0.45rem 1rem;
+  border-radius: 8px;
+  border: none;
+  background: none;
+  color: var(--muted);
+  font-family: 'Heebo', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s;
+  white-space: nowrap;
+}
+.topbar-nav-btn:hover { background: var(--surface2); color: var(--text); }
+.topbar-nav-btn.active { background: rgba(212,168,83,0.15); color: var(--gold); }
+
+/* ── Layout ── */
+.admin-layout {
   flex: 1;
   position: relative;
   min-height: 0;
 }
 
-/* ── Sidebar ── */
+/* ── Sidebar (mobile drawer only) ── */
 .sidebar {
-  width: 200px;
-  flex-shrink: 0;
-  background: var(--surface);
-  border-left: 1px solid var(--border);
-  padding: 1rem 0;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  height: 100%;
+  display: none; /* hidden on desktop */
 }
 
 .sidebar-nav {
@@ -202,7 +216,7 @@ body {
   border: none;
   color: var(--muted);
   font-family: 'Heebo', sans-serif;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
   text-align: right;
@@ -211,7 +225,6 @@ body {
 }
 .sidebar-item:hover { background: var(--surface2); color: var(--text); }
 .sidebar-item.active { background: rgba(212,168,83,0.12); color: var(--gold); }
-
 .sidebar-icon { font-size: 1.1rem; }
 
 /* Sidebar overlay (mobile) */
@@ -220,7 +233,7 @@ body {
   position: fixed;
   inset: 0;
   background: rgba(0,0,0,0.5);
-  z-index: 49;
+  z-index: 998;
 }
 .sidebar-overlay.visible { display: block; }
 
@@ -667,19 +680,24 @@ body {
 
 @media (max-width: 768px) {
   .hamburger { display: flex; }
+  .topbar-nav { display: none; }
 
   .sidebar {
+    display: flex;
+    flex-direction: column;
     position: fixed;
     top: 0;
     right: 0;
     width: 220px;
     height: 100%;
-    z-index: 50;
-    padding-top: 4rem;
-    transform: translateX(100%);
-    transition: transform 0.28s ease;
+    background: var(--surface);
     border-left: 1px solid var(--border);
-    box-shadow: -8px 0 24px rgba(0,0,0,0.3);
+    padding: 4.5rem 0 1rem;
+    z-index: 999;
+    transform: translateX(110%);
+    transition: transform 0.28s ease;
+    box-shadow: -8px 0 32px rgba(0,0,0,0.5);
+    overflow-y: auto;
   }
   .sidebar.open { transform: translateX(0); }
 
