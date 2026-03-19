@@ -31,10 +31,13 @@
         window._firebaseUser = user;
         initAdmin();
       } else {
-        if (user) signOut(auth); // מנתק אוטומטית אם אימייל לא מורשה
+        if (user) {
+          signOut(auth);
+          document.getElementById('loginError').textContent = 'אין הרשאת גישה לחשבון זה. מועבר לדף הבית...';
+          setTimeout(() => { window.location.href = '/'; }, 2500);
+        }
         document.getElementById('loginScreen').style.display = 'flex';
         document.getElementById('adminScreen').classList.remove('visible');
-        document.getElementById('loginError').textContent = user ? 'אין הרשאה לכניסה עם חשבון זה' : '';
         window._firebaseUser = null;
       }
     });
