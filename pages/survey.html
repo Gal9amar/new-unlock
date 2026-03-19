@@ -200,8 +200,26 @@
       btn.disabled=true;btn.textContent='⏳ שולח...';
       showPopup('popupLoading');
       try{
-        const res=await fetch('https://api.web3forms.com/submit',{method:'POST',body:new FormData(e.target)});
-        const json=await res.json();
+        const formData = new FormData(e.target);
+        const [web3Res] = await Promise.all([
+          fetch('https://api.web3forms.com/submit',{method:'POST',body:formData}),
+          fetch('https://us-central1-hamanulan-3bbc7.cloudfunctions.net/saveSurvey',{
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({
+              customer_name: e.target.customer_name.value,
+              phone: e.target.phone.value,
+              stars: e.target.hiddenStars.value,
+              quality: e.target.hiddenQuality.value,
+              arrival: e.target.hiddenArrival.value,
+              price: e.target.hiddenPrice.value,
+              attitude: e.target.hiddenAttitude.value,
+              recommend: e.target.hiddenRecommend.value,
+              comment: e.target.comment.value
+            })
+          }).catch(()=>{})
+        ]);
+        const json=await web3Res.json();
         closePopup('popupLoading');
         if(json.success){showPopup('popupSuccess');}
         else{showPopup('popupError');btn.disabled=false;btn.textContent='📨 שלח משוב';}

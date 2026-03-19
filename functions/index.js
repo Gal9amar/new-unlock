@@ -36,11 +36,9 @@ function cors(res) {
 exports.products = onRequest({ cors: true }, async (req, res) => {
   if (req.method === 'OPTIONS') { cors(res); res.status(204).send(''); return; }
   cors(res);
-
   try {
     const snap = await db.collection('products').orderBy('order').get();
-    const products = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    res.json(products);
+    res.json(snap.docs.map(d => ({ id: d.id, ...d.data() })));
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -56,14 +54,11 @@ exports.adminProducts = onRequest({ cors: true }, async (req, res) => {
 
   const col = db.collection('products');
 
-  // GET – כל המוצרים לאדמין
   if (req.method === 'GET') {
     const snap = await col.orderBy('order').get();
     res.json(snap.docs.map(d => ({ id: d.id, ...d.data() })));
     return;
   }
-
-  // POST – הוספת מוצר
   if (req.method === 'POST') {
     const snap = await col.orderBy('order', 'desc').limit(1).get();
     const maxOrder = snap.empty ? 0 : (snap.docs[0].data().order || 0) + 1;
@@ -71,8 +66,6 @@ exports.adminProducts = onRequest({ cors: true }, async (req, res) => {
     res.json({ id: ref.id });
     return;
   }
-
-  // PUT – עדכון מוצר
   if (req.method === 'PUT') {
     const id = req.query.id;
     if (!id) { res.status(400).json({ error: 'Missing id' }); return; }
@@ -80,8 +73,6 @@ exports.adminProducts = onRequest({ cors: true }, async (req, res) => {
     res.json({ ok: true });
     return;
   }
-
-  // DELETE – מחיקת מוצר
   if (req.method === 'DELETE') {
     const id = req.query.id;
     if (!id) { res.status(400).json({ error: 'Missing id' }); return; }
@@ -89,6 +80,96 @@ exports.adminProducts = onRequest({ cors: true }, async (req, res) => {
     res.json({ ok: true });
     return;
   }
-
   res.status(405).json({ error: 'Method not allowed' });
+});
+
+// ── Public: Save survey ──
+exports.saveSurvey = onRequest({ cors: true }, async (req, res) => {
+  if (req.method === 'OPTIONS') { cors(res); res.status(204).send(''); return; }
+  cors(res);
+  if (req.method !== 'POST') { res.status(405).json({ error: 'Method not allowed' }); return; }
+
+  try {
+    const data = {
+      customer_name: req.body.customer_name || '',
+      phone: req.body.phone || '',
+      stars: req.body.stars || '',
+      quality: req.body.quality || '',
+      arrival: req.body.arrival || '',
+      price: req.body.price || '',
+      attitude: req.body.attitude || '',
+      recommend: req.body.recommend || '',
+      comment: req.body.comment || '',
+      createdAt: admin.firestore.FieldValue.serverTimestamp()
+    };
+    await db.collection('surveys').add(data);
+    res.json({ ok: true });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// ── Public: Save invoice request ──
+exports.saveInvoice = onRequest({ cors: true }, async (req, res) => {
+  if (req.method === 'OPTIONS') { cors(res); res.status(204).send(''); return; }
+  cors(res);
+  if (req.method !== 'POST') { res.status(405).json({ error: 'Method not allowed' }); return; }
+
+  try {
+    const data = {
+      name: req.body.name || '',
+      phone: req.body.phone || '',
+      email: req.body.email || '',
+      id_number: req.body.id_number || '',
+      service_address: req.body.service_address || '',
+      message: req.body.message || '',
+      amount: req.body.amount || '',
+      vat_type: req.body.vat_type || '',
+      payment_method: req.body.payment_method || '',
+      midrag_name: req.body.midrag_name || '',
+      createdAt: admin.firestore.FieldValue.serverTimestamp()
+    };
+    await db.collection('invoices').add(data);
+    res.json({ ok: true });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// ── Admin: GET surveys ──
+exports.adminSurveys = onRequest({ cors: true }, async (req, res) => {
+  if (req.method === 'OPTIONS') { cors(res); res.status(204).send(''); return; }
+  cors(res);
+  const user = await verifyAdmin(req, res);
+  if (!user) return;
+
+  if (req.method === 'DELETE') {
+    const id = req.query.id;
+    if (!id) { res.status(400).json({ error: 'Missing id' }); return; }
+    await db.collection('surveys').doc(id).delete();
+    res.json({ ok: true });
+    return;
+  }
+
+  const snap = await db.collection('surveys').orderBy('createdAt', 'desc').get();
+  res.json(snap.docs.map(d => ({ id: d.id, ...d.data(), createdAt: d.data().createdAt?.toDate?.()?.toISOString() || '' })));
+});
+
+// ── Admin: GET invoices ──
+exports.adminInvoices = onRequest({ cors: true }, async (req, res) => {
+  if (req.method === 'OPTIONS') { cors(res); res.status(204).send(''); return; }
+  cors(res);
+  const user = await verifyAdmin(req, res);
+  if (!user) return;
+
+  if (req.method === 'DELETE') {
+    const id = req.query.id;
+    if (!id) { res.status(400).json({ error: 'Missing id' }); return; }
+    await db.collection('invoices').doc(id).delete();
+    res.json({ ok: true });
+    return;
+  }
+
+  const snap = await db.collection('invoices').orderBy('createdAt', 'desc').get();
+  res.json(snap.docs.map(d => ({ id: d.id, ...d.data(), createdAt: d.data().createdAt?.toDate?.()?.toISOString() || '' })));
 });

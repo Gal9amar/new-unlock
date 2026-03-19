@@ -22,7 +22,6 @@
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
 
-    // ── Auth state ──
     onAuthStateChanged(auth, (user) => {
       if (user) {
         document.getElementById('loginScreen').style.display = 'none';
@@ -36,7 +35,6 @@
       }
     });
 
-    // ── Login with Google (popup) ──
     window.doLogin = async function() {
       try {
         await signInWithPopup(auth, provider);
@@ -45,19 +43,16 @@
       }
     };
 
-    // ── Logout ──
     window.doLogout = async function() {
       await signOut(auth);
     };
 
-    // ── Get ID Token for requests ──
     window.getIdToken = async function() {
       const user = auth.currentUser;
       if (!user) return null;
       return await user.getIdToken();
     };
-
-</script>
+  </script>
 </head>
 <body>
 
@@ -66,7 +61,7 @@
   <div class="login-card">
     <img src="../images/fav.png" alt="UNLOCK" class="login-logo"/>
     <h1>UNLOCK Admin</h1>
-    <p>לוח ניהול מוצרים</p>
+    <p>לוח ניהול</p>
     <button class="login-btn google-btn" onclick="doLogin()">
       <svg width="18" height="18" viewBox="0 0 48 48" style="margin-left:8px"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
       התחבר עם Google
@@ -77,28 +72,85 @@
 
 <!-- ADMIN -->
 <div class="admin-screen" id="adminScreen">
+
+  <!-- Topbar -->
   <div class="topbar">
-    <div class="topbar-logo">
-      <img src="../images/fav.png" alt="UNLOCK"/>
-      UNLOCK Admin
+    <div class="topbar-start">
+      <button class="hamburger" id="hamburgerBtn" onclick="toggleSidebar()" aria-label="תפריט">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="topbar-logo">
+        <img src="../images/fav.png" alt="UNLOCK"/>
+        UNLOCK Admin
+      </div>
     </div>
     <div class="topbar-actions">
       <a href="/" class="btn btn-outline" target="_blank">← האתר</a>
-      <button class="btn btn-gold" onclick="openAddModal()">+ מוצר חדש</button>
       <button class="btn btn-outline" onclick="doLogout()">יציאה</button>
     </div>
   </div>
 
-  <div class="admin-main">
+  <!-- Layout: sidebar + content -->
+  <div class="admin-layout">
 
-      <div class="section-header">
-      <h2>מוצרים <span class="products-count" id="productsCount">0</span></h2>
-    </div>
+    <!-- Sidebar overlay (mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
-    <div class="products-grid" id="productsGrid">
-      <p style="color:var(--muted); text-align:center; padding: 3rem 0;">טוען מוצרים...</p>
-    </div>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <nav class="sidebar-nav">
+        <button class="sidebar-item active" id="nav-products" onclick="switchSection('products')">
+          <span class="sidebar-icon">📦</span>
+          <span class="sidebar-label">מוצרים</span>
+        </button>
+        <button class="sidebar-item" id="nav-surveys" onclick="switchSection('surveys')">
+          <span class="sidebar-icon">⭐</span>
+          <span class="sidebar-label">סקרי לקוח</span>
+        </button>
+        <button class="sidebar-item" id="nav-invoices" onclick="switchSection('invoices')">
+          <span class="sidebar-icon">📄</span>
+          <span class="sidebar-label">חשבוניות</span>
+        </button>
+      </nav>
+    </aside>
 
+    <!-- Main content -->
+    <main class="admin-main">
+
+      <!-- Products section -->
+      <div class="admin-section" id="section-products">
+        <div class="section-header">
+          <h2>מוצרים <span class="count-badge" id="productsCount">0</span></h2>
+          <button class="btn btn-gold" onclick="openAddModal()">+ מוצר חדש</button>
+        </div>
+        <div class="products-grid" id="productsGrid">
+          <p class="empty-state">טוען מוצרים...</p>
+        </div>
+      </div>
+
+      <!-- Surveys section -->
+      <div class="admin-section hidden" id="section-surveys">
+        <div class="section-header">
+          <h2>סקרי לקוח <span class="count-badge" id="surveysCount">0</span></h2>
+          <button class="btn btn-outline" onclick="loadSurveys()">🔄 רענן</button>
+        </div>
+        <div id="surveysContainer">
+          <p class="empty-state">לחץ רענן לטעינה</p>
+        </div>
+      </div>
+
+      <!-- Invoices section -->
+      <div class="admin-section hidden" id="section-invoices">
+        <div class="section-header">
+          <h2>בקשות חשבונית <span class="count-badge" id="invoicesCount">0</span></h2>
+          <button class="btn btn-outline" onclick="loadInvoices()">🔄 רענן</button>
+        </div>
+        <div id="invoicesContainer">
+          <p class="empty-state">לחץ רענן לטעינה</p>
+        </div>
+      </div>
+
+    </main>
   </div>
 </div>
 
@@ -114,12 +166,10 @@
       <label>שם מוצר</label>
       <input type="text" id="fTitle" placeholder='MTL™800 מולטילוק'/>
     </div>
-
     <div class="field">
       <label>תיאור</label>
       <textarea id="fDesc" placeholder="תיאור המוצר..."></textarea>
     </div>
-
     <div class="field-row">
       <div class="field">
         <label>מחיר מלא (₪)</label>
@@ -130,7 +180,6 @@
         <input type="number" id="fDiscountPrice" placeholder="550"/>
       </div>
     </div>
-
     <div class="field-row">
       <div class="field">
         <label>מותג</label>
@@ -141,12 +190,14 @@
         <select id="fCategory">
           <option>צילינדרים</option>
           <option>מנעולים חכמים</option>
-          <option>ועד בניין</option>
+          <option>מנעולים עליונים</option>
+          <option>מנעולים מכאניים</option>
+          <option>דלתות</option>
+          <option>מנעול ויטרינה</option>
           <option>שונות</option>
         </select>
       </div>
     </div>
-
     <div class="field-row">
       <div class="field">
         <label>סטטוס</label>
@@ -165,17 +216,14 @@
         </div>
       </div>
     </div>
-
     <div class="field">
       <label>הערה (note)</label>
       <input type="text" id="fNote" placeholder="כולל שירות והתקנה"/>
     </div>
-
     <div class="field">
       <label>תמונה (נתיב)</label>
       <input type="text" id="fImage" placeholder="images/product.jpg"/>
     </div>
-
     <div class="modal-footer">
       <button class="btn btn-outline" onclick="closeModal()">ביטול</button>
       <button class="btn btn-gold" id="saveBtn" onclick="saveProduct()">💾 שמור</button>
@@ -186,8 +234,8 @@
 <!-- CONFIRM DELETE -->
 <div class="confirm-overlay" id="confirmOverlay">
   <div class="confirm-box">
-    <h4>מחיקת מוצר</h4>
-    <p id="confirmText">האם אתה בטוח שברצונך למחוק מוצר זה?</p>
+    <h4>אישור מחיקה</h4>
+    <p id="confirmText"></p>
     <div class="confirm-btns">
       <button class="btn btn-outline" onclick="closeConfirm()">ביטול</button>
       <button class="btn btn-danger" id="confirmDeleteBtn">מחק</button>
@@ -199,28 +247,52 @@
 <div class="toast" id="toast"></div>
 
 <script>
-
-  const ADMIN_FN = 'https://us-central1-hamanulan-3bbc7.cloudfunctions.net/adminProducts';
+  const ADMIN_PRODUCTS = 'https://us-central1-hamanulan-3bbc7.cloudfunctions.net/adminProducts';
+  const ADMIN_SURVEYS  = 'https://us-central1-hamanulan-3bbc7.cloudfunctions.net/adminSurveys';
+  const ADMIN_INVOICES = 'https://us-central1-hamanulan-3bbc7.cloudfunctions.net/adminInvoices';
 
   let products = [];
   let editIndex = -1;
   let currentVat = 'n';
+  let currentSection = 'products';
 
   // ── Init ──
   async function initAdmin() {
     await loadProducts();
   }
 
-  // ── Auth header helper ──
+  // ── Auth header ──
   async function authHeader() {
     const token = await getIdToken();
     return { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
   }
 
-  // ── Load products ──
+  // ── Sidebar ──
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sidebarOverlay').classList.toggle('visible');
+  }
+
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('visible');
+  }
+
+  function switchSection(section) {
+    currentSection = section;
+    document.querySelectorAll('.admin-section').forEach(el => el.classList.add('hidden'));
+    document.getElementById('section-' + section).classList.remove('hidden');
+    document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+    document.getElementById('nav-' + section).classList.add('active');
+    closeSidebar();
+    if (section === 'surveys') loadSurveys();
+    if (section === 'invoices') loadInvoices();
+  }
+
+  // ── Products ──
   async function loadProducts() {
     try {
-      const res = await fetch(ADMIN_FN, { headers: await authHeader() });
+      const res = await fetch(ADMIN_PRODUCTS, { headers: await authHeader() });
       products = await res.json();
       renderProducts();
     } catch(e) {
@@ -228,11 +300,9 @@
     }
   }
 
-  // ── Render ──
   function renderProducts() {
     const grid = document.getElementById('productsGrid');
     document.getElementById('productsCount').textContent = products.length;
-
     grid.innerHTML = products.map((p, i) => `
       <div class="product-row" data-id="${p.id}" data-index="${i}">
         <span class="drag-handle">⠿</span>
@@ -252,24 +322,18 @@
       </div>
     `).join('');
 
-    // ── Drag & Drop ──
     Sortable.create(grid, {
       handle: '.drag-handle',
       animation: 150,
       onEnd: async (evt) => {
         const { oldIndex, newIndex } = evt;
         if (oldIndex === newIndex) return;
-
-        // עדכן מערך מקומי
         const moved = products.splice(oldIndex, 1)[0];
         products.splice(newIndex, 0, moved);
-
-        // שמור סדר חדש ל-Firestore
         const headers = await authHeader();
         await Promise.all(products.map((p, i) =>
-          fetch(`${ADMIN_FN}?id=${p.id}`, {
-            method: 'PUT',
-            headers,
+          fetch(`${ADMIN_PRODUCTS}?id=${p.id}`, {
+            method: 'PUT', headers,
             body: JSON.stringify({ order: i })
           })
         ));
@@ -279,7 +343,6 @@
     });
   }
 
-  // ── Edit modal ──
   function openEditModal(index) {
     editIndex = index;
     const p = products[index];
@@ -300,15 +363,10 @@
   function openAddModal() {
     editIndex = -1;
     document.getElementById('modalTitle').textContent = 'הוספת מוצר חדש';
-    document.getElementById('fTitle').value = '';
-    document.getElementById('fDesc').value = '';
-    document.getElementById('fPrice').value = '';
-    document.getElementById('fDiscountPrice').value = '';
-    document.getElementById('fBrand').value = '';
+    ['fTitle','fDesc','fPrice','fDiscountPrice','fBrand','fImage'].forEach(id => document.getElementById(id).value = '');
     document.getElementById('fCategory').value = 'צילינדרים';
     document.getElementById('fStatus').value = '';
     document.getElementById('fNote').value = 'כולל שירות והתקנה';
-    document.getElementById('fImage').value = '';
     setVat('n');
     document.getElementById('editModal').classList.add('visible');
   }
@@ -323,12 +381,10 @@
     document.getElementById('vatY').classList.toggle('active', val === 'y');
   }
 
-  // ── Save (add / edit) ──
   async function saveProduct() {
     const btn = document.getElementById('saveBtn');
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner-inline"></span> שומר...';
-
     const data = {
       title: document.getElementById('fTitle').value.trim(),
       desc: document.getElementById('fDesc').value.trim(),
@@ -345,16 +401,13 @@
       including_vat: currentVat
     };
     if (!data.discount_price) delete data.discount_price;
-
     try {
       const headers = await authHeader();
       if (editIndex >= 0) {
-        await fetch(`${ADMIN_FN}?id=${products[editIndex].id}`, {
-          method: 'PUT', headers, body: JSON.stringify(data)
-        });
+        await fetch(`${ADMIN_PRODUCTS}?id=${products[editIndex].id}`, { method: 'PUT', headers, body: JSON.stringify(data) });
         showToast('המוצר עודכן ✓', 'success');
       } else {
-        await fetch(ADMIN_FN, { method: 'POST', headers, body: JSON.stringify(data) });
+        await fetch(ADMIN_PRODUCTS, { method: 'POST', headers, body: JSON.stringify(data) });
         showToast('המוצר נוסף ✓', 'success');
       }
       closeModal();
@@ -362,15 +415,17 @@
     } catch(e) {
       showToast('שגיאה בשמירה', 'error');
     }
-
     btn.disabled = false;
     btn.innerHTML = '💾 שמור';
   }
 
-  // ── Delete ──
+  // ── Delete (products) ──
   let deleteIndex = -1;
+  let deleteMode = 'product';
+  let deleteId = null;
 
   function openConfirmDelete(index) {
+    deleteMode = 'product';
     deleteIndex = index;
     document.getElementById('confirmText').textContent = `למחוק את "${products[index].title}"?`;
     document.getElementById('confirmOverlay').classList.add('visible');
@@ -385,12 +440,140 @@
     closeConfirm();
     try {
       const headers = await authHeader();
-      await fetch(`${ADMIN_FN}?id=${products[deleteIndex].id}`, { method: 'DELETE', headers });
-      showToast('המוצר נמחק', 'success');
-      await loadProducts();
+      if (deleteMode === 'product') {
+        await fetch(`${ADMIN_PRODUCTS}?id=${products[deleteIndex].id}`, { method: 'DELETE', headers });
+        showToast('המוצר נמחק', 'success');
+        await loadProducts();
+      } else if (deleteMode === 'survey') {
+        await fetch(`${ADMIN_SURVEYS}?id=${deleteId}`, { method: 'DELETE', headers });
+        showToast('הסקר נמחק', 'success');
+        await loadSurveys();
+      } else if (deleteMode === 'invoice') {
+        await fetch(`${ADMIN_INVOICES}?id=${deleteId}`, { method: 'DELETE', headers });
+        showToast('הרשומה נמחקה', 'success');
+        await loadInvoices();
+      }
     } catch(e) {
       showToast('שגיאה במחיקה', 'error');
     }
+  }
+
+  // ── Surveys ──
+  async function loadSurveys() {
+    document.getElementById('surveysContainer').innerHTML = '<p class="empty-state">טוען...</p>';
+    try {
+      const res = await fetch(ADMIN_SURVEYS, { headers: await authHeader() });
+      const surveys = await res.json();
+      document.getElementById('surveysCount').textContent = surveys.length;
+      if (!surveys.length) {
+        document.getElementById('surveysContainer').innerHTML = '<p class="empty-state">אין סקרים עדיין</p>';
+        return;
+      }
+      document.getElementById('surveysContainer').innerHTML = `
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>תאריך</th>
+                <th>שם</th>
+                <th>טלפון</th>
+                <th>כוכבים</th>
+                <th>איכות</th>
+                <th>הגעה</th>
+                <th>מחיר</th>
+                <th>יחס</th>
+                <th>המלצה</th>
+                <th>הערה</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              ${surveys.map(s => `
+                <tr>
+                  <td class="td-date">${s.createdAt ? s.createdAt.slice(0,10) : '—'}</td>
+                  <td>${s.customer_name || '—'}</td>
+                  <td dir="ltr">${s.phone || '—'}</td>
+                  <td class="td-stars">${'★'.repeat(Number(s.stars)||0)}</td>
+                  <td>${s.quality || '—'}</td>
+                  <td>${s.arrival || '—'}</td>
+                  <td>${s.price || '—'}</td>
+                  <td>${s.attitude || '—'}</td>
+                  <td>${s.recommend || '—'}</td>
+                  <td class="td-comment">${s.comment || ''}</td>
+                  <td><button class="btn btn-danger btn-sm" onclick="deleteRecord('survey','${s.id}', '${(s.customer_name||'').replace(/'/g,"\\'")}')">🗑️</button></td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    } catch(e) {
+      document.getElementById('surveysContainer').innerHTML = '<p class="empty-state error">שגיאה בטעינה</p>';
+    }
+  }
+
+  // ── Invoices ──
+  async function loadInvoices() {
+    document.getElementById('invoicesContainer').innerHTML = '<p class="empty-state">טוען...</p>';
+    try {
+      const res = await fetch(ADMIN_INVOICES, { headers: await authHeader() });
+      const invoices = await res.json();
+      document.getElementById('invoicesCount').textContent = invoices.length;
+      if (!invoices.length) {
+        document.getElementById('invoicesContainer').innerHTML = '<p class="empty-state">אין בקשות עדיין</p>';
+        return;
+      }
+      document.getElementById('invoicesContainer').innerHTML = `
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>תאריך</th>
+                <th>שם</th>
+                <th>טלפון</th>
+                <th>מייל</th>
+                <th>ח.פ/ת.ז</th>
+                <th>כתובת</th>
+                <th>שירות</th>
+                <th>סכום</th>
+                <th>מע"מ</th>
+                <th>תשלום</th>
+                <th>מידרג</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              ${invoices.map(inv => `
+                <tr>
+                  <td class="td-date">${inv.createdAt ? inv.createdAt.slice(0,10) : '—'}</td>
+                  <td>${inv.name || '—'}</td>
+                  <td dir="ltr">${inv.phone || '—'}</td>
+                  <td>${inv.email || '—'}</td>
+                  <td>${inv.id_number || '—'}</td>
+                  <td>${inv.service_address || '—'}</td>
+                  <td class="td-comment">${inv.message || '—'}</td>
+                  <td>₪${inv.amount || '—'}</td>
+                  <td>${inv.vat_type || '—'}</td>
+                  <td>${inv.payment_method || '—'}</td>
+                  <td>${inv.midrag_name || '—'}</td>
+                  <td><button class="btn btn-danger btn-sm" onclick="deleteRecord('invoice','${inv.id}', '${(inv.name||'').replace(/'/g,"\\'")}')">🗑️</button></td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    } catch(e) {
+      document.getElementById('invoicesContainer').innerHTML = '<p class="empty-state error">שגיאה בטעינה</p>';
+    }
+  }
+
+  function deleteRecord(mode, id, name) {
+    deleteMode = mode;
+    deleteId = id;
+    document.getElementById('confirmText').textContent = `למחוק את "${name}"?`;
+    document.getElementById('confirmOverlay').classList.add('visible');
+    document.getElementById('confirmDeleteBtn').onclick = confirmDelete;
   }
 
   // ── Toast ──
@@ -405,7 +588,6 @@
     }
   }
 
-  // Close modal on overlay click
   document.getElementById('editModal').addEventListener('click', function(e) {
     if (e.target === this) closeModal();
   });
