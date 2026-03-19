@@ -221,7 +221,10 @@
         ]);
         const json=await web3Res.json();
         closePopup('popupLoading');
-        if(json.success){showPopup('popupSuccess');}
+        if(json.success){
+          const customerName = encodeURIComponent((e.target.customer_name.value||'').trim());
+          window.location.href = '/pages/thankyou.html?type=survey' + (customerName ? '&name=' + customerName : '');
+        }
         else{showPopup('popupError');btn.disabled=false;btn.textContent='📨 שלח משוב';}
       }catch{
         closePopup('popupLoading');showPopup('popupError');btn.disabled=false;btn.textContent='📨 שלח משוב';

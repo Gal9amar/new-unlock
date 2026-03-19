@@ -24,7 +24,7 @@
 
       <h1 id="thank-title">תודה רבה!</h1>
 
-      <p class="msg">
+      <p class="msg" id="thank-msg">
         קיבלנו את הפרטים. המסמך יונפק וישלח אליך בהקדם האפשרי —
         תודה שבחרת בשירות שלנו.
       </p>
@@ -47,10 +47,16 @@
   </main>
 
   <script>
-    const name = new URLSearchParams(window.location.search).get('name');
+    const params = new URLSearchParams(window.location.search);
+    const name = params.get('name');
+    const type = params.get('type');
     if (name) {
       const first = decodeURIComponent(name).trim().split(' ')[0];
       document.getElementById('thank-title').textContent = 'תודה רבה ' + first + '!';
+    }
+    if (type === 'survey') {
+      document.getElementById('thank-msg').textContent =
+        'המשוב שלך התקבל והוא חשוב לנו מאוד. תודה שלקחת דקה לשתף — זה עוזר לנו להמשיך ולהשתפר עבורך.';
     }
   </script>
 </body>
