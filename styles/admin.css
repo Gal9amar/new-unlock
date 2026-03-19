@@ -708,11 +708,8 @@ body {
 
   /* Mobile: hide table, show cards */
   .data-table-wrap { display: none; }
-  .cards-list { display: flex; flex-direction: column; gap: 1rem; }
+  .cards-list { display: flex !important; flex-direction: column; gap: 1rem; }
 }
-
-/* ── Data cards: hidden by default, shown on mobile ── */
-.cards-list { display: none; }
 
 .data-card {
   background: var(--surface);
