@@ -24,7 +24,7 @@ async function loadProduct() {
 
   try {
     // Load products data
-    const response = await fetch('products.json');
+    const response = await fetch('/data/products.json');
     allProducts = await response.json();
 
     // Get specific product by name or fallback to id

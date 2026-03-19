@@ -6,99 +6,16 @@
   <meta name="theme-color" content="#0a1628" />
   <title>סקר שביעות רצון – UNLOCK מנעולן מקצועי</title>
   <meta name="description" content="שתף אותנו בחוויית השירות שלך – UNLOCK מנעולנות מקצועית" />
-  <link rel="icon" href="images/fav.png" />
+  <link rel="icon" href="../images/fav.png" />
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles/main.css?v=3.0" />
-  <style>
-    .top-nav { position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);border-bottom:1px solid #e2e8f0;padding:0.75rem 0; }
-    html.dark .top-nav { background:rgba(2,6,23,0.92);border-bottom-color:#1e293b; }
-    .nav-inner { max-width:1100px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between; }
-    .nav-logo { display:flex;align-items:center;gap:0.6rem;font-weight:800;font-size:1.1rem;color:#1d4ed8;text-decoration:none; }
-    .nav-logo img { width:32px;height:32px; }
-    .nav-phone { font-size:0.9rem;font-weight:600;color:#1d4ed8;text-decoration:none; }
-    html.dark .nav-phone { color:#60a5fa; }
-    .page-wrapper { min-height:100vh;display:flex;flex-direction:column;background:#f8fafc; }
-    html.dark .page-wrapper { background:#020617; }
-    .form-section { flex:1;padding:3rem 1rem 4rem; }
-    .form-container { max-width:540px;margin:0 auto; }
-    .form-heading { text-align:center;margin-bottom:2rem; }
-    .form-heading .badge-row { display:flex;justify-content:center;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem; }
-    .form-heading .badge { background:linear-gradient(135deg,#eff6ff,#dbeafe);color:#1d4ed8;padding:0.3rem 0.9rem;border-radius:20px;font-size:0.78rem;font-weight:600; }
-    html.dark .form-heading .badge { background:linear-gradient(135deg,#1e3a5f,#1e40af);color:#bfdbfe; }
-    .form-heading h1 { font-size:clamp(1.6rem,4vw,2rem);font-weight:800;color:#0f172a;line-height:1.25;margin-bottom:0.6rem; }
-    html.dark .form-heading h1 { color:#f1f5f9; }
-    .form-heading h1 .highlight { color:#1d4ed8; }
-    .form-heading p { font-size:0.95rem;color:#64748b; }
-    html.dark .form-heading p { color:#94a3b8; }
-    .form-card { background:#fff;border-radius:18px;border:1px solid #e2e8f0;padding:2rem 1.75rem;box-shadow:0 4px 24px rgba(15,23,42,0.07); }
-    html.dark .form-card { background:#0f172a;border-color:#1e293b; }
-    .field { margin-bottom:1.3rem; }
-    label { display:block;font-size:0.88rem;font-weight:600;color:#374151;margin-bottom:0.4rem; }
-    html.dark label { color:#cbd5e1; }
-    .req { color:#ef4444; }
-    .q-sub { font-size:0.8rem;color:#94a3b8;margin-bottom:0.6rem;margin-top:-0.2rem;line-height:1.4; }
-    html.dark .q-sub { color:#64748b; }
-    input[type="text"],input[type="tel"],textarea { width:100%;padding:0.7rem 0.9rem;border:1.5px solid #e2e8f0;border-radius:10px;font-family:'Heebo',Arial,sans-serif;font-size:0.95rem;color:#0f172a;background:#f8fafc;outline:none;transition:border-color 0.2s,box-shadow 0.2s; }
-    html.dark input[type="text"],html.dark input[type="tel"],html.dark textarea { background:#1e293b;border-color:#334155;color:#f1f5f9; }
-    input:focus,textarea:focus { border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,0.12);background:#fff; }
-    html.dark input:focus,html.dark textarea:focus { background:#1e293b; }
-    textarea { resize:vertical;min-height:80px; }
-    input::placeholder,textarea::placeholder { color:#94a3b8; }
-    /* Toggle buttons */
-    .toggle-row { display:flex;gap:0.4rem;flex-wrap:nowrap; }
-    .toggle-btn { flex:1;min-width:0;padding:0.55rem 0.4rem;font-family:'Heebo',Arial,sans-serif;font-size:0.82rem;font-weight:600;border:1.5px solid #e2e8f0;border-radius:10px;background:#f8fafc;color:#475569;cursor:pointer;transition:all 0.18s;display:flex;align-items:center;justify-content:center;gap:0.2rem;white-space:nowrap;overflow:hidden; }
-    html.dark .toggle-btn { background:#1e293b;border-color:#334155;color:#94a3b8; }
-    .toggle-btn:not(.active):not(.active-green):not(.active-red):not(.active-amber):hover { border-color:#93c5fd;color:#1d4ed8;background:#eff6ff; }
-    html.dark .toggle-btn:not(.active):not(.active-green):not(.active-red):not(.active-amber):hover { border-color:#3b82f6;color:#60a5fa;background:#1e3a5f; }
-    .toggle-btn.active       { background:#1d4ed8 !important;border-color:#1d4ed8 !important;color:#fff !important; }
-    .toggle-btn.active-green { background:#10b981 !important;border-color:#10b981 !important;color:#fff !important; }
-    .toggle-btn.active-red   { background:#dc2626 !important;border-color:#dc2626 !important;color:#fff !important; }
-    .toggle-btn.active-amber { background:#d97706 !important;border-color:#d97706 !important;color:#fff !important; }
-    /* Stars */
-    .stars-row { display:flex;gap:0.5rem; }
-    .star-btn { width:46px;height:46px;border:2px solid #e2e8f0;border-radius:10px;background:#f8fafc;cursor:pointer;color:#94a3b8;font-family:'Heebo',Arial,sans-serif;transition:all .18s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:0;font-weight:700; }
-    html.dark .star-btn { background:#1e293b;border-color:#334155;color:#64748b; }
-    .star-btn:not(.lit):hover { border-color:#facc15;background:#fef9c3;color:#d97706; }
-    .star-btn.lit { background:#facc15 !important;border-color:#f59e0b !important;color:#fff !important; }
-    /* Divider */
-    .section-divider { position:relative;margin:1.4rem 0; }
-    .section-divider::before { content:'';display:block;height:1px;background:#e2e8f0; }
-    html.dark .section-divider::before { background:#1e293b; }
-    /* Submit */
-    .submit-btn { width:100%;padding:0.9rem;background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;border:none;border-radius:12px;font-family:'Heebo',Arial,sans-serif;font-size:1.05rem;font-weight:700;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s,opacity 0.2s;box-shadow:0 6px 20px rgba(37,99,235,0.35);margin-top:0.5rem; }
-    .submit-btn:hover { transform:translateY(-1px);box-shadow:0 8px 24px rgba(37,99,235,0.4); }
-    .submit-btn:active { transform:translateY(0); }
-    .submit-btn:disabled { opacity:0.55;cursor:not-allowed;transform:none; }
-    .form-note { font-size:0.78rem;color:#94a3b8;text-align:center;margin-top:0.75rem; }
-    /* Popups */
-    .popup-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:9999;padding:1rem; }
-    .popup-overlay.visible { display:flex; }
-    .popup-box { background:#fff;border-radius:20px;padding:2.5rem 2rem;max-width:360px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.2);animation:fadeUp 0.3s ease both; }
-    html.dark .popup-box { background:#1e293b; }
-    @keyframes fadeUp { from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)} }
-    .popup-icon { font-size:3rem;display:block;margin-bottom:1rem; }
-    .popup-title { font-size:1.3rem;font-weight:800;color:#0f172a;margin-bottom:0.5rem; }
-    html.dark .popup-title { color:#f1f5f9; }
-    .popup-msg { font-size:0.95rem;color:#64748b;margin-bottom:1.5rem;line-height:1.6; }
-    .popup-btn { display:inline-block;padding:0.75rem 2rem;border-radius:12px;font-family:'Heebo',Arial,sans-serif;font-size:1rem;font-weight:700;text-decoration:none;cursor:pointer;border:none;transition:transform 0.2s,opacity 0.2s; }
-    .popup-btn:hover { transform:translateY(-1px);opacity:0.9; }
-    .popup-btn-success { background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff; }
-    .popup-btn-error { background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff; }
-    .spinner { width:48px;height:48px;border:4px solid #e2e8f0;border-top-color:#2563eb;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 1rem; }
-    html.dark .spinner { border-color:#1e293b;border-top-color:#3b82f6; }
-    @keyframes spin { to{transform:rotate(360deg)} }
-    @media(max-width:480px) {
-      .form-card { padding:1.4rem 1rem; }
-      .star-btn { width:40px;height:40px; }
-      .toggle-btn { font-size:0.75rem;padding:0.5rem 0.3rem; }
-    }
-  </style>
-</head>
+  <link rel="stylesheet" href="../styles/main.css?v=3.0" />
+  <link rel="stylesheet" href="../styles/survey.css" />
+  </head>
 <body class="site-body">
 
   <nav class="top-nav">
     <div class="nav-inner">
-      <a href="/" class="nav-logo"><img src="images/fav.png" alt="UNLOCK"/>UNLOCK</a>
+      <a href="/" class="nav-logo"><img src="../images/fav.png" alt="UNLOCK"/>UNLOCK</a>
       <a href="tel:0533888381" class="nav-phone">📞 053-388-8381</a>
     </div>
   </nav>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="robots" content="noindex,nofollow"/>
+  <title>תודה רבה — UNLOCK מנעולנות</title>
+  <link rel="icon" href="../images/fav.png"/>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../styles/thankyou.css"/>
+  </head>
+<body>
+
+  <nav>
+    <a href="/" class="nav-logo"><img src="../images/fav.png" alt="UNLOCK"/>UNLOCK</a>
+    <a href="tel:0533888381" class="nav-phone">📞 053-388-8381</a>
+  </nav>
+
+  <main>
+    <div class="card">
+      <div class="logo-wrap">
+        <img src="../images/fav.png" alt="UNLOCK"/>
+      </div>
+
+      <h1 id="thank-title">תודה רבה!</h1>
+
+      <p class="msg">
+        קיבלנו את הפרטים. המסמך יונפק וישלח אליך בהקדם האפשרי —
+        תודה שבחרת בשירות שלנו.
+      </p>
+
+      <div class="divider"></div>
+
+      <div class="signature">
+        בברכה,<br/>
+        <strong>גבי המנעולן</strong> 🔐
+      </div>
+
+      <a href="/" class="back-btn">← חזרה לאתר הבית</a>
+
+      <div class="contact-row">
+        שאלות? <a href="tel:0533888381">053-388-8381</a>
+        &nbsp;·&nbsp;
+        <a href="https://wa.me/972533888381">WhatsApp</a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const name = new URLSearchParams(window.location.search).get('name');
+    if (name) {
+      const first = decodeURIComponent(name).trim().split(' ')[0];
+      document.getElementById('thank-title').textContent = 'תודה רבה ' + first + '!';
+    }
+  </script>
+</body>
+</html>

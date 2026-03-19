@@ -105,8 +105,8 @@ function initRevealAnimations() {
 async function initProducts() {
   try {
     const [productsRes, orderRes] = await Promise.all([
-      fetch('products.json'),
-      fetch('product_order.json').catch(() => null)
+      fetch('/data/products.json'),
+      fetch('/data/product_order.json').catch(() => null)
     ]);
     allProducts = await productsRes.json();
 

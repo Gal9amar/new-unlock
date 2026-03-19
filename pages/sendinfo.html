@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0a1628" />
+  <title>שליחת פרטים – UNLOCK מנעולן מקצועי</title>
+  <meta name="description" content="שלחו פרטים לגבי המנעולן – שירות מנעולנות מקצועי 24/7 באזור המרכז והדרום" />
+  <link rel="icon" href="../images/fav.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/main.css?v=3.0" />
+  <link rel="stylesheet" href="../styles/sendinfo.css" />
+  </head>
+<body class="site-body">
+
+  <!-- Nav -->
+  <nav class="top-nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <img src="../images/fav.png" alt="UNLOCK" />
+        UNLOCK
+      </a>
+      <a href="tel:0533888381" class="nav-phone">📞 053-388-8381</a>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+    <main class="form-section" id="main-content">
+      <div class="form-container">
+
+        <!-- Heading -->
+        <div class="form-heading">
+
+          <h1>פרטי הלקוח<br/>ל<span class="highlight">הוצאת חשבונית</span></h1>
+          <p>מלאו את הפרטים ונפיק את החשבונית בהקדם</p>
+        </div>
+
+        <!-- Card -->
+        <div class="form-card">
+
+          <form id="contactForm">
+            <input type="hidden" name="access_key" value="8f6811e4-edba-4ca8-8776-e39c6eaf1b72"/>
+            <input type="hidden" name="subject" value="פרטי לקוח לחשבונית – UNLOCK גבי המנעולן"/>
+            <input type="hidden" name="from_name" value="טופס האתר"/>
+            <input type="checkbox" name="botcheck" style="display:none"/>
+
+            <div class="field">
+              <label>שם מלא <span class="req">*</span></label>
+              <input type="text" name="name" placeholder="ישראל ישראלי" required/>
+            </div>
+
+            <div class="field">
+              <label>טלפון <span class="req">*</span></label>
+              <input type="tel" name="phone" placeholder="050-0000000" required/>
+            </div>
+
+            <div class="field">
+              <label>כתובת מייל <span class="req">*</span></label>
+              <input type="email" name="email" placeholder="mail@example.com" required/>
+            </div>
+
+            <div class="field">
+              <label>ח.פ / ת.ז</label>
+              <input type="text" name="id_number" placeholder="000000000"/>
+            </div>
+
+            <div class="field">
+              <label>כתובת קבלת השירות <span class="req">*</span></label>
+              <input type="text" name="service_address" placeholder="רחוב, מספר, עיר" required/>
+            </div>
+
+            <div class="field">
+              <label>תיאור השירות <span class="req">*</span></label>
+              <textarea name="message" placeholder="תארו את השירות שבוצע..." required></textarea>
+            </div>
+
+            <!-- Amount + VAT -->
+            <div class="field">
+              <label>סכום <span class="req">*</span></label>
+              <div class="amount-row">
+                <input type="text" name="amount" id="amountInput" placeholder="0.00" inputmode="decimal" pattern="[0-9]*\.?[0-9]*" required/>
+                <div class="vat-toggles">
+                  <button type="button" class="vat-btn active" id="vatIncluded" onclick="selectVat('included')">כולל מע"מ</button>
+                  <button type="button" class="vat-btn" id="vatExcluded" onclick="selectVat('excluded')">לפני מע"מ</button>
+                </div>
+              </div>
+              <input type="hidden" name="vat_type" id="vatType" value="כולל מע״מ"/>
+            </div>
+
+            <!-- Payment method -->
+            <div class="field">
+              <label>שיטת תשלום <span class="req">*</span></label>
+              <div class="payment-toggles">
+                <button type="button" class="pay-btn" id="payBit" onclick="selectPayment('bit')">
+                  <img src="../images/Bit-logo2024.png" alt="Bit" style="height:18px;vertical-align:middle;border-radius:15px;"/> ביט
+                </button>
+                <button type="button" class="pay-btn" id="payCheck" onclick="selectPayment('check')">
+                  <span class="pay-icon">📝</span> המחאה
+                </button>
+                <button type="button" class="pay-btn" id="payTransfer" onclick="selectPayment('transfer')">
+                  <span class="pay-icon">🏦</span> העברה בנקאית
+                </button>
+              </div>
+              <input type="hidden" name="payment_method" id="paymentMethod" value=""/>
+
+              <!-- Bank details (shown only for transfer) -->
+              <div class="bank-details" id="bankDetails">
+                <div class="bank-row"><span class="bank-label">בנק</span><span>מזרחי טפחות</span></div>
+                <div class="bank-row"><span class="bank-label">סניף</span><span class="bank-value"><button type="button" class="copy-btn" onclick="copyText('540', this)">&#10697;</button>540</span></div>
+                <div class="bank-row"><span class="bank-label">חשבון</span><span class="bank-value"><button type="button" class="copy-btn" onclick="copyText('121889', this)">&#10697;</button>121889</span></div>
+                <div class="bank-row"><span class="bank-label">שם</span><span>גל עמר</span></div>
+              </div>
+            </div>
+
+            <!-- Midrag field -->
+            <div class="field" style="margin-top:1.2rem">
+              <label style="font-weight:600">הגעת דרך מידרג?</label>
+              <p style="font-size:0.8rem;color:#94a3b8;margin-bottom:0.5rem;line-height:1.5">במידה והגעת אלינו דרך מידרג, אנא רשום את השם שמופיע באתר לצורך זיהוי ותיעוד</p>
+              <input type="text" name="midrag_name" placeholder="שם המשתמש במידרג (אופציונלי)"/>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">📨 שלח פרטים</button>
+            <p class="form-note">הפרטים ישלחו ישירות לגבי · ללא שמירה במאגרי צד שלישי</p>
+          </form>
+
+          <div class="success-screen" id="successScreen">
+            <div class="success-icon">✅</div>
+            <h2>הפרטים נשלחו בהצלחה!</h2>
+            <p>תודה! החשבונית תופק ותישלח אליך בהקדם.</p>
+            <a href="/" class="back-btn">← חזרה לאתר</a>
+          </div>
+
+        </div>
+
+
+
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+  <!-- Popups -->
+  <div class="popup-overlay" id="popupLoading">
+    <div class="popup-box">
+      <div class="spinner"></div>
+      <div class="popup-title">שולח פרטים...</div>
+      <div class="popup-msg">אנא המתן, הפרטים בדרך לגבי</div>
+    </div>
+  </div>
+
+  <div class="popup-overlay" id="popupSuccess">
+    <div class="popup-box">
+      <span class="popup-icon">✅</span>
+      <div class="popup-title" id="successTitle">הפרטים נשלחו בהצלחה!</div>
+      <div class="popup-msg" id="successMsg">קיבלנו את הפרטים. המסמך יונפק וישלח אליך בהקדם האפשרי — תודה שבחרת בשירות שלנו.</div>
+      <div style="margin-top:1rem;font-size:0.88rem;color:#64748b;line-height:1.6">בברכה,<strong>גבי המנעולן</strong> 🔐</div>
+      <a href="/" class="popup-btn popup-btn-success">← חזרה לאתר</a>
+    </div>
+  </div>
+
+  <div class="popup-overlay" id="popupError">
+    <div class="popup-box">
+      <span class="popup-icon">❌</span>
+      <div class="popup-title">שגיאה בשליחה</div>
+      <div class="popup-msg">משהו השתבש. בדוק את החיבור לאינטרנט ונסה שוב.</div>
+      <button class="popup-btn popup-btn-error" onclick="closePopup('popupError')">נסה שוב</button>
+    </div>
+  </div>
+
+  <script>
+    function showPopup(id) {
+      document.getElementById(id).classList.add('visible');
+    }
+    function closePopup(id) {
+      document.getElementById(id).classList.remove('visible');
+    }
+
+    // Copy to clipboard
+    function copyText(text, btn) {
+      navigator.clipboard.writeText(text).then(() => {
+        btn.innerHTML = '✓';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.innerHTML = '&#10697;';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+
+    // VAT toggle
+    function selectVat(type) {
+      document.getElementById('vatIncluded').classList.toggle('active', type === 'included');
+      document.getElementById('vatExcluded').classList.toggle('active', type === 'excluded');
+      document.getElementById('vatType').value = type === 'included' ? 'כולל מע"מ' : 'לפני מע"מ';
+    }
+
+    // Payment toggle
+    let selectedPayment = '';
+    function selectPayment(type) {
+      ['bit','check','transfer'].forEach(t => {
+        document.getElementById('pay' + t.charAt(0).toUpperCase() + t.slice(1)).classList.remove('active');
+      });
+      document.getElementById('pay' + type.charAt(0).toUpperCase() + type.slice(1)).classList.add('active');
+      selectedPayment = type;
+      document.getElementById('paymentMethod').value = type === 'bit' ? 'ביט' : type === 'check' ? 'המחאה' : 'העברה בנקאית';
+      document.getElementById('bankDetails').classList.toggle('visible', type === 'transfer');
+    }
+
+    // Amount: numbers and dot only
+    document.getElementById('amountInput').addEventListener('input', function() {
+      this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+    });
+
+    const form = document.getElementById('contactForm');
+    const btn = document.getElementById('submitBtn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!selectedPayment) {
+        alert('יש לבחור שיטת תשלום');
+        return;
+      }
+      btn.disabled = true;
+      btn.textContent = '⏳ שולח...';
+      showPopup('popupLoading');
+      const data = new FormData(form);
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: data });
+        const json = await res.json();
+        closePopup('popupLoading');
+        if (json.success) {
+          const customerName = encodeURIComponent((form.name.value || '').trim());
+          window.location.href = '/pages/thankyou.html' + (customerName ? '?name=' + customerName : '');
+        } else {
+          showPopup('popupError');
+          btn.disabled = false;
+          btn.textContent = '📨 שלח פרטים';
+        }
+      } catch {
+        closePopup('popupLoading');
+        showPopup('popupError');
+        btn.disabled = false;
+        btn.textContent = '📨 שלח פרטים';
+      }
+    });
+  </script>
+</body>
+</html>

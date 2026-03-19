@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>UNLOCK – לוח ניהול</title>
+  <link rel="icon" href="../images/fav.png"/>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../styles/admin.css"/>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <img src="../images/fav.png" alt="UNLOCK" class="login-logo"/>
+    <h1>UNLOCK Admin</h1>
+    <p>לוח ניהול מוצרים</p>
+    <input type="password" class="login-input" id="passwordInput" placeholder="סיסמה" onkeydown="if(event.key==='Enter') doLogin()"/>
+    <button class="login-btn" onclick="doLogin()">כניסה</button>
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div class="admin-screen" id="adminScreen">
+  <div class="topbar">
+    <div class="topbar-logo">
+      <img src="../images/fav.png" alt="UNLOCK"/>
+      UNLOCK Admin
+    </div>
+    <div class="topbar-actions">
+      <a href="/" class="btn btn-outline" target="_blank">← האתר</a>
+      <button class="btn btn-gold" onclick="openAddModal()">+ מוצר חדש</button>
+    </div>
+  </div>
+
+  <div class="admin-main">
+
+      <div class="section-header">
+      <h2>מוצרים <span class="products-count" id="productsCount">0</span></h2>
+    </div>
+
+    <div class="products-grid" id="productsGrid">
+      <p style="color:var(--muted); text-align:center; padding: 3rem 0;">טוען מוצרים...</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- EDIT/ADD MODAL -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="modalTitle">עריכת מוצר</h3>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+
+    <div class="field">
+      <label>שם מוצר</label>
+      <input type="text" id="fTitle" placeholder='MTL™800 מולטילוק'/>
+    </div>
+
+    <div class="field">
+      <label>תיאור</label>
+      <textarea id="fDesc" placeholder="תיאור המוצר..."></textarea>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>מחיר מלא (₪)</label>
+        <input type="number" id="fPrice" placeholder="770"/>
+      </div>
+      <div class="field">
+        <label>מחיר מבצע (₪) – אופציונלי</label>
+        <input type="number" id="fDiscountPrice" placeholder="550"/>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>מותג</label>
+        <input type="text" id="fBrand" placeholder="מולטילוק"/>
+      </div>
+      <div class="field">
+        <label>קטגוריה</label>
+        <select id="fCategory">
+          <option>צילינדרים</option>
+          <option>מנעולים חכמים</option>
+          <option>ועד בניין</option>
+          <option>שונות</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>סטטוס</label>
+        <select id="fStatus">
+          <option value="">ללא</option>
+          <option value="חדש">חדש</option>
+          <option value="חם">חם</option>
+          <option value="מבצע">מבצע</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>מע"מ</label>
+        <div class="vat-toggle">
+          <button type="button" class="vat-opt" id="vatN" onclick="setVat('n')">לא כולל</button>
+          <button type="button" class="vat-opt" id="vatY" onclick="setVat('y')">כולל</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>הערה (note)</label>
+      <input type="text" id="fNote" placeholder="כולל שירות והתקנה"/>
+    </div>
+
+    <div class="field">
+      <label>תמונה (נתיב)</label>
+      <input type="text" id="fImage" placeholder="images/product.jpg"/>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal()">ביטול</button>
+      <button class="btn btn-gold" id="saveBtn" onclick="saveProduct()">💾 שמור</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONFIRM DELETE -->
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <h4>מחיקת מוצר</h4>
+    <p id="confirmText">האם אתה בטוח שברצונך למחוק מוצר זה?</p>
+    <div class="confirm-btns">
+      <button class="btn btn-outline" onclick="closeConfirm()">ביטול</button>
+      <button class="btn btn-danger" id="confirmDeleteBtn">מחק</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  const PASS = 'Gal2010200.';
+  const GITHUB_FN = '/.netlify/functions/github';
+
+  let products = [];
+  let editIndex = -1;
+  let currentVat = 'n';
+
+  // ── Auth ──
+  function doLogin() {
+    const val = document.getElementById('passwordInput').value;
+    if (val === PASS) {
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('adminScreen').classList.add('visible');
+      initAdmin();
+    } else {
+      document.getElementById('loginError').textContent = 'סיסמה שגויה';
+    }
+  }
+
+  // ── Init ──
+  async function initAdmin() {
+    await loadProducts();
+  }
+
+  // ── Load products ──
+  async function loadProducts() {
+    try {
+      const res = await fetch(GITHUB_FN);
+      const data = await res.json();
+      // Decode Hebrew properly
+      const base64 = data.content.replace(/\n/g, '');
+      const binary = atob(base64);
+      const bytes = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+      products = JSON.parse(new TextDecoder('utf-8').decode(bytes));
+      window._fileSha = data.sha;
+      renderProducts();
+    } catch(e) {
+      showToast('שגיאה בטעינת מוצרים', 'error');
+    }
+  }
+
+  // ── Render ──
+  function renderProducts() {
+    const grid = document.getElementById('productsGrid');
+    document.getElementById('productsCount').textContent = products.length;
+
+    grid.innerHTML = products.map((p, i) => `
+      <div class="product-row">
+        <img class="product-thumb" src="${p.image ? '../' + p.image : '../images/fav.png'}" onerror="this.src='../images/fav.png'" alt="${p.title}"/>
+        <div class="product-info">
+          <div class="product-name">${p.title}</div>
+          <div class="product-meta">${p.brand} · ${p.category} · ${p.including_vat === 'n' ? 'לא כולל מע"מ' : 'כולל מע"מ'}</div>
+          <div class="product-price-display">
+            ₪${p.discount_price || p.price || '—'}
+            ${p.discount_price ? `<span class="old">₪${p.price}</span>` : ''}
+          </div>
+        </div>
+        <div class="product-actions-row">
+          <button class="btn btn-outline" onclick="openEditModal(${i})">✏️ עריכה</button>
+          <button class="btn btn-danger" onclick="openConfirmDelete(${i})">🗑️</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // ── Edit modal ──
+  function openEditModal(index) {
+    editIndex = index;
+    const p = products[index];
+    document.getElementById('modalTitle').textContent = 'עריכת מוצר';
+    document.getElementById('fTitle').value = p.title || '';
+    document.getElementById('fDesc').value = p.desc || '';
+    document.getElementById('fPrice').value = p.price || '';
+    document.getElementById('fDiscountPrice').value = p.discount_price || '';
+    document.getElementById('fBrand').value = p.brand || '';
+    document.getElementById('fCategory').value = p.category || 'צילינדרים';
+    document.getElementById('fStatus').value = p.status || '';
+    document.getElementById('fNote').value = p.note || '';
+    document.getElementById('fImage').value = p.image || '';
+    setVat(p.including_vat || 'n');
+    document.getElementById('editModal').classList.add('visible');
+  }
+
+  function openAddModal() {
+    editIndex = -1;
+    document.getElementById('modalTitle').textContent = 'הוספת מוצר חדש';
+    document.getElementById('fTitle').value = '';
+    document.getElementById('fDesc').value = '';
+    document.getElementById('fPrice').value = '';
+    document.getElementById('fDiscountPrice').value = '';
+    document.getElementById('fBrand').value = '';
+    document.getElementById('fCategory').value = 'צילינדרים';
+    document.getElementById('fStatus').value = '';
+    document.getElementById('fNote').value = 'כולל שירות והתקנה';
+    document.getElementById('fImage').value = '';
+    setVat('n');
+    document.getElementById('editModal').classList.add('visible');
+  }
+
+  function closeModal() {
+    document.getElementById('editModal').classList.remove('visible');
+  }
+
+  function setVat(val) {
+    currentVat = val;
+    document.getElementById('vatN').classList.toggle('active', val === 'n');
+    document.getElementById('vatY').classList.toggle('active', val === 'y');
+  }
+
+  // ── Save ──
+  async function saveProduct() {
+    const btn = document.getElementById('saveBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-inline"></span> שומר...';
+
+    const updated = {
+      title: document.getElementById('fTitle').value.trim(),
+      desc: document.getElementById('fDesc').value.trim(),
+      image: document.getElementById('fImage').value.trim(),
+      price: parseFloat(document.getElementById('fPrice').value) || 0,
+      discount_price: parseFloat(document.getElementById('fDiscountPrice').value) || '',
+      brand: document.getElementById('fBrand').value.trim(),
+      category: document.getElementById('fCategory').value,
+      status: document.getElementById('fStatus').value,
+      tags: editIndex >= 0 ? (products[editIndex].tags || []) : [],
+      phone: '0533888381',
+      whatsapp: '972533888381',
+      note: document.getElementById('fNote').value.trim(),
+      including_vat: currentVat
+    };
+
+    if (!updated.discount_price) delete updated.discount_price;
+
+    if (editIndex >= 0) {
+      products[editIndex] = { ...products[editIndex], ...updated };
+    } else {
+      products.push(updated);
+    }
+
+    const ok = await pushToGitHub();
+    btn.disabled = false;
+    btn.innerHTML = '💾 שמור';
+
+    if (ok) {
+      closeModal();
+      renderProducts();
+      showToast(editIndex >= 0 ? 'המוצר עודכן ✓' : 'המוצר נוסף ✓', 'success');
+    }
+  }
+
+  // ── Delete ──
+  let deleteIndex = -1;
+
+  function openConfirmDelete(index) {
+    deleteIndex = index;
+    document.getElementById('confirmText').textContent = `למחוק את "${products[index].title}"?`;
+    document.getElementById('confirmOverlay').classList.add('visible');
+    document.getElementById('confirmDeleteBtn').onclick = confirmDelete;
+  }
+
+  function closeConfirm() {
+    document.getElementById('confirmOverlay').classList.remove('visible');
+  }
+
+  async function confirmDelete() {
+    closeConfirm();
+    products.splice(deleteIndex, 1);
+    const ok = await pushToGitHub();
+    if (ok) {
+      renderProducts();
+      showToast('המוצר נמחק', 'success');
+    }
+  }
+
+  // ── GitHub push ──
+  async function pushToGitHub() {
+    showToast('שומר לגיטהאב...', 'loading');
+
+    try {
+      // Get fresh SHA
+      const getRes = await fetch(GITHUB_FN);
+      const getData = await getRes.json();
+      const sha = getData.sha;
+
+      // Encode Hebrew properly
+      const jsonStr = JSON.stringify(products, null, 4);
+      const bytes = new TextEncoder().encode(jsonStr);
+      let binary = '';
+      bytes.forEach(b => binary += String.fromCharCode(b));
+      const content = btoa(binary);
+
+      const putRes = await fetch(GITHUB_FN, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: 'Admin: update products', content, sha })
+      });
+
+      const putData = await putRes.json();
+      if (putData.content) {
+        return true;
+      } else {
+        showToast('שגיאה בשמירה', 'error');
+        return false;
+      }
+    } catch(e) {
+      showToast('שגיאת רשת', 'error');
+      return false;
+    }
+  }
+
+  // ── Toast ──
+  let toastTimer;
+  function showToast(msg, type = 'success') {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = `toast ${type} show`;
+    clearTimeout(toastTimer);
+    if (type !== 'loading') {
+      toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+    }
+  }
+
+  // Close modal on overlay click
+  document.getElementById('editModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+  document.getElementById('confirmOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeConfirm();
+  });
+</script>
+</body>
+</html>
