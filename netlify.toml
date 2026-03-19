@@ -1,0 +1,4 @@
+[[headers]]
+  for = "/pages/admin.html"
+  [headers.values]
+    Cross-Origin-Opener-Policy = "same-origin-allow-popups"

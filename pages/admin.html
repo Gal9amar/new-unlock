@@ -9,11 +9,11 @@
   <link rel="stylesheet" href="../styles/admin.css"/>
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js';
-    import { getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js';
+    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js';
 
     const app = initializeApp({
       apiKey: "AIzaSyDxu3_YpzlDVzAzY4-0V-2mJr1mJUooLLs",
-      authDomain: "hamanulan.com",
+      authDomain: "hamanulan-3bbc7.firebaseapp.com",
       projectId: "hamanulan-3bbc7",
       appId: "1:913877518377:web:44611c5c89a32d56c1b438"
     });
@@ -35,13 +35,10 @@
       }
     });
 
-    // ── Handle redirect result ──
-    getRedirectResult(auth).catch(() => {});
-
-    // ── Login with Google ──
+    // ── Login with Google (popup) ──
     window.doLogin = async function() {
       try {
-        await signInWithRedirect(auth, provider);
+        await signInWithPopup(auth, provider);
       } catch(e) {
         document.getElementById('loginError').textContent = 'שגיאה בהתחברות עם Google';
       }
