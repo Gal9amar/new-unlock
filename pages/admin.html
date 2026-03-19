@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="../styles/admin.css"/>
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js';
-    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js';
+    import { getAuth, GoogleAuthProvider, signInWithRedirect, getRedirectResult, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js';
 
     const app = initializeApp({
       apiKey: "AIzaSyDxu3_YpzlDVzAzY4-0V-2mJr1mJUooLLs",
@@ -21,6 +21,9 @@
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
     const GITHUB_FN = 'https://us-central1-hamanulan-3bbc7.cloudfunctions.net/github';
+
+    // ── Handle redirect result after Google login ──
+    getRedirectResult(auth).catch(() => {});
 
     // ── Auth state ──
     onAuthStateChanged(auth, (user) => {
@@ -39,7 +42,7 @@
     // ── Login with Google ──
     window.doLogin = async function() {
       try {
-        await signInWithPopup(auth, provider);
+        await signInWithRedirect(auth, provider);
       } catch(e) {
         document.getElementById('loginError').textContent = 'שגיאה בהתחברות עם Google';
       }
