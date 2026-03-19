@@ -33,7 +33,7 @@
       } else {
         if (user) {
           signOut(auth);
-          document.getElementById('loginError').textContent = 'אין הרשאת גישה לחשבון זה. מועבר לדף הבית...';
+          document.getElementById('loginError').textContent = 'לא ניתן להתחבר';
           setTimeout(() => { window.location.href = '/'; }, 2500);
         }
         document.getElementById('loginScreen').style.display = 'flex';
