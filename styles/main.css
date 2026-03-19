@@ -234,13 +234,20 @@ button {
 }
 
 .navbar-links {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.nav-desktop-only {
   display: none;
-  gap: var(--spacing-lg);
 }
 
 @media (min-width: 768px) {
   .navbar-links {
-    display: flex;
+    gap: var(--spacing-lg);
+  }
+  .nav-desktop-only {
+    display: inline;
   }
 }
 
@@ -1681,6 +1688,27 @@ button {
 
 /* ========== Responsive Typography ========== */
 @media (max-width: 768px) {
+  .navbar-cta {
+    padding: 7px 12px;
+    flex: 1;
+    text-align: center;
+  }
+
+  .navbar-logo {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .navbar-logo img {
+    height: 34px;
+  }
+
+  .navbar-links {
+    flex: 1;
+    justify-content: center;
+  }
+
   .hero-section {
     min-height: auto;
     padding: calc(var(--spacing-2xl) + 60px) 0 var(--spacing-2xl);
