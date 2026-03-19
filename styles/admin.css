@@ -340,7 +340,7 @@ body {
 .data-table th {
   background: var(--surface2);
   padding: 0.65rem 0.75rem;
-  text-align: right;
+  text-align: center;
   font-weight: 600;
   color: var(--muted);
   border-bottom: 1px solid var(--border);
@@ -351,7 +351,8 @@ body {
   padding: 0.6rem 0.75rem;
   border-bottom: 1px solid var(--border);
   color: var(--text);
-  vertical-align: top;
+  vertical-align: middle;
+  text-align: center;
 }
 
 .data-table tr:last-child td { border-bottom: none; }
