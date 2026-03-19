@@ -782,3 +782,45 @@ body {
   font-style: italic;
   line-height: 1.5;
 }
+
+/* ── Accordion (desktop table) ── */
+.accordion-row {
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.accordion-row:hover td { background: var(--surface2); }
+
+.td-chevron {
+  color: var(--muted);
+  font-size: 1.2rem;
+  transition: transform 0.2s;
+  text-align: center;
+  user-select: none;
+}
+.td-chevron.open { transform: rotate(90deg); color: var(--gold); }
+
+.accordion-details { display: none; }
+.accordion-details.open { display: table-row; }
+.accordion-details td { padding: 0; border-bottom: 1px solid var(--border); }
+
+.accordion-body {
+  padding: 0.85rem 1.25rem;
+  background: var(--bg);
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.accordion-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.3rem 1rem;
+  font-size: 0.84rem;
+  flex: 1;
+}
+
+.ac-label {
+  color: var(--muted);
+  font-weight: 600;
+  white-space: nowrap;
+}

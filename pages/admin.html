@@ -485,24 +485,31 @@
         <div class="data-table-wrap">
           <table class="data-table">
             <thead><tr>
-              <th>תאריך</th><th>שם</th><th>טלפון</th><th>כוכבים</th>
-              <th>איכות</th><th>הגעה</th><th>מחיר</th><th>יחס</th>
-              <th>המלצה</th><th>הערה</th><th></th>
+              <th>תאריך</th><th>שם</th><th>טלפון</th><th>כוכבים</th><th>המלצה</th><th></th>
             </tr></thead>
             <tbody>
               ${surveys.map(s => `
-                <tr>
+                <tr class="accordion-row" onclick="toggleAccordion(this)">
                   <td class="td-date">${s.createdAt ? s.createdAt.slice(0,10) : '—'}</td>
                   <td>${s.customer_name || '—'}</td>
                   <td dir="ltr">${s.phone || '—'}</td>
                   <td class="td-stars">${'★'.repeat(Number(s.stars)||0)}</td>
-                  <td>${s.quality || '—'}</td>
-                  <td>${s.arrival || '—'}</td>
-                  <td>${s.price || '—'}</td>
-                  <td>${s.attitude || '—'}</td>
                   <td>${s.recommend || '—'}</td>
-                  <td class="td-comment">${s.comment || ''}</td>
-                  <td><button class="btn btn-danger btn-sm" onclick="deleteRecord('survey','${safeId(s.id)}','${safeName(s.customer_name)}')">🗑️</button></td>
+                  <td class="td-chevron">›</td>
+                </tr>
+                <tr class="accordion-details">
+                  <td colspan="6">
+                    <div class="accordion-body">
+                      <div class="accordion-grid">
+                        <span class="ac-label">איכות</span><span>${s.quality || '—'}</span>
+                        <span class="ac-label">הגעה</span><span>${s.arrival || '—'}</span>
+                        <span class="ac-label">מחיר</span><span>${s.price || '—'}</span>
+                        <span class="ac-label">יחס</span><span>${s.attitude || '—'}</span>
+                        ${s.comment ? `<span class="ac-label">הערה</span><span>${s.comment}</span>` : ''}
+                      </div>
+                      <button class="btn btn-danger btn-sm" onclick="event.stopPropagation();deleteRecord('survey','${safeId(s.id)}','${safeName(s.customer_name)}')">🗑️ מחק</button>
+                    </div>
+                  </td>
                 </tr>`).join('')}
             </tbody>
           </table>
@@ -552,25 +559,32 @@
         <div class="data-table-wrap">
           <table class="data-table">
             <thead><tr>
-              <th>תאריך</th><th>שם</th><th>טלפון</th><th>מייל</th>
-              <th>ח.פ/ת.ז</th><th>כתובת</th><th>שירות</th>
-              <th>סכום</th><th>מע"מ</th><th>תשלום</th><th>מידרג</th><th></th>
+              <th>תאריך</th><th>שם</th><th>טלפון</th><th>סכום</th><th>תשלום</th><th></th>
             </tr></thead>
             <tbody>
               ${invoices.map(inv => `
-                <tr>
+                <tr class="accordion-row" onclick="toggleAccordion(this)">
                   <td class="td-date">${inv.createdAt ? inv.createdAt.slice(0,10) : '—'}</td>
                   <td>${inv.name || '—'}</td>
                   <td dir="ltr">${inv.phone || '—'}</td>
-                  <td>${inv.email || '—'}</td>
-                  <td>${inv.id_number || '—'}</td>
-                  <td>${inv.service_address || '—'}</td>
-                  <td class="td-comment">${inv.message || '—'}</td>
                   <td>₪${inv.amount || '—'}</td>
-                  <td>${inv.vat_type || '—'}</td>
                   <td>${inv.payment_method || '—'}</td>
-                  <td>${inv.midrag_name || '—'}</td>
-                  <td><button class="btn btn-danger btn-sm" onclick="deleteRecord('invoice','${safeId(inv.id)}','${safeName(inv.name)}')">🗑️</button></td>
+                  <td class="td-chevron">›</td>
+                </tr>
+                <tr class="accordion-details">
+                  <td colspan="6">
+                    <div class="accordion-body">
+                      <div class="accordion-grid">
+                        <span class="ac-label">מייל</span><span>${inv.email || '—'}</span>
+                        ${inv.id_number ? `<span class="ac-label">ח.פ/ת.ז</span><span>${inv.id_number}</span>` : ''}
+                        <span class="ac-label">כתובת</span><span>${inv.service_address || '—'}</span>
+                        <span class="ac-label">מע"מ</span><span>${inv.vat_type || '—'}</span>
+                        ${inv.midrag_name ? `<span class="ac-label">מידרג</span><span>${inv.midrag_name}</span>` : ''}
+                        ${inv.message ? `<span class="ac-label">שירות</span><span>${inv.message}</span>` : ''}
+                      </div>
+                      <button class="btn btn-danger btn-sm" onclick="event.stopPropagation();deleteRecord('invoice','${safeId(inv.id)}','${safeName(inv.name)}')">🗑️ מחק</button>
+                    </div>
+                  </td>
                 </tr>`).join('')}
             </tbody>
           </table>
@@ -600,6 +614,20 @@
       `;
     } catch(e) {
       document.getElementById('invoicesContainer').innerHTML = '<p class="empty-state error">שגיאה בטעינה</p>';
+    }
+  }
+
+  function toggleAccordion(row) {
+    const details = row.nextElementSibling;
+    const chevron = row.querySelector('.td-chevron');
+    const isOpen = details.classList.contains('open');
+    // סגור כל השאר באותה טבלה
+    const tbody = row.closest('tbody');
+    tbody.querySelectorAll('.accordion-details.open').forEach(el => el.classList.remove('open'));
+    tbody.querySelectorAll('.td-chevron.open').forEach(el => el.classList.remove('open'));
+    if (!isOpen) {
+      details.classList.add('open');
+      chevron.classList.add('open');
     }
   }
 
