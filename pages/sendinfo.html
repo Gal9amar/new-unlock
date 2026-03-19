@@ -132,8 +132,13 @@
             <!-- Midrag field -->
             <div class="field" style="margin-top:1.2rem">
               <label style="font-weight:600">הגעת דרך מידרג?</label>
-              <p style="font-size:0.8rem;color:#94a3b8;margin-bottom:0.5rem;line-height:1.5">במידה והגעת אלינו דרך מידרג, אנא רשום את השם שמופיע באתר לצורך זיהוי ותיעוד</p>
-              <input type="text" name="midrag_name" placeholder="שם המשתמש במידרג (אופציונלי)"/>
+              <div class="yesno-btns" style="display:flex;gap:0.5rem;margin-top:0.5rem">
+                <button type="button" class="yesno-btn" id="midragYes" onclick="toggleMidrag(true)">כן</button>
+                <button type="button" class="yesno-btn" id="midragNo" onclick="toggleMidrag(false)">לא</button>
+              </div>
+              <div id="midragNameField" style="display:none;margin-top:0.75rem">
+                <input type="text" name="midrag_name" id="midragNameInput" placeholder="שם המשתמש במידרג"/>
+              </div>
             </div>
 
             <button type="submit" class="submit-btn" id="submitBtn">📨 שלח פרטים</button>
@@ -214,6 +219,23 @@
 
     // Payment toggle
     let selectedPayment = '';
+    let midragSelected = null; // null=לא נבחר, true=כן, false=לא
+
+    function toggleMidrag(val) {
+      midragSelected = val;
+      document.getElementById('midragYes').classList.toggle('active', val === true);
+      document.getElementById('midragNo').classList.toggle('active', val === false);
+      const field = document.getElementById('midragNameField');
+      const input = document.getElementById('midragNameInput');
+      field.style.display = val ? 'block' : 'none';
+      if (val) {
+        input.required = true;
+        input.focus();
+      } else {
+        input.required = false;
+        input.value = '';
+      }
+    }
     function selectPayment(type) {
       ['bit','check','transfer'].forEach(t => {
         document.getElementById('pay' + t.charAt(0).toUpperCase() + t.slice(1)).classList.remove('active');
@@ -236,6 +258,10 @@
       e.preventDefault();
       if (!selectedPayment) {
         alert('יש לבחור שיטת תשלום');
+        return;
+      }
+      if (midragSelected === null) {
+        alert('יש לציין האם הגעת דרך מידרג');
         return;
       }
       btn.disabled = true;

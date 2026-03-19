@@ -405,7 +405,7 @@ html.dark .spinner { border-color: #1e293b; border-top-color: #3b82f6; }
   gap: 0.5rem;
   flex-wrap: wrap;
 }
-.vat-btn, .pay-btn {
+.vat-btn, .pay-btn, .yesno-btn {
   flex: 1;
   min-width: 100px;
   padding: 0.6rem 0.75rem;
@@ -423,17 +423,17 @@ html.dark .spinner { border-color: #1e293b; border-top-color: #3b82f6; }
   justify-content: center;
   gap: 0.3rem;
 }
-html.dark .vat-btn, html.dark .pay-btn {
+html.dark .vat-btn, html.dark .pay-btn, html.dark .yesno-btn {
   background: #1e293b;
   border-color: #334155;
   color: rgba(255,255,255,0.45);
 }
-.vat-btn:hover, .pay-btn:hover {
+.vat-btn:hover, .pay-btn:hover, .yesno-btn:hover {
   border-color: #93c5fd;
   color: #1d4ed8;
   background: #eff6ff;
 }
-html.dark .vat-btn:hover, html.dark .pay-btn:hover {
+html.dark .vat-btn:hover, html.dark .pay-btn:hover, html.dark .yesno-btn:hover {
   border-color: #3b82f6;
   color: #60a5fa;
   background: #1e3a5f;
@@ -444,12 +444,13 @@ html.dark .vat-btn:hover, html.dark .pay-btn:hover {
   color: #fff;
   box-shadow: 0 4px 12px rgba(37,99,235,0.25);
 }
-.pay-btn.active {
+.pay-btn.active, .yesno-btn.active {
   background: linear-gradient(135deg, #1d4ed8, #2563eb);
   border-color: #1d4ed8;
   color: #fff;
   box-shadow: 0 4px 12px rgba(37,99,235,0.25);
 }
+.yesno-btns { display: flex; gap: 0.5rem; }
 
 /* ── Copy button ── */
 .copy-btn {
