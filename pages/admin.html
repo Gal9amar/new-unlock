@@ -20,7 +20,6 @@
 
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
-    const GITHUB_FN = 'https://us-central1-hamanulan-3bbc7.cloudfunctions.net/github';
 
     // ── Handle redirect result after Google login ──
     getRedirectResult(auth).catch(() => {});
@@ -60,8 +59,7 @@
       return await user.getIdToken();
     };
 
-    window.GITHUB_FN = GITHUB_FN;
-  </script>
+</script>
 </head>
 <body>
 
@@ -204,6 +202,8 @@
 
 <script>
 
+  const ADMIN_FN = 'https://us-central1-hamanulan-3bbc7.cloudfunctions.net/adminProducts';
+
   let products = [];
   let editIndex = -1;
   let currentVat = 'n';
@@ -213,21 +213,17 @@
     await loadProducts();
   }
 
+  // ── Auth header helper ──
+  async function authHeader() {
+    const token = await getIdToken();
+    return { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
+  }
+
   // ── Load products ──
   async function loadProducts() {
     try {
-      const token = await getIdToken();
-      const res = await fetch(window.GITHUB_FN, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await res.json();
-      // Decode Hebrew properly
-      const base64 = data.content.replace(/\n/g, '');
-      const binary = atob(base64);
-      const bytes = new Uint8Array(binary.length);
-      for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-      products = JSON.parse(new TextDecoder('utf-8').decode(bytes));
-      window._fileSha = data.sha;
+      const res = await fetch(ADMIN_FN, { headers: await authHeader() });
+      products = await res.json();
       renderProducts();
     } catch(e) {
       showToast('שגיאה בטעינת מוצרים', 'error');
@@ -302,13 +298,13 @@
     document.getElementById('vatY').classList.toggle('active', val === 'y');
   }
 
-  // ── Save ──
+  // ── Save (add / edit) ──
   async function saveProduct() {
     const btn = document.getElementById('saveBtn');
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner-inline"></span> שומר...';
 
-    const updated = {
+    const data = {
       title: document.getElementById('fTitle').value.trim(),
       desc: document.getElementById('fDesc').value.trim(),
       image: document.getElementById('fImage').value.trim(),
@@ -323,24 +319,27 @@
       note: document.getElementById('fNote').value.trim(),
       including_vat: currentVat
     };
+    if (!data.discount_price) delete data.discount_price;
 
-    if (!updated.discount_price) delete updated.discount_price;
-
-    if (editIndex >= 0) {
-      products[editIndex] = { ...products[editIndex], ...updated };
-    } else {
-      products.push(updated);
+    try {
+      const headers = await authHeader();
+      if (editIndex >= 0) {
+        await fetch(`${ADMIN_FN}?id=${products[editIndex].id}`, {
+          method: 'PUT', headers, body: JSON.stringify(data)
+        });
+        showToast('המוצר עודכן ✓', 'success');
+      } else {
+        await fetch(ADMIN_FN, { method: 'POST', headers, body: JSON.stringify(data) });
+        showToast('המוצר נוסף ✓', 'success');
+      }
+      closeModal();
+      await loadProducts();
+    } catch(e) {
+      showToast('שגיאה בשמירה', 'error');
     }
 
-    const ok = await pushToGitHub();
     btn.disabled = false;
     btn.innerHTML = '💾 שמור';
-
-    if (ok) {
-      closeModal();
-      renderProducts();
-      showToast(editIndex >= 0 ? 'המוצר עודכן ✓' : 'המוצר נוסף ✓', 'success');
-    }
   }
 
   // ── Delete ──
@@ -359,50 +358,13 @@
 
   async function confirmDelete() {
     closeConfirm();
-    products.splice(deleteIndex, 1);
-    const ok = await pushToGitHub();
-    if (ok) {
-      renderProducts();
-      showToast('המוצר נמחק', 'success');
-    }
-  }
-
-  // ── GitHub push ──
-  async function pushToGitHub() {
-    showToast('שומר לגיטהאב...', 'loading');
-
     try {
-      const token = await getIdToken();
-      const authHeader = { 'Authorization': `Bearer ${token}` };
-
-      // Get fresh SHA
-      const getRes = await fetch(window.GITHUB_FN, { headers: authHeader });
-      const getData = await getRes.json();
-      const sha = getData.sha;
-
-      // Encode Hebrew properly
-      const jsonStr = JSON.stringify(products, null, 4);
-      const bytes = new TextEncoder().encode(jsonStr);
-      let binary = '';
-      bytes.forEach(b => binary += String.fromCharCode(b));
-      const content = btoa(binary);
-
-      const putRes = await fetch(window.GITHUB_FN, {
-        method: 'PUT',
-        headers: { ...authHeader, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: 'Admin: update products', content, sha })
-      });
-
-      const putData = await putRes.json();
-      if (putData.content) {
-        return true;
-      } else {
-        showToast('שגיאה בשמירה', 'error');
-        return false;
-      }
+      const headers = await authHeader();
+      await fetch(`${ADMIN_FN}?id=${products[deleteIndex].id}`, { method: 'DELETE', headers });
+      showToast('המוצר נמחק', 'success');
+      await loadProducts();
     } catch(e) {
-      showToast('שגיאת רשת', 'error');
-      return false;
+      showToast('שגיאה במחיקה', 'error');
     }
   }
 

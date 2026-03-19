@@ -104,24 +104,8 @@ function initRevealAnimations() {
 // ========== Load and Display Products ==========
 async function initProducts() {
   try {
-    const [productsRes, orderRes] = await Promise.all([
-      fetch('/data/products.json'),
-      fetch('/data/product_order.json').catch(() => null)
-    ]);
-    allProducts = await productsRes.json();
-
-    if (orderRes && orderRes.ok) {
-      const order = await orderRes.json();
-      allProducts.sort((a, b) => {
-        const idxA = order.indexOf(a.title);
-        const idxB = order.indexOf(b.title);
-        if (idxA === -1 && idxB === -1) return 0;
-        if (idxA === -1) return 1;
-        if (idxB === -1) return 1;
-        return idxA - idxB;
-      });
-    }
-
+    const res = await fetch('https://us-central1-hamanulan-3bbc7.cloudfunctions.net/products');
+    allProducts = await res.json();
     displayProducts(allProducts);
     initBrandFilters();
   } catch (error) {
