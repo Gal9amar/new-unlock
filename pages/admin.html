@@ -33,7 +33,7 @@
       } else {
         if (user) {
           signOut(auth);
-          document.getElementById('loginError').textContent = 'לא ניתן להתחבר';
+          document.getElementById('loginError').textContent = 'ניסיון גישה לא מורשה זוהה, זיהוי מכשיר וכתובת IP נרשמה והועברה למחלקת אבטחה';
           setTimeout(() => { window.location.href = '/'; }, 2500);
         }
         document.getElementById('loginScreen').style.display = 'flex';
