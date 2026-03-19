@@ -7,6 +7,61 @@
   <link rel="icon" href="../images/fav.png"/>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="../styles/admin.css"/>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js';
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js';
+
+    const app = initializeApp({
+      apiKey: "AIzaSyDxu3_YpzlDVzAzY4-0V-2mJr1mJUooLLs",
+      authDomain: "hamanulan-3bbc7.firebaseapp.com",
+      projectId: "hamanulan-3bbc7",
+      appId: "1:913877518377:web:44611c5c89a32d56c1b438"
+    });
+
+    const auth = getAuth(app);
+    const GITHUB_FN = 'https://us-central1-hamanulan-3bbc7.cloudfunctions.net/github';
+
+    // ── Auth state ──
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('adminScreen').classList.add('visible');
+        window._firebaseUser = user;
+        initAdmin();
+      } else {
+        document.getElementById('loginScreen').style.display = 'flex';
+        document.getElementById('adminScreen').classList.remove('visible');
+        window._firebaseUser = null;
+      }
+    });
+
+    // ── Login ──
+    window.doLogin = async function() {
+      const email = document.getElementById('emailInput').value.trim();
+      const pass = document.getElementById('passwordInput').value;
+      const errEl = document.getElementById('loginError');
+      errEl.textContent = '';
+      try {
+        await signInWithEmailAndPassword(auth, email, pass);
+      } catch(e) {
+        errEl.textContent = 'אימייל או סיסמה שגויים';
+      }
+    };
+
+    // ── Logout ──
+    window.doLogout = async function() {
+      await signOut(auth);
+    };
+
+    // ── Get ID Token for requests ──
+    window.getIdToken = async function() {
+      const user = auth.currentUser;
+      if (!user) return null;
+      return await user.getIdToken();
+    };
+
+    window.GITHUB_FN = GITHUB_FN;
+  </script>
 </head>
 <body>
 
@@ -16,7 +71,8 @@
     <img src="../images/fav.png" alt="UNLOCK" class="login-logo"/>
     <h1>UNLOCK Admin</h1>
     <p>לוח ניהול מוצרים</p>
-    <input type="password" class="login-input" id="passwordInput" placeholder="סיסמה" onkeydown="if(event.key==='Enter') doLogin()"/>
+    <input type="email" class="login-input" id="emailInput" placeholder="אימייל" onkeydown="if(event.key==='Enter') doLogin()"/>
+    <input type="password" class="login-input" id="passwordInput" placeholder="סיסמה" onkeydown="if(event.key==='Enter') doLogin()" style="margin-top:0.5rem"/>
     <button class="login-btn" onclick="doLogin()">כניסה</button>
     <div class="login-error" id="loginError"></div>
   </div>
@@ -32,6 +88,7 @@
     <div class="topbar-actions">
       <a href="/" class="btn btn-outline" target="_blank">← האתר</a>
       <button class="btn btn-gold" onclick="openAddModal()">+ מוצר חדש</button>
+      <button class="btn btn-outline" onclick="doLogout()">יציאה</button>
     </div>
   </div>
 
@@ -145,24 +202,10 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  const PASS = 'Gal2010200.';
-  const GITHUB_FN = '/.netlify/functions/github';
 
   let products = [];
   let editIndex = -1;
   let currentVat = 'n';
-
-  // ── Auth ──
-  function doLogin() {
-    const val = document.getElementById('passwordInput').value;
-    if (val === PASS) {
-      document.getElementById('loginScreen').style.display = 'none';
-      document.getElementById('adminScreen').classList.add('visible');
-      initAdmin();
-    } else {
-      document.getElementById('loginError').textContent = 'סיסמה שגויה';
-    }
-  }
 
   // ── Init ──
   async function initAdmin() {
@@ -172,7 +215,10 @@
   // ── Load products ──
   async function loadProducts() {
     try {
-      const res = await fetch(GITHUB_FN);
+      const token = await getIdToken();
+      const res = await fetch(window.GITHUB_FN, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
       const data = await res.json();
       // Decode Hebrew properly
       const base64 = data.content.replace(/\n/g, '');
@@ -325,8 +371,11 @@
     showToast('שומר לגיטהאב...', 'loading');
 
     try {
+      const token = await getIdToken();
+      const authHeader = { 'Authorization': `Bearer ${token}` };
+
       // Get fresh SHA
-      const getRes = await fetch(GITHUB_FN);
+      const getRes = await fetch(window.GITHUB_FN, { headers: authHeader });
       const getData = await getRes.json();
       const sha = getData.sha;
 
@@ -337,9 +386,9 @@
       bytes.forEach(b => binary += String.fromCharCode(b));
       const content = btoa(binary);
 
-      const putRes = await fetch(GITHUB_FN, {
+      const putRes = await fetch(window.GITHUB_FN, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { ...authHeader, 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: 'Admin: update products', content, sha })
       });
 
