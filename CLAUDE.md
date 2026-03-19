@@ -15,9 +15,14 @@
 Unluck_2025/
 ├── index.html              ← דף הבית
 ├── product.html            ← דף מוצר בודד
-├── netlify.toml            ← הגדרות פריסה
+├── firebase.json           ← הגדרות Firebase (functions)
+├── .firebaserc             ← פרויקט Firebase: hamanulan-3bbc7
+├── .gitignore              ← כולל firebase-service-account.json
 ├── CNAME                   ← hamanulan.com
 ├── robots.txt, sitemap.xml ← SEO
+├── functions/              ← Firebase Functions (Node.js)
+│   ├── index.js            ← products (public) + adminProducts (CRUD)
+│   └── package.json
 ├── pages/
 │   ├── admin.html          ← פאנל ניהול מוצרים
 │   ├── sendinfo.html       ← טופס שליחת פרטים
@@ -26,9 +31,6 @@ Unluck_2025/
 │   ├── accessibility.html  ← הצהרת נגישות
 │   ├── privacy-policy.html ← מדיניות פרטיות
 │   └── terms-of-service.html ← תנאי שימוש
-├── data/
-│   ├── products.json       ← קטלוג מוצרים (מקור האמת)
-│   └── product_order.json  ← סדר הצגת המוצרים
 ├── styles/
 │   ├── main.css            ← מערכת עיצוב מרכזית (index, product, legal)
 │   ├── admin.css           ← עיצוב פאנל ניהול
@@ -52,31 +54,78 @@ Unluck_2025/
 
 <!-- נגישות UserWay -->
 <script src="https://cdn.userway.org/widget.js" data-account="..."></script>
+
+<!-- Firebase Auth SDK (admin.html בלבד) -->
+<script type="module" src="https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js"></script>
 ```
 
-- **אין npm / package.json** – פרויקט vanilla (ללא build step)
+- **אין npm / package.json** בצד הלקוח – פרויקט vanilla (ללא build step)
 - **Netlify** – פריסה ישירה מ-GitHub repo: `Gal9amar/new-unlock`
+- **Firebase** – Project ID: `hamanulan-3bbc7`
 - **WhatsApp** – לינקים בפורמט: `https://wa.me/972533888381?text=...`
 
 ---
 
 ## פריסה (Deploy)
 
+### אתר סטטי
 1. Push ל-GitHub repo `Gal9amar/new-unlock` ← Netlify מתעדכן אוטומטית
 2. CNAME מוגדר: `hamanulan.com` → Netlify
-3. `netlify.toml` – מגדיר תיקיית functions: `netlify/functions`
-4. **אין build command** – הקבצים נפרסים as-is
+3. **אין build command** – הקבצים נפרסים as-is
+
+### Firebase Functions
+```bash
+firebase deploy --only functions --project hamanulan-3bbc7
+```
+- Node.js 20, region: `us-central1`
+- `GITHUB_TOKEN` מוגדר ב-Firebase Secret Manager (לא בשימוש יותר לניהול מוצרים)
+
+---
+
+## Firebase
+
+### פרויקט
+- **Project ID:** `hamanulan-3bbc7`
+- **Auth:** Google Sign-In בלבד – משתמש מורשה: `gal9amar@gmail.com`
+- **Firestore:** מסד נתונים של מוצרים (region: europe-west1)
+
+### Firebase Functions
+
+| Function | נתיב | גישה | תיאור |
+|----------|------|------|-------|
+| `products` | `us-central1-hamanulan-3bbc7.cloudfunctions.net/products` | ציבורי | GET כל המוצרים לפי סדר |
+| `adminProducts` | `us-central1-hamanulan-3bbc7.cloudfunctions.net/adminProducts` | מוגן | GET/POST/PUT/DELETE מוצרים |
+
+### Firestore – מבנה Collection `products`
+
+```json
+{
+  "title": "שם המוצר",
+  "desc": "תיאור",
+  "image": "images/file.webp",   // ← נתיב יחסי מהשורש
+  "price": 770,                  // ← מחיר מלא (מספר)
+  "discount_price": 550,         // ← מחיר מבצע – השמט אם אין
+  "price_from": false,           // ← true = "החל מ-"
+  "brand": "מולטילוק",
+  "category": "צילינדרים",
+  "status": "",                  // ← "חדש" | "חם" | "מבצע" | ""
+  "tags": ["תג1", "תג2"],
+  "phone": "0533888381",
+  "whatsapp": "972533888381",
+  "note": "כולל שירות והתקנה",
+  "including_vat": "n",          // ← "n" = לא כולל מע"מ | "y" = כולל
+  "order": 0                     // ← סדר הצגה (מספר, קטן = ראשון)
+}
+```
 
 ---
 
 ## פאנל Admin (pages/admin.html)
 
-- **כניסה**: סיסמה קבועה בקוד (לא לשנות ללא עדכון בקוד)
-- **GitHub Token**: נשמר ב-localStorage של הדפדפן (`gh_token`)
-  - יש להזין בכניסה הראשונה: Personal Access Token עם הרשאת `repo`
-- **מה עושה**: קורא ומעדכן `products.json` ישירות דרך GitHub API
-- **שמירה**: PUT ל-`https://api.github.com/repos/Gal9amar/new-unlock/contents/products.json`
-- **לא** עורך את `product_order.json` – זה ידני בקוד
+- **כניסה:** Google Sign-In – רק `gal9amar@gmail.com` יכול להיכנס
+- **Auth:** Firebase Authentication (Google provider)
+- **נתונים:** קריאה וכתיבה ל-Firestore דרך Firebase Function `adminProducts`
+- **פעולות:** הוספה / עריכה / מחיקה של מוצרים
 
 ---
 
@@ -93,27 +142,6 @@ index.html
 
 ## מוצרים
 
-### מבנה אובייקט ב-data/products.json
-
-```json
-{
-  "title": "שם המוצר",           // ← מזהה ייחודי, חייב להתאים ל-product_order.json
-  "desc": "תיאור",
-  "image": "images/file.webp",   // ← נתיב יחסי מהשורש
-  "price": 770,                  // ← מחיר מלא (מספר)
-  "discount_price": 550,         // ← מחיר מבצע (מספר) – השמט אם אין
-  "price_from": false,           // ← true = "החל מ-" (כשמחיר משתנה לפי גודל וכד')
-  "brand": "מולטילוק",
-  "category": "צילינדרים",
-  "status": "",                  // ← "חדש" | "חם" | "מבצע" | "" (ריק = ללא תג)
-  "tags": ["תג1", "תג2"],
-  "phone": "0533888381",
-  "whatsapp": "972533888381",
-  "note": "כולל שירות והתקנה",
-  "including_vat": "n"           // ← "n" = לא כולל מע"מ | "y" = כולל
-}
-```
-
 ### קטגוריות קיימות
 
 `צילינדרים` | `מנעולים חכמים` | `מנעולים עליונים` | `מנעולים מכאניים` | `דלתות` | `מנעול ויטרינה` | `שונות`
@@ -124,9 +152,8 @@ index.html
 
 ### סדר מוצרים
 
-`data/product_order.json` – מערך שמות לפי הסדר הרצוי.
-חייב להכיל את **כל** השמות מ-products.json (התאמה מדויקת לפי `title`).
-לאחר הוספת מוצר ב-products.json → יש להוסיף את שמו גם כאן.
+שדה `order` ב-Firestore קובע את סדר ההצגה (מספר קטן = מוצג ראשון).
+בעת הוספת מוצר חדש דרך Admin — הסדר מוגדר אוטומטית בסוף הרשימה.
 
 ---
 
@@ -151,7 +178,7 @@ index.html
 
 - שמות פונקציות: camelCase (`initProducts`, `goToProduct`)
 - כניסה לדף: `DOMContentLoaded` מפעיל את כל פונקציות ה-init
-- מוצרים נטענים async מ-JSON עם `Promise.all()`
+- מוצרים נטענים async מ-Firebase Function
 - ניווט למוצר בודד: `goToProduct(name)` → `product.html?name=...`
 
 ---
@@ -200,9 +227,9 @@ index.html
 
 ## כללים חשובים
 
-1. **data/products.json הוא מקור האמת** – כל שינוי במוצרים נעשה שם
-2. **data/product_order.json** – לאחר הוספת מוצר, להוסיף שמו גם כאן (התאמה מדויקת)
-3. לכל קובץ HTML יש קובץ CSS משלו ב-`styles/` – לא להוסיף inline styles
-4. תמיד לבדוק RTL בעברית לאחר שינויים בלייאאוט
-5. מובייל קודם – לבדוק תמיד על מסך צר לפני דסקטופ
-6. אין build – שינוי קובץ = מיד בפרודקשן לאחר push
+1. **Firestore הוא מקור האמת** – כל שינוי במוצרים דרך Admin בלבד
+2. לכל קובץ HTML יש קובץ CSS משלו ב-`styles/` – לא להוסיף inline styles
+3. תמיד לבדוק RTL בעברית לאחר שינויים בלייאאוט
+4. מובייל קודם – לבדוק תמיד על מסך צר לפני דסקטופ
+5. שינוי קוד = push ל-GitHub → Netlify מתעדכן אוטומטית
+6. שינוי Firebase Functions = `firebase deploy --only functions`
