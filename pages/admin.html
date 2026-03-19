@@ -551,6 +551,23 @@
   }
 
   // ── Invoices ──
+  async function setInvoiceStatus(id, issued, btn) {
+    try {
+      await fetch(`${ADMIN_INVOICES}?id=${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', ...(await authHeader()) },
+        body: JSON.stringify({ invoice_issued: issued })
+      });
+      // עדכן כפתורים
+      const group = btn.closest('.invoice-status-btns');
+      group.querySelectorAll('.inv-status-btn').forEach(b => b.classList.remove('active', 'no'));
+      btn.classList.add('active');
+      if (!issued) btn.classList.add('no');
+    } catch(e) {
+      alert('שגיאה בעדכון');
+    }
+  }
+
   async function loadInvoices() {
     document.getElementById('invoicesContainer').innerHTML = '<p class="empty-state">טוען...</p>';
     try {
@@ -567,7 +584,7 @@
         <div class="data-table-wrap">
           <table class="data-table">
             <thead><tr>
-              <th>תאריך</th><th>שם</th><th>טלפון</th><th>סכום</th><th>תשלום</th><th></th>
+              <th>תאריך</th><th>שם</th><th>טלפון</th><th>סכום</th><th>תשלום</th><th>הופקה חשבונית</th><th></th>
             </tr></thead>
             <tbody>
               ${invoices.map(inv => `
@@ -577,10 +594,16 @@
                   <td dir="ltr">${inv.phone || '—'}</td>
                   <td>₪${inv.amount || '—'}</td>
                   <td>${inv.payment_method || '—'}</td>
+                  <td onclick="event.stopPropagation()">
+                    <div class="invoice-status-btns">
+                      <button class="inv-status-btn ${inv.invoice_issued ? 'active' : ''}" onclick="setInvoiceStatus('${safeId(inv.id)}',true,this)">כן</button>
+                      <button class="inv-status-btn ${!inv.invoice_issued ? 'active no' : ''}" onclick="setInvoiceStatus('${safeId(inv.id)}',false,this)">לא</button>
+                    </div>
+                  </td>
                   <td class="td-chevron"></td>
                 </tr>
                 <tr class="accordion-details">
-                  <td colspan="6">
+                  <td colspan="7">
                     <div class="accordion-body">
                       <div class="accordion-grid">
                         <span class="ac-label">מייל</span><span>${inv.email || '—'}</span>
@@ -615,6 +638,13 @@
                 <div class="data-card-row"><span>תשלום</span><span>${inv.payment_method || '—'} · ${inv.vat_type || ''}</span></div>
                 ${inv.midrag_name ? `<div class="data-card-row"><span>מידרג</span><span>${inv.midrag_name}</span></div>` : ''}
                 ${inv.message ? `<div class="data-card-comment">${inv.message}</div>` : ''}
+              </div>
+              <div class="invoice-status-row">
+                <span class="ac-label">הופקה חשבונית</span>
+                <div class="invoice-status-btns">
+                  <button class="inv-status-btn ${inv.invoice_issued ? 'active' : ''}" onclick="setInvoiceStatus('${safeId(inv.id)}',true,this)">כן</button>
+                  <button class="inv-status-btn ${!inv.invoice_issued ? 'active no' : ''}" onclick="setInvoiceStatus('${safeId(inv.id)}',false,this)">לא</button>
+                </div>
               </div>
               <button class="btn btn-danger btn-sm" style="margin-top:0.75rem" onclick="deleteRecord('invoice','${safeId(inv.id)}','${safeName(inv.name)}')">🗑️ מחק</button>
             </div>`).join('')}

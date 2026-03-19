@@ -28,7 +28,7 @@ async function verifyAdmin(req, res) {
 
 function cors(res) {
   res.set('Access-Control-Allow-Origin', '*');
-  res.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.set('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
   res.set('Access-Control-Allow-Headers', 'Authorization, Content-Type');
 }
 
@@ -161,6 +161,15 @@ exports.adminInvoices = onRequest({ cors: true }, async (req, res) => {
   cors(res);
   const user = await verifyAdmin(req, res);
   if (!user) return;
+
+  if (req.method === 'PATCH') {
+    const id = req.query.id;
+    if (!id) { res.status(400).json({ error: 'Missing id' }); return; }
+    const { invoice_issued } = req.body;
+    await db.collection('invoices').doc(id).update({ invoice_issued: !!invoice_issued });
+    res.json({ ok: true });
+    return;
+  }
 
   if (req.method === 'DELETE') {
     const id = req.query.id;
