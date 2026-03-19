@@ -1,0 +1,26 @@
+{
+  "name": "UNLOCK – גבי המנעולן",
+  "short_name": "UNLOCK",
+  "description": "שירותי מנעולנות מקצועיים 24/7 – אזור המרכז והדרום",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a1628",
+  "theme_color": "#0a1628",
+  "lang": "he",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "/images/fav.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/images/fav.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
