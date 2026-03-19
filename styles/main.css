@@ -1332,7 +1332,7 @@ button {
 .product-header {
   background: var(--color-primary-900);
   border-bottom: 1px solid rgba(212, 168, 83, 0.15);
-  padding: var(--spacing-md) 0;
+  padding: 10px 0;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -1356,7 +1356,9 @@ button {
 }
 
 .header-logo {
-  max-width: 70px;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
 }
 
 .quick-call-btn {
@@ -1371,11 +1373,6 @@ button {
 
 .product-header .container {
   gap: 8px;
-}
-
-.header-logo {
-  max-width: 52px;
-  flex-shrink: 0;
 }
 
 .back-btn {
