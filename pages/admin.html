@@ -7,6 +7,7 @@
   <link rel="icon" href="../images/fav.png"/>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="../styles/admin.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js';
     import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js';
@@ -233,7 +234,8 @@
     document.getElementById('productsCount').textContent = products.length;
 
     grid.innerHTML = products.map((p, i) => `
-      <div class="product-row">
+      <div class="product-row" data-id="${p.id}" data-index="${i}">
+        <span class="drag-handle">⠿</span>
         <img class="product-thumb" src="${p.image ? '../' + p.image : '../images/fav.png'}" onerror="this.src='../images/fav.png'" alt="${p.title}"/>
         <div class="product-info">
           <div class="product-name">${p.title}</div>
@@ -249,6 +251,32 @@
         </div>
       </div>
     `).join('');
+
+    // ── Drag & Drop ──
+    Sortable.create(grid, {
+      handle: '.drag-handle',
+      animation: 150,
+      onEnd: async (evt) => {
+        const { oldIndex, newIndex } = evt;
+        if (oldIndex === newIndex) return;
+
+        // עדכן מערך מקומי
+        const moved = products.splice(oldIndex, 1)[0];
+        products.splice(newIndex, 0, moved);
+
+        // שמור סדר חדש ל-Firestore
+        const headers = await authHeader();
+        await Promise.all(products.map((p, i) =>
+          fetch(`${ADMIN_FN}?id=${p.id}`, {
+            method: 'PUT',
+            headers,
+            body: JSON.stringify({ order: i })
+          })
+        ));
+        showToast('הסדר עודכן ✓', 'success');
+        renderProducts();
+      }
+    });
   }
 
   // ── Edit modal ──
