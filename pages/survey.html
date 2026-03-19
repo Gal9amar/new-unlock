@@ -163,6 +163,7 @@
     <div class="popup-box"><span class="popup-icon">❌</span><div class="popup-title">שגיאה בשליחה</div><div class="popup-msg">משהו השתבש. בדוק את החיבור ונסה שוב.</div><button class="popup-btn popup-btn-error" onclick="closePopup('popupError')">נסה שוב</button></div>
   </div>
 
+  <script src="../scripts/security-warning.js"></script>
   <script>
     if(localStorage.getItem('theme')==='dark'||(!localStorage.getItem('theme')&&window.matchMedia('(prefers-color-scheme: dark)').matches))
       document.documentElement.classList.add('dark');
