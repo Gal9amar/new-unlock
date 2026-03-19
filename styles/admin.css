@@ -800,8 +800,8 @@ body {
   user-select: none;
   width: 28px;
 }
-.td-chevron::before { content: '▶'; display: inline-block; transition: transform 0.2s; }
-.td-chevron.open::before { transform: rotate(90deg); color: var(--gold); }
+.td-chevron::before { content: '▼'; display: inline-block; transition: transform 0.2s; }
+.td-chevron.open::before { transform: rotate(180deg); color: var(--gold); }
 
 .accordion-details { display: none; }
 .accordion-details.open { display: table-row; }
