@@ -20,6 +20,7 @@ body {
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 /* ── Login ── */
@@ -793,12 +794,14 @@ body {
 
 .td-chevron {
   color: var(--muted);
-  font-size: 1.2rem;
-  transition: transform 0.2s;
+  font-size: 0.75rem;
+  font-weight: 700;
   text-align: center;
   user-select: none;
+  width: 28px;
 }
-.td-chevron.open { transform: rotate(90deg); color: var(--gold); }
+.td-chevron::before { content: '▶'; display: inline-block; transition: transform 0.2s; }
+.td-chevron.open::before { transform: rotate(90deg); color: var(--gold); }
 
 .accordion-details { display: none; }
 .accordion-details.open { display: table-row; }
