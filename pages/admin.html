@@ -13,16 +13,13 @@
 
     const app = initializeApp({
       apiKey: "AIzaSyDxu3_YpzlDVzAzY4-0V-2mJr1mJUooLLs",
-      authDomain: "hamanulan-3bbc7.firebaseapp.com",
+      authDomain: "hamanulan.com",
       projectId: "hamanulan-3bbc7",
       appId: "1:913877518377:web:44611c5c89a32d56c1b438"
     });
 
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
-
-    // ── Handle redirect result after Google login ──
-    getRedirectResult(auth).catch(() => {});
 
     // ── Auth state ──
     onAuthStateChanged(auth, (user) => {
@@ -37,6 +34,9 @@
         window._firebaseUser = null;
       }
     });
+
+    // ── Handle redirect result ──
+    getRedirectResult(auth).catch(() => {});
 
     // ── Login with Google ──
     window.doLogin = async function() {
