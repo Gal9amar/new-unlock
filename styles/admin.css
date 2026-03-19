@@ -96,6 +96,16 @@ body {
 }
 
 .login-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+.login-btn.google-btn {
+  background: #fff;
+  color: #333;
+  border: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+.login-btn.google-btn:hover { background: #f5f5f5; opacity: 1; }
 .login-error { color: var(--danger); font-size: 0.85rem; margin-top: 0.75rem; }
 
 /* ── Admin layout ── */

@@ -44,6 +44,11 @@ exports.github = onRequest(
     const user = await verifyAuth(req, res);
     if (!user) return;
 
+    if (user.email !== 'gal9amar@gmail.com') {
+      res.status(403).json({ error: 'Forbidden' });
+      return;
+    }
+
     const ghHeaders = {
       'Authorization': `token ${GITHUB_TOKEN.value()}`,
       'Content-Type': 'application/json',
