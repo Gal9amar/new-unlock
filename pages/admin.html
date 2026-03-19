@@ -479,24 +479,16 @@
         document.getElementById('surveysContainer').innerHTML = '<p class="empty-state">אין סקרים עדיין</p>';
         return;
       }
+      const safeId = id => id.replace(/'/g, "\\'");
+      const safeName = name => (name||'').replace(/'/g, "\\'");
       document.getElementById('surveysContainer').innerHTML = `
         <div class="data-table-wrap">
           <table class="data-table">
-            <thead>
-              <tr>
-                <th>תאריך</th>
-                <th>שם</th>
-                <th>טלפון</th>
-                <th>כוכבים</th>
-                <th>איכות</th>
-                <th>הגעה</th>
-                <th>מחיר</th>
-                <th>יחס</th>
-                <th>המלצה</th>
-                <th>הערה</th>
-                <th></th>
-              </tr>
-            </thead>
+            <thead><tr>
+              <th>תאריך</th><th>שם</th><th>טלפון</th><th>כוכבים</th>
+              <th>איכות</th><th>הגעה</th><th>מחיר</th><th>יחס</th>
+              <th>המלצה</th><th>הערה</th><th></th>
+            </tr></thead>
             <tbody>
               ${surveys.map(s => `
                 <tr>
@@ -510,11 +502,32 @@
                   <td>${s.attitude || '—'}</td>
                   <td>${s.recommend || '—'}</td>
                   <td class="td-comment">${s.comment || ''}</td>
-                  <td><button class="btn btn-danger btn-sm" onclick="deleteRecord('survey','${s.id}', '${(s.customer_name||'').replace(/'/g,"\\'")}')">🗑️</button></td>
-                </tr>
-              `).join('')}
+                  <td><button class="btn btn-danger btn-sm" onclick="deleteRecord('survey','${safeId(s.id)}','${safeName(s.customer_name)}')">🗑️</button></td>
+                </tr>`).join('')}
             </tbody>
           </table>
+        </div>
+        <div class="cards-list">
+          ${surveys.map(s => `
+            <div class="data-card">
+              <div class="data-card-header">
+                <div>
+                  <div class="data-card-name">${s.customer_name || '—'}</div>
+                  <div class="data-card-date">${s.createdAt ? s.createdAt.slice(0,10) : ''}</div>
+                </div>
+                <div class="data-card-stars">${'★'.repeat(Number(s.stars)||0)}</div>
+              </div>
+              <div class="data-card-rows">
+                <div class="data-card-row"><span>טלפון</span><span dir="ltr">${s.phone || '—'}</span></div>
+                <div class="data-card-row"><span>איכות</span><span>${s.quality || '—'}</span></div>
+                <div class="data-card-row"><span>הגעה</span><span>${s.arrival || '—'}</span></div>
+                <div class="data-card-row"><span>מחיר</span><span>${s.price || '—'}</span></div>
+                <div class="data-card-row"><span>יחס</span><span>${s.attitude || '—'}</span></div>
+                <div class="data-card-row"><span>המלצה</span><span>${s.recommend || '—'}</span></div>
+                ${s.comment ? `<div class="data-card-comment">${s.comment}</div>` : ''}
+              </div>
+              <button class="btn btn-danger btn-sm" style="margin-top:0.75rem" onclick="deleteRecord('survey','${safeId(s.id)}','${safeName(s.customer_name)}')">🗑️ מחק</button>
+            </div>`).join('')}
         </div>
       `;
     } catch(e) {
@@ -533,25 +546,16 @@
         document.getElementById('invoicesContainer').innerHTML = '<p class="empty-state">אין בקשות עדיין</p>';
         return;
       }
+      const safeId = id => id.replace(/'/g, "\\'");
+      const safeName = name => (name||'').replace(/'/g, "\\'");
       document.getElementById('invoicesContainer').innerHTML = `
         <div class="data-table-wrap">
           <table class="data-table">
-            <thead>
-              <tr>
-                <th>תאריך</th>
-                <th>שם</th>
-                <th>טלפון</th>
-                <th>מייל</th>
-                <th>ח.פ/ת.ז</th>
-                <th>כתובת</th>
-                <th>שירות</th>
-                <th>סכום</th>
-                <th>מע"מ</th>
-                <th>תשלום</th>
-                <th>מידרג</th>
-                <th></th>
-              </tr>
-            </thead>
+            <thead><tr>
+              <th>תאריך</th><th>שם</th><th>טלפון</th><th>מייל</th>
+              <th>ח.פ/ת.ז</th><th>כתובת</th><th>שירות</th>
+              <th>סכום</th><th>מע"מ</th><th>תשלום</th><th>מידרג</th><th></th>
+            </tr></thead>
             <tbody>
               ${invoices.map(inv => `
                 <tr>
@@ -566,11 +570,32 @@
                   <td>${inv.vat_type || '—'}</td>
                   <td>${inv.payment_method || '—'}</td>
                   <td>${inv.midrag_name || '—'}</td>
-                  <td><button class="btn btn-danger btn-sm" onclick="deleteRecord('invoice','${inv.id}', '${(inv.name||'').replace(/'/g,"\\'")}')">🗑️</button></td>
-                </tr>
-              `).join('')}
+                  <td><button class="btn btn-danger btn-sm" onclick="deleteRecord('invoice','${safeId(inv.id)}','${safeName(inv.name)}')">🗑️</button></td>
+                </tr>`).join('')}
             </tbody>
           </table>
+        </div>
+        <div class="cards-list">
+          ${invoices.map(inv => `
+            <div class="data-card">
+              <div class="data-card-header">
+                <div>
+                  <div class="data-card-name">${inv.name || '—'}</div>
+                  <div class="data-card-date">${inv.createdAt ? inv.createdAt.slice(0,10) : ''}</div>
+                </div>
+                <div class="data-card-amount">₪${inv.amount || '—'}</div>
+              </div>
+              <div class="data-card-rows">
+                <div class="data-card-row"><span>טלפון</span><span dir="ltr">${inv.phone || '—'}</span></div>
+                <div class="data-card-row"><span>מייל</span><span>${inv.email || '—'}</span></div>
+                ${inv.id_number ? `<div class="data-card-row"><span>ח.פ/ת.ז</span><span>${inv.id_number}</span></div>` : ''}
+                <div class="data-card-row"><span>כתובת</span><span>${inv.service_address || '—'}</span></div>
+                <div class="data-card-row"><span>תשלום</span><span>${inv.payment_method || '—'} · ${inv.vat_type || ''}</span></div>
+                ${inv.midrag_name ? `<div class="data-card-row"><span>מידרג</span><span>${inv.midrag_name}</span></div>` : ''}
+                ${inv.message ? `<div class="data-card-comment">${inv.message}</div>` : ''}
+              </div>
+              <button class="btn btn-danger btn-sm" style="margin-top:0.75rem" onclick="deleteRecord('invoice','${safeId(inv.id)}','${safeName(inv.name)}')">🗑️ מחק</button>
+            </div>`).join('')}
         </div>
       `;
     } catch(e) {
