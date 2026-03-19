@@ -22,15 +22,19 @@
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
 
+    const ALLOWED_EMAIL = 'gal9amar@gmail.com';
+
     onAuthStateChanged(auth, (user) => {
-      if (user) {
+      if (user && user.email === ALLOWED_EMAIL) {
         document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('adminScreen').classList.add('visible');
         window._firebaseUser = user;
         initAdmin();
       } else {
+        if (user) signOut(auth); // מנתק אוטומטית אם אימייל לא מורשה
         document.getElementById('loginScreen').style.display = 'flex';
         document.getElementById('adminScreen').classList.remove('visible');
+        document.getElementById('loginError').textContent = user ? 'אין הרשאה לכניסה עם חשבון זה' : '';
         window._firebaseUser = null;
       }
     });
