@@ -117,6 +117,9 @@
                 <button type="button" class="pay-btn" id="payTransfer" onclick="selectPayment('transfer')">
                   <span class="pay-icon">🏦</span> העברה בנקאית
                 </button>
+                <button type="button" class="pay-btn" id="payCash" onclick="selectPayment('cash')">
+                  <span class="pay-icon">💵</span> מזומן
+                </button>
               </div>
               <input type="hidden" name="payment_method" id="paymentMethod" value=""/>
 
@@ -238,12 +241,12 @@
       }
     }
     function selectPayment(type) {
-      ['bit','check','transfer'].forEach(t => {
+      ['bit','check','transfer','cash'].forEach(t => {
         document.getElementById('pay' + t.charAt(0).toUpperCase() + t.slice(1)).classList.remove('active');
       });
       document.getElementById('pay' + type.charAt(0).toUpperCase() + type.slice(1)).classList.add('active');
       selectedPayment = type;
-      document.getElementById('paymentMethod').value = type === 'bit' ? 'ביט' : type === 'check' ? 'המחאה' : 'העברה בנקאית';
+      document.getElementById('paymentMethod').value = type === 'bit' ? 'ביט' : type === 'check' ? 'המחאה' : type === 'transfer' ? 'העברה בנקאית' : 'מזומן';
       document.getElementById('bankDetails').classList.toggle('visible', type === 'transfer');
     }
 
