@@ -1,4 +1,4 @@
-# CLAUDE.md – אפיון פרויקט UNLOCK 2025
+# CLAUDE.md – אפיון פרויקט UNLOCK מנעולנות
 
 ## מה הפרויקט
 
@@ -12,12 +12,12 @@
 ## מבנה קבצים
 
 ```
-Unluck_2025/
+new-unlock/
 ├── index.html              ← דף הבית
 ├── product.html            ← דף מוצר בודד
 ├── firebase.json           ← הגדרות Firebase (functions)
 ├── .firebaserc             ← פרויקט Firebase: hamanulan-3bbc7
-├── .gitignore              ← כולל firebase-service-account.json
+├── netlify.toml            ← הגדרות Netlify
 ├── CNAME                   ← hamanulan.com
 ├── robots.txt, sitemap.xml ← SEO
 ├── functions/              ← Firebase Functions (Node.js)
@@ -25,18 +25,15 @@ Unluck_2025/
 │   └── package.json
 ├── pages/
 │   ├── admin.html          ← פאנל ניהול מוצרים
-│   ├── sendinfo.html       ← טופס שליחת פרטים
+│   ├── sendinfo.html       ← טופס שליחת פרטי לקוח לחשבונית
 │   ├── survey.html         ← סקר שביעות רצון לקוחות
-│   ├── thankyou.html       ← דף תודה (לאחר מילוי טפסים)
+│   ├── thankyou.html       ← דף תודה (לאחר מילוי sendinfo)
 │   ├── accessibility.html  ← הצהרת נגישות
 │   ├── privacy-policy.html ← מדיניות פרטיות
 │   └── terms-of-service.html ← תנאי שימוש
 ├── styles/
-│   ├── main.css            ← מערכת עיצוב מרכזית (index, product, legal)
-│   ├── admin.css           ← עיצוב פאנל ניהול
-│   ├── sendinfo.css        ← עיצוב טופס שליחת פרטים
-│   ├── survey.css          ← עיצוב סקר שביעות רצון
-│   └── thankyou.css        ← עיצוב דף תודה
+│   ├── main.css            ← מערכת עיצוב מרכזית
+│   └── ...
 ├── scripts/
 │   ├── main.js             ← לוגיקת דף הבית ומוצרים
 │   ├── product.js          ← לוגיקת דף מוצר בודד
@@ -46,39 +43,32 @@ Unluck_2025/
 
 ---
 
-## תלויות חיצוניות
-
-```html
-<!-- גופן עברית -->
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-
-<!-- נגישות UserWay -->
-<script src="https://cdn.userway.org/widget.js" data-account="..."></script>
-
-<!-- Firebase Auth SDK (admin.html בלבד) -->
-<script type="module" src="https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js"></script>
-```
-
-- **אין npm / package.json** בצד הלקוח – פרויקט vanilla (ללא build step)
-- **Netlify** – פריסה ישירה מ-GitHub repo: `Gal9amar/new-unlock`
-- **Firebase** – Project ID: `hamanulan-3bbc7`
-- **WhatsApp** – לינקים בפורמט: `https://wa.me/972533888381?text=...`
-
----
-
 ## פריסה (Deploy)
 
-### אתר סטטי
-1. Push ל-GitHub repo `Gal9amar/new-unlock` ← Netlify מתעדכן אוטומטית
-2. CNAME מוגדר: `hamanulan.com` → Netlify
-3. **אין build command** – הקבצים נפרסים as-is
+- **Netlify** – פריסה ישירה מ-GitHub repo: `Gal9amar/new-unlock`
+- Push ל-main → Netlify מתעדכן אוטומטית
+- **אין build command** – הקבצים נפרסים as-is
+- CNAME: `hamanulan.com` → Netlify
 
 ### Firebase Functions
 ```bash
 firebase deploy --only functions --project hamanulan-3bbc7
 ```
 - Node.js 20, region: `us-central1`
-- `GITHUB_TOKEN` מוגדר ב-Firebase Secret Manager (לא בשימוש יותר לניהול מוצרים)
+
+---
+
+## צבעי הברנד
+
+```css
+--color-primary: #0a1628      /* כחול כהה – רקע ראשי */
+--color-primary-700: #1a365d  /* כחול בינוני */
+--color-gold: #d4a853         /* זהב – אקסנט ראשי */
+--color-gold-light: #e8c87a   /* זהב בהיר */
+--gradient-hero: linear-gradient(135deg, #0a1628 0%, #0f2247 40%, #1a365d 100%)
+```
+
+גופן: **Heebo** (Google Fonts) – עברית/RTL
 
 ---
 
@@ -87,14 +77,14 @@ firebase deploy --only functions --project hamanulan-3bbc7
 ### פרויקט
 - **Project ID:** `hamanulan-3bbc7`
 - **Auth:** Google Sign-In בלבד – משתמש מורשה: `gal9amar@gmail.com`
-- **Firestore:** מסד נתונים של מוצרים (region: europe-west1)
+- **Firestore:** מסד נתונים מוצרים (region: europe-west1)
 
 ### Firebase Functions
 
-| Function | נתיב | גישה | תיאור |
-|----------|------|------|-------|
-| `products` | `us-central1-hamanulan-3bbc7.cloudfunctions.net/products` | ציבורי | GET כל המוצרים לפי סדר |
-| `adminProducts` | `us-central1-hamanulan-3bbc7.cloudfunctions.net/adminProducts` | מוגן | GET/POST/PUT/DELETE מוצרים |
+| Function | גישה | תיאור |
+|----------|------|-------|
+| `products` | ציבורי | GET כל המוצרים לפי סדר |
+| `adminProducts` | מוגן | GET/POST/PUT/DELETE מוצרים |
 
 ### Firestore – מבנה Collection `products`
 
@@ -102,134 +92,136 @@ firebase deploy --only functions --project hamanulan-3bbc7
 {
   "title": "שם המוצר",
   "desc": "תיאור",
-  "image": "images/file.webp",   // ← נתיב יחסי מהשורש
-  "price": 770,                  // ← מחיר מלא (מספר)
-  "discount_price": 550,         // ← מחיר מבצע – השמט אם אין
-  "price_from": false,           // ← true = "החל מ-"
+  "image": "images/file.webp",
+  "price": 770,
+  "discount_price": 550,
+  "price_from": false,
   "brand": "מולטילוק",
   "category": "צילינדרים",
-  "status": "",                  // ← "חדש" | "חם" | "מבצע" | ""
+  "status": "",
   "tags": ["תג1", "תג2"],
   "phone": "0533888381",
   "whatsapp": "972533888381",
   "note": "כולל שירות והתקנה",
-  "including_vat": "n",          // ← "n" = לא כולל מע"מ | "y" = כולל
-  "order": 0                     // ← סדר הצגה (מספר, קטן = ראשון)
+  "including_vat": "n",
+  "order": 0
 }
 ```
 
 ---
 
+## עמוד sendinfo (pages/sendinfo.html)
+
+טופס שליחת פרטי לקוח לצורך הפקת חשבונית.
+
+### שדות הטופס
+| שדה | חובה | הערות |
+|-----|------|--------|
+| שם מלא | ✅ | |
+| טלפון | ✅ | |
+| כתובת מייל | ✅ | |
+| ח.פ / ת.ז | ❌ | |
+| כתובת קבלת השירות | ✅ | |
+| תיאור השירות | ✅ | |
+| סכום | ✅ | מספרים + נקודה בלבד |
+| מע"מ | ✅ | כולל / לפני |
+| שיטת תשלום | ✅ | ביט / המחאה / העברה בנקאית / מזומן |
+| שם מידרג | ❌ | אופציונלי |
+
+### שליחה
+- Web3Forms API: `https://api.web3forms.com/submit`
+- Access Key: `8f6811e4-edba-4ca8-8776-e39c6eaf1b72`
+- שם הלקוח מועבר ב-URL לדף תודה: `/pages/thankyou.html?name=...`
+
+### אחרי שליחה
+- Redirect אוטומטי → `pages/thankyou.html?name=שם_לקוח`
+
+---
+
+## עמוד thankyou (pages/thankyou.html)
+
+דף תודה אחרי שליחת sendinfo.
+- מציג שם פרטי של הלקוח מה-URL param `?name=`
+- עיצוב: רקע gradient כחול כהה, כרטיס glass, כפתור זהב
+- CSS עצמאי (לא תלוי ב-main.css)
+- `position: fixed` על main לריכוז מדויק ללא גלילה
+
+---
+
+## עמוד survey (pages/survey.html)
+
+סקר שביעות רצון לקוחות לאחר מתן שירות.
+
+### שאלות
+1. דירוג כללי (כוכבים 1–5, תיבות עם מספר)
+2. איכות העבודה הטכנית (4 אפשרויות)
+3. זמן הגעה ומהירות (3 אפשרויות)
+4. מחיר ושקיפות (3 אפשרויות)
+5. שירות ויחס אישי (4 אפשרויות)
+6. המלצה (3 אפשרויות)
+7. הערות חופשיות (אופציונלי)
+
+### שליחה
+- Web3Forms – אותו access key
+- נשלח למייל `unlock.yavne@gmail.com`
+
+---
+
 ## פאנל Admin (pages/admin.html)
 
-- **כניסה:** Google Sign-In – רק `gal9amar@gmail.com` יכול להיכנס
-- **Auth:** Firebase Authentication (Google provider)
-- **נתונים:** קריאה וכתיבה ל-Firestore דרך Firebase Function `adminProducts`
+- **כניסה:** Google Sign-In – רק `gal9amar@gmail.com`
+- **נתונים:** Firestore דרך Firebase Function `adminProducts`
 - **פעולות:** הוספה / עריכה / מחיקה של מוצרים
 
 ---
 
-## flow דפים
+## Flow דפים
 
 ```
 index.html
   ├── לחיצה על מוצר → product.html?name=שם_מוצר
-  ├── לחיצה "שלח פרטים" → pages/sendinfo.html → pages/thankyou.html
-  └── סקר (לינק נפרד) → pages/survey.html → pages/thankyou.html
+  ├── כפתור "שלח פרטים" → pages/sendinfo.html → pages/thankyou.html
+  └── סקר שביעות רצון → pages/survey.html
 ```
 
 ---
 
 ## מוצרים
 
-### קטגוריות קיימות
-
+### קטגוריות
 `צילינדרים` | `מנעולים חכמים` | `מנעולים עליונים` | `מנעולים מכאניים` | `דלתות` | `מנעול ויטרינה` | `שונות`
 
-### מותגים קיימים
-
+### מותגים
 `מולטילוק` | `רב בריח` | `EVVA` | `Elock` | `וועד בניין` | `שונות`
 
-### סדר מוצרים
-
-שדה `order` ב-Firestore קובע את סדר ההצגה (מספר קטן = מוצג ראשון).
-בעת הוספת מוצר חדש דרך Admin — הסדר מוגדר אוטומטית בסוף הרשימה.
-
 ---
 
-## CSS – מוסכמות
+## תלויות חיצוניות
 
-- **כל דף HTML יש לו קובץ CSS משלו** ב-`styles/`
-- `styles/main.css` – עיצוב ראשי משותף (index, product, legal pages)
-- קבצי CSS נוספים לפי דף: `admin.css`, `sendinfo.css`, `survey.css`, `thankyou.css`
-- שמות קלאסים: kebab-case (`product-card`, `hero-section`)
-- משתני CSS מוגדרים ב-`:root` (צבעים, spacing, גדלי פונט)
-- Media queries: `min-width: 768px` = דסקטופ | מתחת = מובייל
+```html
+<!-- גופן עברית -->
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&display=swap"/>
 
-### ניווט (Navbar) – מובייל
+<!-- נגישות UserWay -->
+<script src="https://cdn.userway.org/widget.js" data-account="..."></script>
 
-- `.navbar-links` – מוצג בכל המסכים
-- `.nav-desktop-only` – מוסתר במובייל, מוצג מ-768px ומעלה
-- מובייל: **לוגו (שמאל) | מוצרים (מרכז) | טלפון (ימין)** – כל אחד `flex: 1`
+<!-- Firebase (admin בלבד) -->
+<script type="module" src="https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js"></script>
 
----
+<!-- Web3Forms (sendinfo + survey) -->
+POST https://api.web3forms.com/submit
+```
 
-## JavaScript – מוסכמות
-
-- שמות פונקציות: camelCase (`initProducts`, `goToProduct`)
-- כניסה לדף: `DOMContentLoaded` מפעיל את כל פונקציות ה-init
-- מוצרים נטענים async מ-Firebase Function
-- ניווט למוצר בודד: `goToProduct(name)` → `product.html?name=...`
-
----
-
-## תמונות (images/)
-
-תמונות מוצרים קיימות:
-
-| קובץ | שימוש |
-|------|-------|
-| `fav.png` | לוגו + favicon + fallback לתמונה שבורה |
-| `MTL800.webp` | MTL™800 מולטילוק |
-| `600.jpg` | MTL™600 מולטילוק |
-| `lockung-product-locxis.png` | Locxis רב בריח |
-| `jUWEL.jpg` | JUWEL מולטילוק |
-| `4ks.jpg` | EVVA 4KS |
-| `כספת.jpg` | מנעול כספת עליון רב בריח |
-| `צילינדר-רב-בריח-דינאמיק.webp` | Dynamic+ רב בריח |
-| `שבת.jpg` | מנעול מכאני לשומרי שבת |
-| `מעלית.jpg` | חיפוי מעלית בלוחות עץ |
-| `מיגון לובי.jpeg` | חיפוי לובי לבניינים חדשים |
-| `מנעול ארון חשמל.png` | מנעול לארון חשמל/תיבת דואר |
-| `מנעול ויטרינה.png` | מנעול לדלת ויטרינה / גינה |
-| `פלדלת_משופר.png` | דלת פלדלת תואמת רב בריח |
-| `דלת ממד2.jpg` | קיצור דלת ממד |
-| `open_door.jpg` | שינוי כיוון דלת מחסן |
-| `ידית חכמה.png` | רב בריח ידית קוד אלקטרו-ביומטרית |
-| `elock.jpg` | Elock Wize Pro מנעול חכם |
-| `גומי ממד.png` | גומיות לדלת ממ"ד |
-| `כיוון דלת.png` | כיוון דלת ממ"ד |
-
----
-
-## פיצ'רים עיקריים
-
-- **סינון לפי מותג** – פילטר דינמי, כולל "הכל"
-- **מחיר עם הנחה** – מחיר מקורי + מבצע + אחוז חיסכון
-- **price_from** – מציג "החל מ-₪X" כשהמחיר משתנה
-- **אנימציות** – IntersectionObserver לכרטיסים, counter animation לסטטיסטיקות
-- **Dark Mode** – שמירה ב-localStorage
-- **WhatsApp** – הודעה מולאה מראש עם פרטי המוצר
-- **SEO** – schema.org (Locksmith type), Open Graph, Twitter Card, meta דינמי בדף מוצר
-- **נגישות** – skip-link, ARIA labels, UserWay widget
+- **אין npm/build** בצד לקוח – vanilla JS
+- **WhatsApp:** `https://wa.me/972533888381?text=...`
 
 ---
 
 ## כללים חשובים
 
-1. **Firestore הוא מקור האמת** – כל שינוי במוצרים דרך Admin בלבד
-2. לכל קובץ HTML יש קובץ CSS משלו ב-`styles/` – לא להוסיף inline styles
-3. תמיד לבדוק RTL בעברית לאחר שינויים בלייאאוט
-4. מובייל קודם – לבדוק תמיד על מסך צר לפני דסקטופ
-5. שינוי קוד = push ל-GitHub → Netlify מתעדכן אוטומטית
-6. שינוי Firebase Functions = `firebase deploy --only functions`
+1. **Firestore = מקור האמת** למוצרים – שינוי דרך Admin בלבד
+2. עיצוב: כחול כהה `#0a1628` + זהב `#d4a853` בכל הדפים
+3. כל שינוי = push ל-GitHub → Netlify מתעדכן אוטומטית
+4. Firebase Functions = `firebase deploy --only functions`
+5. תמיד לבדוק RTL + מובייל אחרי שינויי CSS
+6. PAT לגיטהאב – לשלוח בכל session ולמחוק אחרי שימוש
