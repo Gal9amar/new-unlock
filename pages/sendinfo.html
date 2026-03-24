@@ -120,8 +120,18 @@
                 <button type="button" class="pay-btn" id="payCash" onclick="selectPayment('cash')">
                   <span class="pay-icon">💵</span> מזומן
                 </button>
+                <button type="button" class="pay-btn" id="payCredit" onclick="selectPayment('credit')">
+                  <span class="pay-icon">💳</span> אשראי
+                </button>
               </div>
               <input type="hidden" name="payment_method" id="paymentMethod" value=""/>
+
+              <!-- Credit card info (shown only for credit) -->
+              <div class="bank-details" id="creditDetails" style="display:none;margin-top:0.6rem;background:rgba(212,168,83,0.06);border:1.5px solid rgba(212,168,83,0.25);border-radius:10px;padding:1rem 1.1rem;">
+                <p style="font-size:0.9rem;color:#94a3b8;line-height:1.7;">
+                  💳 לאחר שליחת הטופס, תישלח אליך חשבונית במייל הכוללת קישור לתשלום מאובטח בכרטיס אשראי דרך מערכת סליקה מאושרת.
+                </p>
+              </div>
 
               <!-- Bank details (shown only for transfer) -->
               <div class="bank-details" id="bankDetails">
@@ -241,13 +251,14 @@
       }
     }
     function selectPayment(type) {
-      ['bit','check','transfer','cash'].forEach(t => {
+      ['bit','check','transfer','cash','credit'].forEach(t => {
         document.getElementById('pay' + t.charAt(0).toUpperCase() + t.slice(1)).classList.remove('active');
       });
       document.getElementById('pay' + type.charAt(0).toUpperCase() + type.slice(1)).classList.add('active');
       selectedPayment = type;
-      document.getElementById('paymentMethod').value = type === 'bit' ? 'ביט' : type === 'check' ? 'המחאה' : type === 'transfer' ? 'העברה בנקאית' : 'מזומן';
+      document.getElementById('paymentMethod').value = type === 'bit' ? 'ביט' : type === 'check' ? 'המחאה' : type === 'transfer' ? 'העברה בנקאית' : type === 'cash' ? 'מזומן' : 'אשראי';
       document.getElementById('bankDetails').classList.toggle('visible', type === 'transfer');
+      document.getElementById('creditDetails').style.display = type === 'credit' ? 'block' : 'none';
     }
 
     // Amount: numbers and dot only
