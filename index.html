@@ -481,6 +481,7 @@
   <script src="scripts/main.js?v=4.2"></script>
   <script src="scripts/accessibility.js?v=2.0"></script>
   <script>
+    document.addEventListener('DOMContentLoaded', function() {
     fetch('data/reviews.json')
       .then(r => r.ok ? r.json() : null)
       .catch(() => null)
@@ -524,6 +525,7 @@
           } catch(e) {}
         });
       });
+    });
   </script>
 </body>
 </html>
