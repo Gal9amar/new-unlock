@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "israeli-ui-design-system": {
+      "source": "skills-il/localization",
+      "sourceType": "github",
+      "computedHash": "c0081e6b9a4169b9a1d2c6491cfba58c2d1aaac979f6815e5df10ffa8606e4be"
+    }
+  }
+}

@@ -1,5 +1,6 @@
 const { onRequest } = require('firebase-functions/v2/https');
 const admin = require('firebase-admin');
+const https = require('https');
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -153,6 +154,33 @@ exports.adminSurveys = onRequest({ cors: true }, async (req, res) => {
 
   const snap = await db.collection('surveys').orderBy('createdAt', 'desc').get();
   res.json(snap.docs.map(d => ({ id: d.id, ...d.data(), createdAt: d.data().createdAt?.toDate?.()?.toISOString() || '' })));
+});
+
+// ── Admin: Trigger Netlify build (SSG) ──
+exports.triggerBuild = onRequest({ cors: true }, async (req, res) => {
+  if (req.method === 'OPTIONS') { cors(res); res.status(204).send(''); return; }
+  cors(res);
+
+  const user = await verifyAdmin(req, res);
+  if (!user) return;
+
+  if (req.method !== 'POST') { res.status(405).json({ error: 'Method not allowed' }); return; }
+
+  const HOOK_URL = 'https://api.netlify.com/build_hooks/69c3986bc1e0c2f8f2881656';
+
+  try {
+    await new Promise((resolve, reject) => {
+      const req2 = https.request(HOOK_URL, { method: 'POST' }, (r) => {
+        r.resume();
+        r.on('end', resolve);
+      });
+      req2.on('error', reject);
+      req2.end();
+    });
+    res.json({ ok: true, message: 'Build triggered successfully' });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
 });
 
 // ── Admin: GET invoices ──

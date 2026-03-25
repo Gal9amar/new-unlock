@@ -188,6 +188,47 @@ function updateMetaTags(product) {
   document.getElementById('twitterDesc').content = desc;
   document.getElementById('twitterImage').content = imageUrl;
 
+  // Schema.org BreadcrumbList
+  const breadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "דף הבית",
+        "item": "https://www.hamanulan.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "מוצרים",
+        "item": "https://www.hamanulan.com/#products"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": product.brand,
+        "item": `https://www.hamanulan.com/#products`
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "name": product.title,
+        "item": productUrl
+      }
+    ]
+  };
+
+  let breadcrumbEl = document.getElementById('breadcrumbSchema');
+  if (!breadcrumbEl) {
+    breadcrumbEl = document.createElement('script');
+    breadcrumbEl.type = 'application/ld+json';
+    breadcrumbEl.id = 'breadcrumbSchema';
+    document.head.appendChild(breadcrumbEl);
+  }
+  breadcrumbEl.textContent = JSON.stringify(breadcrumb);
+
   // Schema.org Product
   const schema = {
     "@context": "https://schema.org/",

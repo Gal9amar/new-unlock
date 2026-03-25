@@ -1899,3 +1899,73 @@ button {
     font-size: var(--font-size-xl);
   }
 }
+
+/* ========== Service Areas Section ========== */
+.service-areas-section {
+  padding: var(--spacing-3xl) 0;
+  background: var(--color-surface);
+}
+
+.areas-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xl);
+  margin-top: var(--spacing-xl);
+}
+
+.area-group {
+  background: var(--color-background);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+}
+
+.area-group h3 {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 2px solid var(--color-primary);
+}
+
+.area-group ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.area-group ul li {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  padding: var(--spacing-xs) 0;
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+.area-group ul li:last-child {
+  border-bottom: none;
+}
+
+.area-group ul li strong {
+  color: var(--color-text-primary);
+}
+
+.areas-note {
+  text-align: center;
+  margin-top: var(--spacing-xl);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.areas-note a {
+  color: var(--color-primary);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .areas-grid {
+    grid-template-columns: 1fr;
+  }
+}

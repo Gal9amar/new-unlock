@@ -100,6 +100,9 @@
     </nav>
     <div class="topbar-actions">
       <a href="/" class="btn btn-outline" target="_blank">← האתר</a>
+      <button class="btn btn-publish" id="publishBtn" onclick="triggerPublish()" title="מריץ build ב-Netlify ומפרסם שינויים באתר">
+        🚀 פרסם שינויים
+      </button>
       <button class="btn btn-outline" onclick="doLogout()">יציאה</button>
     </div>
   </div>
@@ -695,6 +698,40 @@
   document.getElementById('confirmOverlay').addEventListener('click', function(e) {
     if (e.target === this) closeConfirm();
   });
+
+  // ── Publish / Netlify Build Hook ──────────────────────────
+  window.triggerPublish = async function() {
+    const btn = document.getElementById('publishBtn');
+    const token = await window.getIdToken();
+    if (!token) { alert('יש להתחבר תחילה'); return; }
+
+    btn.disabled = true;
+    btn.textContent = '⏳ מפרסם...';
+
+    try {
+      const res = await fetch(
+        'https://us-central1-hamanulan-3bbc7.cloudfunctions.net/triggerBuild',
+        { method: 'POST', headers: { 'Authorization': 'Bearer ' + token } }
+      );
+      const data = await res.json();
+      if (data.ok) {
+        btn.textContent = '✅ פורסם! (~60 שנ׳)';
+        setTimeout(() => {
+          btn.textContent = '🚀 פרסם שינויים';
+          btn.disabled = false;
+        }, 8000);
+      } else {
+        throw new Error(data.error || 'Unknown error');
+      }
+    } catch (e) {
+      btn.textContent = '❌ שגיאה';
+      setTimeout(() => {
+        btn.textContent = '🚀 פרסם שינויים';
+        btn.disabled = false;
+      }, 4000);
+      console.error('triggerPublish error:', e);
+    }
+  };
 </script>
 </body>
 </html>

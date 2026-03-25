@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>דוח ביקורת SEO / GEO / AEO – UNLOCK גבי המנעולן</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .report-header {
+      background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%);
+      border-bottom: 3px solid #d4a853;
+      padding: 48px 40px 36px;
+      text-align: center;
+    }
+    .report-header .logo { font-size: 2.6rem; font-weight: 900; color: #d4a853; letter-spacing: -1px; }
+    .report-header h1 { font-size: 1.5rem; color: #94a3b8; font-weight: 400; margin-top: 6px; }
+    .report-header .meta { margin-top: 18px; display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; }
+    .report-header .meta span { font-size: 0.85rem; color: #64748b; }
+    .report-header .meta strong { color: #cbd5e1; }
+
+    .scores-section { max-width: 900px; margin: 36px auto; padding: 0 24px; }
+    .scores-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    @media (max-width: 640px) { .scores-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .score-card {
+      background: #1e293b; border: 1px solid #334155;
+      border-radius: 14px; padding: 20px; text-align: center;
+    }
+    .score-card .score-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #64748b; margin-bottom: 8px; }
+    .score-card .score-num { font-size: 2.8rem; font-weight: 900; line-height: 1; }
+    .score-card .score-grade { font-size: 0.85rem; color: #94a3b8; margin-top: 4px; }
+    .score-card.seo   .score-num { color: #3b82f6; }
+    .score-card.geo   .score-num { color: #22c55e; }
+    .score-card.aeo   .score-num { color: #f59e0b; }
+    .score-card.total .score-num { color: #d4a853; }
+    .score-card.total { border-color: #d4a853; background: #1a2840; }
+
+    .container { max-width: 960px; margin: 0 auto; padding: 0 24px 64px; }
+
+    .section-header {
+      display: flex; align-items: center; gap: 14px;
+      margin: 44px 0 20px; padding-bottom: 12px;
+      border-bottom: 2px solid #1e293b;
+    }
+    .section-header .icon {
+      width: 42px; height: 42px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; flex-shrink: 0;
+    }
+    .section-header.seo      .icon { background: #1e3a5f; }
+    .section-header.geo      .icon { background: #1f2d1e; }
+    .section-header.aeo      .icon { background: #2d2a1e; }
+    .section-header.priority .icon { background: #2d2a1e; }
+    .section-header.done     .icon { background: #052e16; }
+    .section-header h2 { font-size: 1.4rem; font-weight: 800; color: #f1f5f9; }
+    .section-header p  { font-size: 0.85rem; color: #64748b; }
+
+    .findings-list { display: flex; flex-direction: column; gap: 12px; }
+
+    .finding {
+      background: #1e293b; border: 1px solid #334155;
+      border-radius: 12px; padding: 16px 18px;
+      display: grid; grid-template-columns: 110px 1fr;
+      gap: 12px; align-items: start;
+    }
+    .finding.done-item { opacity: 0.65; border-color: #1e3a2e; background: #0f1f17; }
+    @media (max-width: 600px) { .finding { grid-template-columns: 1fr; } }
+
+    .sev {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 10px; border-radius: 20px;
+      font-size: 0.75rem; font-weight: 700; white-space: nowrap;
+      justify-self: start;
+    }
+    .sev.critical { background: #7f1d1d; color: #fca5a5; border: 1px solid #ef4444; }
+    .sev.warning  { background: #451a03; color: #fcd34d; border: 1px solid #f59e0b; }
+    .sev.info     { background: #1e293b; color: #93c5fd; border: 1px solid #3b82f6; }
+    .sev.good     { background: #052e16; color: #86efac; border: 1px solid #22c55e; }
+    .sev.fixed    { background: #052e16; color: #86efac; border: 1px solid #22c55e; }
+
+    .finding .body h4 { font-size: 0.95rem; font-weight: 700; color: #f1f5f9; margin-bottom: 4px; }
+    .finding .body p  { font-size: 0.88rem; color: #94a3b8; line-height: 1.6; }
+    .finding .body .rec {
+      margin-top: 8px; padding: 8px 12px;
+      background: #0f172a; border-radius: 8px;
+      border-right: 3px solid #d4a853;
+      font-size: 0.83rem; color: #cbd5e1;
+    }
+    .finding .body .rec strong { color: #d4a853; }
+    .finding .body code {
+      background: #0f172a; color: #67e8f9; padding: 1px 6px;
+      border-radius: 4px; font-size: 0.82rem; font-family: 'Courier New', monospace;
+    }
+    .fixed-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: #052e16; color: #86efac; border: 1px solid #22c55e;
+      border-radius: 20px; padding: 2px 10px; font-size: 0.75rem; font-weight: 700;
+      margin-top: 8px;
+    }
+
+    .priority-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+    .priority-table th {
+      background: #1e293b; color: #94a3b8;
+      font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;
+      padding: 10px 14px; text-align: right;
+    }
+    .priority-table td { padding: 10px 14px; border-bottom: 1px solid #1e293b; font-size: 0.87rem; }
+    .priority-table tr:last-child td { border-bottom: none; }
+    .priority-table tr.row-done td { opacity: 0.5; text-decoration: line-through; }
+    .priority-table tr.row-done td:first-child,
+    .priority-table tr.row-done td:last-child { text-decoration: none; }
+    .priority-table .effort-low    { color: #86efac; }
+    .priority-table .effort-medium { color: #fcd34d; }
+    .priority-table .effort-high   { color: #fca5a5; }
+    .priority-table .impact-h  { color: #86efac; font-weight: 700; }
+    .priority-table .impact-m  { color: #fcd34d; font-weight: 700; }
+    .priority-table .impact-l  { color: #94a3b8; }
+
+    .callout {
+      background: #1a2535; border: 1px solid #d4a853;
+      border-radius: 12px; padding: 18px 20px;
+      margin-bottom: 20px; font-size: 0.9rem;
+    }
+    .callout .callout-title { font-weight: 800; color: #d4a853; font-size: 1rem; margin-bottom: 6px; }
+
+    .progress-bar-wrap { margin: 24px 0 8px; }
+    .progress-bar-label { display: flex; justify-content: space-between; font-size: 0.82rem; color: #94a3b8; margin-bottom: 6px; }
+    .progress-bar-bg { background: #1e293b; border-radius: 99px; height: 10px; overflow: hidden; }
+    .progress-bar-fill { height: 10px; border-radius: 99px; background: linear-gradient(90deg, #22c55e, #16a34a); }
+
+    .report-footer {
+      text-align: center; padding: 28px;
+      border-top: 1px solid #1e293b; color: #475569; font-size: 0.82rem;
+      margin-top: 40px;
+    }
+
+    .tag-open    { background:#7f1d1d; color:#fca5a5; border:1px solid #ef4444; border-radius:20px; padding:2px 9px; font-size:0.72rem; font-weight:700; }
+    .tag-fixed   { background:#052e16; color:#86efac; border:1px solid #22c55e; border-radius:20px; padding:2px 9px; font-size:0.72rem; font-weight:700; }
+    .tag-partial { background:#451a03; color:#fcd34d; border:1px solid #f59e0b; border-radius:20px; padding:2px 9px; font-size:0.72rem; font-weight:700; }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="report-header">
+  <div class="logo">🔐 UNLOCK</div>
+  <h1>דוח ביקורת SEO / GEO / AEO – גרסה מעודכנת</h1>
+  <div class="meta">
+    <span><strong>אתר:</strong> www.hamanulan.com</span>
+    <span><strong>עודכן:</strong> מרץ 2026</span>
+    <span><strong>תיקונים שבוצעו:</strong> 10 / 14</span>
+    <span><strong>נותר לטיפול:</strong> 4</span>
+  </div>
+</div>
+
+<!-- SCORES -->
+<div class="scores-section">
+
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-label">
+      <span>התקדמות כוללת</span>
+      <span>10 מתוך 14 תיקונים הושלמו (71%)</span>
+    </div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:71%"></div></div>
+  </div>
+
+  <div class="scores-grid" style="margin-top:24px">
+    <div class="score-card seo">
+      <div class="score-label">SEO</div>
+      <div class="score-num">8.5</div>
+      <div class="score-grade">ציון A– · שופר מ-7.5</div>
+    </div>
+    <div class="score-card geo">
+      <div class="score-label">GEO / מקומי</div>
+      <div class="score-num">8.0</div>
+      <div class="score-grade">ציון B+ · שופר מ-5.0</div>
+    </div>
+    <div class="score-card aeo">
+      <div class="score-label">AEO / AI Search</div>
+      <div class="score-num">7.0</div>
+      <div class="score-grade">ציון B · שופר מ-4.5</div>
+    </div>
+    <div class="score-card total">
+      <div class="score-label">ציון כולל</div>
+      <div class="score-num">7.8</div>
+      <div class="score-grade">ציון B+ · שופר מ-5.7</div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ══════════════════════════════════════ -->
+  <!--          COMPLETED FIXES              -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section-header done">
+    <div class="icon">✅</div>
+    <div>
+      <h2>תיקונים שבוצעו</h2>
+      <p>10 פריטים הושלמו</p>
+    </div>
+  </div>
+
+  <div class="findings-list">
+
+    <div class="finding done-item">
+      <span class="sev fixed">✓ תוקן</span>
+      <div class="body">
+        <h4>noindex/nofollow – survey.html</h4>
+        <p>נוספה תגית <code>&lt;meta name="robots" content="noindex, nofollow"&gt;</code>. sendinfo.html ו-thankyou.html היו מוגדרים כבר.</p>
+      </div>
+    </div>
+
+    <div class="finding done-item">
+      <span class="sev fixed">✓ תוקן</span>
+      <div class="body">
+        <h4>Twitter Card → summary_large_image</h4>
+        <p>שונה ב-index.html מ-<code>summary</code> ל-<code>summary_large_image</code> לתצוגה טובה יותר בשיתוף.</p>
+      </div>
+    </div>
+
+    <div class="finding done-item">
+      <span class="sev fixed">✓ תוקן</span>
+      <div class="body">
+        <h4>Google Fonts – preconnect + מהירות טעינה</h4>
+        <p>נוספו <code>rel="preconnect"</code> ל-fonts.googleapis.com ו-fonts.gstatic.com לפני טעינת ה-stylesheet.</p>
+      </div>
+    </div>
+
+    <div class="finding done-item">
+      <span class="sev fixed">✓ תוקן</span>
+      <div class="body">
+        <h4>כתובת עסקית מלאה בסכמה</h4>
+        <p>נוספו לסכמת Locksmith: <code>streetAddress: "חרמון 14"</code>, <code>addressLocality: "יבנה"</code>, <code>postalCode: "8110101"</code>.</p>
+      </div>
+    </div>
+
+    <div class="finding done-item">
+      <span class="sev fixed">✓ תוקן</span>
+      <div class="body">
+        <h4>קואורדינטות GPS מדויקות</h4>
+        <p>עודכנו מ-31.878/34.739 (מרכז ישראל גיאוגרפי) ל-<strong>31.8760 / 34.7420</strong> (יבנה).</p>
+      </div>
+    </div>
+
+    <div class="finding done-item">
+      <span class="sev fixed">✓ תוקן</span>
+      <div class="body">
+        <h4>areaServed – הורחב ל-14 ערים</h4>
+        <p>הוחלף מ-2 מחוזות כלליים ל-14 ערים ספציפיות: יבנה, אשדוד, אשקלון, קרית גת, קרית מלאכי, נתיבות, באר שבע, ראשון לציון, רחובות, נס ציונה, לוד, רמלה, בית שמש, מודיעין.</p>
+      </div>
+    </div>
+
+    <div class="finding done-item">
+      <span class="sev fixed">✓ תוקן</span>
+      <div class="body">
+        <h4>FAQ Schema – נוסף ל-index.html</h4>
+        <p>נוספה סכמת FAQPage עם 7 שאלות ותשובות: זמינות 24/7, זמן הגעה, מחיר פריצה, מותגים, שירותים, אזורי שירות, אחריות.</p>
+      </div>
+    </div>
+
+    <div class="finding done-item">
+      <span class="sev fixed">✓ תוקן</span>
+      <div class="body">
+        <h4>סקשן "אזורי שירות" גלוי ב-HTML</h4>
+        <p>נוסף סקשן חדש לדף הבית עם 2 עמודות (מרכז / דרום), 14 ערים עם מילת המפתח "מנעולן [עיר]" לכל עיר. גם עיצוב CSS נוסף.</p>
+      </div>
+    </div>
+
+    <div class="finding done-item">
+      <span class="sev fixed">✓ תוקן</span>
+      <div class="body">
+        <h4>BreadcrumbList Schema – product.js</h4>
+        <p>נוספה סכמת BreadcrumbList דינמית שנוצרת בעת טעינת כל מוצר: דף הבית → מוצרים → מותג → שם מוצר.</p>
+      </div>
+    </div>
+
+    <div class="finding done-item">
+      <span class="sev fixed">✓ תוקן</span>
+      <div class="body">
+        <h4>Canonical – accessibility.html תוקן</h4>
+        <p>שונה מ-<code>/accessibility.html</code> ל-<code>/pages/accessibility.html</code> — תואם לנתיב הקובץ האמיתי.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!--          OPEN ISSUES                  -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section-header priority">
+    <div class="icon">🔧</div>
+    <div>
+      <h2>נותר לטיפול – 4 פריטים פתוחים</h2>
+      <p>ממוין לפי השפעה</p>
+    </div>
+  </div>
+
+  <div class="findings-list">
+
+    <div class="finding">
+      <span class="sev critical">🔴 קריטי</span>
+      <div class="body">
+        <h4>עמודי מוצרים – כותרת ותיאור מסתמכים על JS בלבד</h4>
+        <p>ה-HTML הסטטי של product.html מכיל כותרת גנרית "מוצר | UNLOCK". גוגל רואה זאת אם JS נכשל או לא נטען בסריקה. כל 17 מוצרים חולקים אותה כותרת.</p>
+        <div class="rec">
+          <strong>פתרון:</strong> SSR / SSG — יצירת קובץ HTML סטטי נפרד לכל מוצר עם הכותרת והתיאור הנכונים ב-HTML עצמו.<br>
+          <strong>מאמץ:</strong> גבוה · <strong>השפעה:</strong> גבוהה מאוד
+        </div>
+      </div>
+    </div>
+
+    <div class="finding">
+      <span class="sev critical">🔴 קריטי</span>
+      <div class="body">
+        <h4>Sitemap.xml – חסרים כל 17 עמודי המוצרים</h4>
+        <p>הסיטמאפ מכיל 5 כתובות בלבד. גוגל לא יגיש לעמודי המוצרים בצורה פרו-אקטיבית.</p>
+        <div class="rec">
+          <strong>פתרון קצר-טווח:</strong> הוסף ידנית את כל ה-URLs של המוצרים לסיטמאפ (product.html?name=...) ושלח אותו ל-Google Search Console.<br>
+          <strong>פתרון ארוך-טווח:</strong> Firebase Function שמחזיר sitemap.xml דינמי מ-Firestore.<br>
+          <strong>מאמץ:</strong> בינוני · <strong>השפעה:</strong> גבוהה
+        </div>
+      </div>
+    </div>
+
+    <div class="finding">
+      <span class="sev warning">⚠ אזהרה</span>
+      <div class="body">
+        <h4>AggregateRating Schema – חסר</h4>
+        <p>אין כוכבים בתוצאות החיפוש. הסקר הפנימי קיים אבל הנתונים לא מוצגים בסכמה.</p>
+        <div class="rec">
+          <strong>פתרון:</strong> לאחר שתאסוף 10+ ביקורות, הוסף <code>aggregateRating</code> לסכמת LocalBusiness עם ממוצע ומספר ביקורות. שקול להציג ביקורות גם ב-HTML.<br>
+          <strong>מאמץ:</strong> בינוני · <strong>השפעה:</strong> בינונית
+        </div>
+      </div>
+    </div>
+
+    <div class="finding">
+      <span class="sev warning">⚠ אזהרה</span>
+      <div class="body">
+        <h4>Canonical URL של product.html – גנרי ב-HTML הסטטי</h4>
+        <p>ה-canonical הסטטי מצביע ל-<code>product.html</code> ללא פרמטר. JS מעדכן אותו נכון בזמן ריצה, אבל עד שJS רץ — ה-canonical שגוי.</p>
+        <div class="rec">
+          <strong>פתרון:</strong> נפתר חלקית כשה-JS רץ (updateMetaTags כבר מעדכן). פתרון מלא — SSR/SSG (קשור לפריט הראשון).<br>
+          <strong>מאמץ:</strong> גבוה · <strong>השפעה:</strong> בינונית
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!--          FULL STATUS TABLE            -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="section-header priority">
+    <div class="icon">📋</div>
+    <div>
+      <h2>טבלת סטטוס מלאה</h2>
+      <p>כל 14 הפריטים</p>
+    </div>
+  </div>
+
+  <table class="priority-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>בעיה</th>
+        <th>קטגוריה</th>
+        <th>השפעה</th>
+        <th>מאמץ</th>
+        <th>סטטוס</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="row-done">
+        <td>1</td>
+        <td>כתובת עסקית + עיר בסכמה</td>
+        <td>GEO</td>
+        <td class="impact-h">גבוהה מאוד</td>
+        <td class="effort-low">נמוך</td>
+        <td><span class="tag-fixed">✓ בוצע</span></td>
+      </tr>
+      <tr class="row-done">
+        <td>2</td>
+        <td>FAQ Schema</td>
+        <td>AEO</td>
+        <td class="impact-h">גבוהה מאוד</td>
+        <td class="effort-low">נמוך</td>
+        <td><span class="tag-fixed">✓ בוצע</span></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>Sitemap – עמודי מוצרים חסרים</td>
+        <td>SEO</td>
+        <td class="impact-h">גבוהה</td>
+        <td class="effort-medium">בינוני</td>
+        <td><span class="tag-open">פתוח</span></td>
+      </tr>
+      <tr class="row-done">
+        <td>4</td>
+        <td>שמות ערים בתוכן + areaServed</td>
+        <td>GEO</td>
+        <td class="impact-h">גבוהה</td>
+        <td class="effort-medium">בינוני</td>
+        <td><span class="tag-fixed">✓ בוצע</span></td>
+      </tr>
+      <tr class="row-done">
+        <td>5</td>
+        <td>קואורדינטות GPS מדויקות</td>
+        <td>GEO</td>
+        <td class="impact-h">גבוהה</td>
+        <td class="effort-low">נמוך</td>
+        <td><span class="tag-fixed">✓ בוצע</span></td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>Product title/description ב-JS בלבד</td>
+        <td>SEO</td>
+        <td class="impact-h">גבוהה</td>
+        <td class="effort-high">גבוה</td>
+        <td><span class="tag-open">פתוח</span></td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>Canonical URL של product.html גנרי</td>
+        <td>SEO</td>
+        <td class="impact-m">בינונית</td>
+        <td class="effort-low">נמוך</td>
+        <td><span class="tag-partial">חלקי – JS מתקן בזמן ריצה</span></td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td>AggregateRating / Review Schema</td>
+        <td>AEO</td>
+        <td class="impact-m">בינונית</td>
+        <td class="effort-medium">בינוני</td>
+        <td><span class="tag-open">פתוח – דורש ביקורות</span></td>
+      </tr>
+      <tr class="row-done">
+        <td>9</td>
+        <td>BreadcrumbList Schema</td>
+        <td>AEO</td>
+        <td class="impact-m">בינונית</td>
+        <td class="effort-low">נמוך</td>
+        <td><span class="tag-fixed">✓ בוצע</span></td>
+      </tr>
+      <tr class="row-done">
+        <td>10</td>
+        <td>survey.html חסרת noindex</td>
+        <td>SEO</td>
+        <td class="impact-l">נמוכה</td>
+        <td class="effort-low">נמוך מאוד</td>
+        <td><span class="tag-fixed">✓ בוצע</span></td>
+      </tr>
+      <tr class="row-done">
+        <td>11</td>
+        <td>כותרות H2 ממוקדות שאלות (FAQ)</td>
+        <td>AEO</td>
+        <td class="impact-m">בינונית</td>
+        <td class="effort-low">נמוך</td>
+        <td><span class="tag-fixed">✓ בוצע (FAQ schema)</span></td>
+      </tr>
+      <tr class="row-done">
+        <td>12</td>
+        <td>Twitter Card – summary_large_image</td>
+        <td>SEO</td>
+        <td class="impact-l">נמוכה</td>
+        <td class="effort-low">נמוך מאוד</td>
+        <td><span class="tag-fixed">✓ בוצע</span></td>
+      </tr>
+      <tr class="row-done">
+        <td>13</td>
+        <td>Canonical נתיב שגוי – accessibility.html</td>
+        <td>SEO</td>
+        <td class="impact-l">נמוכה</td>
+        <td class="effort-low">נמוך מאוד</td>
+        <td><span class="tag-fixed">✓ בוצע</span></td>
+      </tr>
+      <tr class="row-done">
+        <td>14</td>
+        <td>Google Fonts – render-blocking</td>
+        <td>SEO</td>
+        <td class="impact-l">נמוכה</td>
+        <td class="effort-low">נמוך</td>
+        <td><span class="tag-fixed">✓ בוצע (preconnect)</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<div class="report-footer">
+  עודכן מרץ 2026 · Claude Code Agent · UNLOCK – גבי המנעולן (hamanulan.com)
+</div>
+
+</body>
+</html>
