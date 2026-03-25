@@ -286,7 +286,8 @@ async function main() {
   console.log(`✅ Found ${products.length} products`);
 
   const outDir = path.join(__dirname, '..', 'products');
-  if (!fs.existsSync(outDir)) fs.mkdirSync(outDir);
+  if (fs.existsSync(outDir)) fs.rmSync(outDir, { recursive: true, force: true });
+  fs.mkdirSync(outDir);
 
   const sitemapUrls = [];
 
