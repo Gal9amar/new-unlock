@@ -189,13 +189,20 @@ function initBrandFilters() {
 }
 
 // ========== Navigate to Product Page ==========
+function slugify(title) {
+  return title
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\u0590-\u05ffa-zA-Z0-9\-]/g, '')
+    .toLowerCase();
+}
+
 function goToProduct(index) {
   const product = currentBrand === 'all'
     ? allProducts[index]
     : allProducts.filter(p => p.brand === currentBrand)[index];
 
-  // Navigate to product page with title as identifier
-  window.location.href = `product.html?name=${encodeURIComponent(product.title)}`;
+  window.location.href = `/products/${slugify(product.title)}/`;
 }
 
 // ========== Smooth Scroll ==========
