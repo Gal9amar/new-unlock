@@ -1264,6 +1264,8 @@ button {
 }
 
 .review-card {
+  opacity: 1 !important;
+  transform: none !important;
   background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
