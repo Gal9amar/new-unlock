@@ -1,6 +1,9 @@
 const { onRequest } = require('firebase-functions/v2/https');
+const { defineSecret } = require('firebase-functions/params');
 const admin = require('firebase-admin');
 const https = require('https');
+
+const GITHUB_PAT = defineSecret('GITHUB_PAT');
 
 admin.initializeApp();
 const db = admin.firestore();
@@ -61,9 +64,14 @@ exports.adminProducts = onRequest({ cors: true }, async (req, res) => {
     return;
   }
   if (req.method === 'POST') {
-    const snap = await col.orderBy('order', 'desc').limit(1).get();
-    const maxOrder = snap.empty ? 0 : (snap.docs[0].data().order || 0) + 1;
-    const ref = await col.add({ ...req.body, order: maxOrder });
+    // Shift all existing products up by 1 so new product gets order=0 (first)
+    const allSnap = await col.get();
+    const batch = db.batch();
+    allSnap.docs.forEach(doc => {
+      batch.update(doc.ref, { order: (doc.data().order || 0) + 1 });
+    });
+    await batch.commit();
+    const ref = await col.add({ ...req.body, order: 0 });
     res.json({ id: ref.id });
     return;
   }
@@ -156,8 +164,8 @@ exports.adminSurveys = onRequest({ cors: true }, async (req, res) => {
   res.json(snap.docs.map(d => ({ id: d.id, ...d.data(), createdAt: d.data().createdAt?.toDate?.()?.toISOString() || '' })));
 });
 
-// ── Admin: Trigger Netlify build (SSG) ──
-exports.triggerBuild = onRequest({ cors: true }, async (req, res) => {
+// ── Admin: Trigger GitHub Action (SSG → Netlify) ──
+exports.triggerBuild = onRequest({ cors: true, secrets: [GITHUB_PAT] }, async (req, res) => {
   if (req.method === 'OPTIONS') { cors(res); res.status(204).send(''); return; }
   cors(res);
 
@@ -166,18 +174,31 @@ exports.triggerBuild = onRequest({ cors: true }, async (req, res) => {
 
   if (req.method !== 'POST') { res.status(405).json({ error: 'Method not allowed' }); return; }
 
-  const HOOK_URL = 'https://api.netlify.com/build_hooks/69c3986bc1e0c2f8f2881656';
+  const pat = GITHUB_PAT.value();
+  const body = JSON.stringify({ ref: 'main' });
 
   try {
     await new Promise((resolve, reject) => {
-      const req2 = https.request(HOOK_URL, { method: 'POST' }, (r) => {
+      const reqGH = https.request({
+        hostname: 'api.github.com',
+        path: '/repos/Gal9amar/new-unlock/actions/workflows/ssg.yml/dispatches',
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${pat}`,
+          'Accept': 'application/vnd.github+json',
+          'Content-Type': 'application/json',
+          'Content-Length': Buffer.byteLength(body),
+          'User-Agent': 'unlock-firebase-function'
+        }
+      }, (r) => {
         r.resume();
         r.on('end', resolve);
       });
-      req2.on('error', reject);
-      req2.end();
+      reqGH.on('error', reject);
+      reqGH.write(body);
+      reqGH.end();
     });
-    res.json({ ok: true, message: 'Build triggered successfully' });
+    res.json({ ok: true, message: 'GitHub Action triggered — יתעדכן תוך ~60 שניות' });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
