@@ -41,3 +41,7 @@ jobs:
             git commit -m "ssg: auto-generate product pages [skip ci]"
             git push
           fi
+
+      - name: Trigger Netlify deploy
+        run: |
+          curl -s -X POST https://api.netlify.com/build_hooks/69c3986bc1e0c2f8f2881656
