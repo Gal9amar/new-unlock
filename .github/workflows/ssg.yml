@@ -4,6 +4,8 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    - cron: '0 5 * * *'   # כל יום ב-05:00 UTC (08:00 שעון ישראל)
 
 jobs:
   generate:
@@ -27,6 +29,9 @@ jobs:
       - name: Write Firebase service account
         run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > firebase-service-account.json
 
+      - name: Fetch reviews from Midrag
+        run: node scripts/fetch-reviews.js
+
       - name: Run SSG
         run: node scripts/generate-ssg.js
 
@@ -34,7 +39,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add products/ sitemap.xml
+          git add products/ sitemap.xml data/reviews.json
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else

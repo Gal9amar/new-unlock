@@ -186,6 +186,7 @@
       <div class="navbar-links">
         <a href="#services" class="nav-desktop-only">שירותים</a>
         <a href="#products">מוצרים</a>
+        <a href="#reviews" class="nav-desktop-only">ביקורות</a>
         <a href="#why-us" class="nav-desktop-only">למה אנחנו</a>
       </div>
       <a href="tel:0533888381" class="navbar-cta">053-388-8381</a>
@@ -376,6 +377,24 @@
         </div>
       </div>
     </section>
+    <!-- Reviews Section -->
+    <section id="reviews" class="reviews-section">
+      <div class="container">
+        <h2 class="section-title">מה לקוחות אומרים</h2>
+        <div class="reviews-meta">
+          <span class="reviews-rating-badge">
+            <span class="reviews-score">9.94</span>
+            <span class="reviews-stars">★★★★★</span>
+          </span>
+          <span class="reviews-count">62 ביקורות במידרג</span>
+          <a href="https://www.midrag.co.il/SpCard/Sp/138646" class="reviews-source-link" target="_blank" rel="noopener noreferrer">מקור: מידרג ←</a>
+        </div>
+        <div id="reviewsGrid" class="reviews-grid">
+          <!-- מולא ב-JS מ-data/reviews.json -->
+        </div>
+      </div>
+    </section>
+
     <!-- Service Areas Section -->
     <section id="service-areas" class="service-areas-section">
       <div class="container">
@@ -461,5 +480,50 @@
   <script src="scripts/security-warning.js"></script>
   <script src="scripts/main.js?v=4.2"></script>
   <script src="scripts/accessibility.js?v=2.0"></script>
+  <script>
+    fetch('data/reviews.json')
+      .then(r => r.ok ? r.json() : null)
+      .catch(() => null)
+      .then(data => {
+        if (!data || !data.featured || !data.featured.length) return;
+        const grid = document.getElementById('reviewsGrid');
+        if (!grid) return;
+        // Update meta from data
+        const score = document.querySelector('.reviews-score');
+        const count = document.querySelector('.reviews-count');
+        if (score) score.textContent = data.overallRating;
+        if (count) count.textContent = data.totalReviews + ' ביקורות במידרג';
+        // Render cards
+        grid.innerHTML = data.featured.map(r => {
+          const stars = '★'.repeat(Math.round((r.rating || 10) / 2));
+          const name = r.name ? r.name.replace(/,.*$/, '').trim() : '';
+          const date = r.date ? `<span class="review-date">${r.date}</span>` : '';
+          return `<div class="review-card reveal">
+            <div class="review-header">
+              <div class="review-avatar">${name.charAt(0) || '★'}</div>
+              <div class="review-author-info">
+                <strong class="review-name">${name}</strong>
+                ${date}
+              </div>
+              <div class="review-stars">${'★'.repeat(5)}</div>
+            </div>
+            <p class="review-text">"${r.text}"</p>
+          </div>`;
+        }).join('');
+        // Update AggregateRating in schema
+        const schemas = document.querySelectorAll('script[type="application/ld+json"]');
+        schemas.forEach(s => {
+          try {
+            const obj = JSON.parse(s.textContent);
+            if (obj.aggregateRating) {
+              obj.aggregateRating.ratingValue = String(data.overallRating);
+              obj.aggregateRating.ratingCount = String(data.totalReviews);
+              obj.aggregateRating.reviewCount = String(data.totalReviews);
+              s.textContent = JSON.stringify(obj);
+            }
+          } catch(e) {}
+        });
+      });
+  </script>
 </body>
 </html>
