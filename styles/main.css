@@ -106,8 +106,10 @@
   --spacing-3xl: 96px;
 
   /* Typography */
-  --font-family: 'Heebo', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-size-xs: 12px;
+  --font-hebrew: 'Heebo', 'Assistant', 'Noto Sans Hebrew', sans-serif;
+  --font-latin: 'Inter', 'Roboto', sans-serif;
+  --font-family: var(--font-hebrew), var(--font-latin);
+  --font-size-xs: 13px; /* מינימום קריא לעברית */
   --font-size-sm: 14px;
   --font-size-base: 16px;
   --font-size-lg: 18px;
@@ -137,7 +139,8 @@ html {
 body {
   font-family: var(--font-family);
   font-size: var(--font-size-base);
-  line-height: 1.6;
+  line-height: 1.7; /* עברית דורשת 1.7 מינימום */
+  word-spacing: 0.05em; /* שיפור קריאות עברית */
   color: var(--text-primary);
   background: var(--bg-primary);
   direction: rtl;
@@ -184,7 +187,7 @@ button {
 .skip-link {
   position: absolute;
   top: -100px;
-  left: 0;
+  inset-inline-start: 0;
   background: var(--color-primary-700);
   color: white;
   padding: var(--spacing-xs) var(--spacing-sm);
