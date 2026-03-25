@@ -1,0 +1,43 @@
+name: SSG – Generate Product Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Write Firebase service account
+        run: echo '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}' > firebase-service-account.json
+
+      - name: Run SSG
+        run: node scripts/generate-ssg.js
+
+      - name: Commit & push generated files
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add products/ sitemap.xml
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "ssg: auto-generate product pages [skip ci]"
+            git push
+          fi
