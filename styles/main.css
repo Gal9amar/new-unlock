@@ -2166,41 +2166,11 @@ button {
   background: var(--color-surface);
 }
 
-.areas-layout {
+.areas-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--spacing-xl);
   margin-top: var(--spacing-xl);
-  align-items: start;
-}
-
-.areas-map-wrapper {
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-  box-shadow: var(--shadow-xl);
-  border: 3px solid var(--color-gold);
-}
-
-.areas-map {
-  width: 100%;
-  height: 420px;
-  border: none;
-  display: block;
-}
-
-.areas-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--spacing-md);
-}
-
-@media (max-width: 900px) {
-  .areas-layout {
-    grid-template-columns: 1fr;
-  }
-  .areas-map {
-    height: 280px;
-  }
 }
 
 .area-group {
