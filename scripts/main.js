@@ -5,6 +5,7 @@
 // Global Variables
 let allProducts = [];
 let currentBrand = 'all';
+let currentCategory = 'all';
 
 // ========== Initialize ==========
 document.addEventListener('DOMContentLoaded', () => {
@@ -14,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initSmoothScroll();
   initRevealAnimations();
   initCounterAnimation();
+  initExitIntent();
 });
 
 // ========== Navbar Scroll Effect ==========
@@ -108,10 +110,19 @@ async function initProducts() {
     allProducts = await res.json();
     displayProducts(allProducts);
     initBrandFilters();
+    initCategoryFilters();
   } catch (error) {
     console.error('Error loading products:', error);
     showProductsError();
   }
+}
+
+function getFilteredProducts() {
+  return allProducts.filter(p => {
+    const brandMatch = currentBrand === 'all' || p.brand === currentBrand;
+    const categoryMatch = currentCategory === 'all' || p.category === currentCategory;
+    return brandMatch && categoryMatch;
+  });
 }
 
 function displayProducts(products) {
@@ -119,12 +130,12 @@ function displayProducts(products) {
   if (!grid) return;
 
   if (products.length === 0) {
-    grid.innerHTML = '<p class="no-products">לא נמצאו מוצרים</p>';
+    grid.innerHTML = '<p class="no-products">לא נמצאו מוצרים בקטגוריה זו</p>';
     return;
   }
 
   grid.innerHTML = products.map((product, index) => `
-    <div class="product-card fade-in" onclick="goToProduct(${index})" style="animation-delay: ${index * 0.08}s">
+    <div class="product-card fade-in" onclick="goToProduct('${product.id || index}')" style="animation-delay: ${index * 0.08}s">
       <div class="product-image-container">
         <img src="${product.image || 'images/fav.png'}" alt="${product.title}" loading="lazy" onerror="this.src='images/fav.png'" />
         ${product.status ? `<span class="product-status-badge status-${getStatusClass(product.status)}">${product.status === 'מבצע' ? 'מוצר במבצע' : 'מוצר ' + product.status}</span>` : ''}
@@ -167,23 +178,26 @@ function getStatusClass(status) {
 
 // ========== Brand Filters ==========
 function initBrandFilters() {
-  const filterButtons = document.querySelectorAll('.filter-btn');
-
-  filterButtons.forEach(btn => {
+  const brandBtns = document.querySelectorAll('.brand-filters .filter-btn');
+  brandBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      // Update active button
-      filterButtons.forEach(b => b.classList.remove('active'));
+      brandBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
+      currentBrand = btn.dataset.brand;
+      displayProducts(getFilteredProducts());
+    });
+  });
+}
 
-      // Filter products
-      const brand = btn.dataset.brand;
-      currentBrand = brand;
-
-      const filtered = brand === 'all'
-        ? allProducts
-        : allProducts.filter(p => p.brand === brand);
-
-      displayProducts(filtered);
+// ========== Category Filters ==========
+function initCategoryFilters() {
+  const catBtns = document.querySelectorAll('.category-filters .filter-btn');
+  catBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      catBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentCategory = btn.dataset.category;
+      displayProducts(getFilteredProducts());
     });
   });
 }
@@ -197,11 +211,9 @@ function slugify(title) {
     .toLowerCase();
 }
 
-function goToProduct(index) {
-  const product = currentBrand === 'all'
-    ? allProducts[index]
-    : allProducts.filter(p => p.brand === currentBrand)[index];
-
+function goToProduct(idOrIndex) {
+  const product = allProducts.find(p => p.id === idOrIndex) || allProducts[idOrIndex];
+  if (!product) return;
   window.location.href = `/products/${slugify(product.title)}/`;
 }
 
@@ -246,6 +258,45 @@ function initScrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 }
+
+// ========== Exit Intent Popup ==========
+function initExitIntent() {
+  const popup = document.getElementById('exitPopup');
+  if (!popup) return;
+
+  // אל תציג אם כבר נסגר בסשן הזה
+  if (sessionStorage.getItem('exitPopupShown')) return;
+
+  let shown = false;
+
+  function showPopup() {
+    if (shown) return;
+    shown = true;
+    sessionStorage.setItem('exitPopupShown', '1');
+    popup.removeAttribute('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  // Desktop – מאוס יוצא מהחלון כלפי מעלה
+  document.addEventListener('mouseleave', (e) => {
+    if (e.clientY <= 0) showPopup();
+  });
+
+  // Mobile – אחרי 40 שניות ללא גלילה
+  let mobileTimer = setTimeout(() => {
+    if (window.innerWidth < 768) showPopup();
+  }, 40000);
+
+  // ביטול timer אם גלל
+  window.addEventListener('scroll', () => clearTimeout(mobileTimer), { once: true, passive: true });
+}
+
+window.closeExitPopup = function() {
+  const popup = document.getElementById('exitPopup');
+  if (!popup) return;
+  popup.setAttribute('hidden', '');
+  document.body.style.overflow = '';
+};
 
 // ========== Error Handling ==========
 function showProductsError() {

@@ -97,6 +97,7 @@
       <button class="topbar-nav-btn active" id="tab-products" onclick="switchSection('products')">📦 מוצרים</button>
       <button class="topbar-nav-btn" id="tab-surveys" onclick="switchSection('surveys')">⭐ סקרי לקוח</button>
       <button class="topbar-nav-btn" id="tab-invoices" onclick="switchSection('invoices')">📄 חשבוניות</button>
+      <button class="topbar-nav-btn" id="tab-stats" onclick="switchSection('stats')">📊 סטטיסטיקות</button>
     </nav>
     <div class="topbar-actions">
       <a href="/" class="btn btn-outline" target="_blank">← האתר</a>
@@ -127,6 +128,10 @@
         <button class="sidebar-item" id="nav-invoices" onclick="switchSection('invoices')">
           <span class="sidebar-icon">📄</span>
           <span class="sidebar-label">חשבוניות</span>
+        </button>
+        <button class="sidebar-item" id="nav-stats" onclick="switchSection('stats')">
+          <span class="sidebar-icon">📊</span>
+          <span class="sidebar-label">סטטיסטיקות</span>
         </button>
       </nav>
     </aside>
@@ -164,6 +169,17 @@
         </div>
         <div id="invoicesContainer">
           <p class="empty-state">לחץ רענן לטעינה</p>
+        </div>
+      </div>
+
+      <!-- Stats section -->
+      <div class="admin-section hidden" id="section-stats">
+        <div class="section-header">
+          <h2>📊 סטטיסטיקות</h2>
+          <button class="btn btn-outline" onclick="loadStats()">🔄 רענן</button>
+        </div>
+        <div id="statsContainer">
+          <p class="empty-state">טוען נתונים...</p>
         </div>
       </div>
 
@@ -308,6 +324,7 @@
     closeSidebar();
     if (section === 'surveys') loadSurveys();
     if (section === 'invoices') loadInvoices();
+    if (section === 'stats') loadStats();
   }
 
   // ── Products ──
@@ -732,6 +749,66 @@
       console.error('triggerPublish error:', e);
     }
   };
+
+  // ── Stats ──
+  const ADMIN_STATS = 'https://us-central1-hamanulan-3bbc7.cloudfunctions.net/adminStats';
+
+  async function loadStats() {
+    const container = document.getElementById('statsContainer');
+    container.innerHTML = '<p class="empty-state">טוען נתונים...</p>';
+    try {
+      const res = await fetch(ADMIN_STATS, { headers: await authHeader() });
+      const data = await res.json();
+      renderStats(data);
+    } catch(e) {
+      container.innerHTML = '<p class="empty-state" style="color:red">שגיאה בטעינת סטטיסטיקות</p>';
+    }
+  }
+
+  function renderStats(d) {
+    const container = document.getElementById('statsContainer');
+    const month = new Date().toLocaleString('he-IL', { month: 'long', year: 'numeric' });
+    container.innerHTML = `
+      <p class="stats-month-label">נתוני ${month}</p>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">📦</div>
+          <div class="stat-value">${d.products.total}</div>
+          <div class="stat-label">מוצרים פעילים</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">⭐</div>
+          <div class="stat-value">${d.surveys.thisMonth}</div>
+          <div class="stat-label">סקרים החודש</div>
+          <div class="stat-sub">סה"כ: ${d.surveys.total}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🌟</div>
+          <div class="stat-value">${d.surveys.avgStars ?? '—'}</div>
+          <div class="stat-label">ממוצע דירוג</div>
+          <div class="stat-sub">מתוך 5 כוכבים</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">📄</div>
+          <div class="stat-value">${d.invoices.thisMonth}</div>
+          <div class="stat-label">חשבוניות החודש</div>
+          <div class="stat-sub">סה"כ: ${d.invoices.total}</div>
+        </div>
+        <div class="stat-card stat-card-warning">
+          <div class="stat-icon">⏳</div>
+          <div class="stat-value">${d.invoices.pending}</div>
+          <div class="stat-label">חשבוניות ממתינות</div>
+          <div class="stat-sub">טרם הופקו</div>
+        </div>
+        <div class="stat-card stat-card-gold">
+          <div class="stat-icon">💰</div>
+          <div class="stat-value">₪${d.invoices.totalRevenue.toLocaleString()}</div>
+          <div class="stat-label">סה"כ הכנסות מאושרות</div>
+          <div class="stat-sub">חשבוניות שהופקו</div>
+        </div>
+      </div>
+    `;
+  }
 </script>
 </body>
 </html>

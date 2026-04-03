@@ -338,13 +338,25 @@
         <h2 class="section-title">החנות שלנו - מוצרי מנעולנות מובילים</h2>
         <p class="section-subtitle">17 מוצרים איכותיים עם התקנה מקצועית</p>
 
-        <div class="brand-filters">
-          <button class="filter-btn active" data-brand="all">כל המוצרים</button>
-          <button class="filter-btn" data-brand="מולטילוק">מולטילוק</button>
-          <button class="filter-btn" data-brand="רב בריח">רב בריח</button>
-          <button class="filter-btn" data-brand="EVVA">EVVA</button>
-          <button class="filter-btn" data-brand="וועד בניין">וועד בניין</button>
-          <button class="filter-btn" data-brand="שונות">שונות</button>
+        <div class="product-filters">
+          <div class="filter-row brand-filters">
+            <button class="filter-btn active" data-brand="all">כל המוצרים</button>
+            <button class="filter-btn" data-brand="מולטילוק">מולטילוק</button>
+            <button class="filter-btn" data-brand="רב בריח">רב בריח</button>
+            <button class="filter-btn" data-brand="EVVA">EVVA</button>
+            <button class="filter-btn" data-brand="וועד בניין">וועד בניין</button>
+            <button class="filter-btn" data-brand="שונות">שונות</button>
+          </div>
+          <div class="filter-row category-filters">
+            <button class="filter-btn cat-btn active" data-category="all">כל הקטגוריות</button>
+            <button class="filter-btn cat-btn" data-category="צילינדרים">צילינדרים</button>
+            <button class="filter-btn cat-btn" data-category="מנעולים חכמים">מנעולים חכמים</button>
+            <button class="filter-btn cat-btn" data-category="מנעולים עליונים">מנעולים עליונים</button>
+            <button class="filter-btn cat-btn" data-category="מנעולים מכאניים">מנעולים מכאניים</button>
+            <button class="filter-btn cat-btn" data-category="דלתות">דלתות</button>
+            <button class="filter-btn cat-btn" data-category="מנעול ויטרינה">מנעול ויטרינה</button>
+            <button class="filter-btn cat-btn" data-category="שונות">שונות</button>
+          </div>
         </div>
 
         <div id="productsGrid" class="products-grid"></div>
@@ -406,38 +418,55 @@
       <div class="container">
         <h2 class="section-title">אזורי השירות שלנו</h2>
         <p class="section-subtitle">מנעולן מקצועי עם הגעה תוך 30 דקות באזור המרכז והדרום</p>
-        <div class="areas-grid">
-          <div class="area-group">
-            <h3>אזור הדרום</h3>
-            <ul>
-              <li>מנעולן <strong>יבנה</strong></li>
-              <li>מנעולן <strong>גן יבנה</strong></li>
-              <li>מנעולן <strong>אשדוד</strong></li>
-              <li>מנעולן <strong>אשקלון</strong></li>
-              <li>מנעולן <strong>גדרה</strong></li>
-              <li>מנעולן <strong>קרית מלאכי</strong></li>
-              <li>מנעולן <strong>קרית עקרון</strong></li>
-              <li>מנעולן <strong>מזכרת בתיה</strong></li>
-              <li>מנעולן <strong>באר טוביה</strong></li>
-              <li>מנעולן <strong>בני עי"ש</strong></li>
-            </ul>
+
+        <div class="areas-layout">
+          <!-- מפה -->
+          <div class="areas-map-wrapper">
+            <iframe
+              class="areas-map"
+              loading="lazy"
+              allowfullscreen
+              referrerpolicy="no-referrer-when-downgrade"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d386000!2d34.6!3d31.85!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzHCsDUxJzAwLjAiTiAzNMKwMzYnMDAuMCJF!5e0!3m2!1siw!2sil!4v1700000000000!5m2!1siw!2sil&markers=color:red%7Clabel:G%7C31.8760,34.7420&q=יבנה,גן+יבנה,אשדוד,אשקלון,גדרה,רחובות,נס+ציונה,ראשון+לציון,חולון,בת+ים"
+              title="אזורי שירות UNLOCK מנעולנות">
+            </iframe>
           </div>
-          <div class="area-group">
-            <h3>אזור המרכז</h3>
-            <ul>
-              <li>מנעולן <strong>רחובות</strong></li>
-              <li>מנעולן <strong>נס ציונה</strong></li>
-              <li>מנעולן <strong>ראשון לציון</strong></li>
-              <li>מנעולן <strong>באר יעקב</strong></li>
-              <li>מנעולן <strong>רמלה</strong></li>
-              <li>מנעולן <strong>לוד</strong></li>
-              <li>מנעולן <strong>חולון</strong></li>
-              <li>מנעולן <strong>בת ים</strong></li>
-              <li>מנעולן <strong>אור יהודה</strong></li>
-              <li>מנעולן <strong>יהוד-מונוסון</strong></li>
-            </ul>
+
+          <!-- רשימת ערים -->
+          <div class="areas-grid">
+            <div class="area-group">
+              <h3>📍 אזור הדרום</h3>
+              <ul>
+                <li>מנעולן <strong>יבנה</strong></li>
+                <li>מנעולן <strong>גן יבנה</strong></li>
+                <li>מנעולן <strong>אשדוד</strong></li>
+                <li>מנעולן <strong>אשקלון</strong></li>
+                <li>מנעולן <strong>גדרה</strong></li>
+                <li>מנעולן <strong>קרית מלאכי</strong></li>
+                <li>מנעולן <strong>קרית עקרון</strong></li>
+                <li>מנעולן <strong>מזכרת בתיה</strong></li>
+                <li>מנעולן <strong>באר טוביה</strong></li>
+                <li>מנעולן <strong>בני עי"ש</strong></li>
+              </ul>
+            </div>
+            <div class="area-group">
+              <h3>📍 אזור המרכז</h3>
+              <ul>
+                <li>מנעולן <strong>רחובות</strong></li>
+                <li>מנעולן <strong>נס ציונה</strong></li>
+                <li>מנעולן <strong>ראשון לציון</strong></li>
+                <li>מנעולן <strong>באר יעקב</strong></li>
+                <li>מנעולן <strong>רמלה</strong></li>
+                <li>מנעולן <strong>לוד</strong></li>
+                <li>מנעולן <strong>חולון</strong></li>
+                <li>מנעולן <strong>בת ים</strong></li>
+                <li>מנעולן <strong>אור יהודה</strong></li>
+                <li>מנעולן <strong>יהוד-מונוסון</strong></li>
+              </ul>
+            </div>
           </div>
         </div>
+
         <p class="areas-note">שירות 24/7 · הגעה תוך 30 דקות · <a href="tel:0533888381">053-388-8381</a></p>
         <p class="areas-extra">מגיעים גם לאזורים נוספים בתיאום מראש — <a href="tel:0533888381">צור קשר</a></p>
       </div>
@@ -489,6 +518,25 @@
   </footer>
 
   <button id="scrollToTop" class="scroll-to-top" hidden>↑</button>
+
+  <!-- Exit Intent Popup -->
+  <div id="exitPopup" class="exit-popup-overlay" hidden>
+    <div class="exit-popup">
+      <button class="exit-popup-close" onclick="closeExitPopup()" aria-label="סגור">×</button>
+      <div class="exit-popup-icon">🔐</div>
+      <h3 class="exit-popup-title">רגע לפני שאתה עוזב...</h3>
+      <p class="exit-popup-text">השאר מספר טלפון ונחזור אליך תוך <strong>10 דקות</strong> עם הצעת מחיר</p>
+      <div class="exit-popup-actions">
+        <a href="https://wa.me/972533888381?text=היי%20גבי,%20אשמח%20לקבל%20הצעת%20מחיר" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer" onclick="closeExitPopup()">
+          💬 שלח ב-WhatsApp
+        </a>
+        <a href="tel:0533888381" class="btn btn-primary" onclick="closeExitPopup()">
+          📞 התקשר עכשיו
+        </a>
+      </div>
+      <button class="exit-popup-dismiss" onclick="closeExitPopup()">לא תודה, אמשיך לגלוש</button>
+    </div>
+  </div>
 
   <script src="scripts/security-warning.js"></script>
   <script src="scripts/main.js?v=4.2"></script>

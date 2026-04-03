@@ -204,6 +204,46 @@ exports.triggerBuild = onRequest({ cors: true, secrets: [GITHUB_PAT] }, async (r
   }
 });
 
+// ── Admin: Stats dashboard ──
+exports.adminStats = onRequest({ cors: true }, async (req, res) => {
+  if (req.method === 'OPTIONS') { cors(res); res.status(204).send(''); return; }
+  cors(res);
+  const user = await verifyAdmin(req, res);
+  if (!user) return;
+
+  const now = new Date();
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+  const [surveysSnap, invoicesSnap, productsSnap] = await Promise.all([
+    db.collection('surveys').get(),
+    db.collection('invoices').get(),
+    db.collection('products').get()
+  ]);
+
+  // סקרים
+  const allSurveys = surveysSnap.docs.map(d => ({ ...d.data(), createdAt: d.data().createdAt?.toDate?.() }));
+  const surveysThisMonth = allSurveys.filter(s => s.createdAt && s.createdAt >= startOfMonth).length;
+  const starsValues = allSurveys.map(s => parseInt(s.stars)).filter(n => !isNaN(n));
+  const avgStars = starsValues.length ? (starsValues.reduce((a, b) => a + b, 0) / starsValues.length).toFixed(1) : null;
+
+  // חשבוניות
+  const allInvoices = invoicesSnap.docs.map(d => ({ ...d.data(), createdAt: d.data().createdAt?.toDate?.() }));
+  const invoicesThisMonth = allInvoices.filter(i => i.createdAt && i.createdAt >= startOfMonth).length;
+  const pendingInvoices = allInvoices.filter(i => !i.invoice_issued).length;
+  const totalRevenue = allInvoices
+    .filter(i => i.invoice_issued && i.amount)
+    .reduce((sum, i) => sum + (parseFloat(String(i.amount).replace(/[^0-9.]/g, '')) || 0), 0);
+
+  // מוצרים
+  const totalProducts = productsSnap.size;
+
+  res.json({
+    surveys: { total: allSurveys.length, thisMonth: surveysThisMonth, avgStars },
+    invoices: { total: allInvoices.length, thisMonth: invoicesThisMonth, pending: pendingInvoices, totalRevenue: Math.round(totalRevenue) },
+    products: { total: totalProducts }
+  });
+});
+
 // ── Admin: GET invoices ──
 exports.adminInvoices = onRequest({ cors: true }, async (req, res) => {
   if (req.method === 'OPTIONS') { cors(res); res.status(204).send(''); return; }
