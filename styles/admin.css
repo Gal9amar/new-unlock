@@ -392,8 +392,15 @@ body {
 
 .stat-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
 
-.stat-card-warning { border-color: #f59e0b; background: #fffbeb; }
-.stat-card-gold    { border-color: #d4a853; background: #fdf8ee; }
+.stat-card-warning { border-color: #f59e0b; background: #fffbeb; color: #1a1a1a; }
+.stat-card-warning .stat-value,
+.stat-card-warning .stat-label,
+.stat-card-warning .stat-sub { color: #1a1a1a; }
+
+.stat-card-gold { border-color: #d4a853; background: #fdf8ee; color: #1a1a1a; }
+.stat-card-gold .stat-value,
+.stat-card-gold .stat-label,
+.stat-card-gold .stat-sub { color: #1a1a1a; }
 
 .stat-icon { font-size: 2rem; margin-bottom: 0.5rem; }
 
