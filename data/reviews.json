@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-04-07T06:31:28.252Z",
-  "overallRating": 9.94,
+  "updatedAt": "2026-04-07T06:34:19.394Z",
+  "overallRating": 9.92,
   "totalReviews": 66,
   "sourceUrl": "https://www.midrag.co.il/SpCard/Sp/138646?areaId=7&serviceId=1993&sortByCategory=343&isGeneric=false",
   "featured": [
@@ -33,6 +33,12 @@
       "rating": null,
       "date": "24/03/2026",
       "text": "הוא היה בסדר גמור, והשירות מצוין!"
+    },
+    {
+      "name": "גילי צמח, יבנה.",
+      "rating": null,
+      "date": "09/12/2025",
+      "text": "הוא מהמם, דייקן ומגיע בזמן!"
     }
   ]
 }
