@@ -719,6 +719,35 @@
     if (e.target === this) closeConfirm();
   });
 
+  // ── Update Reviews from Midrag ──────────────────────────
+  window.updateReviews = async function() {
+    const btn = document.getElementById('updateReviewsBtn');
+    const token = await window.getIdToken();
+    if (!token) { alert('יש להתחבר תחילה'); return; }
+
+    btn.disabled = true;
+    btn.textContent = '⏳ מעדכן ביקורות...';
+
+    try {
+      const res = await fetch('/.netlify/functions/update-reviews', {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      const json = await res.json();
+      if (json.success) {
+        btn.textContent = `✅ עודכן! ${json.total} ביקורות · דירוג ${json.rating}`;
+        setTimeout(() => { btn.textContent = '⭐ עדכן ביקורות'; btn.disabled = false; }, 5000);
+      } else {
+        btn.textContent = '❌ ' + (json.error || 'שגיאה');
+        setTimeout(() => { btn.textContent = '⭐ עדכן ביקורות'; btn.disabled = false; }, 4000);
+      }
+    } catch (e) {
+      btn.textContent = '❌ ' + e.message;
+      setTimeout(() => { btn.textContent = '⭐ עדכן ביקורות'; btn.disabled = false; }, 4000);
+      console.error('updateReviews error:', e);
+    }
+  };
+
   // ── Publish / Netlify Build Hook ──────────────────────────
   window.triggerPublish = async function() {
     const btn = document.getElementById('publishBtn');
