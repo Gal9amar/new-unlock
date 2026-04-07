@@ -118,7 +118,7 @@ async function main() {
   const featured = [...finalReviews]
     .filter(r => r.text && r.text.length > 10)
     .sort((a, b) => b.text.length - a.text.length)
-    .slice(0, 6);
+    .slice(0, 5);
 
   const output = {
     updatedAt:     new Date().toISOString(),

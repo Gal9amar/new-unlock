@@ -105,7 +105,6 @@ exports.handler = async (event) => {
     { name: "דנית ש. נס ציונה.", rating: null, date: "22/03/2026", text: "הוא היה ממש נחמד! בא מהר וסיים מהר." },
     { name: "שרון שפיר, נס ציונה.", rating: null, date: "18/03/2026", text: "הגיע מהר, עבד מקצועי ומחיר הוגן. ממליצה בחום!" },
     { name: "שלמה וייס", rating: null, date: "08/02/2026", text: "גבי היה בסדר גמור! הייתה לי עוד בעיה אחרת בדלת. הוא סידר את זה ולא לקח תשלום." },
-    { name: "גילי צמח, יבנה.", rating: null, date: "09/12/2025", text: "הוא מהמם, דייקן ומגיע בזמן!" },
   ];
 
   const finalReviews = reviews.length >= 4 ? reviews : fallback;
@@ -113,7 +112,7 @@ exports.handler = async (event) => {
     const da = a.date ? a.date.split('/').reverse().join('') : '0';
     const db = b.date ? b.date.split('/').reverse().join('') : '0';
     return db.localeCompare(da);
-  }).slice(0, 6);
+  }).slice(0, 5);
 
   const output = {
     updatedAt:     new Date().toISOString(),
