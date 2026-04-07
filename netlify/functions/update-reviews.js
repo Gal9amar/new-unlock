@@ -102,7 +102,11 @@ exports.handler = async (event) => {
   ];
 
   const finalReviews = reviews.length >= 4 ? reviews : fallback;
-  const featured = [...finalReviews].sort((a, b) => b.text.length - a.text.length).slice(0, 6);
+  const featured = [...finalReviews].sort((a, b) => {
+    const da = a.date ? a.date.split('/').reverse().join('') : '0';
+    const db = b.date ? b.date.split('/').reverse().join('') : '0';
+    return db.localeCompare(da);
+  }).slice(0, 6);
 
   const output = {
     updatedAt:     new Date().toISOString(),
