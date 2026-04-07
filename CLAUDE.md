@@ -152,10 +152,17 @@ https://www.midrag.co.il/SpCard/Sp/138646?areaId=7&serviceId=1993&sortByCategory
 ```
 
 ### לוגיקה
-- ה-parser מחלץ שמות + טקסטים + תאריכים מה-HTML של מדרג
+- ה-parser מחלץ כל ביקורת כ-block מתוך `div.feedback-container` – שם מ-`customer-name`, תאריך מ-`משוב: DD/MM/YYYY`, טקסט מ-`verbalreview`
+- דירוג כללי נמשך מ-`og:description` בפורמט `דירוג כללי 9.92`
+- מספר ביקורות נמשך מ-`לקוחות מאומתים`
 - אם התוצאה < 4 ביקורות → fallback לרשימה hardcoded
 - `featured` = 6 ביקורות ממוינות לפי תאריך (חדש ראשון)
+- `HIDDEN_NAMES` – רשימת שמות לסינון (כרגע: `נועה זכריה`)
 - `GITHUB_PAT` נדרש כ-env variable ב-Netlify לכתיבה ל-GitHub API
+
+### בעמוד Admin
+- כפתור "עדכן ביקורות" קורא ל-`update-reviews` Netlify Function
+- בלוקאל (127.0.0.1) הכפתור מפנה ל-`https://hamanulan.com/.netlify/functions/update-reviews`
 
 ---
 
