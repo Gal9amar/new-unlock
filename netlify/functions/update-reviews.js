@@ -51,8 +51,8 @@ function githubRequest(method, path, token, body) {
 }
 
 function parseReviews(html) {
-  const ratingMatch = html.match(/(\d+\.\d+)\s*(?:\/10|מתוך\s*10)/);
-  const countMatch  = html.match(/(\d+)\s*(?:חוות דעת|ביקורות|דירוגים)/);
+  const ratingMatch = html.match(/דירוג כללי\s*([\d.]+)/) || html.match(/(\d+\.\d+)\s*(?:\/10|מתוך\s*10)/);
+  const countMatch  = html.match(/(\d+)\s*(?:לקוחות מאומתים|חוות דעת|ביקורות|דירוגים)/);
 
   const reviews = [];
   const blockPattern = /<div[^>]+class="[^"]*feedback-container[^"]*"[^>]*>([\s\S]*?)(?=<div[^>]+class="[^"]*feedback-container|$)/gi;
@@ -114,7 +114,7 @@ exports.handler = async (event) => {
     const da = a.date ? a.date.split('/').reverse().join('') : '0';
     const db = b.date ? b.date.split('/').reverse().join('') : '0';
     return db.localeCompare(da);
-  }).slice(0, 5);
+  }).slice(0, 6);
 
   const output = {
     updatedAt:     new Date().toISOString(),

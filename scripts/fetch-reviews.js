@@ -37,11 +37,11 @@ function parseNumber(str) {
 
 function parseReviews(html) {
   // ── Overall rating ──────────────────────────────────────
-  const ratingMatch = html.match(/(\d+\.\d+)\s*(?:\/10|מתוך\s*10)/);
+  const ratingMatch = html.match(/דירוג כללי\s*([\d.]+)/) || html.match(/(\d+\.\d+)\s*(?:\/10|מתוך\s*10)/);
   const overallRating = ratingMatch ? parseFloat(ratingMatch[1]) : null;
 
   // ── Total review count ──────────────────────────────────
-  const countMatch = html.match(/(\d+)\s*(?:חוות דעת|ביקורות|דירוגים)/);
+  const countMatch = html.match(/(\d+)\s*(?:לקוחות מאומתים|חוות דעת|ביקורות|דירוגים)/);
   const totalReviews = countMatch ? parseInt(countMatch[1]) : null;
 
   // ── Individual reviews – parse each feedback-container block ──
@@ -109,7 +109,7 @@ async function main() {
   const featured = [...finalReviews]
     .filter(r => r.text && r.text.length > 10)
     .sort((a, b) => b.text.length - a.text.length)
-    .slice(0, 5);
+    .slice(0, 6);
 
   const output = {
     updatedAt:     new Date().toISOString(),
