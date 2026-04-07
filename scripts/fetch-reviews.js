@@ -105,10 +105,14 @@ async function main() {
 
   const finalReviews = cleanedReviews.length >= 4 ? cleanedReviews : fallbackReviews;
 
-  // שמור רק 6 ביקורות נבחרות לתצוגה (הכי ארוכות)
+  // שמור 6 ביקורות ממוינות לפי תאריך (חדש ראשון)
   const featured = [...finalReviews]
     .filter(r => r.text && r.text.length > 10)
-    .sort((a, b) => b.text.length - a.text.length)
+    .sort((a, b) => {
+      const da = a.date ? a.date.split('/').reverse().join('') : '0';
+      const db = b.date ? b.date.split('/').reverse().join('') : '0';
+      return db.localeCompare(da);
+    })
     .slice(0, 6);
 
   const output = {
