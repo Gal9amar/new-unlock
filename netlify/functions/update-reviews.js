@@ -52,23 +52,25 @@ function githubRequest(method, path, token, body) {
 
 function parseReviews(html) {
   const ratingMatch = html.match(/(\d+\.\d+)\s*(?:\/10|מתוך\s*10)/);
-  const countMatch  = html.match(/(\d+)\s*(?:חוות דעת|ביקורות)/);
-  const datePattern = /(\d{2}\/\d{2}\/\d{4})/g;
-  const namePattern = /(?:class="[^"]*name[^"]*"[^>]*>)([^<]+)/gi;
-  const textPattern = /(?:class="[^"]*comment[^"]*"[^>]*>|class="[^"]*review-text[^"]*"[^>]*>)([^<]{15,300})/gi;
+  const countMatch  = html.match(/(\d+)\s*(?:חוות דעת|ביקורות|דירוגים)/);
 
-  const names = [...html.matchAll(namePattern)].map(m => m[1].trim());
-  const texts = [...html.matchAll(textPattern)].map(m => m[1].trim().replace(/\s+/g, ' '));
-  const dates = [...html.matchAll(datePattern)].map(m => m[1]);
-
-  const INVALID = ['הכל', 'גבי', 'כל', 'ביקורות', 'דירוג', ''];
   const reviews = [];
-  const len = Math.min(names.length, texts.length, 20);
-  for (let i = 0; i < len; i++) {
-    if (texts[i]?.length > 15 && names[i] && !INVALID.includes(names[i].trim())) {
-      reviews.push({ name: names[i], rating: null, date: dates[i] || '', text: texts[i] });
-    }
+  const blockPattern = /<div[^>]+class="[^"]*feedback-container[^"]*"[^>]*>([\s\S]*?)(?=<div[^>]+class="[^"]*feedback-container|$)/gi;
+
+  for (const blockMatch of html.matchAll(blockPattern)) {
+    const block = blockMatch[1];
+    const nameMatch = block.match(/class="[^"]*customer-name[^"]*"[^>]*>([^<]+)/i);
+    const dateMatch = block.match(/משוב:\s*(\d{2}\/\d{2}\/\d{4})/);
+    const textMatch = block.match(/class="[^"]*verbalreview[^"]*"[^>]*>\s*([^<]{5,300})/i);
+    if (!nameMatch || !textMatch) continue;
+    reviews.push({
+      name:   nameMatch[1].trim(),
+      rating: null,
+      date:   dateMatch ? dateMatch[1] : '',
+      text:   textMatch[1].trim().replace(/\s+/g, ' ')
+    });
   }
+
   return {
     overallRating: ratingMatch ? parseFloat(ratingMatch[1]) : null,
     totalReviews:  countMatch  ? parseInt(countMatch[1])    : null,

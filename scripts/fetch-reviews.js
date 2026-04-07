@@ -36,8 +36,6 @@ function parseNumber(str) {
 }
 
 function parseReviews(html) {
-  const reviews = [];
-
   // ── Overall rating ──────────────────────────────────────
   const ratingMatch = html.match(/(\d+\.\d+)\s*(?:\/10|מתוך\s*10)/);
   const overallRating = ratingMatch ? parseFloat(ratingMatch[1]) : null;
@@ -46,32 +44,25 @@ function parseReviews(html) {
   const countMatch = html.match(/(\d+)\s*(?:חוות דעת|ביקורות|דירוגים)/);
   const totalReviews = countMatch ? parseInt(countMatch[1]) : null;
 
-  // ── Individual reviews ──────────────────────────────────
-  // מידרג מרנדר ביקורות ב-HTML עם מבנה חוזר
-  // מחפש תבניות של שם + עיר + תאריך + דירוג + טקסט
-  const reviewBlocks = html.match(/<div[^>]*class="[^"]*feedback[^"]*"[^>]*>[\s\S]*?<\/div>/gi) || [];
+  // ── Individual reviews – parse each feedback-container block ──
+  const reviews = [];
+  const blockPattern = /<div[^>]+class="[^"]*feedback-container[^"]*"[^>]*>([\s\S]*?)(?=<div[^>]+class="[^"]*feedback-container|$)/gi;
 
-  // Fallback: parse by known text patterns
-  const namePattern   = /(?:class="[^"]*name[^"]*"[^>]*>|data-name=")([^<"]+)/gi;
-  const ratingPattern = /(?:class="[^"]*rating[^"]*"[^>]*>|data-rating=")(\d+(?:\.\d+)?)/gi;
-  const textPattern   = /(?:class="[^"]*comment[^"]*"[^>]*>|class="[^"]*review[^"]*"[^>]*>)([^\<]{10,300})/gi;
-  const datePattern   = /(\d{2}\/\d{2}\/\d{4})/g;
+  for (const blockMatch of html.matchAll(blockPattern)) {
+    const block = blockMatch[1];
 
-  const names   = [...html.matchAll(namePattern)].map(m => m[1].trim());
-  const ratings = [...html.matchAll(ratingPattern)].map(m => parseFloat(m[1]));
-  const texts   = [...html.matchAll(textPattern)].map(m => m[1].trim().replace(/\s+/g, ' '));
-  const dates   = [...html.matchAll(datePattern)].map(m => m[1]);
+    const nameMatch = block.match(/class="[^"]*customer-name[^"]*"[^>]*>([^<]+)/i);
+    const dateMatch = block.match(/משוב:\s*(\d{2}\/\d{2}\/\d{4})/);
+    const textMatch = block.match(/class="[^"]*verbalreview[^"]*"[^>]*>\s*([^<]{5,300})/i);
 
-  const len = Math.min(names.length, texts.length, 20);
-  for (let i = 0; i < len; i++) {
-    if (texts[i] && texts[i].length > 5) {
-      reviews.push({
-        name:   names[i] || '',
-        rating: ratings[i] || null,
-        date:   dates[i]  || '',
-        text:   texts[i]
-      });
-    }
+    if (!nameMatch || !textMatch) continue;
+
+    reviews.push({
+      name:   nameMatch[1].trim(),
+      rating: null,
+      date:   dateMatch ? dateMatch[1] : '',
+      text:   textMatch[1].trim().replace(/\s+/g, ' ')
+    });
   }
 
   return { overallRating, totalReviews, reviews };
