@@ -160,6 +160,8 @@ function displayProducts(products) {
             ${product.tags.slice(0, 3).map(tag => `<span class="product-tag">${tag}</span>`).join('')}
           </div>
         ` : ''}
+
+        <button class="btn-product-details" onclick="event.stopPropagation(); goToProduct('${product.id || index}')">לפרטים והזמנה ←</button>
       </div>
     </div>
   `).join('');
