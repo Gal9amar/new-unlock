@@ -731,7 +731,7 @@
     try {
       const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
       const reviewsUrl = isLocal
-        ? 'https://www.hamanulan.com/.netlify/functions/update-reviews'
+        ? 'https://hamanulan.com/.netlify/functions/update-reviews'
         : '/.netlify/functions/update-reviews';
       const res = await fetch(reviewsUrl, {
         method: 'POST',
