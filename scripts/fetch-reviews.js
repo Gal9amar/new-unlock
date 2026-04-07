@@ -98,9 +98,11 @@ async function main() {
 
   // סנן שמות לא תקינים מה-parser
   const INVALID_NAMES = ['הכל', 'גבי', 'כל', 'ביקורות', 'דירוג', ''];
+  const HIDDEN_NAMES = ['נועה זכריה'];
   const cleanedReviews = reviews.filter(r =>
     r.text && r.text.length > 15 &&
-    r.name && !INVALID_NAMES.includes(r.name.trim())
+    r.name && !INVALID_NAMES.includes(r.name.trim()) &&
+    !HIDDEN_NAMES.some(n => r.name.includes(n))
   );
 
   const finalReviews = cleanedReviews.length >= 4 ? cleanedReviews : fallbackReviews;

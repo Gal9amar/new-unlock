@@ -109,7 +109,9 @@ exports.handler = async (event) => {
     { name: "שלמה וייס", rating: null, date: "08/02/2026", text: "גבי היה בסדר גמור! הייתה לי עוד בעיה אחרת בדלת. הוא סידר את זה ולא לקח תשלום." },
   ];
 
-  const finalReviews = reviews.length >= 4 ? reviews : fallback;
+  const HIDDEN_NAMES = ['נועה זכריה'];
+  const filteredReviews = reviews.filter(r => !HIDDEN_NAMES.some(n => r.name.includes(n)));
+  const finalReviews = filteredReviews.length >= 4 ? filteredReviews : fallback;
   const featured = [...finalReviews]
     .filter(r => r.text && r.text.length > 10)
     .sort((a, b) => {
