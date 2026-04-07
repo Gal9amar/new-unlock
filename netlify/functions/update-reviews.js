@@ -76,18 +76,25 @@ function parseReviews(html) {
   };
 }
 
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Authorization, Content-Type',
+};
+
 exports.handler = async (event) => {
-  if (event.httpMethod !== 'POST') return { statusCode: 405, body: 'Method Not Allowed' };
+  if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS_HEADERS, body: '' };
+  if (event.httpMethod !== 'POST') return { statusCode: 405, headers: CORS_HEADERS, body: 'Method Not Allowed' };
 
   const GITHUB_PAT = process.env.GITHUB_PAT;
-  if (!GITHUB_PAT) return { statusCode: 500, body: JSON.stringify({ error: 'GITHUB_PAT not set' }) };
+  if (!GITHUB_PAT) return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ error: 'GITHUB_PAT not set' }) };
 
   let html = '';
   try {
     const res = await fetchUrl(MIDRAG_URL);
     html = res.body;
   } catch (e) {
-    return { statusCode: 500, body: JSON.stringify({ error: 'Failed to fetch midrag: ' + e.message }) };
+    return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Failed to fetch midrag: ' + e.message }) };
   }
 
   const { overallRating, totalReviews, reviews } = parseReviews(html);
@@ -118,7 +125,7 @@ exports.handler = async (event) => {
 
   const getRes = await githubRequest('GET', `/repos/${GITHUB_REPO}/contents/${FILE_PATH}`, GITHUB_PAT);
   if (getRes.status !== 200) {
-    return { statusCode: 500, body: JSON.stringify({ error: 'Failed to get file SHA' }) };
+    return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Failed to get file SHA' }) };
   }
   const sha = getRes.body.sha;
 
@@ -130,12 +137,12 @@ exports.handler = async (event) => {
   });
 
   if (putRes.status !== 200 && putRes.status !== 201) {
-    return { statusCode: 500, body: JSON.stringify({ error: 'Failed to write to GitHub' }) };
+    return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Failed to write to GitHub' }) };
   }
 
   return {
     statusCode: 200,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       success: true,
       rating: output.overallRating,

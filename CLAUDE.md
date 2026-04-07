@@ -37,7 +37,13 @@ new-unlock/
 ├── scripts/
 │   ├── main.js             ← לוגיקת דף הבית ומוצרים
 │   ├── product.js          ← לוגיקת דף מוצר בודד
+│   ├── fetch-reviews.js    ← סקריפט ידני: מושך ביקורות ממדרג → data/reviews.json
 │   └── accessibility.js    ← ווידג'ט UserWay
+├── netlify/
+│   └── functions/
+│       └── update-reviews.js ← Netlify Function: מושך ביקורות ממדרג ומעדכן GitHub
+├── data/
+│   └── reviews.json        ← ביקורות ממדרג (נוצר אוטומטית)
 └── images/                 ← תמונות, לוגו, אייקונים
 ```
 
@@ -85,6 +91,12 @@ firebase deploy --only functions --project hamanulan-3bbc7
 |----------|------|-------|
 | `products` | ציבורי | GET כל המוצרים לפי סדר |
 | `adminProducts` | מוגן | GET/POST/PUT/DELETE מוצרים |
+| `saveSurvey` | ציבורי | POST שמירת סקר שביעות רצון |
+| `saveInvoice` | ציבורי | POST שמירת בקשת חשבונית |
+| `adminSurveys` | מוגן | GET/DELETE סקרים |
+| `adminInvoices` | מוגן | GET/PATCH/DELETE חשבוניות |
+| `adminStats` | מוגן | GET סטטיסטיקות dashboard |
+| `triggerBuild` | מוגן | POST הפעלת GitHub Action לבניית SSG |
 
 ### Firestore – מבנה Collection `products`
 
@@ -107,6 +119,43 @@ firebase deploy --only functions --project hamanulan-3bbc7
   "order": 0
 }
 ```
+
+---
+
+## מערכת ביקורות ממדרג
+
+ביקורות נמשכות מ-`midrag.co.il` ונשמרות ב-`data/reviews.json`.
+
+### URL מקור
+```
+https://www.midrag.co.il/SpCard/Sp/138646?areaId=7&serviceId=1993&sortByCategory=343&isGeneric=false
+```
+
+### קבצים
+
+| קובץ | תיאור |
+|------|-------|
+| `scripts/fetch-reviews.js` | סקריפט ידני – `node scripts/fetch-reviews.js` |
+| `netlify/functions/update-reviews.js` | Netlify Function – POST אוטומטי, מעדכן GitHub ישירות |
+
+### מבנה data/reviews.json
+```json
+{
+  "updatedAt": "ISO timestamp",
+  "overallRating": 9.94,
+  "totalReviews": 66,
+  "sourceUrl": "...",
+  "featured": [
+    { "name": "שם", "rating": null, "date": "DD/MM/YYYY", "text": "טקסט הביקורת" }
+  ]
+}
+```
+
+### לוגיקה
+- ה-parser מחלץ שמות + טקסטים + תאריכים מה-HTML של מדרג
+- אם התוצאה < 4 ביקורות → fallback לרשימה hardcoded
+- `featured` = 6 ביקורות ממוינות לפי תאריך (חדש ראשון)
+- `GITHUB_PAT` נדרש כ-env variable ב-Netlify לכתיבה ל-GitHub API
 
 ---
 
