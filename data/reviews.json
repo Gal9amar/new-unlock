@@ -1,9 +1,15 @@
 {
-  "updatedAt": "2026-04-14T06:55:25.040Z",
-  "overallRating": 9.91,
-  "totalReviews": 70,
+  "updatedAt": "2026-04-15T06:57:01.090Z",
+  "overallRating": 9.9,
+  "totalReviews": 71,
   "sourceUrl": "https://www.midrag.co.il/SpCard/Sp/138646?areaId=7&serviceId=1993&sortByCategory=343&isGeneric=false",
   "featured": [
+    {
+      "name": "עדי עסילה, אשדוד.",
+      "rating": null,
+      "date": "14/04/2026",
+      "text": "גבי קצת הכעיס את בעלי, היה שם עניין אבל בסדר, לקח מחיר סביר בעיניי עשה את העבודה."
+    },
     {
       "name": "עמית עזר, נס ציונה.",
       "rating": null,
@@ -33,12 +39,6 @@
       "rating": null,
       "date": "18/03/2026",
       "text": "הוא היה ממש נחמד! בא מהר וסיים מהר."
-    },
-    {
-      "name": "יבגני ז. רחובות.",
-      "rating": null,
-      "date": "18/03/2026",
-      "text": "השירות היה מקצועי ונעים."
     }
   ]
 }
