@@ -2,7 +2,23 @@
   "permissions": {
     "allow": [
       "Bash(psql --version)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(npx prisma *)",
+      "Bash(node run-migration.mjs)",
+      "Bash(node -e \"console.log\\(require\\('crypto'\\).randomBytes\\(48\\).toString\\('hex'\\)\\)\")",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(node migrate-data.mjs)",
+      "Bash(node --env-file=server/.env migrate-data.mjs)",
+      "Bash(node -e ' *)",
+      "Bash(node --input-type=module)",
+      "Bash(node ../check-schema.mjs)",
+      "Bash(node check-schema.mjs)",
+      "Bash(node ../import-data.mjs)",
+      "Bash(node import-data.mjs)",
+      "Bash(node -e \"import\\('@libsql/client'\\).then\\(m => console.log\\('root version:', JSON.parse\\(require\\('fs'\\).readFileSync\\('node_modules/@libsql/client/package.json','utf8'\\)\\).version\\)\\)\")",
+      "Bash(node -e \"const fs=require\\('fs'\\); console.log\\(JSON.parse\\(fs.readFileSync\\('node_modules/@libsql/client/package.json','utf8'\\)\\).version\\)\")"
     ]
   }
 }
