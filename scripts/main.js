@@ -183,8 +183,9 @@ function initBrandFilters() {
   const brandBtns = document.querySelectorAll('.brand-filters .filter-btn');
   brandBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      brandBtns.forEach(b => b.classList.remove('active'));
+      brandBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
       btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
       currentBrand = btn.dataset.brand;
       displayProducts(getFilteredProducts());
     });
@@ -196,8 +197,9 @@ function initCategoryFilters() {
   const catBtns = document.querySelectorAll('.category-filters .filter-btn');
   catBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      catBtns.forEach(b => b.classList.remove('active'));
+      catBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
       btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
       currentCategory = btn.dataset.category;
       displayProducts(getFilteredProducts());
     });

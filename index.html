@@ -184,10 +184,10 @@
   <a href="#main-content" class="skip-link">דלג לתוכן הראשי</a>
 
   <!-- Navbar -->
-  <nav class="navbar" id="navbar">
+  <nav class="navbar" id="navbar" aria-label="ניווט ראשי">
     <div class="container">
       <a href="#" class="navbar-logo">
-        <img src="images/fav.png" alt="UNLOCK" />
+        <img src="images/fav.png" alt="UNLOCK - גבי המנעולן" />
       </a>
       <div class="navbar-links">
         <a href="#services" class="nav-desktop-only">שירותים</a>
@@ -200,7 +200,7 @@
   </nav>
 
   <!-- Hero Section -->
-  <header class="hero-section">
+  <section class="hero-section" aria-label="פתיחה">
     <!-- Decorative Elements -->
     <div class="hero-decoration hero-decoration-1"></div>
     <div class="hero-decoration hero-decoration-2"></div>
@@ -214,19 +214,19 @@
       <h1 class="hero-title"><span class="highlight">UNLOCK</span> - פתרונות מנעולנות מקצועיים</h1>
 
       <div class="hero-badges">
-        <span class="badge">✓ 15 שנות ניסיון</span>
-        <span class="badge">⚡ הגעה תוך 30 דק'</span>
-        <span class="badge">🔧 ציוד מקורי</span>
+        <span class="badge"><span aria-hidden="true">✓</span> 15 שנות ניסיון</span>
+        <span class="badge"><span aria-hidden="true">⚡</span> הגעה תוך 30 דק'</span>
+        <span class="badge"><span aria-hidden="true">🔧</span> ציוד מקורי</span>
       </div>
 
       <p class="hero-subtitle">שירותי מנעולנות מובילים לפרטיים ולעסקים<br>זמין 24/7 באזור המרכז והדרום</p>
 
       <div class="hero-cta">
         <a href="tel:0533888381" class="btn btn-primary btn-large">
-          📞 התקשר עכשיו: 053-388-8381
+          <span aria-hidden="true">📞</span> התקשר עכשיו: 053-388-8381
         </a>
-        <a href="https://wa.me/972533888381?text=שלום%20גבי,%20אני%20צריך%20עזרה%20במנעול" class="btn btn-whatsapp btn-large" target="_blank" rel="noopener noreferrer">
-          💬 שלח הודעת WhatsApp
+        <a href="https://wa.me/972533888381?text=שלום%20גבי,%20אני%20צריך%20עזרה%20במנעול" class="btn btn-whatsapp btn-large" target="_blank" rel="noopener noreferrer" aria-label="שלח הודעת WhatsApp">
+          <span aria-hidden="true">💬</span> שלח הודעת WhatsApp
         </a>
       </div>
 
@@ -234,20 +234,20 @@
 
       <div class="hero-stats">
         <div class="hero-stat">
-          <span class="hero-stat-number" data-target="15">0</span>
-          <span class="hero-stat-label">שנות ניסיון</span>
+          <span class="hero-stat-number" data-target="15" aria-label="15 שנות ניסיון">0</span>
+          <span class="hero-stat-label" aria-hidden="true">שנות ניסיון</span>
         </div>
         <div class="hero-stat">
-          <span class="hero-stat-number" data-target="30">0</span>
-          <span class="hero-stat-label">דקות הגעה</span>
+          <span class="hero-stat-number" data-target="30" aria-label="הגעה תוך 30 דקות">0</span>
+          <span class="hero-stat-label" aria-hidden="true">דקות הגעה</span>
         </div>
         <div class="hero-stat">
-          <span class="hero-stat-number" data-target="3000">0</span>
-          <span class="hero-stat-label">לקוחות מרוצים</span>
+          <span class="hero-stat-number" data-target="3000" aria-label="3,000 לקוחות מרוצים">0</span>
+          <span class="hero-stat-label" aria-hidden="true">לקוחות מרוצים</span>
         </div>
       </div>
     </div>
-  </header>
+  </section>
 
   <main id="main-content">
     <!-- Services Section -->
@@ -333,23 +333,23 @@
         <p class="section-subtitle">17 מוצרים איכותיים עם התקנה מקצועית</p>
 
         <div class="product-filters">
-          <div class="filter-row brand-filters">
-            <button class="filter-btn active" data-brand="all">כל המוצרים</button>
-            <button class="filter-btn" data-brand="מולטילוק">מולטילוק</button>
-            <button class="filter-btn" data-brand="רב בריח">רב בריח</button>
-            <button class="filter-btn" data-brand="EVVA">EVVA</button>
-            <button class="filter-btn" data-brand="וועד בניין">וועד בניין</button>
-            <button class="filter-btn" data-brand="שונות">שונות</button>
+          <div class="filter-row brand-filters" role="group" aria-label="סינון לפי מותג">
+            <button class="filter-btn active" data-brand="all" aria-pressed="true">כל המוצרים</button>
+            <button class="filter-btn" data-brand="מולטילוק" aria-pressed="false">מולטילוק</button>
+            <button class="filter-btn" data-brand="רב בריח" aria-pressed="false">רב בריח</button>
+            <button class="filter-btn" data-brand="EVVA" aria-pressed="false">EVVA</button>
+            <button class="filter-btn" data-brand="וועד בניין" aria-pressed="false">וועד בניין</button>
+            <button class="filter-btn" data-brand="שונות" aria-pressed="false">שונות</button>
           </div>
-          <div class="filter-row category-filters">
-            <button class="filter-btn cat-btn active" data-category="all">כל הקטגוריות</button>
-            <button class="filter-btn cat-btn" data-category="צילינדרים">צילינדרים</button>
-            <button class="filter-btn cat-btn" data-category="מנעולים חכמים">מנעולים חכמים</button>
-            <button class="filter-btn cat-btn" data-category="מנעולים עליונים">מנעולים עליונים</button>
-            <button class="filter-btn cat-btn" data-category="מנעולים מכאניים">מנעולים מכאניים</button>
-            <button class="filter-btn cat-btn" data-category="דלתות">דלתות</button>
-            <button class="filter-btn cat-btn" data-category="מנעול ויטרינה">מנעול ויטרינה</button>
-            <button class="filter-btn cat-btn" data-category="שונות">שונות</button>
+          <div class="filter-row category-filters" role="group" aria-label="סינון לפי קטגוריה">
+            <button class="filter-btn cat-btn active" data-category="all" aria-pressed="true">כל הקטגוריות</button>
+            <button class="filter-btn cat-btn" data-category="צילינדרים" aria-pressed="false">צילינדרים</button>
+            <button class="filter-btn cat-btn" data-category="מנעולים חכמים" aria-pressed="false">מנעולים חכמים</button>
+            <button class="filter-btn cat-btn" data-category="מנעולים עליונים" aria-pressed="false">מנעולים עליונים</button>
+            <button class="filter-btn cat-btn" data-category="מנעולים מכאניים" aria-pressed="false">מנעולים מכאניים</button>
+            <button class="filter-btn cat-btn" data-category="דלתות" aria-pressed="false">דלתות</button>
+            <button class="filter-btn cat-btn" data-category="מנעול ויטרינה" aria-pressed="false">מנעול ויטרינה</button>
+            <button class="filter-btn cat-btn" data-category="שונות" aria-pressed="false">שונות</button>
           </div>
         </div>
 
@@ -464,10 +464,10 @@
         <div class="footer-section">
           <h3>צור קשר</h3>
           <ul>
-            <li>📞 <a href="tel:0533888381">053-388-8381</a></li>
-            <li>📧 <a href="mailto:unlock.yavne@gmail.com">unlock.yavne@gmail.com</a></li>
-            <li>📍 אזור המרכז והדרום</li>
-            <li>🕐 24/7 - זמין תמיד</li>
+            <li><span aria-hidden="true">📞</span> <a href="tel:0533888381">053-388-8381</a></li>
+            <li><span aria-hidden="true">📧</span> <a href="mailto:unlock.yavne@gmail.com">unlock.yavne@gmail.com</a></li>
+            <li><span aria-hidden="true">📍</span> אזור המרכז והדרום</li>
+            <li><span aria-hidden="true">🕐</span> 24/7 - זמין תמיד</li>
           </ul>
         </div>
 
@@ -506,11 +506,11 @@
       <h3 class="exit-popup-title">רגע לפני שאתה עוזב...</h3>
       <p class="exit-popup-text">השאר מספר טלפון ונחזור אליך תוך <strong>10 דקות</strong> עם הצעת מחיר</p>
       <div class="exit-popup-actions">
-        <a href="https://wa.me/972533888381?text=היי%20גבי,%20אשמח%20לקבל%20הצעת%20מחיר" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer" onclick="closeExitPopup()">
-          💬 שלח ב-WhatsApp
+        <a href="https://wa.me/972533888381?text=היי%20גבי,%20אשמח%20לקבל%20הצעת%20מחיר" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer" onclick="closeExitPopup()" aria-label="שלח הודעת WhatsApp">
+          <span aria-hidden="true">💬</span> שלח ב-WhatsApp
         </a>
         <a href="tel:0533888381" class="btn btn-primary" onclick="closeExitPopup()">
-          📞 התקשר עכשיו
+          <span aria-hidden="true">📞</span> התקשר עכשיו
         </a>
       </div>
       <button class="exit-popup-dismiss" onclick="closeExitPopup()">לא תודה, אמשיך לגלוש</button>
