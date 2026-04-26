@@ -922,14 +922,26 @@ body {
 
   .admin-main { padding: 1.1rem 0.85rem 5rem; }
 
-  .product-row { grid-template-columns: 20px 44px 1fr; gap: 0.65rem; padding: 0.75rem 0.85rem; }
-  .product-actions-row { grid-column: 1 / -1; justify-content: flex-end; }
+  .product-row {
+    grid-template-columns: 44px 1fr;
+    gap: 0.65rem;
+    padding: 0.75rem 0.85rem;
+  }
+  .drag-handle { display: none; }
+  .product-actions-row {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 0.4rem;
+  }
+  .product-actions-row .btn-edit,
+  .product-actions-row button { flex: 1; justify-content: center; }
 
   .field-row { grid-template-columns: 1fr; }
   .modal { padding: 1.5rem; border-radius: 16px; }
 
   .topbar-actions { gap: 0.35rem; }
-  .topbar-actions .btn { padding: 0.4rem 0.65rem; font-size: 0.76rem; }
+  .topbar-actions .btn { padding: 0.4rem 0.6rem; font-size: 0.76rem; }
+  .topbar-actions .btn-label { display: none; }
 
   .stats-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
   .stat-value { font-size: 1.5rem; }

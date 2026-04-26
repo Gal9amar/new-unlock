@@ -100,14 +100,14 @@
       <button class="topbar-nav-btn" id="tab-stats" onclick="switchSection('stats')">📊 סטטיסטיקות</button>
     </nav>
     <div class="topbar-actions">
-      <a href="/" class="btn btn-outline" target="_blank">← האתר</a>
+      <a href="/" class="btn btn-outline" target="_blank" title="האתר">← <span class="btn-label">האתר</span></a>
       <button class="btn btn-publish" id="publishBtn" onclick="triggerPublish()" title="מריץ build ב-Netlify ומפרסם שינויים באתר">
-        🚀 פרסם שינויים
+        🚀 <span class="btn-label">פרסם שינויים</span>
       </button>
-      <button class="btn" id="updateReviewsBtn" onclick="updateReviews()" title="מושך ביקורות עדכניות ממידרג ומעדכן את האתר" style="background:linear-gradient(135deg,#d4a853,#e8c87a);color:#0a1628;font-weight:700;border:none;padding:0.6rem 1.2rem;border-radius:8px;cursor:pointer;">
-        ⭐ עדכן ביקורות
+      <button class="btn btn-reviews" id="updateReviewsBtn" onclick="updateReviews()" title="מושך ביקורות עדכניות ממידרג ומעדכן את האתר">
+        ⭐ <span class="btn-label">עדכן ביקורות</span>
       </button>
-      <button class="btn btn-outline" onclick="doLogout()">יציאה</button>
+      <button class="btn btn-outline" onclick="doLogout()" title="יציאה">⏻ <span class="btn-label">יציאה</span></button>
     </div>
   </div>
 
@@ -725,8 +725,12 @@
     const token = await window.getIdToken();
     if (!token) { alert('יש להתחבר תחילה'); return; }
 
+    const btnLabel = btn.querySelector('.btn-label');
+    const setLabel = (t) => { if (btnLabel) btnLabel.textContent = t; else btn.textContent = t; };
+    const reset = () => { setLabel('עדכן ביקורות'); btn.disabled = false; };
+
     btn.disabled = true;
-    btn.textContent = '⏳ מעדכן ביקורות...';
+    setLabel('מעדכן...');
 
     try {
       const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
@@ -739,15 +743,15 @@
       });
       const json = await res.json();
       if (json.success) {
-        btn.textContent = `✅ עודכן! ${json.total} ביקורות · דירוג ${json.rating}`;
-        setTimeout(() => { btn.textContent = '⭐ עדכן ביקורות'; btn.disabled = false; }, 5000);
+        setLabel(`עודכן! ${json.total} ביקורות`);
+        setTimeout(reset, 5000);
       } else {
-        btn.textContent = '❌ ' + (json.error || 'שגיאה');
-        setTimeout(() => { btn.textContent = '⭐ עדכן ביקורות'; btn.disabled = false; }, 4000);
+        setLabel(json.error || 'שגיאה');
+        setTimeout(reset, 4000);
       }
     } catch (e) {
-      btn.textContent = '❌ ' + e.message;
-      setTimeout(() => { btn.textContent = '⭐ עדכן ביקורות'; btn.disabled = false; }, 4000);
+      setLabel(e.message);
+      setTimeout(reset, 4000);
       console.error('updateReviews error:', e);
     }
   };
