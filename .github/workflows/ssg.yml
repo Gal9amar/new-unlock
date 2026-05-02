@@ -44,9 +44,12 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "ssg: auto-generate product pages [skip ci]"
+            git stash
             git fetch origin main
-            git rebase origin/main
+            git reset --hard origin/main
+            git stash pop
+            git add products/ sitemap.xml data/reviews.json
+            git commit -m "ssg: auto-generate product pages [skip ci]"
             git push
           fi
 
