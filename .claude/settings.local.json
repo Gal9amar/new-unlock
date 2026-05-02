@@ -20,5 +20,8 @@
       "Bash(node -e \"import\\('@libsql/client'\\).then\\(m => console.log\\('root version:', JSON.parse\\(require\\('fs'\\).readFileSync\\('node_modules/@libsql/client/package.json','utf8'\\)\\).version\\)\\)\")",
       "Bash(node -e \"const fs=require\\('fs'\\); console.log\\(JSON.parse\\(fs.readFileSync\\('node_modules/@libsql/client/package.json','utf8'\\)\\).version\\)\")"
     ]
+  },
+  "enabledPlugins": {
+    "claude-md-management@claude-plugins-official": true
   }
 }

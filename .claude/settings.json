@@ -6,7 +6,8 @@
       "Bash(curl -s \"https://en.wikipedia.org/api/rest_v1/page/summary/Toyota_Corolla\")",
       "Bash(node -e \"const d=require\\('fs'\\).readFileSync\\('/dev/stdin','utf8'\\); const j=JSON.parse\\(d\\); console.log\\('thumbnail:', j.thumbnail?.source\\); console.log\\('original:', j.originalimage?.source\\);\")",
       "Bash(node -e ' *)",
-      "Bash(node -e \"console.log\\(process.version\\)\")"
+      "Bash(node -e \"console.log\\(process.version\\)\")",
+      "PowerShell(Get-Command claude -ErrorAction SilentlyContinue)"
     ]
   }
 }
