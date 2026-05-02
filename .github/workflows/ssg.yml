@@ -44,6 +44,7 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "ssg: auto-generate product pages [skip ci]"
+            git pull --rebase origin main
             git push
           fi
 
