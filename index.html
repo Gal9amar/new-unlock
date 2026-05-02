@@ -30,8 +30,8 @@
   <link rel="icon" href="images/fav.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles/main.css?v=4.4" />
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/main.css?v=5.0" />
 
   <script type="application/ld+json">
   {
@@ -186,8 +186,9 @@
   <!-- Navbar -->
   <nav class="navbar" id="navbar" aria-label="ניווט ראשי">
     <div class="container">
-      <a href="#" class="navbar-logo">
-        <img src="images/fav.png" alt="UNLOCK - גבי המנעולן" />
+      <a href="#" class="navbar-logo" aria-label="UNLOCK - עמוד הבית">
+        <img src="images/fav.png" alt="UNLOCK - גבי המנעולן" width="45" height="45" />
+        <span class="navbar-brand-name">UNLOCK</span>
       </a>
       <div class="navbar-links">
         <a href="#services" class="nav-desktop-only">שירותים</a>
@@ -195,132 +196,218 @@
         <a href="#reviews" class="nav-desktop-only">ביקורות</a>
         <a href="#why-us" class="nav-desktop-only">למה אנחנו</a>
       </div>
-      <a href="tel:0533888381" class="navbar-cta">053-388-8381</a>
+      <a href="tel:0533888381" class="navbar-cta" aria-label="התקשר עכשיו">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+        053-388-8381
+      </a>
     </div>
   </nav>
 
   <!-- Hero Section -->
   <section class="hero-section" aria-label="פתיחה">
-    <!-- Decorative Elements -->
-    <div class="hero-decoration hero-decoration-1"></div>
-    <div class="hero-decoration hero-decoration-2"></div>
-    <div class="hero-decoration hero-decoration-3"></div>
+    <div class="hero-bg-grid" aria-hidden="true"></div>
+    <div class="hero-glow hero-glow-1" aria-hidden="true"></div>
+    <div class="hero-glow hero-glow-2" aria-hidden="true"></div>
+    <div class="hero-glow hero-glow-3" aria-hidden="true"></div>
 
     <div class="container hero-container">
+      <div class="hero-eyebrow">
+        <span class="hero-dot" aria-hidden="true"></span>
+        שירות 24/7 · הגעה תוך 30 דקות
+      </div>
+
       <div class="hero-logo">
-        <img src="images/fav.png" alt="UNLOCK - גבי המנעולן" />
+        <img src="images/fav.png" alt="UNLOCK לוגו" width="110" height="110" />
       </div>
 
-      <h1 class="hero-title"><span class="highlight">UNLOCK</span> - פתרונות מנעולנות מקצועיים</h1>
-
-      <div class="hero-badges">
-        <span class="badge"><span aria-hidden="true">✓</span> 15 שנות ניסיון</span>
-        <span class="badge"><span aria-hidden="true">⚡</span> הגעה תוך 30 דק'</span>
-        <span class="badge"><span aria-hidden="true">🔧</span> ציוד מקורי</span>
-      </div>
+      <h1 class="hero-title">
+        <span class="hero-title-brand">UNLOCK</span>
+        <span class="hero-title-sub">פתרונות מנעולנות מקצועיים</span>
+      </h1>
 
       <p class="hero-subtitle">שירותי מנעולנות מובילים לפרטיים ולעסקים<br>זמין 24/7 באזור המרכז והדרום</p>
 
       <div class="hero-cta">
-        <a href="tel:0533888381" class="btn btn-primary btn-large">
-          <span aria-hidden="true">📞</span> התקשר עכשיו: 053-388-8381
+        <a href="tel:0533888381" class="btn btn-primary btn-large btn-hero-call">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+          התקשר עכשיו: 053-388-8381
         </a>
         <a href="https://wa.me/972533888381?text=שלום%20גבי,%20אני%20צריך%20עזרה%20במנעול" class="btn btn-whatsapp btn-large" target="_blank" rel="noopener noreferrer" aria-label="שלח הודעת WhatsApp">
-          <span aria-hidden="true">💬</span> שלח הודעת WhatsApp
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.554 4.122 1.524 5.855L0 24l6.29-1.499A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.028-1.383l-.36-.214-3.732.889.924-3.618-.236-.372A9.818 9.818 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg>
+          שלח הודעת WhatsApp
         </a>
       </div>
 
-      <p class="hero-trust"><strong>שקיפות מלאה ושקט נפשי:</strong> הצעת מחיר מפורטת מראש, טכנאי מוסמך עם ציוד מקורי בלבד</p>
+      <p class="hero-trust">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="color:var(--color-gold);flex-shrink:0"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+        <strong>שקיפות מלאה ושקט נפשי:</strong> הצעת מחיר מפורטת מראש, טכנאי מוסמך עם ציוד מקורי בלבד
+      </p>
 
       <div class="hero-stats">
         <div class="hero-stat">
           <span class="hero-stat-number" data-target="15" aria-label="15 שנות ניסיון">0</span>
-          <span class="hero-stat-label" aria-hidden="true">שנות ניסיון</span>
+          <span class="hero-stat-suffix">+</span>
+          <span class="hero-stat-label">שנות ניסיון</span>
         </div>
+        <div class="hero-stat-divider" aria-hidden="true"></div>
         <div class="hero-stat">
           <span class="hero-stat-number" data-target="30" aria-label="הגעה תוך 30 דקות">0</span>
-          <span class="hero-stat-label" aria-hidden="true">דקות הגעה</span>
+          <span class="hero-stat-suffix">′</span>
+          <span class="hero-stat-label">זמן הגעה</span>
         </div>
+        <div class="hero-stat-divider" aria-hidden="true"></div>
         <div class="hero-stat">
           <span class="hero-stat-number" data-target="3000" aria-label="3,000 לקוחות מרוצים">0</span>
-          <span class="hero-stat-label" aria-hidden="true">לקוחות מרוצים</span>
+          <span class="hero-stat-suffix">+</span>
+          <span class="hero-stat-label">לקוחות מרוצים</span>
         </div>
       </div>
+    </div>
+
+    <div class="hero-scroll-indicator" aria-hidden="true">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
     </div>
   </section>
 
   <main id="main-content">
+
+    <!-- Trust Bar -->
+    <div class="trust-bar" aria-label="אמינות ואישורים">
+      <div class="container">
+        <div class="trust-items">
+          <div class="trust-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span>מנעולן מוסמך ומורשה</span>
+          </div>
+          <div class="trust-sep" aria-hidden="true"></div>
+          <div class="trust-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            <span>זמין 24/7 כולל שבתות</span>
+          </div>
+          <div class="trust-sep" aria-hidden="true"></div>
+          <div class="trust-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>מוצרים מקוריים בלבד</span>
+          </div>
+          <div class="trust-sep" aria-hidden="true"></div>
+          <div class="trust-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <span>דירוג 9.94 במידרג</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Services Section -->
     <section id="services" class="services-section">
       <div class="container">
-        <h2 class="section-title">השירותים שלנו</h2>
-        <p class="section-subtitle">למעלה מ-15 שנות ניסיון בפתיחה, החלפה ושדרוג מערכות נעילה</p>
+        <div class="section-header">
+          <span class="section-tag">השירותים שלנו</span>
+          <h2 class="section-title">פתרון מקצועי לכל צורך</h2>
+          <p class="section-subtitle">למעלה מ-15 שנות ניסיון בפתיחה, החלפה ושדרוג מערכות נעילה</p>
+        </div>
 
         <div class="services-grid">
           <div class="service-card reveal">
-            <div class="service-icon">🚪</div>
-            <h3>פריצת דלתות ללא נזק</h3>
-            <p>מענה מהיר לכל סוגי הדלתות: פלדלת, זכוכית וממ"ד. פתיחה מקצועית ללא שריטות ונזקים.</p>
-            <ul>
-              <li>הגעה תוך 30 דקות</li>
-              <li>ציוד מקצועי ומתקדם</li>
-              <li>ללא נזקים לדלת</li>
-            </ul>
+            <div class="service-icon-wrap">
+              <div class="service-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              </div>
+            </div>
+            <div class="service-content">
+              <h3>פריצת דלתות ללא נזק</h3>
+              <p>מענה מהיר לכל סוגי הדלתות: פלדלת, זכוכית וממ"ד. פתיחה מקצועית ללא שריטות ונזקים.</p>
+              <ul class="service-features">
+                <li>הגעה תוך 30 דקות</li>
+                <li>ציוד מקצועי ומתקדם</li>
+                <li>ללא נזקים לדלת</li>
+              </ul>
+            </div>
           </div>
 
           <div class="service-card reveal">
-            <div class="service-icon">🔐</div>
-            <h3>החלפת צילינדרים מתקדמים</h3>
-            <p>צילינדרים מכניים, חכמים וביומטריים בהתאמה אישית. מותגים מובילים בלבד: מולטילוק, רב בריח ו-EVVA.</p>
-            <ul>
-              <li>מותגים מובילים בלבד</li>
-              <li>התאמה אישית מלאה</li>
-              <li>אחריות יצרן מורחבת</li>
-            </ul>
+            <div class="service-icon-wrap">
+              <div class="service-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+              </div>
+            </div>
+            <div class="service-content">
+              <h3>החלפת צילינדרים מתקדמים</h3>
+              <p>צילינדרים מכניים, חכמים וביומטריים בהתאמה אישית. מותגים מובילים בלבד: מולטילוק, רב בריח ו-EVVA.</p>
+              <ul class="service-features">
+                <li>מותגים מובילים בלבד</li>
+                <li>התאמה אישית מלאה</li>
+                <li>אחריות יצרן מורחבת</li>
+              </ul>
+            </div>
           </div>
 
           <div class="service-card reveal">
-            <div class="service-icon">🏢</div>
-            <h3>מיגון מעליות</h3>
-            <p>התקנה ותחזוקה שוטפת של מערכות נעילה מתקדמות למעליות בבנייני מגורים ומשרדים.</p>
-            <ul>
-              <li>התקנה מקצועית</li>
-              <li>תחזוקה שוטפת</li>
-              <li>הגנה מפני נזקים</li>
-            </ul>
+            <div class="service-icon-wrap">
+              <div class="service-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+              </div>
+            </div>
+            <div class="service-content">
+              <h3>מיגון מעליות</h3>
+              <p>התקנה ותחזוקה שוטפת של מערכות נעילה מתקדמות למעליות בבנייני מגורים ומשרדים.</p>
+              <ul class="service-features">
+                <li>התקנה מקצועית</li>
+                <li>תחזוקה שוטפת</li>
+                <li>הגנה מפני נזקים</li>
+              </ul>
+            </div>
           </div>
 
           <div class="service-card reveal">
-            <div class="service-icon">🔑</div>
-            <h3>ניהול מערך מפתחות</h3>
-            <p>מיפוי, סימון ותיעוד מאורגן של מפתחות לכל דייר או עובד. פתרון מושלם לוועדי בתים ולעסקים.</p>
-            <ul>
-              <li>מיפוי מקצועי</li>
-              <li>תיעוד דיגיטלי</li>
-              <li>סימון ברור</li>
-            </ul>
+            <div class="service-icon-wrap">
+              <div class="service-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+              </div>
+            </div>
+            <div class="service-content">
+              <h3>ניהול מערך מפתחות</h3>
+              <p>מיפוי, סימון ותיעוד מאורגן של מפתחות לכל דייר או עובד. פתרון מושלם לוועדי בתים ולעסקים.</p>
+              <ul class="service-features">
+                <li>מיפוי מקצועי</li>
+                <li>תיעוד דיגיטלי</li>
+                <li>סימון ברור</li>
+              </ul>
+            </div>
           </div>
 
           <div class="service-card reveal">
-            <div class="service-icon">🚪</div>
-            <h3>החלפת דלתות לבית או לעסק</h3>
-            <p>דלתות פלדלת איכותיות מתוצרת מובילה עם מגוון רחב של עיצובים וגימורים. אפשרות לבחירת קוד צבע מותאם אישית, לוחות דקורטיביים ופרזול מקצועי.</p>
-            <ul>
-              <li>מגוון עיצובים ודגמים</li>
-              <li>בחירת קוד צבע אישי</li>
-              <li>התקנה מקצועית מלאה</li>
-            </ul>
+            <div class="service-icon-wrap">
+              <div class="service-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/><circle cx="16" cy="9" r="2"/></svg>
+              </div>
+            </div>
+            <div class="service-content">
+              <h3>החלפת דלתות לבית או לעסק</h3>
+              <p>דלתות פלדלת איכותיות מתוצרת מובילה עם מגוון רחב של עיצובים וגימורים. אפשרות לבחירת קוד צבע מותאם אישית, לוחות דקורטיביים ופרזול מקצועי.</p>
+              <ul class="service-features">
+                <li>מגוון עיצובים ודגמים</li>
+                <li>בחירת קוד צבע אישי</li>
+                <li>התקנה מקצועית מלאה</li>
+              </ul>
+            </div>
           </div>
 
           <div class="service-card reveal">
-            <div class="service-icon">🏢</div>
-            <h3>תחזוקה מקיפה לוועדי בתים</h3>
-            <p>שירות תחזוקה מקצועי לבנייני מגורים ומשרדים. הגעה קבועה לבדיקה ותחזוקה של כל מערכות הבניין: החלפת נורות שרופות, בדיקת תקינות דלתות ומנעולים בשטחים הציבוריים, חדרי דיירים, מחסנים, פירי אשפה וכניסות לבניין.</p>
-            <ul>
-              <li>בדיקת תאורה והחלפת נורות</li>
-              <li>תחזוקת דלתות ומנעולים</li>
-              <li>ביקורי תחזוקה קבועים</li>
-            </ul>
+            <div class="service-icon-wrap">
+              <div class="service-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+              </div>
+            </div>
+            <div class="service-content">
+              <h3>תחזוקה מקיפה לוועדי בתים</h3>
+              <p>שירות תחזוקה מקצועי לבנייני מגורים ומשרדים. הגעה קבועה לבדיקה ותחזוקה של כל מערכות הבניין.</p>
+              <ul class="service-features">
+                <li>בדיקת תאורה והחלפת נורות</li>
+                <li>תחזוקת דלתות ומנעולים</li>
+                <li>ביקורי תחזוקה קבועים</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -329,8 +416,11 @@
     <!-- Products Section -->
     <section id="products" class="products-section">
       <div class="container">
-        <h2 class="section-title">החנות שלנו - מוצרי מנעולנות מובילים</h2>
-        <p class="section-subtitle">17 מוצרים איכותיים עם התקנה מקצועית</p>
+        <div class="section-header">
+          <span class="section-tag">החנות שלנו</span>
+          <h2 class="section-title">מוצרי מנעולנות מובילים</h2>
+          <p class="section-subtitle">מוצרים איכותיים עם התקנה מקצועית</p>
+        </div>
 
         <div class="product-filters">
           <div class="filter-row brand-filters" role="group" aria-label="סינון לפי מותג">
@@ -360,43 +450,62 @@
     <!-- Why Choose Us Section -->
     <section id="why-us" class="why-choose-section">
       <div class="container">
-        <h2 class="section-title">למה לבחור ב-UNLOCK?</h2>
+        <div class="section-header">
+          <span class="section-tag section-tag-light">היתרונות שלנו</span>
+          <h2 class="section-title section-title-light">למה לבחור ב-UNLOCK?</h2>
+        </div>
 
         <div class="why-grid">
           <div class="why-card reveal">
-            <div class="why-icon">🎖️</div>
-            <h3>15 שנות ניסיון</h3>
+            <div class="why-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <div class="why-number">15+</div>
+            <h3>שנות ניסיון</h3>
             <p>מנעולן מוסמך עם ציוד מקצועי ומומחיות בכל סוגי המנעולים</p>
           </div>
 
           <div class="why-card reveal">
-            <div class="why-icon">⚡</div>
-            <h3>זמינות 24/7</h3>
+            <div class="why-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            </div>
+            <div class="why-number">24/7</div>
+            <h3>זמינות מלאה</h3>
             <p>הגעה תוך 30 דקות באזור המרכז והדרום, כולל שבתות וחגים</p>
           </div>
 
           <div class="why-card reveal">
-            <div class="why-icon">💰</div>
-            <h3>שקיפות מחירים</h3>
-            <p>הצעת מחיר ברורה מראש ללא עלויות נסתרות או הפתעות</p>
+            <div class="why-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+            </div>
+            <div class="why-number">0</div>
+            <h3>הפתעות מחיר</h3>
+            <p>הצעת מחיר ברורה מראש ללא עלויות נסתרות</p>
           </div>
 
           <div class="why-card reveal">
-            <div class="why-icon">🔧</div>
+            <div class="why-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div class="why-number">100%</div>
             <h3>ציוד מקורי</h3>
             <p>רק מותגים מובילים: מולטילוק, רב בריח, EVVA</p>
           </div>
         </div>
       </div>
     </section>
+
     <!-- Reviews Section -->
     <section id="reviews" class="reviews-section">
       <div class="container">
-        <h2 class="section-title">מה לקוחות אומרים</h2>
+        <div class="section-header">
+          <span class="section-tag">ביקורות לקוחות</span>
+          <h2 class="section-title">מה הלקוחות אומרים</h2>
+        </div>
         <div class="reviews-meta">
           <span class="reviews-rating-badge">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
             <span class="reviews-score">9.94</span>
-            <span class="reviews-stars">★★★★★</span>
           </span>
           <span class="reviews-count">62 ביקורות במידרג</span>
           <a href="https://www.midrag.co.il/SpCard/Sp/138646?areaId=7&serviceId=1993&sortByCategory=343&isGeneric=false" class="reviews-source-link" target="_blank" rel="noopener noreferrer">מקור: מידרג ←</a>
@@ -410,12 +519,18 @@
     <!-- Service Areas Section -->
     <section id="service-areas" class="service-areas-section">
       <div class="container">
-        <h2 class="section-title">אזורי השירות שלנו</h2>
-        <p class="section-subtitle">מנעולן מקצועי עם הגעה תוך 30 דקות באזור המרכז והדרום</p>
+        <div class="section-header">
+          <span class="section-tag">אזורי פעילות</span>
+          <h2 class="section-title">אזורי השירות שלנו</h2>
+          <p class="section-subtitle">מנעולן מקצועי עם הגעה תוך 30 דקות באזור המרכז והדרום</p>
+        </div>
 
         <div class="areas-grid">
           <div class="area-group">
-            <h3>אזור הדרום</h3>
+            <div class="area-group-header">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <h3>אזור הדרום</h3>
+            </div>
             <ul>
               <li>מנעולן <strong>יבנה</strong></li>
               <li>מנעולן <strong>גן יבנה</strong></li>
@@ -430,7 +545,10 @@
             </ul>
           </div>
           <div class="area-group">
-            <h3>אזור המרכז</h3>
+            <div class="area-group-header">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <h3>אזור המרכז</h3>
+            </div>
             <ul>
               <li>מנעולן <strong>רחובות</strong></li>
               <li>מנעולן <strong>נס ציונה</strong></li>
@@ -446,37 +564,65 @@
           </div>
         </div>
 
-        <p class="areas-note">שירות 24/7 · הגעה תוך 30 דקות · <a href="tel:0533888381">053-388-8381</a></p>
-        <p class="areas-extra">מגיעים גם לאזורים נוספים בתיאום מראש — <a href="tel:0533888381">צור קשר</a></p>
+        <div class="areas-cta">
+          <p>שירות 24/7 · הגעה תוך 30 דקות · <a href="tel:0533888381" class="areas-phone">053-388-8381</a></p>
+          <p class="areas-extra">מגיעים גם לאזורים נוספים בתיאום מראש — <a href="tel:0533888381">צור קשר</a></p>
+        </div>
       </div>
     </section>
+
   </main>
 
   <!-- Footer -->
   <footer class="site-footer">
     <div class="container">
       <div class="footer-content">
-        <div class="footer-section">
-          <img src="images/fav.png" alt="UNLOCK" class="footer-logo" />
-          <p>שירותי מנעולנות מקצועיים<br>זמין 24/7 באזור המרכז והדרום</p>
+        <div class="footer-section footer-brand">
+          <img src="images/fav.png" alt="UNLOCK" class="footer-logo" width="70" height="70" />
+          <p class="footer-tagline">שירותי מנעולנות מקצועיים<br>זמין 24/7 באזור המרכז והדרום</p>
+          <a href="tel:0533888381" class="footer-phone-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+            053-388-8381
+          </a>
         </div>
 
         <div class="footer-section">
           <h3>צור קשר</h3>
-          <ul>
-            <li><span aria-hidden="true">📞</span> <a href="tel:0533888381">053-388-8381</a></li>
-            <li><span aria-hidden="true">📧</span> <a href="mailto:unlock.yavne@gmail.com">unlock.yavne@gmail.com</a></li>
-            <li><span aria-hidden="true">📍</span> אזור המרכז והדרום</li>
-            <li><span aria-hidden="true">🕐</span> 24/7 - זמין תמיד</li>
+          <ul class="footer-contact-list">
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+              <a href="tel:0533888381">053-388-8381</a>
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <a href="mailto:unlock.yavne@gmail.com">unlock.yavne@gmail.com</a>
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span>אזור המרכז והדרום</span>
+            </li>
+            <li>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              <span>24/7 - זמין תמיד</span>
+            </li>
           </ul>
         </div>
 
         <div class="footer-section">
           <h3>עקבו אחרינו</h3>
           <div class="footer-social">
-            <a href="https://www.facebook.com/gabihamanulan" target="_blank" rel="noopener noreferrer">Facebook</a>
-            <a href="https://www.instagram.com/gabi.the.locksmith/" target="_blank" rel="noopener noreferrer">Instagram</a>
-            <a href="https://wa.me/972533888381" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+            <a href="https://www.facebook.com/gabihamanulan" target="_blank" rel="noopener noreferrer" aria-label="פייסבוק">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+              Facebook
+            </a>
+            <a href="https://www.instagram.com/gabi.the.locksmith/" target="_blank" rel="noopener noreferrer" aria-label="אינסטגרם">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+              Instagram
+            </a>
+            <a href="https://wa.me/972533888381" target="_blank" rel="noopener noreferrer" aria-label="וואטסאפ">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.554 4.122 1.524 5.855L0 24l6.29-1.499A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.028-1.383l-.36-.214-3.732.889.924-3.618-.236-.372A9.818 9.818 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg>
+              WhatsApp
+            </a>
           </div>
         </div>
 
@@ -496,21 +642,29 @@
     </div>
   </footer>
 
-  <button id="scrollToTop" class="scroll-to-top" hidden>↑</button>
+  <button id="scrollToTop" class="scroll-to-top" hidden aria-label="חזור למעלה">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
 
   <!-- Exit Intent Popup -->
   <div id="exitPopup" class="exit-popup-overlay" hidden>
     <div class="exit-popup">
-      <button class="exit-popup-close" onclick="closeExitPopup()" aria-label="סגור">×</button>
-      <div class="exit-popup-icon">🔐</div>
+      <button class="exit-popup-close" onclick="closeExitPopup()" aria-label="סגור">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="exit-popup-icon">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      </div>
       <h3 class="exit-popup-title">רגע לפני שאתה עוזב...</h3>
       <p class="exit-popup-text">השאר מספר טלפון ונחזור אליך תוך <strong>10 דקות</strong> עם הצעת מחיר</p>
       <div class="exit-popup-actions">
         <a href="https://wa.me/972533888381?text=היי%20גבי,%20אשמח%20לקבל%20הצעת%20מחיר" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer" onclick="closeExitPopup()" aria-label="שלח הודעת WhatsApp">
-          <span aria-hidden="true">💬</span> שלח ב-WhatsApp
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.554 4.122 1.524 5.855L0 24l6.29-1.499A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.028-1.383l-.36-.214-3.732.889.924-3.618-.236-.372A9.818 9.818 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182c5.43 0 9.818 4.388 9.818 9.818 0 5.43-4.388 9.818-9.818 9.818z"/></svg>
+          שלח ב-WhatsApp
         </a>
         <a href="tel:0533888381" class="btn btn-primary" onclick="closeExitPopup()">
-          <span aria-hidden="true">📞</span> התקשר עכשיו
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+          התקשר עכשיו
         </a>
       </div>
       <button class="exit-popup-dismiss" onclick="closeExitPopup()">לא תודה, אמשיך לגלוש</button>
@@ -529,19 +683,16 @@
         if (!data || !data.featured || !data.featured.length) return;
         const grid = document.getElementById('reviewsGrid');
         if (!grid) return;
-        // Update meta from data
         const score = document.querySelector('.reviews-score');
         const count = document.querySelector('.reviews-count');
         if (score) score.textContent = data.overallRating;
         if (count) count.textContent = data.totalReviews + ' ביקורות במידרג';
-        // Render cards - sort by date newest first
         const sorted = [...data.featured].sort((a, b) => {
           const da = a.date ? a.date.split('/').reverse().join('') : '0';
           const db = b.date ? b.date.split('/').reverse().join('') : '0';
           return db.localeCompare(da);
         });
         grid.innerHTML = sorted.map(r => {
-          const stars = '★'.repeat(Math.round((r.rating || 10) / 2));
           const name = r.name ? r.name.replace(/,.*$/, '').trim() : '';
           const date = r.date ? `<span class="review-date">${r.date}</span>` : '';
           return `<div class="review-card">
@@ -551,12 +702,11 @@
                 <strong class="review-name">${name}</strong>
                 ${date}
               </div>
-              <div class="review-stars">${'★'.repeat(5)}</div>
+              <div class="review-stars">★★★★★</div>
             </div>
             <p class="review-text">"${r.text}"</p>
           </div>`;
         }).join('');
-        // Update AggregateRating in schema
         const schemas = document.querySelectorAll('script[type="application/ld+json"]');
         schemas.forEach(s => {
           try {
