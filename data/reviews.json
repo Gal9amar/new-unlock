@@ -1,9 +1,15 @@
 {
-  "updatedAt": "2026-05-03T07:22:10.562Z",
-  "overallRating": 9.9,
-  "totalReviews": 73,
+  "updatedAt": "2026-05-04T07:50:33.159Z",
+  "overallRating": 9.91,
+  "totalReviews": 75,
   "sourceUrl": "https://www.midrag.co.il/SpCard/Sp/138646?areaId=7&serviceId=1993&sortByCategory=343&isGeneric=false",
   "featured": [
+    {
+      "name": "ליאת לביא, רחובות.",
+      "rating": null,
+      "date": "03/05/2026",
+      "text": "גבי בסדר גמור, מדהים ונחמד! מנגנון הדלת היה שחוק והוא טיפל בבעיה ועשה מעל ומעבר."
+    },
     {
       "name": "עדי עסילה, אשדוד.",
       "rating": null,
@@ -29,16 +35,10 @@
       "text": "היה נהדר. הייתי מאוד מרוצה!"
     },
     {
-      "name": "שרון שפיר, נס ציונה.",
+      "name": "שרון ��פיר, נס ציונה.",
       "rating": null,
       "date": "18/03/2026",
       "text": "הוא היה 100 אחוז. הוא טוב מאוד והיה בסדר גמור."
-    },
-    {
-      "name": "דפנה לוין, נס ציונה.",
-      "rating": null,
-      "date": "18/03/2026",
-      "text": "הוא היה ממש נחמד! בא מהר וסיים מהר."
     }
   ]
 }
