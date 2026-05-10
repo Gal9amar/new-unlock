@@ -1,9 +1,15 @@
 {
-  "updatedAt": "2026-05-09T07:14:41.191Z",
+  "updatedAt": "2026-05-10T07:29:18.605Z",
   "overallRating": 9.91,
-  "totalReviews": 77,
+  "totalReviews": 78,
   "sourceUrl": "https://www.midrag.co.il/SpCard/Sp/138646?areaId=7&serviceId=1993&sortByCategory=343&isGeneric=false",
   "featured": [
+    {
+      "name": "רן לבנה, נס ציונה.",
+      "rating": null,
+      "date": "10/05/2026",
+      "text": "הוא עשה עבודה טובה ואני מרוצה."
+    },
     {
       "name": "נדיה סוחנוב, יבנה.",
       "rating": null,
@@ -33,12 +39,6 @@
       "rating": null,
       "date": "24/03/2026",
       "text": "הוא היה בסדר גמור, והשירות מצוין!"
-    },
-    {
-      "name": "דנית ש. נס ציונה.",
-      "rating": null,
-      "date": "22/03/2026",
-      "text": "היה נהדר. הייתי מאוד מרוצה!"
     }
   ]
 }
