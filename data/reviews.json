@@ -1,9 +1,15 @@
 {
-  "updatedAt": "2026-05-10T07:29:18.605Z",
+  "updatedAt": "2026-05-11T08:29:25.687Z",
   "overallRating": 9.91,
-  "totalReviews": 78,
+  "totalReviews": 79,
   "sourceUrl": "https://www.midrag.co.il/SpCard/Sp/138646?areaId=7&serviceId=1993&sortByCategory=343&isGeneric=false",
   "featured": [
+    {
+      "name": "צביה פרוכטר, רחובות.",
+      "rating": null,
+      "date": "10/05/2026",
+      "text": "גבי היה אחלה! הזמנתי אותו עבור ההורים שלי, הוא הגיע בהתראה קצרה והם היו מרוצים."
+    },
     {
       "name": "רן לבנה, נס ציונה.",
       "rating": null,
@@ -33,12 +39,6 @@
       "rating": null,
       "date": "05/04/2026",
       "text": "גבי הגיע במהירות, ביום חג הפסח, תיקן תוך רבע שעה לשביעות רצוני המלאה. היה ממש אחלה, מצוין!"
-    },
-    {
-      "name": "שי שיוביץ, נס ציונה.",
-      "rating": null,
-      "date": "24/03/2026",
-      "text": "הוא היה בסדר גמור, והשירות מצוין!"
     }
   ]
 }
