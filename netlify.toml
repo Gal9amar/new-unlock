@@ -16,3 +16,4 @@
   [headers.values]
     X-Content-Type-Options = "nosniff"
     X-Frame-Options = "SAMEORIGIN"
+    Cache-Control = "no-cache, no-store, must-revalidate"
