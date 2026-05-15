@@ -316,60 +316,62 @@ exports.notifyInvoice = onRequest({ cors: true, secrets: [ADMIN_EMAIL, GMAIL_APP
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 </head>
-<body style="margin:0;padding:0;background:#f0f4f8;font-family:'Segoe UI',Arial,sans-serif;direction:rtl;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f4f8;padding:32px 0;">
+<body style="margin:0;padding:0;background:#f5f7fa;font-family:'Segoe UI',Arial,sans-serif;direction:rtl;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f7fa;padding:36px 16px;">
     <tr><td align="center">
-      <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.10);">
+      <table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;background:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.07);">
 
         <!-- Header -->
         <tr>
-          <td style="background:linear-gradient(135deg,#0a1628 0%,#0f2247 50%,#1a365d 100%);padding:36px 40px;text-align:center;">
-            <img src="https://www.hamanulan.com/images/footer-logo.png" alt="UNLOCK" width="160" style="display:block;margin:0 auto 16px;"/>
-            <p style="margin:0;color:#d4a853;font-size:13px;letter-spacing:2px;text-transform:uppercase;">שירותי מנעולנות מקצועיים</p>
+          <td style="background:#ffffff;padding:36px 40px 24px;text-align:center;border-bottom:1px solid #eef0f3;">
+            <img src="https://www.hamanulan.com/images/footer-logo.png" alt="UNLOCK" width="140" style="display:block;margin:0 auto 12px;"/>
+            <p style="margin:0;color:#94a3b8;font-size:13px;letter-spacing:1px;">שירותי מנעולנות מקצועיים · 24/7</p>
           </td>
         </tr>
 
-        <!-- Green success bar -->
+        <!-- Success badge -->
         <tr>
-          <td style="background:#22c55e;padding:14px 40px;text-align:center;">
-            <p style="margin:0;color:#ffffff;font-size:16px;font-weight:700;">✓ &nbsp; החשבונית הופקה בהצלחה</p>
+          <td style="padding:28px 40px 0;text-align:center;">
+            <div style="display:inline-block;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:50px;padding:10px 24px;">
+              <span style="color:#16a34a;font-size:15px;font-weight:600;">✓ &nbsp;החשבונית הופקה בהצלחה</span>
+            </div>
           </td>
         </tr>
 
         <!-- Body -->
         <tr>
-          <td style="padding:40px 40px 28px;">
-            <p style="margin:0 0 8px;font-size:22px;font-weight:700;color:#0a1628;">שלום ${to_name},</p>
-            <p style="margin:0 0 28px;font-size:15px;color:#4a5568;line-height:1.7;">
-              החשבונית עבור השירות שקיבלת הופקה בהצלחה ונשלחה לתיבת הדואר שלך.
+          <td style="padding:28px 40px 32px;">
+            <p style="margin:0 0 6px;font-size:21px;font-weight:700;color:#1e293b;">שלום ${to_name} 😊</p>
+            <p style="margin:0 0 28px;font-size:15px;color:#64748b;line-height:1.8;">
+              שמחים לעדכן אותך שהחשבונית עבור השירות שקיבלת<br/>הופקה בהצלחה ונשלחה לתיבת הדואר שלך.
             </p>
 
-            <!-- Thank you card -->
-            <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0;margin-bottom:28px;">
-              <tr><td style="padding:24px 28px;">
-                <p style="margin:0 0 10px;font-size:16px;font-weight:700;color:#0a1628;">תודה שבחרת ב-UNLOCK מנעולנות! 🔐</p>
-                <p style="margin:0;font-size:15px;color:#4a5568;line-height:1.8;">
-                  היה לנו עונג לשרת אותך.<br/>
-                  בפעם הבאה שתזדקק לשירותי מנעולנות — פתיחת דלת, החלפת צילינדר, מנעול חכם ועוד — אנחנו כאן בשבילך 24/7, מגיעים אליך תוך זמן קצר.
-                </p>
-              </td></tr>
-            </table>
+            <!-- Divider -->
+            <hr style="border:none;border-top:1px solid #f1f5f9;margin:0 0 24px;"/>
 
-            <p style="margin:0 0 28px;font-size:15px;color:#4a5568;line-height:1.7;">
-              לכל שאלה או צורך, אנחנו תמיד זמינים עבורך.
+            <!-- Thank you message -->
+            <p style="margin:0 0 10px;font-size:16px;font-weight:600;color:#1e293b;">תודה שבחרת ב-UNLOCK מנעולנות 🔐</p>
+            <p style="margin:0 0 28px;font-size:15px;color:#64748b;line-height:1.9;">
+              היה לנו עונג לשרת אותך!<br/>
+              בכל פעם שתזדקק לשירותי מנעולנות — פתיחת דלת נעולה, החלפת צילינדר, התקנת מנעול חכם ועוד — אנחנו כאן בשבילך, מגיעים אליך תוך זמן קצר בכל שעה ביום ובלילה.<br/><br/>
+              נשמח לראותך שוב! 😊
             </p>
 
             <!-- CTA buttons -->
-            <table cellpadding="0" cellspacing="0" style="margin:0 auto 8px;">
+            <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
-                <td style="padding-left:8px;">
-                  <a href="tel:0533888381" style="display:inline-block;padding:13px 28px;background:#d4a853;color:#0a1628;font-size:15px;font-weight:700;text-decoration:none;border-radius:8px;">📞 &nbsp;053-388-8381</a>
+                <td align="center" style="padding-bottom:12px;">
+                  <a href="tel:0533888381" style="display:inline-block;width:100%;max-width:340px;padding:14px 0;background:#f8f4ec;color:#92650a;font-size:15px;font-weight:700;text-decoration:none;border-radius:10px;text-align:center;border:1px solid #e9d8b4;box-sizing:border-box;">📞 &nbsp;053-388-8381</a>
                 </td>
-                <td style="padding-left:8px;">
-                  <a href="https://wa.me/972533888381" style="display:inline-block;padding:13px 28px;background:#25d366;color:#ffffff;font-size:15px;font-weight:700;text-decoration:none;border-radius:8px;">💬 &nbsp;וואטסאפ</a>
+              </tr>
+              <tr>
+                <td align="center" style="padding-bottom:12px;">
+                  <a href="https://wa.me/972533888381" style="display:inline-block;width:100%;max-width:340px;padding:14px 0;background:#f0fdf4;color:#15803d;font-size:15px;font-weight:700;text-decoration:none;border-radius:10px;text-align:center;border:1px solid #bbf7d0;box-sizing:border-box;">💬 &nbsp;שלח לנו וואטסאפ</a>
                 </td>
-                <td>
-                  <a href="https://www.hamanulan.com" style="display:inline-block;padding:13px 28px;background:#0f2247;color:#d4a853;font-size:15px;font-weight:700;text-decoration:none;border-radius:8px;">🌐 &nbsp;האתר שלנו</a>
+              </tr>
+              <tr>
+                <td align="center">
+                  <a href="https://www.hamanulan.com" style="display:inline-block;width:100%;max-width:340px;padding:14px 0;background:#f0f4ff;color:#3730a3;font-size:15px;font-weight:700;text-decoration:none;border-radius:10px;text-align:center;border:1px solid #c7d2fe;box-sizing:border-box;">🌐 &nbsp;כניסה לאתר שלנו</a>
                 </td>
               </tr>
             </table>
@@ -378,9 +380,9 @@ exports.notifyInvoice = onRequest({ cors: true, secrets: [ADMIN_EMAIL, GMAIL_APP
 
         <!-- Footer -->
         <tr>
-          <td style="background:#0a1628;padding:24px 40px;text-align:center;">
-            <p style="margin:0 0 6px;color:#d4a853;font-size:14px;font-weight:600;">UNLOCK מנעולנות | גבי המנעולן</p>
-            <p style="margin:0;color:#64748b;font-size:12px;">שירות 24/7 · אזור המרכז והדרום · <a href="https://www.hamanulan.com" style="color:#d4a853;text-decoration:none;">hamanulan.com</a></p>
+          <td style="background:#f8fafc;border-top:1px solid #eef0f3;padding:20px 40px;text-align:center;">
+            <p style="margin:0 0 4px;color:#94a3b8;font-size:13px;font-weight:600;">UNLOCK מנעולנות | גבי המנעולן</p>
+            <p style="margin:0;color:#cbd5e1;font-size:12px;">שירות 24/7 · אזור המרכז והדרום · <a href="https://www.hamanulan.com" style="color:#94a3b8;text-decoration:none;">hamanulan.com</a></p>
           </td>
         </tr>
 
