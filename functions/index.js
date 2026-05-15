@@ -344,31 +344,19 @@ exports.notifyInvoice = onRequest({ cors: true, secrets: [ADMIN_EMAIL, GMAIL_APP
               החשבונית עבור השירות שקיבלת הופקה בהצלחה ונשלחה לתיבת הדואר שלך.
             </p>
 
-            <!-- Details card -->
+            <!-- Thank you card -->
             <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0;margin-bottom:28px;">
               <tr><td style="padding:24px 28px;">
-                <p style="margin:0 0 16px;font-size:13px;font-weight:700;color:#94a3b8;letter-spacing:1px;text-transform:uppercase;">פרטי השירות</p>
-                ${amount ? `
-                <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:12px;">
-                  <tr>
-                    <td style="font-size:14px;color:#64748b;padding-bottom:8px;">סכום</td>
-                    <td style="font-size:18px;font-weight:700;color:#0a1628;text-align:left;">₪${amount} <span style="font-size:13px;font-weight:400;color:#94a3b8;">${vat_type || ''}</span></td>
-                  </tr>
-                </table>` : ''}
-                ${service_address ? `
-                <table width="100%" cellpadding="0" cellspacing="0">
-                  <tr>
-                    <td style="font-size:14px;color:#64748b;padding-bottom:4px;">כתובת השירות</td>
-                  </tr>
-                  <tr>
-                    <td style="font-size:15px;color:#0a1628;font-weight:500;">${service_address}</td>
-                  </tr>
-                </table>` : ''}
+                <p style="margin:0 0 10px;font-size:16px;font-weight:700;color:#0a1628;">תודה שבחרת ב-UNLOCK מנעולנות! 🔐</p>
+                <p style="margin:0;font-size:15px;color:#4a5568;line-height:1.8;">
+                  היה לנו עונג לשרת אותך.<br/>
+                  בפעם הבאה שתזדקק לשירותי מנעולנות — פתיחת דלת, החלפת צילינדר, מנעול חכם ועוד — אנחנו כאן בשבילך 24/7, מגיעים אליך תוך זמן קצר.
+                </p>
               </td></tr>
             </table>
 
             <p style="margin:0 0 28px;font-size:15px;color:#4a5568;line-height:1.7;">
-              לכל שאלה או בירור, אנחנו זמינים עבורך 24/7.
+              לכל שאלה או צורך, אנחנו תמיד זמינים עבורך.
             </p>
 
             <!-- CTA buttons -->
