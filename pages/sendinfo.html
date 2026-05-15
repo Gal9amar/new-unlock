@@ -56,10 +56,6 @@
         <div class="form-card">
 
           <form id="contactForm">
-            <input type="hidden" name="access_key" value="8f6811e4-edba-4ca8-8776-e39c6eaf1b72"/>
-            <input type="hidden" name="subject" value="פרטי לקוח לחשבונית – UNLOCK גבי המנעולן"/>
-            <input type="hidden" name="from_name" value="טופס האתר"/>
-            <input type="checkbox" name="botcheck" style="display:none"/>
 
             <div class="field">
               <label>שם מלא <span class="req">*</span></label>
@@ -282,30 +278,26 @@
       btn.disabled = true;
       btn.textContent = '⏳ שולח...';
       showPopup('popupLoading');
-      const data = new FormData(form);
       try {
-        const [res] = await Promise.all([
-          fetch('https://api.web3forms.com/submit', { method: 'POST', body: data }),
-          fetch('https://us-central1-hamanulan-3bbc7.cloudfunctions.net/saveInvoice', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              name: form.name.value,
-              phone: form.phone.value,
-              email: form.email.value,
-              id_number: form.id_number.value,
-              service_address: form.service_address.value,
-              message: form.message.value,
-              amount: form.amount.value,
-              vat_type: document.getElementById('vatType').value,
-              payment_method: document.getElementById('paymentMethod').value,
-              midrag_name: form.midrag_name.value
-            })
-          }).catch(() => {})
-        ]);
+        const res = await fetch('https://us-central1-hamanulan-3bbc7.cloudfunctions.net/saveInvoice', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: form.name.value,
+            phone: form.phone.value,
+            email: form.email.value,
+            id_number: form.id_number.value,
+            service_address: form.service_address.value,
+            message: form.message.value,
+            amount: form.amount.value,
+            vat_type: document.getElementById('vatType').value,
+            payment_method: document.getElementById('paymentMethod').value,
+            midrag_name: form.midrag_name.value
+          })
+        });
         const json = await res.json();
         closePopup('popupLoading');
-        if (json.success) {
+        if (json.ok) {
           const customerName = encodeURIComponent((form.name.value || '').trim());
           window.location.href = '/pages/thankyou.html' + (customerName ? '?name=' + customerName : '');
         } else {
