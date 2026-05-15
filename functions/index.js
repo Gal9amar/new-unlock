@@ -3,8 +3,9 @@ const { defineSecret, defineString } = require('firebase-functions/params');
 const admin = require('firebase-admin');
 const https = require('https');
 
-const GITHUB_PAT    = defineSecret('GITHUB_PAT');
-const ADMIN_EMAIL   = defineSecret('ADMIN_EMAIL');
+const GITHUB_PAT         = defineSecret('GITHUB_PAT');
+const ADMIN_EMAIL        = defineSecret('ADMIN_EMAIL');
+const GMAIL_APP_PASSWORD = defineSecret('GMAIL_APP_PASSWORD');
 const ALLOWED_ORIGINS_STR = defineString('ALLOWED_ORIGINS', {
   default: 'https://www.hamanulan.com,https://hamanulan.com',
 });
@@ -287,6 +288,49 @@ exports.adminStats = onRequest({ cors: true, secrets: [ADMIN_EMAIL] }, async (re
     invoices: { total: allInvoices.length, thisMonth: invoicesThisMonth, pending: pendingInvoices, totalRevenue: Math.round(totalRevenue) },
     products: { total: totalProducts }
   });
+});
+
+// ── Admin: Notify customer — invoice issued ──
+exports.notifyInvoice = onRequest({ cors: true, secrets: [ADMIN_EMAIL, GMAIL_APP_PASSWORD] }, async (req, res) => {
+  if (req.method === 'OPTIONS') { cors(req, res); res.status(204).send(''); return; }
+  cors(req, res);
+
+  const user = await verifyAdmin(req, res);
+  if (!user) return;
+
+  if (req.method !== 'POST') { res.status(405).json({ error: 'Method not allowed' }); return; }
+
+  const { to_email, to_name, amount, vat_type, service_address } = req.body;
+  if (!to_email || !to_name) {
+    res.status(400).json({ error: 'Missing to_email or to_name' }); return;
+  }
+
+  const appPassword = GMAIL_APP_PASSWORD.value();
+  if (!appPassword) { res.status(500).json({ error: 'GMAIL_APP_PASSWORD not configured' }); return; }
+
+  const FROM = 'unlock.yavne@gmail.com';
+  const amountLine = amount ? `סכום: ₪${amount} ${vat_type || ''}` : '';
+  const addressLine = service_address ? `כתובת השירות: ${service_address}` : '';
+  const body = `שלום ${to_name},\n\nחשבונית עבור השירות שקיבלת הופקה בהצלחה ונשלחה לתיבת הדואר שלך.\n\n${[amountLine, addressLine].filter(Boolean).join('\n')}\n\nתודה שבחרת ב-UNLOCK מנעולנות!\nלכל שאלה: 053-388-8381`;
+
+  // שליחה ישירות דרך Gmail SMTP ב-HTTPS (ללא nodemailer — אין deps חיצוניות)
+  const nodemailer = require('nodemailer');
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: { user: FROM, pass: appPassword }
+  });
+
+  try {
+    await transporter.sendMail({
+      from: `"UNLOCK מנעולנות" <${FROM}>`,
+      to: to_email,
+      subject: 'החשבונית שלך הופקה בהצלחה ✓',
+      text: body,
+    });
+    res.json({ ok: true });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
 });
 
 // ── Admin: GET invoices ──

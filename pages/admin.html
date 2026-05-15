@@ -287,9 +287,10 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  const ADMIN_PRODUCTS = 'https://us-central1-hamanulan-3bbc7.cloudfunctions.net/adminProducts';
-  const ADMIN_SURVEYS  = 'https://us-central1-hamanulan-3bbc7.cloudfunctions.net/adminSurveys';
-  const ADMIN_INVOICES = 'https://us-central1-hamanulan-3bbc7.cloudfunctions.net/adminInvoices';
+  const ADMIN_PRODUCTS  = 'https://us-central1-hamanulan-3bbc7.cloudfunctions.net/adminProducts';
+  const ADMIN_SURVEYS   = 'https://us-central1-hamanulan-3bbc7.cloudfunctions.net/adminSurveys';
+  const ADMIN_INVOICES  = 'https://us-central1-hamanulan-3bbc7.cloudfunctions.net/adminInvoices';
+  const NOTIFY_INVOICE  = 'https://us-central1-hamanulan-3bbc7.cloudfunctions.net/notifyInvoice';
 
   function esc(str) {
     return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
@@ -582,11 +583,12 @@
   }
 
   // ── Invoices ──
-  async function setInvoiceStatus(id, issued, btn) {
+  async function setInvoiceStatus(id, issued, btn, idx) {
     try {
+      const headers = await authHeader();
       await fetch(`${ADMIN_INVOICES}?id=${id}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json', ...(await authHeader()) },
+        headers: { 'Content-Type': 'application/json', ...headers },
         body: JSON.stringify({ invoice_issued: issued })
       });
       // עדכן כפתורים
@@ -594,18 +596,43 @@
       group.querySelectorAll('.inv-status-btn').forEach(b => b.classList.remove('active', 'no'));
       btn.classList.add('active');
       if (!issued) btn.classList.add('no');
+
+      // שלח מייל ללקוח רק כשמסמנים "כן" ויש מייל
+      const inv = allInvoices[idx];
+      if (issued && inv && inv.email) {
+        try {
+          await fetch(NOTIFY_INVOICE, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', ...headers },
+            body: JSON.stringify({
+              to_email: inv.email,
+              to_name: inv.name || '',
+              amount: inv.amount || '',
+              vat_type: inv.vat_type || '',
+              service_address: inv.service_address || ''
+            })
+          });
+          showToast('סטטוס עודכן + מייל נשלח ✓', 'success');
+        } catch {
+          showToast('סטטוס עודכן, שליחת מייל נכשלה', 'error');
+        }
+      } else {
+        showToast('סטטוס עודכן ✓', 'success');
+      }
     } catch(e) {
-      alert('שגיאה בעדכון');
+      showToast('שגיאה בעדכון', 'error');
     }
   }
+
+  let allInvoices = [];
 
   async function loadInvoices() {
     document.getElementById('invoicesContainer').innerHTML = '<p class="empty-state">טוען...</p>';
     try {
       const res = await fetch(ADMIN_INVOICES, { headers: await authHeader() });
-      const invoices = await res.json();
-      document.getElementById('invoicesCount').textContent = invoices.length;
-      if (!invoices.length) {
+      allInvoices = await res.json();
+      document.getElementById('invoicesCount').textContent = allInvoices.length;
+      if (!allInvoices.length) {
         document.getElementById('invoicesContainer').innerHTML = '<p class="empty-state">אין בקשות עדיין</p>';
         return;
       }
@@ -618,7 +645,7 @@
               <th>תאריך</th><th>שם</th><th>טלפון</th><th>סכום</th><th>תשלום</th><th>הופקה חשבונית</th><th></th>
             </tr></thead>
             <tbody>
-              ${invoices.map(inv => `
+              ${allInvoices.map((inv, idx) => `
                 <tr class="accordion-row" onclick="toggleAccordion(this)">
                   <td class="td-date">${inv.createdAt ? esc(inv.createdAt.slice(0,10)) : '—'}</td>
                   <td>${esc(inv.name) || '—'}</td>
@@ -627,8 +654,8 @@
                   <td>${esc(inv.payment_method) || '—'}</td>
                   <td onclick="event.stopPropagation()">
                     <div class="invoice-status-btns">
-                      <button class="inv-status-btn ${inv.invoice_issued ? 'active' : ''}" onclick="setInvoiceStatus('${safeId(inv.id)}',true,this)">כן</button>
-                      <button class="inv-status-btn ${!inv.invoice_issued ? 'active no' : ''}" onclick="setInvoiceStatus('${safeId(inv.id)}',false,this)">לא</button>
+                      <button class="inv-status-btn ${inv.invoice_issued ? 'active' : ''}" onclick="setInvoiceStatus('${safeId(inv.id)}',true,this,${idx})">כן</button>
+                      <button class="inv-status-btn ${!inv.invoice_issued ? 'active no' : ''}" onclick="setInvoiceStatus('${safeId(inv.id)}',false,this,${idx})">לא</button>
                     </div>
                   </td>
                   <td class="td-chevron"></td>
@@ -652,7 +679,7 @@
           </table>
         </div>
         <div class="cards-list">
-          ${invoices.map(inv => `
+          ${allInvoices.map((inv, idx) => `
             <div class="data-card">
               <div class="data-card-header">
                 <div>
@@ -673,8 +700,8 @@
               <div class="invoice-status-row">
                 <span class="ac-label">הופקה חשבונית</span>
                 <div class="invoice-status-btns">
-                  <button class="inv-status-btn ${inv.invoice_issued ? 'active' : ''}" onclick="setInvoiceStatus('${safeId(inv.id)}',true,this)">כן</button>
-                  <button class="inv-status-btn ${!inv.invoice_issued ? 'active no' : ''}" onclick="setInvoiceStatus('${safeId(inv.id)}',false,this)">לא</button>
+                  <button class="inv-status-btn ${inv.invoice_issued ? 'active' : ''}" onclick="setInvoiceStatus('${safeId(inv.id)}',true,this,${idx})">כן</button>
+                  <button class="inv-status-btn ${!inv.invoice_issued ? 'active no' : ''}" onclick="setInvoiceStatus('${safeId(inv.id)}',false,this,${idx})">לא</button>
                 </div>
               </div>
               <button class="btn btn-danger btn-sm" style="margin-top:0.75rem" onclick="deleteRecord('invoice','${safeId(inv.id)}','${safeName(inv.name)}')">🗑️ מחק</button>
