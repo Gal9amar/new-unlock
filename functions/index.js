@@ -309,11 +309,99 @@ exports.notifyInvoice = onRequest({ cors: true, secrets: [ADMIN_EMAIL, GMAIL_APP
   if (!appPassword) { res.status(500).json({ error: 'GMAIL_APP_PASSWORD not configured' }); return; }
 
   const FROM = 'unlock.yavne@gmail.com';
-  const amountLine = amount ? `סכום: ₪${amount} ${vat_type || ''}` : '';
-  const addressLine = service_address ? `כתובת השירות: ${service_address}` : '';
-  const body = `שלום ${to_name},\n\nחשבונית עבור השירות שקיבלת הופקה בהצלחה ונשלחה לתיבת הדואר שלך.\n\n${[amountLine, addressLine].filter(Boolean).join('\n')}\n\nתודה שבחרת ב-UNLOCK מנעולנות!\nלכל שאלה: 053-388-8381`;
 
-  // שליחה ישירות דרך Gmail SMTP ב-HTTPS (ללא nodemailer — אין deps חיצוניות)
+  const htmlBody = `<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+</head>
+<body style="margin:0;padding:0;background:#f0f4f8;font-family:'Segoe UI',Arial,sans-serif;direction:rtl;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f0f4f8;padding:32px 0;">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.10);">
+
+        <!-- Header -->
+        <tr>
+          <td style="background:linear-gradient(135deg,#0a1628 0%,#0f2247 50%,#1a365d 100%);padding:36px 40px;text-align:center;">
+            <img src="https://www.hamanulan.com/images/footer-logo.png" alt="UNLOCK" width="160" style="display:block;margin:0 auto 16px;"/>
+            <p style="margin:0;color:#d4a853;font-size:13px;letter-spacing:2px;text-transform:uppercase;">שירותי מנעולנות מקצועיים</p>
+          </td>
+        </tr>
+
+        <!-- Green success bar -->
+        <tr>
+          <td style="background:#22c55e;padding:14px 40px;text-align:center;">
+            <p style="margin:0;color:#ffffff;font-size:16px;font-weight:700;">✓ &nbsp; החשבונית הופקה בהצלחה</p>
+          </td>
+        </tr>
+
+        <!-- Body -->
+        <tr>
+          <td style="padding:40px 40px 28px;">
+            <p style="margin:0 0 8px;font-size:22px;font-weight:700;color:#0a1628;">שלום ${to_name},</p>
+            <p style="margin:0 0 28px;font-size:15px;color:#4a5568;line-height:1.7;">
+              החשבונית עבור השירות שקיבלת הופקה בהצלחה ונשלחה לתיבת הדואר שלך.
+            </p>
+
+            <!-- Details card -->
+            <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0;margin-bottom:28px;">
+              <tr><td style="padding:24px 28px;">
+                <p style="margin:0 0 16px;font-size:13px;font-weight:700;color:#94a3b8;letter-spacing:1px;text-transform:uppercase;">פרטי השירות</p>
+                ${amount ? `
+                <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:12px;">
+                  <tr>
+                    <td style="font-size:14px;color:#64748b;padding-bottom:8px;">סכום</td>
+                    <td style="font-size:18px;font-weight:700;color:#0a1628;text-align:left;">₪${amount} <span style="font-size:13px;font-weight:400;color:#94a3b8;">${vat_type || ''}</span></td>
+                  </tr>
+                </table>` : ''}
+                ${service_address ? `
+                <table width="100%" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="font-size:14px;color:#64748b;padding-bottom:4px;">כתובת השירות</td>
+                  </tr>
+                  <tr>
+                    <td style="font-size:15px;color:#0a1628;font-weight:500;">${service_address}</td>
+                  </tr>
+                </table>` : ''}
+              </td></tr>
+            </table>
+
+            <p style="margin:0 0 28px;font-size:15px;color:#4a5568;line-height:1.7;">
+              לכל שאלה או בירור, אנחנו זמינים עבורך 24/7.
+            </p>
+
+            <!-- CTA buttons -->
+            <table cellpadding="0" cellspacing="0" style="margin:0 auto 8px;">
+              <tr>
+                <td style="padding-left:8px;">
+                  <a href="tel:0533888381" style="display:inline-block;padding:13px 28px;background:#d4a853;color:#0a1628;font-size:15px;font-weight:700;text-decoration:none;border-radius:8px;">📞 &nbsp;053-388-8381</a>
+                </td>
+                <td style="padding-left:8px;">
+                  <a href="https://wa.me/972533888381" style="display:inline-block;padding:13px 28px;background:#25d366;color:#ffffff;font-size:15px;font-weight:700;text-decoration:none;border-radius:8px;">💬 &nbsp;וואטסאפ</a>
+                </td>
+                <td>
+                  <a href="https://www.hamanulan.com" style="display:inline-block;padding:13px 28px;background:#0f2247;color:#d4a853;font-size:15px;font-weight:700;text-decoration:none;border-radius:8px;">🌐 &nbsp;האתר שלנו</a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td style="background:#0a1628;padding:24px 40px;text-align:center;">
+            <p style="margin:0 0 6px;color:#d4a853;font-size:14px;font-weight:600;">UNLOCK מנעולנות | גבי המנעולן</p>
+            <p style="margin:0;color:#64748b;font-size:12px;">שירות 24/7 · אזור המרכז והדרום · <a href="https://www.hamanulan.com" style="color:#d4a853;text-decoration:none;">hamanulan.com</a></p>
+          </td>
+        </tr>
+
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+
   const nodemailer = require('nodemailer');
   const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -324,8 +412,9 @@ exports.notifyInvoice = onRequest({ cors: true, secrets: [ADMIN_EMAIL, GMAIL_APP
     await transporter.sendMail({
       from: `"UNLOCK מנעולנות" <${FROM}>`,
       to: to_email,
-      subject: 'החשבונית שלך הופקה בהצלחה ✓',
-      text: body,
+      subject: '✓ החשבונית שלך הופקה בהצלחה – UNLOCK מנעולנות',
+      html: htmlBody,
+      text: `שלום ${to_name},\n\nהחשבונית הופקה בהצלחה.\n${amount ? `סכום: ₪${amount} ${vat_type||''}` : ''}\n${service_address ? `כתובת: ${service_address}` : ''}\n\nלשאלות: 053-388-8381\nUNLOCK מנעולנות`,
     });
     res.json({ ok: true });
   } catch (e) {
