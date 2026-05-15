@@ -245,6 +245,22 @@ exports.saveInvoice = onRequest({ cors: true, secrets: [ADMIN_EMAIL, GMAIL_APP_P
                       <td style="font-size:14px;color:#1e293b;font-weight:500;">${val}</td>
                     </tr>
                   </table>`).join('')}
+                ${data.payment_method === 'העברה בנקאית' ? `
+                  <hr style="border:none;border-top:1px dashed #e2e8f0;margin:12px 0;"/>
+                  <p style="margin:0 0 10px;font-size:13px;font-weight:700;color:#94a3b8;letter-spacing:1px;">פרטי חשבון לביצוע ההעברה</p>
+                  ${[
+                    ['בנק', 'מזרחי טפחות'],
+                    ['סניף', '540'],
+                    ['חשבון', '121889'],
+                    ['שם', 'גל עמר'],
+                  ].map(([label, val]) => `
+                    <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:8px;">
+                      <tr>
+                        <td style="font-size:13px;color:#94a3b8;width:120px;">${label}</td>
+                        <td style="font-size:14px;color:#1e293b;font-weight:600;">${val}</td>
+                      </tr>
+                    </table>`).join('')}
+                ` : ''}
               </td></tr>
             </table>
             <p style="margin:0 0 24px;font-size:15px;color:#64748b;line-height:1.8;">
