@@ -287,6 +287,10 @@
   const ADMIN_SURVEYS  = 'https://us-central1-hamanulan-3bbc7.cloudfunctions.net/adminSurveys';
   const ADMIN_INVOICES = 'https://us-central1-hamanulan-3bbc7.cloudfunctions.net/adminInvoices';
 
+  function esc(str) {
+    return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+
   let products = [];
   let editIndex = -1;
   let currentVat = 'n';
@@ -521,22 +525,22 @@
             <tbody>
               ${surveys.map(s => `
                 <tr class="accordion-row" onclick="toggleAccordion(this)">
-                  <td class="td-date">${s.createdAt ? s.createdAt.slice(0,10) : '—'}</td>
-                  <td>${s.customer_name || '—'}</td>
-                  <td dir="ltr">${s.phone || '—'}</td>
+                  <td class="td-date">${s.createdAt ? esc(s.createdAt.slice(0,10)) : '—'}</td>
+                  <td>${esc(s.customer_name) || '—'}</td>
+                  <td dir="ltr">${esc(s.phone) || '—'}</td>
                   <td class="td-stars">${'★'.repeat(Number(s.stars)||0)}</td>
-                  <td>${s.recommend || '—'}</td>
+                  <td>${esc(s.recommend) || '—'}</td>
                   <td class="td-chevron"></td>
                 </tr>
                 <tr class="accordion-details">
                   <td colspan="6">
                     <div class="accordion-body">
                       <div class="accordion-grid">
-                        <span class="ac-label">איכות</span><span>${s.quality || '—'}</span>
-                        <span class="ac-label">הגעה</span><span>${s.arrival || '—'}</span>
-                        <span class="ac-label">מחיר</span><span>${s.price || '—'}</span>
-                        <span class="ac-label">יחס</span><span>${s.attitude || '—'}</span>
-                        ${s.comment ? `<span class="ac-label">הערה</span><span>${s.comment}</span>` : ''}
+                        <span class="ac-label">איכות</span><span>${esc(s.quality) || '—'}</span>
+                        <span class="ac-label">הגעה</span><span>${esc(s.arrival) || '—'}</span>
+                        <span class="ac-label">מחיר</span><span>${esc(s.price) || '—'}</span>
+                        <span class="ac-label">יחס</span><span>${esc(s.attitude) || '—'}</span>
+                        ${s.comment ? `<span class="ac-label">הערה</span><span>${esc(s.comment)}</span>` : ''}
                       </div>
                       <button class="btn btn-danger btn-sm" onclick="event.stopPropagation();deleteRecord('survey','${safeId(s.id)}','${safeName(s.customer_name)}')">🗑️ מחק</button>
                     </div>
@@ -550,19 +554,19 @@
             <div class="data-card">
               <div class="data-card-header">
                 <div>
-                  <div class="data-card-name">${s.customer_name || '—'}</div>
-                  <div class="data-card-date">${s.createdAt ? s.createdAt.slice(0,10) : ''}</div>
+                  <div class="data-card-name">${esc(s.customer_name) || '—'}</div>
+                  <div class="data-card-date">${s.createdAt ? esc(s.createdAt.slice(0,10)) : ''}</div>
                 </div>
                 <div class="data-card-stars">${'★'.repeat(Number(s.stars)||0)}</div>
               </div>
               <div class="data-card-rows">
-                <div class="data-card-row"><span>טלפון</span><span dir="ltr">${s.phone || '—'}</span></div>
-                <div class="data-card-row"><span>איכות</span><span>${s.quality || '—'}</span></div>
-                <div class="data-card-row"><span>הגעה</span><span>${s.arrival || '—'}</span></div>
-                <div class="data-card-row"><span>מחיר</span><span>${s.price || '—'}</span></div>
-                <div class="data-card-row"><span>יחס</span><span>${s.attitude || '—'}</span></div>
-                <div class="data-card-row"><span>המלצה</span><span>${s.recommend || '—'}</span></div>
-                ${s.comment ? `<div class="data-card-comment">${s.comment}</div>` : ''}
+                <div class="data-card-row"><span>טלפון</span><span dir="ltr">${esc(s.phone) || '—'}</span></div>
+                <div class="data-card-row"><span>איכות</span><span>${esc(s.quality) || '—'}</span></div>
+                <div class="data-card-row"><span>הגעה</span><span>${esc(s.arrival) || '—'}</span></div>
+                <div class="data-card-row"><span>מחיר</span><span>${esc(s.price) || '—'}</span></div>
+                <div class="data-card-row"><span>יחס</span><span>${esc(s.attitude) || '—'}</span></div>
+                <div class="data-card-row"><span>המלצה</span><span>${esc(s.recommend) || '—'}</span></div>
+                ${s.comment ? `<div class="data-card-comment">${esc(s.comment)}</div>` : ''}
               </div>
               <button class="btn btn-danger btn-sm" style="margin-top:0.75rem" onclick="deleteRecord('survey','${safeId(s.id)}','${safeName(s.customer_name)}')">🗑️ מחק</button>
             </div>`).join('')}
@@ -612,11 +616,11 @@
             <tbody>
               ${invoices.map(inv => `
                 <tr class="accordion-row" onclick="toggleAccordion(this)">
-                  <td class="td-date">${inv.createdAt ? inv.createdAt.slice(0,10) : '—'}</td>
-                  <td>${inv.name || '—'}</td>
-                  <td dir="ltr">${inv.phone || '—'}</td>
-                  <td>₪${inv.amount || '—'}</td>
-                  <td>${inv.payment_method || '—'}</td>
+                  <td class="td-date">${inv.createdAt ? esc(inv.createdAt.slice(0,10)) : '—'}</td>
+                  <td>${esc(inv.name) || '—'}</td>
+                  <td dir="ltr">${esc(inv.phone) || '—'}</td>
+                  <td>₪${esc(inv.amount) || '—'}</td>
+                  <td>${esc(inv.payment_method) || '—'}</td>
                   <td onclick="event.stopPropagation()">
                     <div class="invoice-status-btns">
                       <button class="inv-status-btn ${inv.invoice_issued ? 'active' : ''}" onclick="setInvoiceStatus('${safeId(inv.id)}',true,this)">כן</button>
@@ -629,12 +633,12 @@
                   <td colspan="7">
                     <div class="accordion-body">
                       <div class="accordion-grid">
-                        <span class="ac-label">מייל</span><span>${inv.email || '—'}</span>
-                        ${inv.id_number ? `<span class="ac-label">ח.פ/ת.ז</span><span>${inv.id_number}</span>` : ''}
-                        <span class="ac-label">כתובת</span><span>${inv.service_address || '—'}</span>
-                        <span class="ac-label">מע"מ</span><span>${inv.vat_type || '—'}</span>
-                        ${inv.midrag_name ? `<span class="ac-label">מידרג</span><span>${inv.midrag_name}</span>` : ''}
-                        ${inv.message ? `<span class="ac-label">שירות</span><span>${inv.message}</span>` : ''}
+                        <span class="ac-label">מייל</span><span>${esc(inv.email) || '—'}</span>
+                        ${inv.id_number ? `<span class="ac-label">ח.פ/ת.ז</span><span>${esc(inv.id_number)}</span>` : ''}
+                        <span class="ac-label">כתובת</span><span>${esc(inv.service_address) || '—'}</span>
+                        <span class="ac-label">מע"מ</span><span>${esc(inv.vat_type) || '—'}</span>
+                        ${inv.midrag_name ? `<span class="ac-label">מידרג</span><span>${esc(inv.midrag_name)}</span>` : ''}
+                        ${inv.message ? `<span class="ac-label">שירות</span><span>${esc(inv.message)}</span>` : ''}
                       </div>
                       <button class="btn btn-danger btn-sm" onclick="event.stopPropagation();deleteRecord('invoice','${safeId(inv.id)}','${safeName(inv.name)}')">🗑️ מחק</button>
                     </div>
@@ -648,19 +652,19 @@
             <div class="data-card">
               <div class="data-card-header">
                 <div>
-                  <div class="data-card-name">${inv.name || '—'}</div>
-                  <div class="data-card-date">${inv.createdAt ? inv.createdAt.slice(0,10) : ''}</div>
+                  <div class="data-card-name">${esc(inv.name) || '—'}</div>
+                  <div class="data-card-date">${inv.createdAt ? esc(inv.createdAt.slice(0,10)) : ''}</div>
                 </div>
-                <div class="data-card-amount">₪${inv.amount || '—'}</div>
+                <div class="data-card-amount">₪${esc(inv.amount) || '—'}</div>
               </div>
               <div class="data-card-rows">
-                <div class="data-card-row"><span>טלפון</span><span dir="ltr">${inv.phone || '—'}</span></div>
-                <div class="data-card-row"><span>מייל</span><span>${inv.email || '—'}</span></div>
-                ${inv.id_number ? `<div class="data-card-row"><span>ח.פ/ת.ז</span><span>${inv.id_number}</span></div>` : ''}
-                <div class="data-card-row"><span>כתובת</span><span>${inv.service_address || '—'}</span></div>
-                <div class="data-card-row"><span>תשלום</span><span>${inv.payment_method || '—'} · ${inv.vat_type || ''}</span></div>
-                ${inv.midrag_name ? `<div class="data-card-row"><span>מידרג</span><span>${inv.midrag_name}</span></div>` : ''}
-                ${inv.message ? `<div class="data-card-comment">${inv.message}</div>` : ''}
+                <div class="data-card-row"><span>טלפון</span><span dir="ltr">${esc(inv.phone) || '—'}</span></div>
+                <div class="data-card-row"><span>מייל</span><span>${esc(inv.email) || '—'}</span></div>
+                ${inv.id_number ? `<div class="data-card-row"><span>ח.פ/ת.ז</span><span>${esc(inv.id_number)}</span></div>` : ''}
+                <div class="data-card-row"><span>כתובת</span><span>${esc(inv.service_address) || '—'}</span></div>
+                <div class="data-card-row"><span>תשלום</span><span>${esc(inv.payment_method) || '—'} · ${esc(inv.vat_type) || ''}</span></div>
+                ${inv.midrag_name ? `<div class="data-card-row"><span>מידרג</span><span>${esc(inv.midrag_name)}</span></div>` : ''}
+                ${inv.message ? `<div class="data-card-comment">${esc(inv.message)}</div>` : ''}
               </div>
               <div class="invoice-status-row">
                 <span class="ac-label">הופקה חשבונית</span>

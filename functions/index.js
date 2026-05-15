@@ -30,16 +30,27 @@ async function verifyAdmin(req, res) {
   }
 }
 
-function cors(res) {
-  res.set('Access-Control-Allow-Origin', '*');
+const ALLOWED_ORIGINS = [
+  'https://www.hamanulan.com',
+  'https://hamanulan.com',
+  'http://127.0.0.1:5500',
+  'http://localhost:5500',
+  'http://localhost:3000',
+];
+
+function cors(req, res) {
+  const origin = req.headers.origin;
+  const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  res.set('Access-Control-Allow-Origin', allowed);
   res.set('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
   res.set('Access-Control-Allow-Headers', 'Authorization, Content-Type');
+  res.set('Vary', 'Origin');
 }
 
 // ── Public: GET all products ──
 exports.products = onRequest({ cors: true }, async (req, res) => {
-  if (req.method === 'OPTIONS') { cors(res); res.status(204).send(''); return; }
-  cors(res);
+  if (req.method === 'OPTIONS') { cors(req, res); res.status(204).send(''); return; }
+  cors(req, res);
   try {
     const snap = await db.collection('products').orderBy('order').get();
     res.json(snap.docs.map(d => ({ id: d.id, ...d.data() })));
@@ -50,8 +61,8 @@ exports.products = onRequest({ cors: true }, async (req, res) => {
 
 // ── Admin: CRUD products ──
 exports.adminProducts = onRequest({ cors: true }, async (req, res) => {
-  if (req.method === 'OPTIONS') { cors(res); res.status(204).send(''); return; }
-  cors(res);
+  if (req.method === 'OPTIONS') { cors(req, res); res.status(204).send(''); return; }
+  cors(req, res);
 
   const user = await verifyAdmin(req, res);
   if (!user) return;
@@ -92,23 +103,42 @@ exports.adminProducts = onRequest({ cors: true }, async (req, res) => {
   res.status(405).json({ error: 'Method not allowed' });
 });
 
+const VALID_STARS = ['1','2','3','4','5'];
+const VALID_QUALITY = ['מצוינת','טובה','סבירה','גרועה'];
+const VALID_ARRIVAL = ['מהיר מאוד','בזמן','איחר'];
+const VALID_PRICE = ['שקוף ומשתלם','סביר','יקר'];
+const VALID_ATTITUDE = ['מעולה','טוב','בינוני','לא טוב'];
+const VALID_RECOMMEND = ['בהחלט','כנראה','לא'];
+
+function str(val, max = 200) {
+  if (typeof val !== 'string') return '';
+  return val.trim().slice(0, max);
+}
+
 // ── Public: Save survey ──
 exports.saveSurvey = onRequest({ cors: true }, async (req, res) => {
-  if (req.method === 'OPTIONS') { cors(res); res.status(204).send(''); return; }
-  cors(res);
+  if (req.method === 'OPTIONS') { cors(req, res); res.status(204).send(''); return; }
+  cors(req, res);
   if (req.method !== 'POST') { res.status(405).json({ error: 'Method not allowed' }); return; }
 
   try {
+    const b = req.body;
+    if (!b.customer_name || !b.phone || !b.stars) {
+      res.status(400).json({ error: 'Missing required fields' }); return;
+    }
+    if (!VALID_STARS.includes(String(b.stars))) {
+      res.status(400).json({ error: 'Invalid stars value' }); return;
+    }
     const data = {
-      customer_name: req.body.customer_name || '',
-      phone: req.body.phone || '',
-      stars: req.body.stars || '',
-      quality: req.body.quality || '',
-      arrival: req.body.arrival || '',
-      price: req.body.price || '',
-      attitude: req.body.attitude || '',
-      recommend: req.body.recommend || '',
-      comment: req.body.comment || '',
+      customer_name: str(b.customer_name, 100),
+      phone: str(b.phone, 20).replace(/[^\d+\-() ]/g, ''),
+      stars: String(b.stars),
+      quality:   VALID_QUALITY.includes(b.quality)   ? b.quality   : '',
+      arrival:   VALID_ARRIVAL.includes(b.arrival)   ? b.arrival   : '',
+      price:     VALID_PRICE.includes(b.price)       ? b.price     : '',
+      attitude:  VALID_ATTITUDE.includes(b.attitude) ? b.attitude  : '',
+      recommend: VALID_RECOMMEND.includes(b.recommend) ? b.recommend : '',
+      comment:   str(b.comment, 500),
       createdAt: admin.firestore.FieldValue.serverTimestamp()
     };
     await db.collection('surveys').add(data);
@@ -118,24 +148,44 @@ exports.saveSurvey = onRequest({ cors: true }, async (req, res) => {
   }
 });
 
+const VALID_VAT = ['כולל מע"מ','לפני מע"מ'];
+const VALID_PAYMENT = ['ביט','המחאה','העברה בנקאית','מזומן'];
+
 // ── Public: Save invoice request ──
 exports.saveInvoice = onRequest({ cors: true }, async (req, res) => {
-  if (req.method === 'OPTIONS') { cors(res); res.status(204).send(''); return; }
-  cors(res);
+  if (req.method === 'OPTIONS') { cors(req, res); res.status(204).send(''); return; }
+  cors(req, res);
   if (req.method !== 'POST') { res.status(405).json({ error: 'Method not allowed' }); return; }
 
   try {
+    const b = req.body;
+    if (!b.name || !b.phone || !b.email || !b.service_address || !b.message || !b.amount || !b.vat_type || !b.payment_method) {
+      res.status(400).json({ error: 'Missing required fields' }); return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(b.email)) {
+      res.status(400).json({ error: 'Invalid email' }); return;
+    }
+    const amount = parseFloat(String(b.amount).replace(/[^0-9.]/g, ''));
+    if (isNaN(amount) || amount <= 0 || amount > 999999) {
+      res.status(400).json({ error: 'Invalid amount' }); return;
+    }
+    if (!VALID_VAT.includes(b.vat_type)) {
+      res.status(400).json({ error: 'Invalid vat_type' }); return;
+    }
+    if (!VALID_PAYMENT.includes(b.payment_method)) {
+      res.status(400).json({ error: 'Invalid payment_method' }); return;
+    }
     const data = {
-      name: req.body.name || '',
-      phone: req.body.phone || '',
-      email: req.body.email || '',
-      id_number: req.body.id_number || '',
-      service_address: req.body.service_address || '',
-      message: req.body.message || '',
-      amount: req.body.amount || '',
-      vat_type: req.body.vat_type || '',
-      payment_method: req.body.payment_method || '',
-      midrag_name: req.body.midrag_name || '',
+      name:            str(b.name, 100),
+      phone:           str(b.phone, 20).replace(/[^\d+\-() ]/g, ''),
+      email:           str(b.email, 100).toLowerCase(),
+      id_number:       str(b.id_number, 20).replace(/[^\d]/g, ''),
+      service_address: str(b.service_address, 200),
+      message:         str(b.message, 500),
+      amount:          amount.toString(),
+      vat_type:        b.vat_type,
+      payment_method:  b.payment_method,
+      midrag_name:     str(b.midrag_name, 100),
       createdAt: admin.firestore.FieldValue.serverTimestamp()
     };
     await db.collection('invoices').add(data);
@@ -147,8 +197,8 @@ exports.saveInvoice = onRequest({ cors: true }, async (req, res) => {
 
 // ── Admin: GET surveys ──
 exports.adminSurveys = onRequest({ cors: true }, async (req, res) => {
-  if (req.method === 'OPTIONS') { cors(res); res.status(204).send(''); return; }
-  cors(res);
+  if (req.method === 'OPTIONS') { cors(req, res); res.status(204).send(''); return; }
+  cors(req, res);
   const user = await verifyAdmin(req, res);
   if (!user) return;
 
@@ -166,8 +216,8 @@ exports.adminSurveys = onRequest({ cors: true }, async (req, res) => {
 
 // ── Admin: Trigger GitHub Action (SSG → Netlify) ──
 exports.triggerBuild = onRequest({ cors: true, secrets: [GITHUB_PAT] }, async (req, res) => {
-  if (req.method === 'OPTIONS') { cors(res); res.status(204).send(''); return; }
-  cors(res);
+  if (req.method === 'OPTIONS') { cors(req, res); res.status(204).send(''); return; }
+  cors(req, res);
 
   const user = await verifyAdmin(req, res);
   if (!user) return;
@@ -206,8 +256,8 @@ exports.triggerBuild = onRequest({ cors: true, secrets: [GITHUB_PAT] }, async (r
 
 // ── Admin: Stats dashboard ──
 exports.adminStats = onRequest({ cors: true }, async (req, res) => {
-  if (req.method === 'OPTIONS') { cors(res); res.status(204).send(''); return; }
-  cors(res);
+  if (req.method === 'OPTIONS') { cors(req, res); res.status(204).send(''); return; }
+  cors(req, res);
   const user = await verifyAdmin(req, res);
   if (!user) return;
 
@@ -246,8 +296,8 @@ exports.adminStats = onRequest({ cors: true }, async (req, res) => {
 
 // ── Admin: GET invoices ──
 exports.adminInvoices = onRequest({ cors: true }, async (req, res) => {
-  if (req.method === 'OPTIONS') { cors(res); res.status(204).send(''); return; }
-  cors(res);
+  if (req.method === 'OPTIONS') { cors(req, res); res.status(204).send(''); return; }
+  cors(req, res);
   const user = await verifyAdmin(req, res);
   if (!user) return;
 
