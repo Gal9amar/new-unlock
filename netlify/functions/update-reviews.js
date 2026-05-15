@@ -84,9 +84,50 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Headers': 'Authorization, Content-Type',
 };
 
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
+const FIREBASE_PROJECT_ID = 'hamanulan-3bbc7';
+
+function verifyFirebaseToken(idToken) {
+  return new Promise((resolve, reject) => {
+    const url = `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${process.env.FIREBASE_API_KEY}`;
+    const payload = JSON.stringify({ idToken });
+    const req = https.request(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) }
+    }, (res) => {
+      let data = '';
+      res.on('data', c => data += c);
+      res.on('end', () => {
+        try {
+          const json = JSON.parse(data);
+          if (json.users && json.users[0]) resolve(json.users[0]);
+          else reject(new Error('Invalid token'));
+        } catch { reject(new Error('Parse error')); }
+      });
+    });
+    req.on('error', reject);
+    req.write(payload);
+    req.end();
+  });
+}
+
+async function verifyAdmin(event) {
+  const auth = event.headers['authorization'] || event.headers['Authorization'] || '';
+  if (!auth.startsWith('Bearer ')) return false;
+  try {
+    const user = await verifyFirebaseToken(auth.split('Bearer ')[1]);
+    return user.email === (ADMIN_EMAIL || '').trim();
+  } catch {
+    return false;
+  }
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS_HEADERS, body: '' };
   if (event.httpMethod !== 'POST') return { statusCode: 405, headers: CORS_HEADERS, body: 'Method Not Allowed' };
+
+  const isAdmin = await verifyAdmin(event);
+  if (!isAdmin) return { statusCode: 403, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Forbidden' }) };
 
   const GITHUB_PAT = process.env.GITHUB_PAT;
   if (!GITHUB_PAT) return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ error: 'GITHUB_PAT not set' }) };

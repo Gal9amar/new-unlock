@@ -23,13 +23,20 @@
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
 
+    const ADMIN_EMAIL = 'gal9amar@gmail.com';
+
     onAuthStateChanged(auth, (user) => {
-      if (user) {
+      if (user && user.email === ADMIN_EMAIL) {
         document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('adminScreen').classList.add('visible');
         window._firebaseUser = user;
         initAdmin();
       } else {
+        if (user) {
+          signOut(auth);
+          document.getElementById('loginError').textContent = 'אין הרשאת גישה לחשבון זה';
+          setTimeout(() => { document.getElementById('loginError').textContent = ''; }, 4000);
+        }
         document.getElementById('loginScreen').style.display = 'flex';
         document.getElementById('adminScreen').classList.remove('visible');
         window._firebaseUser = null;
