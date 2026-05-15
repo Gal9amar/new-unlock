@@ -21,7 +21,7 @@ async function verifyAdmin(req, res) {
   }
   try {
     const decoded = await admin.auth().verifyIdToken(auth.split('Bearer ')[1]);
-    if (decoded.email !== ADMIN_EMAIL.value()) {
+    if (decoded.email !== ADMIN_EMAIL.value().trim()) {
       res.status(403).json({ error: 'Forbidden' });
       return null;
     }
