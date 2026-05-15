@@ -1,14 +1,16 @@
 const { onRequest } = require('firebase-functions/v2/https');
-const { defineSecret } = require('firebase-functions/params');
+const { defineSecret, defineString } = require('firebase-functions/params');
 const admin = require('firebase-admin');
 const https = require('https');
 
-const GITHUB_PAT = defineSecret('GITHUB_PAT');
+const GITHUB_PAT    = defineSecret('GITHUB_PAT');
+const ADMIN_EMAIL   = defineSecret('ADMIN_EMAIL');
+const ALLOWED_ORIGINS_STR = defineString('ALLOWED_ORIGINS', {
+  default: 'https://www.hamanulan.com,https://hamanulan.com',
+});
 
 admin.initializeApp();
 const db = admin.firestore();
-
-const ALLOWED_EMAIL = 'gal9amar@gmail.com';
 
 // ── Auth middleware ──
 async function verifyAdmin(req, res) {
@@ -19,7 +21,7 @@ async function verifyAdmin(req, res) {
   }
   try {
     const decoded = await admin.auth().verifyIdToken(auth.split('Bearer ')[1]);
-    if (decoded.email !== ALLOWED_EMAIL) {
+    if (decoded.email !== ADMIN_EMAIL.value()) {
       res.status(403).json({ error: 'Forbidden' });
       return null;
     }
@@ -30,17 +32,10 @@ async function verifyAdmin(req, res) {
   }
 }
 
-const ALLOWED_ORIGINS = [
-  'https://www.hamanulan.com',
-  'https://hamanulan.com',
-  'http://127.0.0.1:5500',
-  'http://localhost:5500',
-  'http://localhost:3000',
-];
-
 function cors(req, res) {
   const origin = req.headers.origin;
-  const allowed = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+  const allowedList = ALLOWED_ORIGINS_STR.value().split(',').map(s => s.trim());
+  const allowed = allowedList.includes(origin) ? origin : allowedList[0];
   res.set('Access-Control-Allow-Origin', allowed);
   res.set('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
   res.set('Access-Control-Allow-Headers', 'Authorization, Content-Type');
@@ -60,7 +55,7 @@ exports.products = onRequest({ cors: true }, async (req, res) => {
 });
 
 // ── Admin: CRUD products ──
-exports.adminProducts = onRequest({ cors: true }, async (req, res) => {
+exports.adminProducts = onRequest({ cors: true, secrets: [ADMIN_EMAIL] }, async (req, res) => {
   if (req.method === 'OPTIONS') { cors(req, res); res.status(204).send(''); return; }
   cors(req, res);
 
@@ -196,7 +191,7 @@ exports.saveInvoice = onRequest({ cors: true }, async (req, res) => {
 });
 
 // ── Admin: GET surveys ──
-exports.adminSurveys = onRequest({ cors: true }, async (req, res) => {
+exports.adminSurveys = onRequest({ cors: true, secrets: [ADMIN_EMAIL] }, async (req, res) => {
   if (req.method === 'OPTIONS') { cors(req, res); res.status(204).send(''); return; }
   cors(req, res);
   const user = await verifyAdmin(req, res);
@@ -215,7 +210,7 @@ exports.adminSurveys = onRequest({ cors: true }, async (req, res) => {
 });
 
 // ── Admin: Trigger GitHub Action (SSG → Netlify) ──
-exports.triggerBuild = onRequest({ cors: true, secrets: [GITHUB_PAT] }, async (req, res) => {
+exports.triggerBuild = onRequest({ cors: true, secrets: [GITHUB_PAT, ADMIN_EMAIL] }, async (req, res) => {
   if (req.method === 'OPTIONS') { cors(req, res); res.status(204).send(''); return; }
   cors(req, res);
 
@@ -255,7 +250,7 @@ exports.triggerBuild = onRequest({ cors: true, secrets: [GITHUB_PAT] }, async (r
 });
 
 // ── Admin: Stats dashboard ──
-exports.adminStats = onRequest({ cors: true }, async (req, res) => {
+exports.adminStats = onRequest({ cors: true, secrets: [ADMIN_EMAIL] }, async (req, res) => {
   if (req.method === 'OPTIONS') { cors(req, res); res.status(204).send(''); return; }
   cors(req, res);
   const user = await verifyAdmin(req, res);
@@ -295,7 +290,7 @@ exports.adminStats = onRequest({ cors: true }, async (req, res) => {
 });
 
 // ── Admin: GET invoices ──
-exports.adminInvoices = onRequest({ cors: true }, async (req, res) => {
+exports.adminInvoices = onRequest({ cors: true, secrets: [ADMIN_EMAIL] }, async (req, res) => {
   if (req.method === 'OPTIONS') { cors(req, res); res.status(204).send(''); return; }
   cors(req, res);
   const user = await verifyAdmin(req, res);
