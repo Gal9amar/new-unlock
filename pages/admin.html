@@ -23,20 +23,13 @@
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
 
-    const ALLOWED_EMAIL = 'gal9amar@gmail.com';
-
     onAuthStateChanged(auth, (user) => {
-      if (user && user.email === ALLOWED_EMAIL) {
+      if (user) {
         document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('adminScreen').classList.add('visible');
         window._firebaseUser = user;
         initAdmin();
       } else {
-        if (user) {
-          signOut(auth);
-          document.getElementById('loginError').textContent = 'ניסיון גישה לא מורשה זוהה, זיהוי מכשיר וכתובת IP נרשמה והועברה למחלקת אבטחה';
-          setTimeout(() => { window.location.href = '/'; }, 2500);
-        }
         document.getElementById('loginScreen').style.display = 'flex';
         document.getElementById('adminScreen').classList.remove('visible');
         window._firebaseUser = null;
