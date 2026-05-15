@@ -312,20 +312,25 @@ exports.saveInvoice = onRequest({ cors: true, secrets: [ADMIN_EMAIL, GMAIL_APP_P
             <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0;margin-bottom:28px;">
               <tr><td style="padding:20px 24px;">
                 ${[
-                  ['שם', data.name],
-                  ['טלפון', data.phone],
-                  ['מייל', data.email],
-                  data.id_number ? ['ח.פ / ת.ז', data.id_number] : null,
-                  ['כתובת', data.service_address],
-                  ['שירות', data.message],
-                  ['סכום', `₪${data.amount} ${data.vat_type}`],
-                  ['תשלום', data.payment_method],
-                  data.midrag_name ? ['מידרג', data.midrag_name] : null,
-                ].filter(Boolean).map(([label, val]) => `
-                  <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:10px;">
+                  ['שם', data.name, null],
+                  ['טלפון', data.phone, `tel:${data.phone}`],
+                  ['מייל', data.email, `mailto:${data.email}`],
+                  data.id_number ? ['ח.פ / ת.ז', data.id_number, null] : null,
+                  ['כתובת', data.service_address, null],
+                  ['שירות', data.message, null],
+                  ['סכום', `₪${data.amount} ${data.vat_type}`, null],
+                  ['תשלום', data.payment_method, null],
+                  data.midrag_name ? ['מידרג', data.midrag_name, null] : null,
+                ].filter(Boolean).map(([label, val, link]) => `
+                  <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:8px;">
                     <tr>
-                      <td style="font-size:13px;color:#94a3b8;width:100px;">${label}</td>
-                      <td style="font-size:14px;color:#1e293b;font-weight:500;">${val}</td>
+                      <td style="font-size:12px;color:#94a3b8;width:90px;vertical-align:top;padding-top:3px;">${label}</td>
+                      <td style="background:#f1f5f9;border-radius:6px;padding:5px 10px;">
+                        ${link
+                          ? `<a href="${link}" style="font-size:14px;color:#1d4ed8;font-weight:600;text-decoration:none;font-family:monospace;">${val}</a>`
+                          : `<span style="font-size:14px;color:#1e293b;font-weight:500;">${val}</span>`
+                        }
+                      </td>
                     </tr>
                   </table>`).join('')}
               </td></tr>
