@@ -19,15 +19,8 @@
   },
   "homepage": "https://github.com/Gal9amar/new-unlock#readme",
   "dependencies": {
-    "firebase-admin": "^13.7.0",
     "@libsql/client": "^0.15.15",
     "jsonwebtoken": "^9.0.2",
-    "nodemailer": "^8.0.5"
-  },
-  "overrides": {
-    "protobufjs": "^7.5.8",
-    "uuid": "^11.1.0",
-    "teeny-request": "^10.1.2",
-    "http-proxy-agent": "^7.0.2"
+    "nodemailer": "^9.0.4"
   }
 }
