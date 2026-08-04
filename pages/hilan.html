@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0a1628" />
+  <title>הפקת חשבונית – UNLOCK מנעולן מקצועי</title>
+  <meta name="description" content="הפקת חשבונית מפורטת – שירות מנעולנות מקצועי 24/7 באזור המרכז והדרום" />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="canonical" href="https://www.hamanulan.com/pages/hilan.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="הפקת חשבונית | UNLOCK - גבי המנעולן" />
+  <meta property="og:description" content="הפקת חשבונית מפורטת – שירות מנעולנות מקצועי 24/7" />
+  <meta property="og:url" content="https://www.hamanulan.com/pages/hilan.html" />
+  <meta property="og:image" content="https://www.hamanulan.com/images/fav.png" />
+  <meta property="og:locale" content="he_IL" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="הפקת חשבונית | UNLOCK - גבי המנעולן" />
+  <meta name="twitter:description" content="הפקת חשבונית מפורטת – שירות מנעולנות מקצועי 24/7" />
+  <meta name="twitter:image" content="https://www.hamanulan.com/images/fav.png" />
+
+  <link rel="icon" href="../images/fav.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/main.css?v=3.0" />
+  <link rel="stylesheet" href="../styles/hilan.css" />
+  </head>
+<body class="site-body">
+
+  <!-- Nav -->
+  <nav class="top-nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">
+        <img src="../images/fav.png" alt="UNLOCK" />
+        UNLOCK
+      </a>
+      <a href="tel:0533888381" class="nav-phone">📞 053-388-8381</a>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+    <main class="form-section" id="main-content">
+      <div class="form-container">
+
+        <!-- Heading -->
+        <div class="form-heading">
+          <h1>הפקת חשבונית עבור <span class="highlight">חילן בע"מ</span></h1>
+          <p>מלאו את פרטי הלקוח והפריטים ונשלח את החשבונית בהקדם</p>
+        </div>
+
+        <!-- Card -->
+        <div class="form-card">
+
+          <form id="hilanForm">
+
+            <div class="field">
+              <label>לכבוד <span class="req">*</span></label>
+              <input type="text" name="name" value="חילן בע&quot;מ" readonly/>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label>תאריך <span class="req">*</span></label>
+                <input type="date" name="date" id="dateInput" required/>
+              </div>
+              <div class="field">
+                <label>ח.פ / ת.ז</label>
+                <input type="text" name="id_number" value="520039942" readonly/>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>כתובת <span class="req">*</span></label>
+              <input type="text" name="service_address" value="מיטב 8 ת&quot;א" readonly/>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label>טלפון <span class="req">*</span></label>
+                <input type="tel" name="phone" value="0545798100" required/>
+              </div>
+              <div class="field">
+                <label>כתובת מייל <span class="req">*</span></label>
+                <input type="email" name="email" value="marinak@hilan.co.il" required/>
+              </div>
+            </div>
+
+            <!-- Line items -->
+            <div class="field" style="margin-top:0.5rem">
+              <label style="font-weight:700;font-size:0.9rem">פירוט הפריטים <span class="req">*</span></label>
+              <div id="itemsWrap" style="margin-top:0.6rem"></div>
+            </div>
+
+            <!-- Totals -->
+            <div class="totals-box">
+              <div class="totals-row"><span>סה"כ</span><span id="sumSubtotal">0.00 ₪</span></div>
+              <div class="totals-row"><span>מע"מ (18%)</span><span id="sumVat">0.00 ₪</span></div>
+              <div class="totals-row"><span>סה"כ כולל מע"מ</span><span id="sumTotal">0.00 ₪</span></div>
+            </div>
+
+            <input type="hidden" name="payment_method" id="paymentMethod" value="העברה בנקאית"/>
+
+            <button type="submit" class="submit-btn" id="submitBtn">📨 צור בקשה לחשבונית</button>
+            <p class="form-note">הפרטים ישלחו ישירות לגבי · ללא שמירה במאגרי צד שלישי</p>
+          </form>
+
+          <div class="success-screen" id="successScreen">
+            <div class="success-icon">✅</div>
+            <h2>הפרטים נשלחו בהצלחה!</h2>
+            <p>תודה! החשבונית תופק ותישלח אליך בהקדם.</p>
+            <a href="/" class="back-btn">← חזרה לאתר</a>
+          </div>
+
+        </div>
+
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+  <!-- Popups -->
+  <div class="popup-overlay" id="popupLoading">
+    <div class="popup-box">
+      <div class="spinner"></div>
+      <div class="popup-title">שולח פרטים...</div>
+      <div class="popup-msg">אנא המתן, הפרטים בדרך לגבי</div>
+    </div>
+  </div>
+
+  <div class="popup-overlay" id="popupSuccess">
+    <div class="popup-box">
+      <span class="popup-icon">✅</span>
+      <div class="popup-title" id="successTitle">הפרטים נשלחו בהצלחה!</div>
+      <div class="popup-msg" id="successMsg">קיבלנו את הפרטים. החשבונית תופק ותישלח אליך בהקדם האפשרי — תודה שבחרת בשירות שלנו.</div>
+      <div style="margin-top:1rem;font-size:0.88rem;color:#64748b;line-height:1.6">בברכה,<strong>גבי המנעולן</strong> 🔐</div>
+      <a href="/" class="popup-btn popup-btn-success">← חזרה לאתר</a>
+    </div>
+  </div>
+
+  <div class="popup-overlay" id="popupError">
+    <div class="popup-box">
+      <span class="popup-icon">❌</span>
+      <div class="popup-title">שגיאה בשליחה</div>
+      <div class="popup-msg" id="errorMsg">משהו השתבש. בדוק את החיבור לאינטרנט ונסה שוב.</div>
+      <button class="popup-btn popup-btn-error" onclick="closePopup('popupError')">נסה שוב</button>
+    </div>
+  </div>
+
+  <script src="../scripts/security-warning.js"></script>
+  <script>
+    function showPopup(id) {
+      document.getElementById(id).classList.add('visible');
+    }
+    function closePopup(id) {
+      document.getElementById(id).classList.remove('visible');
+    }
+
+    // Copy to clipboard
+    function copyText(text, btn) {
+      navigator.clipboard.writeText(text).then(() => {
+        btn.innerHTML = '✓';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.innerHTML = '&#10697;';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+
+    // Default date = today
+    document.getElementById('dateInput').valueAsDate = new Date();
+
+    // ── Line items ──
+    const ITEM_COUNT = 7;
+    const itemsWrap = document.getElementById('itemsWrap');
+    for (let i = 1; i <= ITEM_COUNT; i++) {
+      const row = document.createElement('div');
+      row.className = 'item-row';
+      row.innerHTML = `
+        <div class="item-row-title">פריט ${i}</div>
+        <input type="text" class="item-desc" data-idx="${i}" data-field="desc" placeholder="תיאור הפריט / השירות"/>
+        <div class="item-sub-grid">
+          <div>
+            <span class="mini-label">מחיר יח'</span>
+            <input type="text" inputmode="decimal" pattern="[0-9]*\\.?[0-9]*" data-idx="${i}" data-field="price" placeholder="0.00"/>
+          </div>
+          <div>
+            <span class="mini-label">כמות</span>
+            <input type="text" inputmode="decimal" pattern="[0-9]*\\.?[0-9]*" data-idx="${i}" data-field="qty" placeholder="1"/>
+          </div>
+          <div>
+            <span class="mini-label">סה"כ</span>
+            <div class="item-line-total" id="itemTotal${i}">0.00 ₪</div>
+          </div>
+        </div>
+      `;
+      itemsWrap.appendChild(row);
+    }
+
+    function num(v) {
+      const n = parseFloat(String(v || '').replace(/[^0-9.]/g, ''));
+      return isNaN(n) ? 0 : n;
+    }
+
+    function recalc() {
+      let subtotal = 0;
+      for (let i = 1; i <= ITEM_COUNT; i++) {
+        const price = num(document.querySelector(`[data-idx="${i}"][data-field="price"]`).value);
+        const qty = num(document.querySelector(`[data-idx="${i}"][data-field="qty"]`).value);
+        const lineTotal = price * qty;
+        document.getElementById('itemTotal' + i).textContent = lineTotal.toFixed(2) + ' ₪';
+        subtotal += lineTotal;
+      }
+      const vat = subtotal * 0.18;
+      const total = subtotal + vat;
+      document.getElementById('sumSubtotal').textContent = subtotal.toFixed(2) + ' ₪';
+      document.getElementById('sumVat').textContent = vat.toFixed(2) + ' ₪';
+      document.getElementById('sumTotal').textContent = total.toFixed(2) + ' ₪';
+      return { subtotal, vat, total };
+    }
+
+    itemsWrap.addEventListener('input', (e) => {
+      if (e.target.dataset.field === 'price' || e.target.dataset.field === 'qty') {
+        e.target.value = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+      }
+      recalc();
+    });
+
+    function getItems() {
+      const items = [];
+      for (let i = 1; i <= ITEM_COUNT; i++) {
+        const desc = document.querySelector(`[data-idx="${i}"][data-field="desc"]`).value.trim();
+        const price = num(document.querySelector(`[data-idx="${i}"][data-field="price"]`).value);
+        const qty = num(document.querySelector(`[data-idx="${i}"][data-field="qty"]`).value);
+        if (desc && price > 0 && qty > 0) {
+          items.push({ desc, price, qty, total: price * qty });
+        }
+      }
+      return items;
+    }
+
+    const form = document.getElementById('hilanForm');
+    const btn = document.getElementById('submitBtn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const items = getItems();
+      if (items.length === 0) {
+        alert('יש למלא לפחות פריט אחד עם תיאור, מחיר וכמות');
+        return;
+      }
+      recalc();
+
+      btn.disabled = true;
+      btn.textContent = '⏳ שולח...';
+      showPopup('popupLoading');
+      try {
+        const res = await fetch('https://us-central1-hamanulan-3bbc7.cloudfunctions.net/saveHilanInvoice', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: form.name.value,
+            phone: form.phone.value,
+            email: form.email.value,
+            id_number: form.id_number.value,
+            service_address: form.service_address.value,
+            date: form.date.value,
+            items: items.map(it => ({ desc: it.desc, price: it.price, qty: it.qty })),
+            payment_method: document.getElementById('paymentMethod').value
+          })
+        });
+        const json = await res.json();
+        closePopup('popupLoading');
+        if (json.ok) {
+          const customerName = encodeURIComponent((form.name.value || '').trim());
+          window.location.href = '/pages/thankyou.html' + (customerName ? '?name=' + customerName : '');
+        } else {
+          showPopup('popupError');
+          btn.disabled = false;
+          btn.textContent = '📨 צור בקשה לחשבונית';
+        }
+      } catch {
+        closePopup('popupLoading');
+        showPopup('popupError');
+        btn.disabled = false;
+        btn.textContent = '📨 צור בקשה לחשבונית';
+      }
+    });
+  </script>
+</body>
+</html>
