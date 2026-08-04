@@ -106,7 +106,7 @@ function initRevealAnimations() {
 // ========== Load and Display Products ==========
 async function initProducts() {
   try {
-    const res = await fetch('https://us-central1-hamanulan-3bbc7.cloudfunctions.net/products');
+    const res = await fetch('/.netlify/functions/products');
     allProducts = await res.json();
     displayProducts(allProducts);
     initBrandFilters();

@@ -284,7 +284,7 @@
       btn.textContent = '⏳ שולח...';
       showPopup('popupLoading');
       try {
-        const res = await fetch('https://us-central1-hamanulan-3bbc7.cloudfunctions.net/saveHilanInvoice', {
+        const res = await fetch('/.netlify/functions/save-hilan-invoice', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

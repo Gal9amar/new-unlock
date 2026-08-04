@@ -84,43 +84,11 @@ const CORS_HEADERS = {
   'Access-Control-Allow-Headers': 'Authorization, Content-Type',
 };
 
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL;
-const FIREBASE_PROJECT_ID = 'hamanulan-3bbc7';
-
-function verifyFirebaseToken(idToken) {
-  return new Promise((resolve, reject) => {
-    const url = `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${process.env.FIREBASE_API_KEY}`;
-    const payload = JSON.stringify({ idToken });
-    const req = https.request(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(payload) }
-    }, (res) => {
-      let data = '';
-      res.on('data', c => data += c);
-      res.on('end', () => {
-        try {
-          const json = JSON.parse(data);
-          if (json.users && json.users[0]) resolve(json.users[0]);
-          else reject(new Error('Invalid token'));
-        } catch { reject(new Error('Parse error')); }
-      });
-    });
-    req.on('error', reject);
-    req.write(payload);
-    req.end();
-  });
-}
-
-async function verifyAdmin(event) {
-  const auth = event.headers['authorization'] || event.headers['Authorization'] || '';
-  if (!auth.startsWith('Bearer ')) return false;
-  try {
-    const user = await verifyFirebaseToken(auth.split('Bearer ')[1]);
-    return user.email === (ADMIN_EMAIL || '').trim();
-  } catch {
-    return false;
-  }
-}
+// Same shared JWT check used by every other admin endpoint (see
+// netlify/functions/_lib/verify-admin.js) — this used to be a third,
+// separate re-implementation that called Firebase's Identity Toolkit
+// REST API directly.
+const { verifyAdmin } = require('./_lib/verify-admin');
 
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS_HEADERS, body: '' };

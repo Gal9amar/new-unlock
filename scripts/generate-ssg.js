@@ -1,17 +1,28 @@
 /**
  * generate-ssg.js — SSG Script for UNLOCK product pages
  * Usage: node scripts/generate-ssg.js
- * Creates: products/{slug}/index.html for every product in Firestore
+ * Creates: products/{slug}/index.html for every product in Turso
  */
 
-const admin = require('firebase-admin');
+const { createClient } = require('@libsql/client');
 const fs    = require('fs');
 const path  = require('path');
+const { loadEnv } = require('./_lib/load-env');
 
-// ── Init Firebase ──────────────────────────────────────────
-const serviceAccount = require('../firebase-service-account.json');
-admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
-const db = admin.firestore();
+// ── Init Turso ─────────────────────────────────────────────
+loadEnv();
+if (!process.env.TURSO_DATABASE_URL) throw new Error('TURSO_DATABASE_URL not set (env var or .env)');
+const db = createClient({ url: process.env.TURSO_DATABASE_URL, authToken: process.env.TURSO_AUTH_TOKEN });
+
+function rowToProduct(r) {
+  return {
+    id: r.id, title: r.title, desc: r.description, image: r.image,
+    price: r.price, discount_price: r.discount_price, price_from: !!r.price_from,
+    brand: r.brand, category: r.category, status: r.status,
+    tags: JSON.parse(r.tags_json || '[]'), phone: r.phone, whatsapp: r.whatsapp,
+    note: r.note, including_vat: r.including_vat, order: r.sort_order,
+  };
+}
 
 // ── Helpers ────────────────────────────────────────────────
 function slugify(title) {
@@ -280,9 +291,9 @@ function buildHTML(product, related, slug) {
 
 // ── Main ───────────────────────────────────────────────────
 async function main() {
-  console.log('📦 Fetching products from Firestore...');
-  const snap = await db.collection('products').orderBy('order').get();
-  const products = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  console.log('📦 Fetching products from Turso...');
+  const res = await db.execute('SELECT * FROM products ORDER BY sort_order');
+  const products = res.rows.map(rowToProduct);
   console.log(`✅ Found ${products.length} products`);
 
   const outDir = path.join(__dirname, '..', 'products');

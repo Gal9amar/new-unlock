@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>תוכנית מעבר: Firebase → Netlify + Turso | UNLOCK</title>
+<meta name="robots" content="noindex, nofollow" />
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#0a1628; --bg2:#0f2247; --bg3:#1a365d;
+    --card:#0f1c33; --border:rgba(212,168,83,0.25);
+    --gold:#d4a853; --gold-light:#e8c87a;
+    --text:#f1f5f9; --muted:#94a3b8; --muted2:#64748b;
+    --green:#16a34a; --red:#ef4444; --blue:#3b82f6;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:'Heebo',Arial,sans-serif; color:var(--text);
+    background:linear-gradient(135deg,var(--bg) 0%,var(--bg2) 45%,var(--bg3) 100%);
+    line-height:1.7;
+  }
+  .wrap{max-width:1000px;margin:0 auto;padding:3rem 1.5rem 6rem;}
+  header.hero{text-align:center;margin-bottom:3rem;}
+  header.hero .badge{
+    display:inline-block;background:rgba(212,168,83,0.12);border:1px solid var(--border);
+    color:var(--gold);padding:0.35rem 1rem;border-radius:20px;font-size:0.8rem;font-weight:700;margin-bottom:1rem;
+  }
+  header.hero h1{font-size:2rem;font-weight:800;margin:0 0 0.6rem;}
+  header.hero h1 span{background:linear-gradient(135deg,var(--gold),var(--gold-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  header.hero p{color:var(--muted);font-size:1rem;max-width:620px;margin:0 auto;}
+
+  nav.toc{
+    background:rgba(255,255,255,0.03); border:1px solid var(--border); border-radius:14px;
+    padding:1.2rem 1.5rem; margin-bottom:2.5rem;
+  }
+  nav.toc h2{font-size:0.85rem;color:var(--gold);text-transform:uppercase;letter-spacing:0.05em;margin:0 0 0.7rem;}
+  nav.toc ol{margin:0;padding-inline-start:1.3rem;columns:2;gap:1.5rem;font-size:0.92rem;}
+  nav.toc a{color:var(--text);text-decoration:none;}
+  nav.toc a:hover{color:var(--gold);}
+
+  section{margin-bottom:3rem;}
+  section > h2{
+    font-size:1.4rem;font-weight:800;margin:0 0 0.3rem;
+    display:flex;align-items:center;gap:0.6rem;
+  }
+  section > h2 .num{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--gold),var(--gold-light));
+    color:var(--bg);font-size:0.95rem;font-weight:800;flex:none;
+  }
+  section > .sub{color:var(--muted);font-size:0.92rem;margin:0 0 1.2rem;}
+
+  .card{
+    background:var(--card); border:1px solid var(--border); border-radius:16px;
+    padding:1.5rem 1.7rem; margin-bottom:1.2rem;
+  }
+  .card h3{margin:0 0 0.6rem;font-size:1.05rem;color:var(--gold-light);}
+  .card p{margin:0 0 0.6rem;color:var(--muted);font-size:0.93rem;}
+  .card p:last-child{margin-bottom:0;}
+
+  table{width:100%;border-collapse:collapse;font-size:0.86rem;}
+  th,td{padding:0.55rem 0.7rem;text-align:right;border-bottom:1px solid rgba(255,255,255,0.08);}
+  th{color:var(--gold);font-weight:700;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.03em;white-space:nowrap;}
+  td{color:var(--text);}
+  td.muted{color:var(--muted);}
+  tr:last-child td{border-bottom:none;}
+  .table-scroll{overflow-x:auto;border-radius:12px;}
+
+  code, .mono{font-family:'JetBrains Mono',monospace;font-size:0.85em;}
+  code{background:rgba(212,168,83,0.1);color:var(--gold-light);padding:0.1em 0.4em;border-radius:5px;}
+
+  .pill{display:inline-block;padding:0.15rem 0.6rem;border-radius:20px;font-size:0.72rem;font-weight:700;}
+  .pill.yes{background:rgba(22,163,74,0.15);color:#4ade80;border:1px solid rgba(22,163,74,0.35);}
+  .pill.no{background:rgba(148,163,184,0.12);color:var(--muted);border:1px solid rgba(148,163,184,0.25);}
+
+  .mermaid{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:14px;padding:1.2rem;}
+
+  .phase{
+    position:relative; padding:1.4rem 1.6rem 1.4rem 1.6rem; margin-bottom:1rem;
+    background:var(--card); border:1px solid var(--border); border-right:4px solid var(--gold);
+    border-radius:14px;
+  }
+  .phase .phase-head{display:flex;align-items:baseline;gap:0.6rem;margin-bottom:0.5rem;flex-wrap:wrap;}
+  .phase .phase-head h3{margin:0;font-size:1.05rem;color:var(--text);}
+  .phase .phase-tag{font-size:0.72rem;font-weight:700;color:var(--gold);background:rgba(212,168,83,0.12);padding:0.2rem 0.6rem;border-radius:20px;}
+  .phase ul{margin:0.4rem 0 0;padding-inline-start:1.2rem;color:var(--muted);font-size:0.9rem;}
+  .phase li{margin-bottom:0.3rem;}
+  .phase .risk{margin-top:0.6rem;font-size:0.82rem;color:#fbbf24;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.25);border-radius:8px;padding:0.5rem 0.8rem;}
+
+  .checklist{list-style:none;margin:0;padding:0;}
+  .checklist li{display:flex;gap:0.6rem;align-items:flex-start;margin-bottom:0.55rem;font-size:0.92rem;color:var(--muted);}
+  .checklist li::before{content:'☐';color:var(--gold);flex:none;font-size:1.1rem;line-height:1.4;}
+
+  .need-list{list-style:none;margin:0;padding:0;counter-reset:need;}
+  .need-list li{counter-increment:need;position:relative;padding-inline-start:2.2rem;margin-bottom:1rem;font-size:0.92rem;color:var(--muted);}
+  .need-list li::before{
+    content:counter(need); position:absolute; right:0; top:0;
+    width:24px;height:24px;border-radius:50%;background:rgba(212,168,83,0.15);border:1px solid var(--border);
+    color:var(--gold);font-weight:800;font-size:0.78rem;display:flex;align-items:center;justify-content:center;
+  }
+  .need-list strong{color:var(--text);}
+
+  footer{text-align:center;color:var(--muted2);font-size:0.8rem;margin-top:3rem;}
+
+  @media (max-width:640px){
+    nav.toc ol{columns:1;}
+    .wrap{padding:2rem 1rem 4rem;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="badge">מסמך אדריכלות · UNLOCK</div>
+    <h1>מעבר מלא מ-<span>Firebase</span> ל-<span>Netlify + Turso</span></h1>
+    <p>תוכנית עבודה מפורטת לאיחוד כל ה-backend (מסד נתונים, פונקציות, אימות) לתוך פייפליין Netlify אחד, ללא downtime לאתר החי.</p>
+  </header>
+
+  <nav class="toc">
+    <h2>תוכן עניינים</h2>
+    <ol>
+      <li><a href="#context">רקע ומטרה</a></li>
+      <li><a href="#inventory">מיפוי המצב הקיים</a></li>
+      <li><a href="#frontend">קבצי Frontend מושפעים</a></li>
+      <li><a href="#schema">סכימת מסד הנתונים (Turso)</a></li>
+      <li><a href="#auth">אימות קוד-במייל</a></li>
+      <li><a href="#phases">שלבי הביצוע</a></li>
+      <li><a href="#needs">מה נדרש ממך</a></li>
+      <li><a href="#tests">בדיקות בכל שלב</a></li>
+    </ol>
+  </nav>
+
+  <section id="context">
+    <h2><span class="num">1</span> רקע ומטרה</h2>
+    <div class="card">
+      <p>האתר <strong>new-unlock</strong> (UNLOCK — גבי המנעולן) מתארח ב-<strong>Netlify</strong> עם deploy אוטומטי מ-GitHub, אבל כל ה-backend רץ על <strong>Firebase</strong>: Firestore (מסד נתונים), 12 Cloud Functions, ו-Firebase Auth (Google Sign-In לפאנל הניהול).</p>
+      <p>זה יוצר <strong>שני צינורות deploy נפרדים</strong> — Netlify לפרונט, ו-<code>firebase deploy</code> ידני לבאקנד — עם ניהול secrets כפול (Netlify env vars מול Firebase Secret Manager), וגם <strong>שלוש מימושים שונים</strong> ונפרדים של בדיקת "האם זה המנהל" בשלושה מקומות שונים בקוד.</p>
+      <p><strong>המטרה:</strong> לאחד הכל לפייפליין אחד (Netlify), עם <strong>Turso</strong> (מסד SQL מבוזר, מבוסס libSQL) כמסד הנתונים, ו<strong>אימות קוד-במייל חד-משתמש</strong> (רק <code>gal9amar@gmail.com</code> יכול להתחבר) במקום Google Sign-In.</p>
+      <p><strong>אילוץ קריטי:</strong> האתר החי תלוי ב-Firebase בכל בקשה כרגע — המעבר <em>חייב</em> לקרות בהדרגה, בלי downtime.</p>
+    </div>
+  </section>
+
+  <section id="inventory">
+    <h2><span class="num">2</span> מיפוי מלא של המצב הקיים</h2>
+    <p class="sub">12 Cloud Functions ב-<code>functions/index.js</code>, נבדקו ואומתו בקוד בפועל.</p>
+    <div class="card table-scroll">
+      <table>
+        <thead>
+          <tr><th>#</th><th>פונקציה</th><th>Method</th><th>קולקציית Firestore</th><th>הגנת admin</th><th>תיאור</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td class="mono">products</td><td>GET</td><td class="mono">products</td><td><span class="pill no">לא</span></td><td class="muted">רשימת מוצרים לחנות</td></tr>
+          <tr><td>2</td><td class="mono">adminProducts</td><td>GET/POST/PUT/DELETE</td><td class="mono">products</td><td><span class="pill yes">כן</span></td><td class="muted">CRUD מוצרים; POST מזיז את כל ה-order הקיים +1</td></tr>
+          <tr><td>3</td><td class="mono">saveSurvey</td><td>POST</td><td class="mono">surveys</td><td><span class="pill no">לא</span></td><td class="muted">שמירת סקר שביעות רצון</td></tr>
+          <tr><td>4</td><td class="mono">saveInvoice</td><td>POST</td><td class="mono">invoices</td><td><span class="pill no">לא</span></td><td class="muted">בקשת חשבונית מ-sendinfo.html, שולח 2 מיילים</td></tr>
+          <tr><td>5</td><td class="mono">markInvoiceIssued</td><td>GET (magic link)</td><td class="mono">invoices/{id}</td><td><span class="pill no">לא*</span></td><td class="muted">מסמן הופקה, שולח מייל ללקוח (*מזהה doc לא-מנוחש)</td></tr>
+          <tr><td>6</td><td class="mono">adminSurveys</td><td>GET/DELETE</td><td class="mono">surveys</td><td><span class="pill yes">כן</span></td><td class="muted">רשימת/מחיקת סקרים</td></tr>
+          <tr><td>7</td><td class="mono">triggerBuild</td><td>POST</td><td class="muted">—</td><td><span class="pill yes">כן</span></td><td class="muted">מפעיל GitHub Action ssg.yml דרך GitHub API</td></tr>
+          <tr><td>8</td><td class="mono">adminStats</td><td>GET</td><td class="mono">surveys, invoices, products</td><td><span class="pill yes">כן</span></td><td class="muted">דשבורד סטטיסטיקות — סורק קולקציות מלאות בזיכרון</td></tr>
+          <tr><td>9</td><td class="mono">notifyInvoice</td><td>POST</td><td class="muted">—</td><td><span class="pill yes">כן</span></td><td class="muted">שליחת מייל "חשבונית מוכנה" ידנית מחדש</td></tr>
+          <tr><td>10</td><td class="mono">adminInvoices</td><td>GET/PATCH/DELETE</td><td class="mono">invoices</td><td><span class="pill yes">כן</span></td><td class="muted">רשימת/עדכון/מחיקת חשבוניות</td></tr>
+          <tr><td>11</td><td class="mono">saveHilanInvoice</td><td>POST</td><td class="mono">hilanInvoices</td><td><span class="pill no">לא</span></td><td class="muted">בקשת חשבונית מפורטת מ-hilan.html (עד 20 שורות)</td></tr>
+          <tr><td>12</td><td class="mono">markHilanInvoiceIssued</td><td>GET (magic link)</td><td class="mono">hilanInvoices/{id}</td><td><span class="pill no">לא</span></td><td class="muted">כמו #5, לחילן, מכבד is_test</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h3>עזרים משותפים בקוד הקיים</h3>
+      <p><code>verifyAdmin()</code> — בודק Firebase ID token מול secret <code>ADMIN_EMAIL</code>.</p>
+      <p><code>cors()</code> — בודק Origin מול <code>ALLOWED_ORIGINS</code>.</p>
+      <p><code>sendMail()</code> — nodemailer + Gmail SMTP עם secret <code>GMAIL_APP_PASSWORD</code>.</p>
+    </div>
+    <div class="card">
+      <h3>תלויות Firebase נוספות (מעבר לפונקציות)</h3>
+      <p><strong><code>scripts/generate-ssg.js</code></strong> — סקריפט CI (<code>.github/workflows/ssg.yml</code>) שמשתמש ב-<code>firebase-admin</code> + service-account JSON כדי לקרוא את <code>products</code> ולבנות סטטית את <code>products/{slug}/index.html</code> + <code>sitemap.xml</code>.</p>
+      <p><strong><code>netlify/functions/update-reviews.js</code></strong> — מימוש <em>שלישי ונפרד</em> של בדיקת admin: קורא ישירות ל-Identity Toolkit REST API (<code>FIREBASE_API_KEY</code> + <code>ADMIN_EMAIL</code> כ-Netlify env vars).</p>
+      <p><strong><code>pages/admin.html</code></strong> — Firebase JS SDK מלא, <code>signInWithPopup</code> מול Google, <code>getIdToken()</code> נשלח כ-Bearer בכל קריאת admin.</p>
+      <p><strong>קונפיג לסגירה בסוף:</strong> <code>firebase.json</code>, <code>.firebaserc</code>, <code>firestore.rules</code>, <code>functions/.env</code>, תלויות Firebase ב-<code>functions/package.json</code> וב-<code>package.json</code> השורש, <code>FIREBASE_SERVICE_ACCOUNT</code> ב-GitHub Actions, <code>FIREBASE_API_KEY</code>/<code>ADMIN_EMAIL</code> הישנים ב-Netlify.</p>
+    </div>
+  </section>
+
+  <section id="frontend">
+    <h2><span class="num">3</span> קבצי Frontend מושפעים</h2>
+    <div class="card table-scroll">
+      <table>
+        <thead><tr><th>קובץ</th><th>קורא ל-</th><th>מטרה</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">scripts/main.js</td><td class="mono">products</td><td class="muted">רשימת מוצרים בדף הבית</td></tr>
+          <tr><td class="mono">scripts/product.js</td><td class="mono">products</td><td class="muted">מציאת מוצר בודד לפי שם</td></tr>
+          <tr><td class="mono">pages/sendinfo.html</td><td class="mono">saveInvoice</td><td class="muted">טופס בקשת חשבונית</td></tr>
+          <tr><td class="mono">pages/survey.html</td><td class="mono">saveSurvey</td><td class="muted">סקר שביעות רצון</td></tr>
+          <tr><td class="mono">pages/hilan.html</td><td class="mono">saveHilanInvoice</td><td class="muted">טופס חשבונית מפורטת לחילן</td></tr>
+          <tr><td class="mono">pages/admin.html</td><td class="muted">6 endpoints + Firebase Auth SDK</td><td class="muted">פאנל ניהול מלא</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="schema">
+    <h2><span class="num">4</span> סכימת מסד הנתונים החדש (Turso / SQL)</h2>
+    <p class="sub">אין קשרי foreign-key אמיתיים בין הטבלאות — בדיוק כמו מבנה ה-Firestore הנוכחי, כל טבלה עצמאית. <code>items_json</code> ו-<code>tags_json</code> נשמרים כטקסט JSON. <code>auth_codes</code> היא טבלה חדשה שלא הייתה קיימת.</p>
+    <div class="mermaid">
+erDiagram
+    PRODUCTS {
+        text id PK
+        text title
+        text description
+        text image
+        real price
+        real discount_price
+        integer price_from
+        text brand
+        text category
+        text status
+        text tags_json
+        text phone
+        text whatsapp
+        text note
+        text including_vat
+        integer sort_order
+    }
+    SURVEYS {
+        text id PK
+        text customer_name
+        text phone
+        text stars
+        text quality
+        text arrival
+        text price
+        text attitude
+        text recommend
+        text comment
+        text created_at
+    }
+    INVOICES {
+        text id PK
+        text name
+        text phone
+        text email
+        text id_number
+        text service_address
+        text message
+        text amount
+        text vat_type
+        text payment_method
+        text midrag_name
+        integer invoice_issued
+        text created_at
+    }
+    HILAN_INVOICES {
+        text id PK
+        text name
+        text phone
+        text email
+        text id_number
+        text service_address
+        text invoice_date
+        text items_json
+        real subtotal
+        real vat
+        real total
+        text payment_method
+        integer invoice_issued
+        integer is_test
+        text created_at
+    }
+    AUTH_CODES {
+        text id PK
+        text email
+        text code_hash
+        text expires_at
+        integer used
+        text created_at
+    }
+    </div>
+  </section>
+
+  <section id="auth">
+    <h2><span class="num">5</span> אימות קוד-במייל (מחליף Google Sign-In)</h2>
+    <p class="sub">יש משתמש מורשה יחיד — <code>gal9amar@gmail.com</code> — ולכן אין צורך בזרימת OAuth מלאה.</p>
+    <div class="phase">
+      <div class="phase-head"><h3>1. <span class="mono">request-code</span></h3><span class="phase-tag">POST · ציבורי</span></div>
+      <ul>
+        <li>אין קלט כתובת מייל — הכתובת המורשית קבועה בצד השרת בלבד</li>
+        <li>Rate-limit (לדוגמה: מקסימום 3 קודים ב-10 דקות), נבדק מול טבלת <code>auth_codes</code></li>
+        <li>יוצר קוד בן 6 ספרות, שומר hash + תוקף (10 דק') בטבלה</li>
+        <li>שולח במייל דרך אותו <code>sendMail</code> (Gmail SMTP)</li>
+      </ul>
+    </div>
+    <div class="phase">
+      <div class="phase-head"><h3>2. <span class="mono">verify-code</span></h3><span class="phase-tag">POST · ציבורי</span></div>
+      <ul>
+        <li>מקבל קוד, בודק מול הרשומה האחרונה שלא פגה ולא שומשה</li>
+        <li>אם תואם → מנפיק JWT חתום (secret <code>AUTH_JWT_SECRET</code>, תוקף 7 ימים)</li>
+        <li>מסמן את הקוד כ-<code>used</code></li>
+      </ul>
+    </div>
+    <div class="phase">
+      <div class="phase-head"><h3>3. מודול <span class="mono">verify-admin</span> משותף</h3><span class="phase-tag">netlify/functions/_lib/</span></div>
+      <ul>
+        <li>מוודא חתימת JWT + תוקף (stateless, בלי DB lookup)</li>
+        <li>כל הפונקציות המוגנות ישתמשו באותו מודול — מאחד את שלושת המימושים הקיימים היום למקום אחד</li>
+      </ul>
+    </div>
+    <div class="phase">
+      <div class="phase-head"><h3>4. <span class="mono">admin.html</span></h3><span class="phase-tag">Frontend</span></div>
+      <ul>
+        <li>מחליף מסך Google Sign-In בכפתור "שלח קוד אימות" → שדה 6 ספרות → "אמת"</li>
+        <li>שומר JWT ב-<code>localStorage</code>, שולח כ-<code>Authorization: Bearer &lt;jwt&gt;</code> בכל קריאה</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="phases">
+    <h2><span class="num">6</span> שלבי הביצוע (בלי downtime)</h2>
+
+    <div class="phase">
+      <div class="phase-head"><h3>שלב 0 — מסמך אדריכלות</h3><span class="phase-tag">מיידי</span></div>
+      <ul><li>המסמך הזה — קובץ HTML חי בפרויקט לחזור אליו לאורך כל המעבר</li></ul>
+    </div>
+
+    <div class="phase">
+      <div class="phase-head"><h3>שלב 1 — תשתית</h3><span class="phase-tag">לא נוגע בפרודקשן</span></div>
+      <ul>
+        <li>יצירת בסיס נתונים ב-Turso</li>
+        <li>יצירת הסכימה (5 הטבלאות) + סקריפט הגירה חד-פעמי <code>scripts/migrate-to-turso.js</code> שקורא מ-Firestore החי וכותב ל-Turso</li>
+        <li>אימות ידני שכמות השורות בכל טבלה תואמת לכמות המסמכים ב-Firestore</li>
+      </ul>
+      <div class="risk">⚠ דורש ממך: חשבון Turso + מסירת <code>TURSO_DATABASE_URL</code> ו-<code>TURSO_AUTH_TOKEN</code></div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-head"><h3>שלב 2 — Netlify Functions חדשות</h3><span class="phase-tag">בנייה בלבד</span></div>
+      <ul>
+        <li>בניית כל 12 הפונקציות המקבילות תחת <code>netlify/functions/</code></li>
+        <li><code>adminStats</code> ישודרג לשאילתות <code>COUNT</code>/<code>SUM</code> אמיתיות ב-SQL במקום סריקה מלאה בזיכרון</li>
+        <li>בדיקה ידנית (curl) מול <code>/.netlify/functions/...</code> — הפרונט עדיין קורא ל-Firebase, שום דבר לא נשבר</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <div class="phase-head"><h3>שלב 3 — מעבר Auth</h3><span class="phase-tag">ראשון לפרונט</span></div>
+      <ul>
+        <li>עדכון <code>admin.html</code> למסך login חדש (קוד-במייל)</li>
+        <li>בדיקה מלאה שההתחברות עובדת לפני שנוגעים בשאר הדפים</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <div class="phase-head"><h3>שלב 4 — Endpoints ציבוריים</h3><span class="phase-tag">דף אחרי דף</span></div>
+      <ul>
+        <li>סדר סיכון עולה: <code>products</code> (main.js, product.js) ← <code>saveSurvey</code> ← <code>saveInvoice</code>+<code>markInvoiceIssued</code> ← <code>saveHilanInvoice</code>+<code>markHilanInvoiceIssued</code></li>
+        <li>כל דף נבדק בדפדפן בפועל לפני המעבר לדף הבא</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <div class="phase-head"><h3>שלב 5 — Endpoints של Admin</h3><span class="phase-tag">בפאנל בפועל</span></div>
+      <ul>
+        <li><code>adminProducts</code>, <code>adminSurveys</code>, <code>adminInvoices</code>, <code>notifyInvoice</code>, <code>adminStats</code>, <code>triggerBuild</code></li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <div class="phase-head"><h3>שלב 6 — SSG + CI</h3><span class="phase-tag">GitHub Actions</span></div>
+      <ul>
+        <li>עדכון <code>generate-ssg.js</code> לקרוא מ-Turso (<code>@libsql/client</code>) במקום Firestore</li>
+        <li>עדכון <code>ssg.yml</code> להזריק <code>TURSO_DATABASE_URL</code>/<code>TURSO_AUTH_TOKEN</code> במקום <code>FIREBASE_SERVICE_ACCOUNT</code></li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <div class="phase-head"><h3>שלב 7 — ניקוי וסגירה</h3><span class="phase-tag">אחרי תקופת אימות</span></div>
+      <ul>
+        <li>הסרת <code>firebase.json</code>, <code>.firebaserc</code>, <code>firestore.rules</code>, תיקיית <code>functions/</code> כולה</li>
+        <li>הסרת תלות <code>firebase-admin</code> מ-<code>package.json</code> השורש</li>
+        <li>עדכון <code>CLAUDE.md</code> (כבר היום לא מדויק — מתאר Web3Forms שלא בשימוש בפועל)</li>
+        <li>מחיקת פרויקט ה-Firebase עצמו (<code>hamanulan-3bbc7</code>) ב-Firebase Console</li>
+      </ul>
+      <div class="risk">⚠ מומלץ כמה ימים של שימוש אמיתי בגרסה החדשה לפני שלב זה</div>
+    </div>
+  </section>
+
+  <section id="needs">
+    <h2><span class="num">7</span> מה נדרש ממך כדי להתחיל</h2>
+    <ol class="need-list">
+      <li><strong>חשבון Turso</strong> — אם אין, יצירה ב-turso.tech (חינמי בהיקף הזה), ואז מסירת <code>TURSO_DATABASE_URL</code> + <code>TURSO_AUTH_TOKEN</code>.</li>
+      <li><strong>גישה ל-Netlify env vars</strong> — בניגוד ל-Firebase (שם היה חיבור CLI ישיר), אין דרך אוטומטית להגדיר משתני סביבה ב-Netlify — תצטרך להוסיף בעצמך לפי הוראות מדויקות, או לספק Netlify auth token אם תרצה שזה ייעשה ישירות.</li>
+      <li><strong>אישור רצף השלבים</strong> — לא לדלג ישר ל"סגירת Firebase" לפני שהחלופה מאומתת במלואה.</li>
+    </ol>
+  </section>
+
+  <section id="tests">
+    <h2><span class="num">8</span> בדיקות בסיום כל שלב</h2>
+    <div class="card">
+      <ul class="checklist">
+        <li><strong>שלב 1:</strong> השוואת ספירת רשומות Firestore מול Turso לכל טבלה</li>
+        <li><strong>שלב 2:</strong> קריאה ידנית (curl) לכל endpoint חדש עם/בלי טוקן תקין, לוודא קודי תגובה נכונים</li>
+        <li><strong>שלב 3:</strong> התחברות מלאה ל-admin.html מקוד ועד session פעיל</li>
+        <li><strong>שלבים 4-5:</strong> בכל דף שעבר — מילוי טופס אמיתי בדפדפן, אימות שהנתון נשמר והמייל יצא</li>
+        <li><strong>שלב 6:</strong> הרצת <code>node scripts/generate-ssg.js</code> ידנית ואימות שהעמודים שנוצרים זהים בתוכן</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>נוצר כמסמך אדריכלות פנימי לפרויקט new-unlock · לא חלק מהאתר הציבורי</footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, theme: 'dark', securityLevel: 'loose' });
+</script>
+</body>
+</html>

@@ -205,7 +205,7 @@
         const formData = new FormData(e.target);
         const [web3Res] = await Promise.all([
           fetch('https://api.web3forms.com/submit',{method:'POST',body:formData}),
-          fetch('https://us-central1-hamanulan-3bbc7.cloudfunctions.net/saveSurvey',{
+          fetch('/.netlify/functions/save-survey',{
             method:'POST',
             headers:{'Content-Type':'application/json'},
             body:JSON.stringify({

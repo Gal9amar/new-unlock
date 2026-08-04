@@ -1,8 +1,15 @@
 firebase-service-account.json
 functions/.env
 functions/.env.*
+.env
+.env.*
+.data/
 node_modules/
 functions/node_modules/
 scripts-temp/
 .claude/settings.local.json
 /.claude
+
+# Local Netlify folder
+.netlify
+deno.lock
