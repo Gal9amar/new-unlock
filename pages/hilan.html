@@ -82,13 +82,13 @@
 
             <!-- Line items -->
             <div class="field" style="margin-top:0.5rem">
-              <label style="font-weight:700;font-size:0.9rem">פירוט הפריטים <span class="req">*</span></label>
+              <label style="font-weight:700;font-size:0.9rem">פירוט השירותים <span class="req">*</span></label>
               <div class="items-table-wrap">
                 <table class="items-table">
                   <thead>
                     <tr>
                       <th class="col-num">#</th>
-                      <th class="col-desc">פירוט</th>
+                      <th class="col-desc">תיאור השירות</th>
                       <th class="col-price">מחיר יח'</th>
                       <th class="col-qty">כמות</th>
                       <th class="col-total">סה"כ</th>
@@ -107,7 +107,7 @@
               <div class="totals-row"><span>סה"כ כולל מע"מ</span><span id="sumTotal">0.00 ₪</span></div>
             </div>
 
-            <input type="hidden" name="payment_method" id="paymentMethod" value="העברה בנקאית"/>
+            <input type="hidden" name="payment_method" id="paymentMethod" value="המחאה"/>
 
             <button type="submit" class="submit-btn" id="submitBtn">📨 צור בקשה לחשבונית</button>
             <p class="form-note">הפרטים ישלחו ישירות לגבי · ללא שמירה במאגרי צד שלישי</p>
@@ -201,7 +201,7 @@
       const row = document.createElement('tr');
       row.innerHTML = `
         <td class="col-num"></td>
-        <td class="col-desc"><textarea data-field="desc" rows="1" placeholder="תיאור הפריט / השירות"></textarea></td>
+        <td class="col-desc"><textarea data-field="desc" rows="1" placeholder="תיאור השירות"></textarea></td>
         <td class="col-price"><input type="text" inputmode="decimal" pattern="[0-9]*\\.?[0-9]*" data-field="price" placeholder="0.00"/></td>
         <td class="col-qty"><input type="text" inputmode="decimal" pattern="[0-9]*\\.?[0-9]*" data-field="qty" placeholder="1"/></td>
         <td class="col-total item-line-total">0.00 ₪</td>

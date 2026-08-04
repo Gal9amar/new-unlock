@@ -57,7 +57,7 @@ html.dark .page-wrapper { background: linear-gradient(135deg, #0a1628 0%, #0f224
 }
 
 .form-container {
-  width: 80%;
+  width: 90%;
   max-width: 1100px;
   margin: 0 auto;
 }
@@ -272,15 +272,16 @@ form.hidden { display: none; }
 .success-screen h2 {
   font-size: 1.4rem;
   font-weight: 800;
-  color: #0f172a;
+  background: linear-gradient(135deg, #d4a853, #e8c87a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
-html.dark .success-screen h2 { color: #f1f5f9; }
 .success-screen p {
-  color: #64748b;
+  color: rgba(255,255,255,0.6);
   font-size: 0.9rem;
   line-height: 1.6;
 }
-html.dark .success-screen p { color: #94a3b8; }
 .back-btn {
   display: inline-block;
   margin-top: 0.5rem;

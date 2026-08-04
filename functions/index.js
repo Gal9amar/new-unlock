@@ -530,7 +530,7 @@ function hilanInvoiceHtml(inv) {
       <thead>
         <tr style="background:#f1f5f9;">
           <td style="padding:9px 10px;font-size:11px;color:#64748b;font-weight:700;">#</td>
-          <td style="padding:9px 10px;font-size:11px;color:#64748b;font-weight:700;">פירוט</td>
+          <td style="padding:9px 10px;font-size:11px;color:#64748b;font-weight:700;">תיאור השירות</td>
           <td style="padding:9px 10px;font-size:11px;color:#64748b;font-weight:700;text-align:center;">מחיר יח'</td>
           <td style="padding:9px 10px;font-size:11px;color:#64748b;font-weight:700;text-align:center;">כמות</td>
           <td style="padding:9px 10px;font-size:11px;color:#64748b;font-weight:700;text-align:left;">סה"כ</td>
