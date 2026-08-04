@@ -10,6 +10,18 @@ const ALLOWED_ORIGINS_STR = defineString('ALLOWED_ORIGINS', {
   default: 'https://www.hamanulan.com,https://hamanulan.com',
 });
 
+// Requests whose Origin isn't one of the real production domains (e.g. localhost,
+// 127.0.0.1, file://, a preview URL) are treated as non-production traffic — the
+// hilan customer email is redirected to TEST_RECIPIENT_EMAIL instead of the real
+// recipient, so testing from a local/dev environment never reaches real customers.
+const TEST_RECIPIENT_EMAIL = 'gal9amar@gmail.com';
+function isProdOrigin(req) {
+  const origin = req.headers.origin;
+  if (!origin) return false;
+  const allowed = ALLOWED_ORIGINS_STR.value().split(',').map(s => s.trim());
+  return allowed.includes(origin);
+}
+
 admin.initializeApp();
 const db = admin.firestore();
 
@@ -597,6 +609,7 @@ exports.saveHilanInvoice = onRequest({ cors: true, secrets: [ADMIN_EMAIL, GMAIL_
       total,
       payment_method:  b.payment_method,
       invoice_issued:  false,
+      is_test:         !isProdOrigin(req),
       createdAt: admin.firestore.FieldValue.serverTimestamp()
     };
     const ref = await db.collection('hilanInvoices').add(data);
@@ -623,18 +636,14 @@ exports.saveHilanInvoice = onRequest({ cors: true, secrets: [ADMIN_EMAIL, GMAIL_
         <tr>
           <td style="padding:28px 40px 0;text-align:center;">
             <div style="display:inline-block;background:#eff6ff;border:1px solid #bfdbfe;border-radius:50px;padding:10px 24px;">
-              <span style="color:#1d4ed8;font-size:15px;font-weight:600;">✓ &nbsp;התקבלה בקשה מ-${data.name}</span>
+              <span style="color:#1d4ed8;font-size:15px;font-weight:600;">✓ &nbsp;הפרטים התקבלו בהצלחה!</span>
             </div>
           </td>
         </tr>
         <tr>
-          <td style="padding:28px 40px 32px;">
+          <td style="padding:28px 40px 32px;text-align:center;">
             <p style="margin:0 0 24px;font-size:15px;color:#64748b;line-height:1.8;">
-              קיבלנו את בקשתך להפקת חשבונית. ניצור עבורה את החשבונית בהקדם האפשרי ונשלח אותה לתיבת המייל שלך.
-            </p>
-            ${invoiceTableHtml}
-            <p style="margin:0 0 24px;font-size:15px;color:#64748b;line-height:1.8;">
-              לכל שאלה אנחנו זמינים עבורך 24/7 😊
+              תודה רבה! קיבלנו את הפרטים בהצלחה. חשבונית דיגיטלית תונפק ותישלח אליך במהירות האפשרית.
             </p>
             <table width="100%" cellpadding="0" cellspacing="0">
               <tr>
@@ -709,18 +718,22 @@ exports.saveHilanInvoice = onRequest({ cors: true, secrets: [ADMIN_EMAIL, GMAIL_
 </body>
 </html>`;
 
+    const isTestMode = data.is_test;
+    const clientTo = isTestMode ? TEST_RECIPIENT_EMAIL : data.email;
+    const testPrefix = isTestMode ? '[TEST] ' : '';
+
     await Promise.all([
       sendMail(appPassword, {
         from: '"UNLOCK מנעולנות" <unlock.yavne@gmail.com>',
-        to: data.email,
-        subject: `✓ בקשת חשבונית התקבלה — ₪${data.total.toFixed(2)}`,
+        to: clientTo,
+        subject: `${testPrefix}✓ בקשת חשבונית התקבלה — ₪${data.total.toFixed(2)}`,
         html: clientHtml,
         text: `שלום ${data.name}, בקשתך לחשבונית בסך ₪${data.total.toFixed(2)} התקבלה. ניצור את החשבונית בהקדם. לשאלות: 053-388-8381`,
       }),
       sendMail(appPassword, {
         from: '"UNLOCK מנעולנות" <unlock.yavne@gmail.com>',
         to: adminEmail,
-        subject: `📄 בקשת חשבונית חדשה — ${data.name} (₪${data.total.toFixed(2)})`,
+        subject: `${testPrefix}📄 בקשת חשבונית חדשה — ${data.name} (₪${data.total.toFixed(2)})`,
         html: adminHtml,
         text: `בקשה חדשה מ-${data.name} (${data.phone})\nסה"כ כולל מע"מ: ₪${data.total.toFixed(2)}\nלהנפקה: ${markUrl}`,
       }),
@@ -805,10 +818,11 @@ exports.markHilanInvoiceIssued = onRequest({ cors: false, secrets: [ADMIN_EMAIL,
 </body>
 </html>`;
 
+    const isTestMode = inv.is_test;
     await sendMail(appPassword, {
       from: '"UNLOCK מנעולנות" <unlock.yavne@gmail.com>',
-      to: inv.email,
-      subject: '✓ החשבונית שלך הופקה בהצלחה – UNLOCK מנעולנות',
+      to: isTestMode ? TEST_RECIPIENT_EMAIL : inv.email,
+      subject: `${isTestMode ? '[TEST] ' : ''}✓ החשבונית שלך הופקה בהצלחה – UNLOCK מנעולנות`,
       html: htmlBody,
       text: `שלום ${inv.name}, החשבונית הופקה בהצלחה. תודה שבחרת ב-UNLOCK מנעולנות! לשאלות: 053-388-8381`,
     });
