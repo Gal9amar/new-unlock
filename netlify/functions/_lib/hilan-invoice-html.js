@@ -1,3 +1,5 @@
+const { escapeHtml } = require('./html-escape');
+
 function formatDateHe(iso) {
   const [y, m, d] = String(iso || '').split('-');
   return (y && m && d) ? `${d}/${m}/${y}` : (iso || '');
@@ -7,7 +9,7 @@ function hilanItemRowsHtml(items) {
   return items.map((it, i) => `
     <tr>
       <td style="padding:10px;font-size:13px;color:#1e293b;border-bottom:1px solid #e2e8f0;">${i + 1}</td>
-      <td style="padding:10px;font-size:13px;color:#1e293b;border-bottom:1px solid #e2e8f0;">${it.desc}</td>
+      <td style="padding:10px;font-size:13px;color:#1e293b;border-bottom:1px solid #e2e8f0;">${escapeHtml(it.desc)}</td>
       <td style="padding:10px;font-size:13px;color:#1e293b;border-bottom:1px solid #e2e8f0;text-align:center;white-space:nowrap;">₪${it.price.toFixed(2)}</td>
       <td style="padding:10px;font-size:13px;color:#1e293b;border-bottom:1px solid #e2e8f0;text-align:center;">${it.qty}</td>
       <td style="padding:10px;font-size:13px;color:#1e293b;border-bottom:1px solid #e2e8f0;text-align:left;font-weight:700;white-space:nowrap;">₪${it.total.toFixed(2)}</td>
@@ -19,10 +21,10 @@ function hilanInvoiceHtml(inv) {
     <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0;margin-bottom:20px;">
       <tr><td style="padding:18px 20px;">
         ${[
-          ['לכבוד', inv.name],
+          ['לכבוד', escapeHtml(inv.name)],
           ['תאריך', formatDateHe(inv.date)],
-          ['כתובת', inv.service_address],
-          inv.id_number ? ['ח.פ / ת.ז', inv.id_number] : null,
+          ['כתובת', escapeHtml(inv.service_address)],
+          inv.id_number ? ['ח.פ / ת.ז', escapeHtml(inv.id_number)] : null,
         ].filter(Boolean).map(([label, val]) => `
           <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:6px;">
             <tr>

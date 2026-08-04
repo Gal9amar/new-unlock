@@ -3,10 +3,12 @@ const { getDb } = require('./_lib/db');
 const { sendMail } = require('./_lib/mail');
 const { messageBlocksHtml } = require('./_lib/messages');
 const { json, preflight, str } = require('./_lib/http');
+const { escapeHtml } = require('./_lib/html-escape');
+const { SITE_URL, VALID_PAYMENT } = require('./_lib/constants');
+const { TEST_RECIPIENT_EMAIL, isProdOrigin } = require('./_lib/test-mode');
+const { emailWrapper, emailHeader, emailBadge, ctaButton, ctaRow, footerFull, footerAdmin } = require('./_lib/email-shell');
 
 const VALID_VAT = ['כולל מע"מ', 'לפני מע"מ'];
-const VALID_PAYMENT = ['ביט', 'המחאה', 'העברה בנקאית', 'מזומן'];
-const SITE_URL = 'https://www.hamanulan.com';
 
 // Public: mirrors functions/index.js's `saveInvoice` export (sendinfo.html flow).
 exports.handler = async (event) => {
@@ -37,46 +39,41 @@ exports.handler = async (event) => {
     vat_type: b.vat_type,
     payment_method: b.payment_method,
     midrag_name: str(b.midrag_name, 100),
+    is_test: !isProdOrigin(event),
   };
 
   try {
     const db = getDb();
     await db.execute({
-      sql: `INSERT INTO invoices (id, name, phone, email, id_number, service_address, message, amount, vat_type, payment_method, midrag_name, invoice_issued, created_at)
-            VALUES (?,?,?,?,?,?,?,?,?,?,?,0,?)`,
+      sql: `INSERT INTO invoices (id, name, phone, email, id_number, service_address, message, amount, vat_type, payment_method, midrag_name, invoice_issued, is_test, created_at)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,0,?,?)`,
       args: [
         data.id, data.name, data.phone, data.email, data.id_number, data.service_address,
         data.message, data.amount, data.vat_type, data.payment_method, data.midrag_name,
-        new Date().toISOString(),
+        data.is_test ? 1 : 0, new Date().toISOString(),
       ],
     });
 
     const adminEmail = (process.env.ADMIN_EMAIL || '').trim();
     const markUrl = `${SITE_URL}/.netlify/functions/mark-invoice-issued?id=${data.id}`;
+    const testPrefix = data.is_test ? '[TEST] ' : '';
+    const clientTo = data.is_test ? TEST_RECIPIENT_EMAIL : data.email;
 
-    const clientHtml = `<!DOCTYPE html>
-<html dir="rtl" lang="he">
-<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/></head>
-<body style="margin:0;padding:0;background:#f5f7fa;font-family:'Segoe UI',Arial,sans-serif;direction:rtl;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f7fa;padding:36px 16px;">
-    <tr><td align="center">
-      <table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;background:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.07);">
-        <tr>
-          <td style="background:#ffffff;padding:36px 40px 24px;text-align:center;border-bottom:1px solid #eef0f3;">
-            <img src="${SITE_URL}/images/footer-logo.png" alt="UNLOCK" width="140" style="display:block;margin:0 auto 12px;"/>
-            <p style="margin:0;color:#94a3b8;font-size:13px;letter-spacing:1px;">שירותי מנעולנות מקצועיים · 24/7</p>
-          </td>
-        </tr>
-        <tr>
-          <td style="padding:28px 40px 0;text-align:center;">
-            <div style="display:inline-block;background:#eff6ff;border:1px solid #bfdbfe;border-radius:50px;padding:10px 24px;">
-              <span style="color:#1d4ed8;font-size:15px;font-weight:600;">✓ &nbsp;פנייתך התקבלה בהצלחה!</span>
-            </div>
-          </td>
-        </tr>
+    const name = escapeHtml(data.name);
+    const phone = escapeHtml(data.phone);
+    const email = escapeHtml(data.email);
+    const idNumber = escapeHtml(data.id_number);
+    const serviceAddress = escapeHtml(data.service_address);
+    const midragName = escapeHtml(data.midrag_name);
+    const amountLabel = `₪${escapeHtml(data.amount)} ${escapeHtml(data.vat_type)}`;
+    const paymentMethod = escapeHtml(data.payment_method);
+
+    const clientHtml = emailWrapper(560, `
+        ${emailHeader({ logoWidth: 140, tagline: 'שירותי מנעולנות מקצועיים · 24/7' })}
+        ${emailBadge({ bg: '#eff6ff', border: '#bfdbfe', color: '#1d4ed8', text: '✓ &nbsp;פנייתך התקבלה בהצלחה!' })}
         <tr>
           <td style="padding:28px 40px 32px;">
-            <p style="margin:0 0 6px;font-size:21px;font-weight:700;color:#1e293b;">שלום ${data.name} 😊</p>
+            <p style="margin:0 0 6px;font-size:21px;font-weight:700;color:#1e293b;">שלום ${name} 😊</p>
             <p style="margin:0 0 24px;font-size:15px;color:#64748b;line-height:1.8;">
               קיבלנו את בקשתך להפקת חשבונית.<br/>
               ניצור עבורך את החשבונית בהקדם האפשרי ונשלח אותה ישירות לתיבת המייל שלך.
@@ -86,12 +83,12 @@ exports.handler = async (event) => {
             <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0;margin-bottom:28px;">
               <tr><td style="padding:20px 24px;">
                 ${[
-                  ['שם מלא', data.name],
-                  ['טלפון', data.phone],
-                  ['כתובת שירות', data.service_address],
+                  ['שם מלא', name],
+                  ['טלפון', phone],
+                  ['כתובת שירות', serviceAddress],
                   ['תיאור השירות', messageBlocksHtml(data.message)],
-                  ['סכום', `₪${data.amount} ${data.vat_type}`],
-                  ['אמצעי תשלום', data.payment_method],
+                  ['סכום', amountLabel],
+                  ['אמצעי תשלום', paymentMethod],
                 ].map(([label, val]) => `
                   <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:10px;">
                     <tr>
@@ -120,60 +117,31 @@ exports.handler = async (event) => {
             <p style="margin:0 0 24px;font-size:15px;color:#64748b;line-height:1.8;">
               לכל שאלה אנחנו זמינים עבורך 24/7 😊
             </p>
-            <table width="100%" cellpadding="0" cellspacing="0">
-              <tr>
-                <td align="center" style="padding-bottom:12px;">
-                  <a href="tel:0533888381" style="display:inline-block;width:100%;max-width:320px;padding:13px 0;background:#f8f4ec;color:#92650a;font-size:15px;font-weight:700;text-decoration:none;border-radius:10px;text-align:center;border:1px solid #e9d8b4;box-sizing:border-box;">📞 &nbsp;053-388-8381</a>
-                </td>
-              </tr>
-              <tr>
-                <td align="center">
-                  <a href="https://wa.me/972533888381" style="display:inline-block;width:100%;max-width:320px;padding:13px 0;background:#f0fdf4;color:#15803d;font-size:15px;font-weight:700;text-decoration:none;border-radius:10px;text-align:center;border:1px solid #bbf7d0;box-sizing:border-box;">💬 &nbsp;שלח לנו וואטסאפ</a>
-                </td>
-              </tr>
-            </table>
+            ${ctaRow([
+              ctaButton('phone', 'tel:0533888381', '📞 &nbsp;053-388-8381'),
+              ctaButton('whatsapp', 'https://wa.me/972533888381', '💬 &nbsp;שלח לנו וואטסאפ'),
+            ])}
           </td>
         </tr>
-        <tr>
-          <td style="background:#f8fafc;border-top:1px solid #eef0f3;padding:20px 40px;text-align:center;">
-            <p style="margin:0 0 4px;color:#94a3b8;font-size:13px;font-weight:600;">UNLOCK מנעולנות | גבי המנעולן</p>
-            <p style="margin:0;color:#cbd5e1;font-size:12px;">שירות 24/7 · אזור המרכז והדרום · <a href="${SITE_URL}" style="color:#94a3b8;text-decoration:none;">hamanulan.com</a></p>
-          </td>
-        </tr>
-      </table>
-    </td></tr>
-  </table>
-</body>
-</html>`;
+        ${footerFull()}`);
 
-    const adminHtml = `<!DOCTYPE html>
-<html dir="rtl" lang="he">
-<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/></head>
-<body style="margin:0;padding:0;background:#f5f7fa;font-family:'Segoe UI',Arial,sans-serif;direction:rtl;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f7fa;padding:36px 16px;">
-    <tr><td align="center">
-      <table width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;background:#ffffff;border-radius:20px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.07);">
-        <tr>
-          <td style="background:#ffffff;padding:28px 40px 20px;text-align:center;border-bottom:1px solid #eef0f3;">
-            <img src="${SITE_URL}/images/footer-logo.png" alt="UNLOCK" width="120" style="display:block;margin:0 auto 10px;"/>
-            <p style="margin:0;color:#64748b;font-size:14px;font-weight:600;">בקשת חשבונית חדשה 📄</p>
-          </td>
-        </tr>
+    const adminHtml = emailWrapper(560, `
+        ${emailHeader({ logoWidth: 120, tagline: 'בקשת חשבונית חדשה 📄' })}
         <tr>
           <td style="padding:28px 40px 32px;">
-            <p style="margin:0 0 20px;font-size:18px;font-weight:700;color:#1e293b;">התקבלה בקשה מ-${data.name}</p>
+            <p style="margin:0 0 20px;font-size:18px;font-weight:700;color:#1e293b;">התקבלה בקשה מ-${name}</p>
             <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0;margin-bottom:28px;">
               <tr><td style="padding:20px 24px;">
                 ${[
-                  ['שם', data.name, null],
-                  ['טלפון', data.phone, `tel:${data.phone}`],
-                  ['מייל', data.email, `mailto:${data.email}`],
-                  data.id_number ? ['ח.פ / ת.ז', data.id_number, null] : null,
-                  ['כתובת', data.service_address, null],
-                  ['שירות', data.message, null],
-                  ['סכום', `₪${data.amount} ${data.vat_type}`, null],
-                  ['תשלום', data.payment_method, null],
-                  data.midrag_name ? ['מידרג', data.midrag_name, null] : null,
+                  ['שם', name, null],
+                  ['טלפון', phone, `tel:${phone}`],
+                  ['מייל', email, `mailto:${email}`],
+                  data.id_number ? ['ח.פ / ת.ז', idNumber, null] : null,
+                  ['כתובת', serviceAddress, null],
+                  ['שירות', messageBlocksHtml(data.message), null],
+                  ['סכום', amountLabel, null],
+                  ['תשלום', paymentMethod, null],
+                  data.midrag_name ? ['מידרג', midragName, null] : null,
                 ].filter(Boolean).map(([label, val, link]) => `
                   <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:8px;">
                     <tr>
@@ -188,38 +156,23 @@ exports.handler = async (event) => {
                   </table>`).join('')}
               </td></tr>
             </table>
-            <table width="100%" cellpadding="0" cellspacing="0">
-              <tr>
-                <td align="center">
-                  <a href="${markUrl}" style="display:inline-block;width:100%;max-width:340px;padding:16px 0;background:#16a34a;color:#ffffff;font-size:17px;font-weight:700;text-decoration:none;border-radius:12px;text-align:center;box-sizing:border-box;">✅ &nbsp;הופקה חשבונית — שלח ללקוח אישור</a>
-                </td>
-              </tr>
-            </table>
+            ${ctaRow([ctaButton('success', markUrl, '✅ &nbsp;הופקה חשבונית — שלח ללקוח אישור', { padding: '16px 0' })])}
           </td>
         </tr>
-        <tr>
-          <td style="background:#f8fafc;border-top:1px solid #eef0f3;padding:16px 40px;text-align:center;">
-            <p style="margin:0;color:#cbd5e1;font-size:12px;">UNLOCK Admin · <a href="${SITE_URL}/pages/admin.html" style="color:#94a3b8;text-decoration:none;">כניסה לפאנל</a></p>
-          </td>
-        </tr>
-      </table>
-    </td></tr>
-  </table>
-</body>
-</html>`;
+        ${footerAdmin(`UNLOCK Admin · <a href="${SITE_URL}/pages/admin.html" style="color:#94a3b8;text-decoration:none;">כניסה לפאנל</a>`)}`);
 
     await Promise.all([
       sendMail({
         from: '"UNLOCK מנעולנות" <unlock.yavne@gmail.com>',
-        to: data.email,
-        subject: '✓ פנייתך התקבלה – UNLOCK מנעולנות',
+        to: clientTo,
+        subject: `${testPrefix}✓ פנייתך התקבלה – UNLOCK מנעולנות`,
         html: clientHtml,
         text: `שלום ${data.name}, פנייתך התקבלה. ניצור את החשבונית בהקדם. לשאלות: 053-388-8381`,
       }),
       sendMail({
         from: '"UNLOCK מנעולנות" <unlock.yavne@gmail.com>',
         to: adminEmail,
-        subject: `📄 בקשת חשבונית חדשה – ${data.name}`,
+        subject: `${testPrefix}📄 בקשת חשבונית חדשה – ${data.name}`,
         html: adminHtml,
         text: `בקשה חדשה מ-${data.name} (${data.phone})\nסכום: ₪${data.amount}\nלהנפקה: ${markUrl}`,
       }),

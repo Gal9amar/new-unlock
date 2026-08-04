@@ -1,9 +1,15 @@
 const https = require('https');
+const { json, preflight } = require('./_lib/http');
+const { verifyAdmin } = require('./_lib/verify-admin');
 
 const MIDRAG_URL = 'https://www.midrag.co.il/SpCard/Sp/138646?areaId=7&serviceId=1993&sortByCategory=343&isGeneric=false';
 const GITHUB_REPO = 'Gal9amar/new-unlock';
 const FILE_PATH = 'data/reviews.json';
 
+// Buffers raw chunks and decodes once at the end instead of `data += chunk`,
+// which corrupts multi-byte UTF-8 (e.g. Hebrew review text) whenever a
+// character lands on a network chunk boundary — see migrate-to-turso.js for
+// the same bug found and fixed there.
 function fetchUrl(url) {
   return new Promise((resolve, reject) => {
     const req = https.request(url, {
@@ -16,9 +22,9 @@ function fetchUrl(url) {
       if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
         return fetchUrl(res.headers.location).then(resolve).catch(reject);
       }
-      let data = '';
-      res.on('data', c => data += c);
-      res.on('end', () => resolve({ status: res.statusCode, body: data }));
+      const chunks = [];
+      res.on('data', c => chunks.push(c));
+      res.on('end', () => resolve({ status: res.statusCode, body: Buffer.concat(chunks).toString('utf8') }));
     });
     req.on('error', reject);
     req.end();
@@ -40,9 +46,9 @@ function githubRequest(method, path, token, body) {
         ...(payload ? { 'Content-Length': Buffer.byteLength(payload) } : {})
       }
     }, (res) => {
-      let data = '';
-      res.on('data', c => data += c);
-      res.on('end', () => resolve({ status: res.statusCode, body: JSON.parse(data || '{}') }));
+      const chunks = [];
+      res.on('data', c => chunks.push(c));
+      res.on('end', () => resolve({ status: res.statusCode, body: JSON.parse(Buffer.concat(chunks).toString('utf8') || '{}') }));
     });
     req.on('error', reject);
     if (payload) req.write(payload);
@@ -78,34 +84,25 @@ function parseReviews(html) {
   };
 }
 
-const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Authorization, Content-Type',
-};
-
-// Same shared JWT check used by every other admin endpoint (see
+// Uses the same shared JWT check as every other admin endpoint (see
 // netlify/functions/_lib/verify-admin.js) — this used to be a third,
 // separate re-implementation that called Firebase's Identity Toolkit
 // REST API directly.
-const { verifyAdmin } = require('./_lib/verify-admin');
-
 exports.handler = async (event) => {
-  if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: CORS_HEADERS, body: '' };
-  if (event.httpMethod !== 'POST') return { statusCode: 405, headers: CORS_HEADERS, body: 'Method Not Allowed' };
+  if (event.httpMethod === 'OPTIONS') return preflight();
+  if (event.httpMethod !== 'POST') return json(405, { error: 'Method Not Allowed' });
 
-  const isAdmin = await verifyAdmin(event);
-  if (!isAdmin) return { statusCode: 403, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Forbidden' }) };
+  if (!verifyAdmin(event)) return json(403, { error: 'Forbidden' });
 
   const GITHUB_PAT = process.env.GITHUB_PAT;
-  if (!GITHUB_PAT) return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ error: 'GITHUB_PAT not set' }) };
+  if (!GITHUB_PAT) return json(500, { error: 'GITHUB_PAT not set' });
 
   let html = '';
   try {
     const res = await fetchUrl(MIDRAG_URL);
     html = res.body;
   } catch (e) {
-    return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Failed to fetch midrag: ' + e.message }) };
+    return json(500, { error: 'Failed to fetch midrag: ' + e.message });
   }
 
   const { overallRating, totalReviews, reviews } = parseReviews(html);
@@ -140,7 +137,7 @@ exports.handler = async (event) => {
 
   const getRes = await githubRequest('GET', `/repos/${GITHUB_REPO}/contents/${FILE_PATH}`, GITHUB_PAT);
   if (getRes.status !== 200) {
-    return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Failed to get file SHA' }) };
+    return json(500, { error: 'Failed to get file SHA' });
   }
   const sha = getRes.body.sha;
 
@@ -152,18 +149,14 @@ exports.handler = async (event) => {
   });
 
   if (putRes.status !== 200 && putRes.status !== 201) {
-    return { statusCode: 500, headers: CORS_HEADERS, body: JSON.stringify({ error: 'Failed to write to GitHub' }) };
+    return json(500, { error: 'Failed to write to GitHub' });
   }
 
-  return {
-    statusCode: 200,
-    headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      success: true,
-      rating: output.overallRating,
-      total: output.totalReviews,
-      reviews: featured.length,
-      usedFallback: reviews.length < 4
-    })
-  };
+  return json(200, {
+    success: true,
+    rating: output.overallRating,
+    total: output.totalReviews,
+    reviews: featured.length,
+    usedFallback: reviews.length < 4
+  });
 };

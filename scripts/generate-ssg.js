@@ -8,21 +8,12 @@ const { createClient } = require('@libsql/client');
 const fs    = require('fs');
 const path  = require('path');
 const { loadEnv } = require('./_lib/load-env');
+const { rowToProduct } = require('../netlify/functions/_lib/row-to-product');
 
 // ── Init Turso ─────────────────────────────────────────────
 loadEnv();
 if (!process.env.TURSO_DATABASE_URL) throw new Error('TURSO_DATABASE_URL not set (env var or .env)');
 const db = createClient({ url: process.env.TURSO_DATABASE_URL, authToken: process.env.TURSO_AUTH_TOKEN });
-
-function rowToProduct(r) {
-  return {
-    id: r.id, title: r.title, desc: r.description, image: r.image,
-    price: r.price, discount_price: r.discount_price, price_from: !!r.price_from,
-    brand: r.brand, category: r.category, status: r.status,
-    tags: JSON.parse(r.tags_json || '[]'), phone: r.phone, whatsapp: r.whatsapp,
-    note: r.note, including_vat: r.including_vat, order: r.sort_order,
-  };
-}
 
 // ── Helpers ────────────────────────────────────────────────
 function slugify(title) {

@@ -2,16 +2,7 @@ const crypto = require('crypto');
 const { getDb } = require('./_lib/db');
 const { verifyAdmin } = require('./_lib/verify-admin');
 const { json, preflight, str } = require('./_lib/http');
-
-function rowToProduct(r) {
-  return {
-    id: r.id, title: r.title, desc: r.description, image: r.image,
-    price: r.price, discount_price: r.discount_price, price_from: !!r.price_from,
-    brand: r.brand, category: r.category, status: r.status,
-    tags: JSON.parse(r.tags_json || '[]'), phone: r.phone, whatsapp: r.whatsapp,
-    note: r.note, including_vat: r.including_vat, order: r.sort_order,
-  };
-}
+const { rowToProduct } = require('./_lib/row-to-product');
 
 // Admin CRUD for products — mirrors functions/index.js's `adminProducts` export,
 // including the "shift everyone's order +1, insert new at order 0" POST behavior.
@@ -29,19 +20,24 @@ exports.handler = async (event) => {
 
     if (event.httpMethod === 'POST') {
       const b = JSON.parse(event.body || '{}');
-      await db.execute('UPDATE products SET sort_order = sort_order + 1');
       const id = crypto.randomUUID();
-      await db.execute({
-        sql: `INSERT INTO products (id, title, description, image, price, discount_price, price_from, brand, category, status, tags_json, phone, whatsapp, note, including_vat, sort_order)
-              VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,0)`,
-        args: [
-          id, str(b.title, 200), str(b.desc, 2000), str(b.image, 300),
-          b.price ?? null, b.discount_price ?? null, b.price_from ? 1 : 0,
-          str(b.brand, 100), str(b.category, 100), str(b.status, 50),
-          JSON.stringify(Array.isArray(b.tags) ? b.tags : []),
-          str(b.phone, 20), str(b.whatsapp, 20), str(b.note, 500), str(b.including_vat, 5),
-        ],
-      });
+      // Batched so the "shift everyone +1" and the new insert-at-0 commit
+      // atomically — two separate execute() calls could interleave with a
+      // concurrent write and leave sort_order shifted with no row at 0.
+      await db.batch([
+        'UPDATE products SET sort_order = sort_order + 1',
+        {
+          sql: `INSERT INTO products (id, title, description, image, price, discount_price, price_from, brand, category, status, tags_json, phone, whatsapp, note, including_vat, sort_order)
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,0)`,
+          args: [
+            id, str(b.title, 200), str(b.desc, 2000), str(b.image, 300),
+            b.price ?? null, b.discount_price ?? null, b.price_from ? 1 : 0,
+            str(b.brand, 100), str(b.category, 100), str(b.status, 50),
+            JSON.stringify(Array.isArray(b.tags) ? b.tags : []),
+            str(b.phone, 20), str(b.whatsapp, 20), str(b.note, 500), str(b.including_vat, 5),
+          ],
+        },
+      ], 'write');
       return json(200, { id });
     }
 

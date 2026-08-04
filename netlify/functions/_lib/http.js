@@ -21,4 +21,8 @@ function str(val, max = 200) {
   return val.trim().slice(0, max);
 }
 
-module.exports = { CORS_HEADERS, json, preflight, str };
+function htmlResponse(body, statusCode = 200) {
+  return { statusCode, headers: { 'Content-Type': 'text/html; charset=utf-8' }, body };
+}
+
+module.exports = { CORS_HEADERS, json, preflight, str, htmlResponse };

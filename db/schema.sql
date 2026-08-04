@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS invoices (
   payment_method    TEXT,
   midrag_name       TEXT,
   invoice_issued    INTEGER DEFAULT 0,
+  is_test           INTEGER DEFAULT 0,
   created_at        TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_invoices_created ON invoices(created_at);

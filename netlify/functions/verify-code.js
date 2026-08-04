@@ -20,7 +20,7 @@ exports.handler = async (event) => {
 
   let body;
   try { body = JSON.parse(event.body || '{}'); } catch { return json(400, { error: 'Invalid body' }); }
-  const code = str(body.code, 6).replace(/\D/g, '');
+  const code = str(body.code, 20).replace(/\D/g, '').slice(0, 6);
   if (code.length !== 6) return json(400, { error: 'Invalid code' });
 
   try {
