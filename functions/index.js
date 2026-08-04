@@ -567,7 +567,7 @@ exports.saveHilanInvoice = onRequest({ cors: true, secrets: [ADMIN_EMAIL, GMAIL_
     }
 
     const items = b.items
-      .slice(0, 7)
+      .slice(0, 20)
       .map(it => ({
         desc:  str(it && it.desc, 200),
         price: Math.max(0, Math.min(999999, parseFloat(it && it.price) || 0)),

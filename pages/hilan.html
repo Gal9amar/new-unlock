@@ -83,7 +83,21 @@
             <!-- Line items -->
             <div class="field" style="margin-top:0.5rem">
               <label style="font-weight:700;font-size:0.9rem">פירוט הפריטים <span class="req">*</span></label>
-              <div id="itemsWrap" style="margin-top:0.6rem"></div>
+              <div class="items-table-wrap">
+                <table class="items-table">
+                  <thead>
+                    <tr>
+                      <th class="col-num">#</th>
+                      <th class="col-desc">פירוט</th>
+                      <th class="col-price">מחיר יח'</th>
+                      <th class="col-qty">כמות</th>
+                      <th class="col-total">סה"כ</th>
+                    </tr>
+                  </thead>
+                  <tbody id="itemsWrap"></tbody>
+                </table>
+              </div>
+              <button type="button" class="add-row-btn" id="addRowBtn">+ הוסף שורה</button>
             </div>
 
             <!-- Totals -->
@@ -101,9 +115,9 @@
 
           <div class="success-screen" id="successScreen">
             <div class="success-icon">✅</div>
-            <h2>הפרטים נשלחו בהצלחה!</h2>
-            <p>תודה! החשבונית תופק ותישלח אליך בהקדם.</p>
-            <a href="/" class="back-btn">← חזרה לאתר</a>
+            <h2>הבקשה נשלחה בהצלחה!</h2>
+            <p>קיבלנו את הפרטים. החשבונית תופק ותישלח בהקדם האפשרי.</p>
+            <button type="button" class="back-btn" id="newFormBtn" style="border:none;cursor:pointer;font-family:'Heebo',Arial,sans-serif;">מילוי טופס נוסף</button>
           </div>
 
         </div>
@@ -166,31 +180,44 @@
     document.getElementById('dateInput').valueAsDate = new Date();
 
     // ── Line items ──
-    const ITEM_COUNT = 7;
+    const MAX_ITEMS = 20;
+    const INITIAL_ITEMS = 7;
     const itemsWrap = document.getElementById('itemsWrap');
-    for (let i = 1; i <= ITEM_COUNT; i++) {
-      const row = document.createElement('div');
-      row.className = 'item-row';
+    const addRowBtn = document.getElementById('addRowBtn');
+
+    function updateAddRowBtn() {
+      const count = itemsWrap.querySelectorAll('tr').length;
+      addRowBtn.style.display = count >= MAX_ITEMS ? 'none' : '';
+    }
+
+    function renumberRows() {
+      itemsWrap.querySelectorAll('tr').forEach((row, i) => {
+        row.querySelector('.col-num').textContent = i + 1;
+      });
+    }
+
+    function addItemRow() {
+      if (itemsWrap.querySelectorAll('tr').length >= MAX_ITEMS) return;
+      const row = document.createElement('tr');
       row.innerHTML = `
-        <div class="item-row-title">פריט ${i}</div>
-        <input type="text" class="item-desc" data-idx="${i}" data-field="desc" placeholder="תיאור הפריט / השירות"/>
-        <div class="item-sub-grid">
-          <div>
-            <span class="mini-label">מחיר יח'</span>
-            <input type="text" inputmode="decimal" pattern="[0-9]*\\.?[0-9]*" data-idx="${i}" data-field="price" placeholder="0.00"/>
-          </div>
-          <div>
-            <span class="mini-label">כמות</span>
-            <input type="text" inputmode="decimal" pattern="[0-9]*\\.?[0-9]*" data-idx="${i}" data-field="qty" placeholder="1"/>
-          </div>
-          <div>
-            <span class="mini-label">סה"כ</span>
-            <div class="item-line-total" id="itemTotal${i}">0.00 ₪</div>
-          </div>
-        </div>
+        <td class="col-num"></td>
+        <td class="col-desc"><textarea data-field="desc" rows="1" placeholder="תיאור הפריט / השירות"></textarea></td>
+        <td class="col-price"><input type="text" inputmode="decimal" pattern="[0-9]*\\.?[0-9]*" data-field="price" placeholder="0.00"/></td>
+        <td class="col-qty"><input type="text" inputmode="decimal" pattern="[0-9]*\\.?[0-9]*" data-field="qty" placeholder="1"/></td>
+        <td class="col-total item-line-total">0.00 ₪</td>
       `;
       itemsWrap.appendChild(row);
+      renumberRows();
+      updateAddRowBtn();
     }
+
+    function resetItemRows() {
+      itemsWrap.innerHTML = '';
+      for (let i = 0; i < INITIAL_ITEMS; i++) addItemRow();
+    }
+
+    for (let i = 0; i < INITIAL_ITEMS; i++) addItemRow();
+    addRowBtn.addEventListener('click', addItemRow);
 
     function num(v) {
       const n = parseFloat(String(v || '').replace(/[^0-9.]/g, ''));
@@ -199,13 +226,13 @@
 
     function recalc() {
       let subtotal = 0;
-      for (let i = 1; i <= ITEM_COUNT; i++) {
-        const price = num(document.querySelector(`[data-idx="${i}"][data-field="price"]`).value);
-        const qty = num(document.querySelector(`[data-idx="${i}"][data-field="qty"]`).value);
+      itemsWrap.querySelectorAll('tr').forEach(row => {
+        const price = num(row.querySelector('[data-field="price"]').value);
+        const qty = num(row.querySelector('[data-field="qty"]').value);
         const lineTotal = price * qty;
-        document.getElementById('itemTotal' + i).textContent = lineTotal.toFixed(2) + ' ₪';
+        row.querySelector('.item-line-total').textContent = lineTotal.toFixed(2) + ' ₪';
         subtotal += lineTotal;
-      }
+      });
       const vat = subtotal * 0.18;
       const total = subtotal + vat;
       document.getElementById('sumSubtotal').textContent = subtotal.toFixed(2) + ' ₪';
@@ -214,23 +241,31 @@
       return { subtotal, vat, total };
     }
 
+    function autoResizeTextarea(el) {
+      el.style.height = 'auto';
+      el.style.height = el.scrollHeight + 'px';
+    }
+
     itemsWrap.addEventListener('input', (e) => {
       if (e.target.dataset.field === 'price' || e.target.dataset.field === 'qty') {
         e.target.value = e.target.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+      }
+      if (e.target.tagName === 'TEXTAREA') {
+        autoResizeTextarea(e.target);
       }
       recalc();
     });
 
     function getItems() {
       const items = [];
-      for (let i = 1; i <= ITEM_COUNT; i++) {
-        const desc = document.querySelector(`[data-idx="${i}"][data-field="desc"]`).value.trim();
-        const price = num(document.querySelector(`[data-idx="${i}"][data-field="price"]`).value);
-        const qty = num(document.querySelector(`[data-idx="${i}"][data-field="qty"]`).value);
+      itemsWrap.querySelectorAll('tr').forEach(row => {
+        const desc = row.querySelector('[data-field="desc"]').value.trim();
+        const price = num(row.querySelector('[data-field="price"]').value);
+        const qty = num(row.querySelector('[data-field="qty"]').value);
         if (desc && price > 0 && qty > 0) {
           items.push({ desc, price, qty, total: price * qty });
         }
-      }
+      });
       return items;
     }
 
@@ -267,8 +302,8 @@
         const json = await res.json();
         closePopup('popupLoading');
         if (json.ok) {
-          const customerName = encodeURIComponent((form.name.value || '').trim());
-          window.location.href = '/pages/thankyou.html' + (customerName ? '?name=' + customerName : '');
+          form.classList.add('hidden');
+          document.getElementById('successScreen').classList.add('visible');
         } else {
           showPopup('popupError');
           btn.disabled = false;
@@ -280,6 +315,16 @@
         btn.disabled = false;
         btn.textContent = '📨 צור בקשה לחשבונית';
       }
+    });
+
+    document.getElementById('newFormBtn').addEventListener('click', () => {
+      resetItemRows();
+      recalc();
+      document.getElementById('dateInput').valueAsDate = new Date();
+      document.getElementById('successScreen').classList.remove('visible');
+      form.classList.remove('hidden');
+      btn.disabled = false;
+      btn.textContent = '📨 צור בקשה לחשבונית';
     });
   </script>
 </body>
