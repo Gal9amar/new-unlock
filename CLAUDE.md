@@ -37,7 +37,6 @@ new-unlock/
 ├── scripts/
 │   ├── main.js             ← לוגיקת דף הבית ומוצרים
 │   ├── product.js          ← לוגיקת דף מוצר בודד
-│   ├── fetch-reviews.js    ← סקריפט ידני: מושך ביקורות ממדרג → data/reviews.json
 │   └── accessibility.js    ← ווידג'ט UserWay
 ├── netlify/
 │   └── functions/
@@ -135,8 +134,7 @@ https://www.midrag.co.il/SpCard/Sp/138646?areaId=7&serviceId=1993&sortByCategory
 
 | קובץ | תיאור |
 |------|-------|
-| `scripts/fetch-reviews.js` | סקריפט ידני – `node scripts/fetch-reviews.js` |
-| `netlify/functions/update-reviews.js` | Netlify Function – POST אוטומטי, מעדכן GitHub ישירות |
+| `netlify/functions/update-reviews.js` | Netlify Function – POST, מופעל מכפתור "עדכן ביקורות" באדמין, מעדכן GitHub ישירות. זה המקום היחיד שמעדכן ביקורות (הוסר משכפול קודם ב-`ssg.yml`). |
 
 ### מבנה data/reviews.json
 ```json
