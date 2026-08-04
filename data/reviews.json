@@ -1,9 +1,21 @@
 {
-  "updatedAt": "2026-08-04T21:36:08.633Z",
+  "updatedAt": "2026-08-04T22:07:39.920Z",
   "overallRating": 9.88,
   "totalReviews": 91,
   "sourceUrl": "https://www.midrag.co.il/SpCard/Sp/138646?areaId=7&serviceId=1993&sortByCategory=343&isGeneric=false",
   "featured": [
+    {
+      "name": "גיא ד. נס ציונה.",
+      "rating": null,
+      "date": "16/06/2026",
+      "text": "היה מצוין, ממש!"
+    },
+    {
+      "name": "גיל אלדד, יבנה.",
+      "rating": null,
+      "date": "04/06/2026",
+      "text": "גבי היה עולה."
+    },
     {
       "name": "צביה פרוכטר, רחובות.",
       "rating": null,
@@ -27,18 +39,6 @@
       "rating": null,
       "date": "14/04/2026",
       "text": "גבי קצת הכעיס את בעלי, היה שם עניין אבל בסדר, לקח מחיר סביר בעיניי עשה את העבודה."
-    },
-    {
-      "name": "יבגני ז. רחובות.",
-      "rating": null,
-      "date": "18/03/2026",
-      "text": "השירות היה מקצועי ונעים."
-    },
-    {
-      "name": "דפנה לוין, נס ציונה.",
-      "rating": null,
-      "date": "18/03/2026",
-      "text": "הוא היה ממש נחמד! בא מהר וסיים מהר."
     }
   ]
 }
