@@ -614,8 +614,61 @@ html.dark .bank-row { color: #93c5fd; border-bottom-color: #1e3a8a; }
   color: #e8c87a;
   white-space: nowrap;
 }
-@media (max-width: 560px) {
-  .items-table { min-width: 460px; }
+/* Mobile: drop the scrollable table and lay each row out as a full-width
+   card with a label above every field, instead of clipping columns. */
+@media (max-width: 640px) {
+  .items-table-wrap {
+    overflow-x: visible;
+    border: none;
+    border-radius: 0;
+  }
+  .items-table { min-width: 0; width: 100%; }
+  .items-table thead { display: none; }
+  .items-table, .items-table tbody, .items-table tr, .items-table td {
+    display: block;
+    width: 100%;
+  }
+  .items-table tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem 0.75rem;
+    background: rgba(255,255,255,0.04);
+    border: 1.5px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 0.9rem 0.9rem 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+  .items-table tr:last-child { margin-bottom: 0; }
+  .items-table td {
+    padding: 0;
+    border-bottom: none;
+  }
+  .items-table td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #d4a853;
+    margin-bottom: 0.3rem;
+  }
+  .items-table .col-num {
+    grid-column: 1 / -1;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.45);
+  }
+  .items-table .col-num::before { content: 'פריט '; }
+  .items-table .col-desc { grid-column: 1 / -1; }
+  .items-table .col-price,
+  .items-table .col-qty { grid-column: span 1; }
+  .items-table .col-total {
+    grid-column: 1 / -1;
+    text-align: left;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 0.6rem;
+    margin-top: 0.1rem;
+  }
 }
 
 .add-row-btn {
