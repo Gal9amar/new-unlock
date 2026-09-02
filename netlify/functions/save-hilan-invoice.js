@@ -2,11 +2,11 @@ const crypto = require('crypto');
 const { getDb } = require('./_lib/db');
 const { sendMail } = require('./_lib/mail');
 const { hilanInvoiceHtml } = require('./_lib/hilan-invoice-html');
-const { TEST_RECIPIENT_EMAIL, isProdOrigin } = require('./_lib/test-mode');
+const { isProdOrigin } = require('./_lib/test-mode');
 const { json, preflight, str } = require('./_lib/http');
 const { escapeHtml } = require('./_lib/html-escape');
 const { SITE_URL, VALID_PAYMENT } = require('./_lib/constants');
-const { emailWrapper, emailHeader, emailBadge, ctaButton, ctaRow, footerFull, footerAdmin } = require('./_lib/email-shell');
+const { emailWrapper, emailHeader, ctaButton, ctaRow, footerAdmin } = require('./_lib/email-shell');
 
 // Public: mirrors functions/index.js's `saveHilanInvoice` (hilan.html flow).
 exports.handler = async (event) => {
@@ -70,22 +70,6 @@ exports.handler = async (event) => {
     const phone = escapeHtml(data.phone);
     const email = escapeHtml(data.email);
 
-    const clientHtml = emailWrapper(600, `
-        ${emailHeader({ logoWidth: 140, tagline: 'בקשת חשבונית חדשה' })}
-        ${emailBadge({ bg: '#eff6ff', border: '#bfdbfe', color: '#1d4ed8', text: '✓ &nbsp;הפרטים התקבלו בהצלחה!' })}
-        <tr>
-          <td style="padding:28px 40px 32px;text-align:center;">
-            <p style="margin:0 0 24px;font-size:15px;color:#64748b;line-height:1.8;">
-              תודה רבה! קיבלנו את הפרטים בהצלחה. חשבונית דיגיטלית תונפק ותישלח אליך במהירות האפשרית.
-            </p>
-            ${ctaRow([
-              ctaButton('phone', 'tel:0533888381', '📞 &nbsp;053-388-8381'),
-              ctaButton('whatsapp', 'https://wa.me/972533888381', '💬 &nbsp;שלח לנו וואטסאפ'),
-            ])}
-          </td>
-        </tr>
-        ${footerFull()}`);
-
     const adminHtml = emailWrapper(600, `
         ${emailHeader({ logoWidth: 120, tagline: 'בקשת חשבונית מפורטת חדשה 📄' })}
         <tr>
@@ -106,25 +90,15 @@ exports.handler = async (event) => {
         </tr>
         ${footerAdmin()}`);
 
-    const clientTo = data.is_test ? TEST_RECIPIENT_EMAIL : data.email;
     const testPrefix = data.is_test ? '[TEST] ' : '';
 
-    await Promise.all([
-      sendMail({
-        from: '"UNLOCK מנעולנות" <unlock.yavne@gmail.com>',
-        to: clientTo,
-        subject: `${testPrefix}✓ בקשת חשבונית התקבלה — ₪${total.toFixed(2)}`,
-        html: clientHtml,
-        text: `שלום ${data.name}, בקשתך לחשבונית בסך ₪${total.toFixed(2)} התקבלה. ניצור את החשבונית בהקדם. לשאלות: 053-388-8381`,
-      }),
-      sendMail({
-        from: '"UNLOCK מנעולנות" <unlock.yavne@gmail.com>',
-        to: adminEmail,
-        subject: `${testPrefix}📄 בקשת חשבונית חדשה — ${data.name} (₪${total.toFixed(2)})`,
-        html: adminHtml,
-        text: `בקשה חדשה מ-${data.name} (${data.phone})\nסה"כ כולל מע"מ: ₪${total.toFixed(2)}\nלהנפקה: ${markUrl}`,
-      }),
-    ]);
+    await sendMail({
+      from: '"UNLOCK מנעולנות" <unlock.yavne@gmail.com>',
+      to: adminEmail,
+      subject: `${testPrefix}📄 בקשת חשבונית חדשה — ${data.name} (₪${total.toFixed(2)})`,
+      html: adminHtml,
+      text: `בקשה חדשה מ-${data.name} (${data.phone})\nסה"כ כולל מע"מ: ₪${total.toFixed(2)}\nלהנפקה: ${markUrl}`,
+    });
 
     return json(200, { ok: true });
   } catch (e) {
