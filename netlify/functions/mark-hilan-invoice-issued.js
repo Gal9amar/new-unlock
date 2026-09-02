@@ -13,11 +13,21 @@ exports.handler = async (event) => {
   if (!id) return { statusCode: 400, body: 'Missing id' };
 
   if (event.httpMethod === 'GET') {
+    const db = getDb();
+    const res = await db.execute({ sql: 'SELECT * FROM hilan_invoices WHERE id = ?', args: [id] });
+    if (res.rows.length === 0) return { statusCode: 404, body: 'Invoice not found' };
+    const inv = res.rows[0];
+
     return htmlResponse(`<!DOCTYPE html><html dir="rtl" lang="he"><head><meta charset="utf-8"/><title>אישור הפקת חשבונית</title></head>
 <body style="font-family:Arial;text-align:center;padding:60px;direction:rtl;">
   <h2>סימון חשבונית כהופקה</h2>
-  <p style="color:#64748b;">לחיצה על הכפתור תסמן את החשבונית כהופקה ותשלח ללקוח מייל אישור.</p>
+  <p style="color:#64748b;">${escapeHtml(inv.name)} · ₪${Number(inv.total).toFixed(2)}</p>
+  <p style="color:#64748b;">לחיצה על הכפתור תסמן את החשבונית כהופקה ותשלח מייל אישור לכתובת שלמטה.</p>
   <form method="POST" action="/.netlify/functions/mark-hilan-invoice-issued?id=${encodeURIComponent(id)}">
+    <div style="max-width:320px;margin:0 auto 20px;text-align:right;">
+      <label for="copyEmail" style="display:block;font-size:14px;color:#475569;margin-bottom:6px;">שליחת העתק אל</label>
+      <input type="email" id="copyEmail" name="email" value="${escapeHtml(inv.email)}" required style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #cbd5e1;border-radius:8px;font-size:15px;text-align:left;direction:ltr;"/>
+    </div>
     <button type="submit" style="padding:16px 32px;background:#16a34a;color:#fff;font-size:16px;font-weight:700;border:none;border-radius:12px;cursor:pointer;">✅ אשר הפקת חשבונית</button>
   </form>
 </body></html>`);
@@ -35,7 +45,13 @@ exports.handler = async (event) => {
       return htmlResponse(`<!DOCTYPE html><html dir="rtl" lang="he"><head><meta charset="utf-8"/><title>כבר הופקה</title></head><body style="font-family:Arial;text-align:center;padding:60px;direction:rtl;"><h2>✅ החשבונית כבר סומנה כהופקה</h2><p style="color:#64748b;">הלקוח כבר קיבל אישור.</p></body></html>`);
     }
 
-    await db.execute({ sql: 'UPDATE hilan_invoices SET invoice_issued = 1 WHERE id = ?', args: [id] });
+    const bodyStr = event.isBase64Encoded ? Buffer.from(event.body || '', 'base64').toString('utf8') : (event.body || '');
+    const submittedEmail = new URLSearchParams(bodyStr).get('email');
+    const copyEmail = (submittedEmail && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(submittedEmail))
+      ? submittedEmail.trim().toLowerCase()
+      : inv.email;
+
+    await db.execute({ sql: 'UPDATE hilan_invoices SET invoice_issued = 1, email = ? WHERE id = ?', args: [copyEmail, id] });
 
     const name = escapeHtml(inv.name);
     const isTestMode = !!inv.is_test;
@@ -61,7 +77,7 @@ exports.handler = async (event) => {
 
     await sendMail({
       from: '"UNLOCK מנעולנות" <unlock.yavne@gmail.com>',
-      to: isTestMode ? TEST_RECIPIENT_EMAIL : inv.email,
+      to: isTestMode ? TEST_RECIPIENT_EMAIL : copyEmail,
       subject: `${isTestMode ? '[TEST] ' : ''}✓ החשבונית שלך הופקה בהצלחה – UNLOCK מנעולנות`,
       html: htmlBody,
       text: `שלום ${inv.name}, החשבונית הופקה בהצלחה. תודה שבחרת ב-UNLOCK מנעולנות! לשאלות: 053-388-8381`,
