@@ -21,6 +21,6 @@
   "dependencies": {
     "@libsql/client": "^0.15.15",
     "jsonwebtoken": "^9.0.2",
-    "nodemailer": "^9.0.4"
+    "nodemailer": "^9.1.1"
   }
 }
