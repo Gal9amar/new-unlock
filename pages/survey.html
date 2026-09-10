@@ -145,6 +145,13 @@
               <textarea name="comment" placeholder="כל הערה תתקבל בברכה..."></textarea>
             </div>
 
+            <div class="field consent-field">
+              <label class="consent-label">
+                <input type="checkbox" name="consent" id="consentCheck" required/>
+                <span>קראתי ואני מסכים/ה ל<a href="privacy-policy.html" target="_blank" rel="noopener">מדיניות הפרטיות</a> ול<a href="terms-of-service.html" target="_blank" rel="noopener">תנאי השימוש</a> <span class="req">*</span></span>
+              </label>
+            </div>
+
             <button type="submit" class="submit-btn" id="submitBtn">📨 שלח משוב</button>
             <p class="form-note">המשוב נשלח ישירות לגבי · תודה על הזמן!</p>
           </form>
@@ -165,6 +172,7 @@
   </div>
 
   <script src="../scripts/security-warning.js"></script>
+  <script src="../scripts/cookie-consent.js"></script>
   <script>
     if(localStorage.getItem('theme')==='dark'||(!localStorage.getItem('theme')&&window.matchMedia('(prefers-color-scheme: dark)').matches))
       document.documentElement.classList.add('dark');
@@ -198,6 +206,7 @@
       if(!sel.price){alert('אנא דרג את המחיר');return;}
       if(!sel.attitude){alert('אנא דרג את היחס האישי');return;}
       if(!sel.recommend){alert('אנא ענה על שאלת ההמלצה');return;}
+      if(!document.getElementById('consentCheck').checked){alert('יש לאשר את מדיניות הפרטיות ותנאי השימוש כדי להמשיך');return;}
       const btn=document.getElementById('submitBtn');
       btn.disabled=true;btn.textContent='⏳ שולח...';
       showPopup('popupLoading');

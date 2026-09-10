@@ -151,6 +151,13 @@
               </div>
             </div>
 
+            <div class="field consent-field">
+              <label class="consent-label">
+                <input type="checkbox" name="consent" id="consentCheck" required/>
+                <span>קראתי ואני מסכים/ה ל<a href="privacy-policy.html" target="_blank" rel="noopener">מדיניות הפרטיות</a> ול<a href="terms-of-service.html" target="_blank" rel="noopener">תנאי השימוש</a> <span class="req">*</span></span>
+              </label>
+            </div>
+
             <button type="submit" class="submit-btn" id="submitBtn">📨 שלח פרטים</button>
             <p class="form-note">הפרטים ישלחו ישירות לגבי · ללא שמירה במאגרי צד שלישי</p>
           </form>
@@ -200,6 +207,7 @@
   </div>
 
   <script src="../scripts/security-warning.js"></script>
+  <script src="../scripts/cookie-consent.js"></script>
   <script>
     function showPopup(id) {
       document.getElementById(id).classList.add('visible');
@@ -273,6 +281,10 @@
       }
       if (midragSelected === null) {
         alert('יש לציין האם הגעת דרך מידרג');
+        return;
+      }
+      if (!document.getElementById('consentCheck').checked) {
+        alert('יש לאשר את מדיניות הפרטיות ותנאי השימוש כדי להמשיך');
         return;
       }
       btn.disabled = true;

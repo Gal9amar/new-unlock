@@ -63,6 +63,13 @@ html.dark .section-divider::before { background:#1e293b; }
 .submit-btn:disabled { opacity:0.55;cursor:not-allowed;transform:none; }
 .form-note { font-size:0.78rem;color:#94a3b8;text-align:center;margin-top:0.75rem; }
 
+.consent-field { margin-top:0.2rem; }
+.consent-label { display:flex;align-items:flex-start;gap:0.55rem;cursor:pointer;font-size:0.82rem;font-weight:400;color:#475569;line-height:1.5; }
+html.dark .consent-label { color:#94a3b8; }
+.consent-label input[type="checkbox"] { width:18px;height:18px;flex-shrink:0;margin-top:0.15rem;accent-color:#1d4ed8;cursor:pointer; }
+.consent-label a { color:#1d4ed8;text-decoration:underline; }
+html.dark .consent-label a { color:#60a5fa; }
+
 /* Popups */
 .popup-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:9999;padding:1rem; }
 .popup-overlay.visible { display:flex; }
