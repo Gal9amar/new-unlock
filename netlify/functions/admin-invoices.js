@@ -1,6 +1,7 @@
 const { getDb } = require('./_lib/db');
 const { verifyAdmin } = require('./_lib/verify-admin');
 const { json, preflight } = require('./_lib/http');
+const { notifyOwnerWhatsapp } = require('./_lib/whatsapp');
 
 // Admin: mirrors functions/index.js's `adminInvoices` export.
 exports.handler = async (event) => {
@@ -14,7 +15,16 @@ exports.handler = async (event) => {
     if (event.httpMethod === 'PATCH') {
       if (!id) return json(400, { error: 'Missing id' });
       const b = JSON.parse(event.body || '{}');
-      await db.execute({ sql: 'UPDATE invoices SET invoice_issued = ? WHERE id = ?', args: [b.invoice_issued ? 1 : 0, id] });
+      const issued = b.invoice_issued ? 1 : 0;
+
+      let toNotify = null;
+      if (issued) {
+        const cur = await db.execute({ sql: 'SELECT invoice_issued, name, amount, vat_type, service_address, is_test FROM invoices WHERE id = ?', args: [id] });
+        if (cur.rows.length && !cur.rows[0].invoice_issued && !cur.rows[0].is_test) toNotify = cur.rows[0];
+      }
+
+      await db.execute({ sql: 'UPDATE invoices SET invoice_issued = ? WHERE id = ?', args: [issued, id] });
+      if (toNotify) await notifyOwnerWhatsapp(`✅ חשבונית הופקה\n${toNotify.name}\n₪${toNotify.amount} ${toNotify.vat_type}\n${toNotify.service_address}`);
       return json(200, { ok: true });
     }
 

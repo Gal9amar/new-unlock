@@ -5,6 +5,7 @@ const { escapeHtml } = require('./_lib/html-escape');
 const { SITE_URL } = require('./_lib/constants');
 const { TEST_RECIPIENT_EMAIL } = require('./_lib/test-mode');
 const { emailWrapper, emailHeader, emailBadge, ctaButton, ctaRow, footerFull } = require('./_lib/email-shell');
+const { notifyOwnerWhatsapp } = require('./_lib/whatsapp');
 
 // Same GET-renders-confirmation / POST-performs-mutation pattern as
 // mark-invoice-issued.js — see the comment there for why.
@@ -52,6 +53,10 @@ exports.handler = async (event) => {
       : inv.email;
 
     await db.execute({ sql: 'UPDATE hilan_invoices SET invoice_issued = 1, email = ? WHERE id = ?', args: [copyEmail, id] });
+
+    if (!inv.is_test) {
+      await notifyOwnerWhatsapp(`✅ חשבונית הופקה (הילן)\n${inv.name}\n₪${Number(inv.total).toFixed(2)}`);
+    }
 
     const name = escapeHtml(inv.name);
     const isTestMode = !!inv.is_test;

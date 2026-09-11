@@ -5,6 +5,7 @@ const { escapeHtml } = require('./_lib/html-escape');
 const { SITE_URL } = require('./_lib/constants');
 const { TEST_RECIPIENT_EMAIL } = require('./_lib/test-mode');
 const { emailWrapper, emailHeader, emailBadge, ctaButton, ctaRow, footerFull } = require('./_lib/email-shell');
+const { notifyOwnerWhatsapp } = require('./_lib/whatsapp');
 
 // Magic link clicked from the admin notification email. A bare GET only
 // renders a confirmation page with a real <form method="post"> — mail
@@ -40,6 +41,10 @@ exports.handler = async (event) => {
     }
 
     await db.execute({ sql: 'UPDATE invoices SET invoice_issued = 1 WHERE id = ?', args: [id] });
+
+    if (!inv.is_test) {
+      await notifyOwnerWhatsapp(`✅ חשבונית הופקה\n${inv.name}\n₪${inv.amount} ${inv.vat_type}\n${inv.service_address}`);
+    }
 
     const name = escapeHtml(inv.name);
     const isTestMode = !!inv.is_test;
