@@ -29,7 +29,7 @@ html.dark .top-nav {
   color: #d4a853;
   text-decoration: none;
 }
-.nav-logo img { width: 32px; height: 32px; }
+.nav-logo img { height: 32px; width: auto; }
 .nav-links { display: flex; gap: 1.5rem; }
 .nav-links a {
   font-size: 0.9rem;

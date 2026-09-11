@@ -234,12 +234,6 @@ svg {
   display: none;
 }
 
-@media (min-width: 640px) {
-  .navbar-brand-name {
-    display: block;
-  }
-}
-
 .navbar-links {
   display: flex;
   gap: var(--spacing-md);
@@ -1535,7 +1529,9 @@ svg {
 }
 
 .footer-logo {
-  max-width: 70px;
+  max-width: 130px;
+  width: 100%;
+  height: auto;
 }
 
 .footer-tagline {
@@ -1815,7 +1811,7 @@ svg {
 
 .back-btn:hover { color: var(--color-gold); }
 
-.header-logo { width: 36px; height: 36px; flex-shrink: 0; }
+.header-logo { height: 36px; width: auto; max-width: 110px; flex-shrink: 0; }
 
 .quick-call-btn {
   background: var(--gradient-gold);
@@ -1997,7 +1993,7 @@ svg {
 
 .back-link:hover { opacity: 1; }
 
-.legal-logo { width: 80px; height: 80px; margin: 0 auto var(--spacing-md); }
+.legal-logo { height: 80px; width: auto; max-width: 220px; margin: 0 auto var(--spacing-md); }
 
 .legal-header-content h1 { font-size: var(--font-size-3xl); margin-bottom: var(--spacing-sm); }
 .legal-header-content p { font-size: var(--font-size-lg); opacity: 0.9; }

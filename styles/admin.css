@@ -62,8 +62,9 @@ body {
 }
 
 .login-logo {
-  width: 68px;
   height: 68px;
+  width: auto;
+  max-width: 190px;
   margin: 0 auto 1.5rem;
   filter: drop-shadow(0 4px 16px rgba(212,168,83,0.3));
 }
@@ -143,7 +144,7 @@ body {
   color: var(--gold);
   letter-spacing: -0.01em;
 }
-.topbar-logo img { width: 26px; height: 26px; }
+.topbar-logo img { height: 26px; width: auto; }
 
 .topbar-actions {
   display: flex;

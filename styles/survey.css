@@ -2,7 +2,7 @@
 html.dark .top-nav { background:rgba(2,6,23,0.92);border-bottom-color:#1e293b; }
 .nav-inner { max-width:1100px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between; }
 .nav-logo { display:flex;align-items:center;gap:0.6rem;font-weight:800;font-size:1.1rem;color:#1d4ed8;text-decoration:none; }
-.nav-logo img { width:32px;height:32px; }
+.nav-logo img { height:32px;width:auto; }
 .nav-phone { font-size:0.9rem;font-weight:600;color:#1d4ed8;text-decoration:none; }
 html.dark .nav-phone { color:#60a5fa; }
 .page-wrapper { min-height:100vh;display:flex;flex-direction:column;background:#f8fafc; }

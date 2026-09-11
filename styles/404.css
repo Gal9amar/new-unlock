@@ -24,7 +24,7 @@ nav {
   justify-content: space-between;
 }
 .nav-logo { display:flex;align-items:center;gap:0.6rem;font-weight:800;font-size:1.1rem;color:#d4a853;text-decoration:none; }
-.nav-logo img { width:32px;height:32px; }
+.nav-logo img { height:32px;width:auto; }
 .nav-phone { font-size:0.9rem;font-weight:600;color:#d4a853;text-decoration:none; }
 
 /* CENTER */
@@ -61,7 +61,7 @@ main {
 }
 
 .logo-wrap {
-  width: 64px; height: 64px;
+  width: 128px; height: 64px;
   margin: 0 auto 1.25rem;
 }
 .logo-wrap img { width: 100%; height: 100%; object-fit: contain; }
