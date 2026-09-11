@@ -513,6 +513,9 @@
         <div id="reviewsGrid" class="reviews-grid">
           <!-- מולא ב-JS מ-data/reviews.json -->
         </div>
+        <div class="reviews-load-more-wrap">
+          <button id="reviewsLoadMore" class="btn btn-secondary" type="button" hidden>טען עוד ביקורות</button>
+        </div>
       </div>
     </section>
 
@@ -693,9 +696,15 @@
           const db = b.date ? b.date.split('/').reverse().join('') : '0';
           return db.localeCompare(da);
         });
-        grid.innerHTML = sorted.map(r => {
+
+        const PAGE_SIZE = 8;
+        let shown = 0;
+        const loadMoreBtn = document.getElementById('reviewsLoadMore');
+
+        function renderCard(r) {
           const name = r.name ? r.name.replace(/,.*$/, '').trim() : '';
           const date = r.date ? `<span class="review-date">${r.date}</span>` : '';
+          const badge = r.source === 'unlock' ? '<span class="review-source-badge">✓ לקוח מאומת UNLOCK</span>' : '';
           return `<div class="review-card">
             <div class="review-header">
               <div class="review-avatar">${name.charAt(0) || '★'}</div>
@@ -706,8 +715,20 @@
               <div class="review-stars">★★★★★</div>
             </div>
             <p class="review-text">"${r.text}"</p>
+            ${badge}
           </div>`;
-        }).join('');
+        }
+
+        function showNextPage() {
+          const next = sorted.slice(shown, shown + PAGE_SIZE);
+          grid.insertAdjacentHTML('beforeend', next.map(renderCard).join(''));
+          shown += next.length;
+          if (loadMoreBtn) loadMoreBtn.hidden = shown >= sorted.length;
+        }
+
+        grid.innerHTML = '';
+        showNextPage();
+        if (loadMoreBtn) loadMoreBtn.addEventListener('click', showNextPage);
         const schemas = document.querySelectorAll('script[type="application/ld+json"]');
         schemas.forEach(s => {
           try {

@@ -1351,6 +1351,23 @@ svg {
   font-size: 15px;
 }
 
+.reviews-load-more-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--spacing-lg);
+}
+
+.review-source-badge {
+  display: inline-block;
+  margin-top: var(--spacing-sm);
+  padding: 3px 10px;
+  border-radius: var(--radius-full, 999px);
+  background: rgba(212, 168, 83, 0.12);
+  color: var(--color-gold-dark, #a9822f);
+  font-size: 12px;
+  font-weight: 600;
+}
+
 @media (max-width: 640px) {
   .reviews-grid {
     grid-template-columns: 1fr;
