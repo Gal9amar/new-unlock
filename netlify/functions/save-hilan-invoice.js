@@ -7,6 +7,7 @@ const { json, preflight, str } = require('./_lib/http');
 const { escapeHtml } = require('./_lib/html-escape');
 const { SITE_URL, VALID_PAYMENT } = require('./_lib/constants');
 const { emailWrapper, emailHeader, ctaButton, ctaRow, footerAdmin } = require('./_lib/email-shell');
+const { notifyOwnerWhatsapp } = require('./_lib/whatsapp');
 
 // Public: mirrors functions/index.js's `saveHilanInvoice` (hilan.html flow).
 exports.handler = async (event) => {
@@ -99,6 +100,10 @@ exports.handler = async (event) => {
       html: adminHtml,
       text: `בקשה חדשה מ-${data.name} (${data.phone})\nסה"כ כולל מע"מ: ₪${total.toFixed(2)}\nלהנפקה: ${markUrl}`,
     });
+
+    if (!data.is_test) {
+      await notifyOwnerWhatsapp(`📄 בקשת חשבונית מפורטת חדשה (הילן)\n${data.name}\n📞 ${data.phone}\nסה"כ: ₪${total.toFixed(2)}\n\nלהנפקה: ${markUrl}`);
+    }
 
     return json(200, { ok: true });
   } catch (e) {

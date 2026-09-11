@@ -7,6 +7,7 @@ const { escapeHtml } = require('./_lib/html-escape');
 const { SITE_URL, VALID_PAYMENT } = require('./_lib/constants');
 const { TEST_RECIPIENT_EMAIL, isProdOrigin } = require('./_lib/test-mode');
 const { emailWrapper, emailHeader, emailBadge, ctaButton, ctaRow, footerFull, footerAdmin } = require('./_lib/email-shell');
+const { notifyOwnerWhatsapp } = require('./_lib/whatsapp');
 
 const VALID_VAT = ['כולל מע"מ', 'לפני מע"מ'];
 
@@ -177,6 +178,10 @@ exports.handler = async (event) => {
         text: `בקשה חדשה מ-${data.name} (${data.phone})\nסכום: ₪${data.amount}\nלהנפקה: ${markUrl}`,
       }),
     ]);
+
+    if (!data.is_test) {
+      await notifyOwnerWhatsapp(`📄 בקשת חשבונית חדשה\n${data.name}\n📞 ${data.phone}\n₪${data.amount} ${data.vat_type}\n${data.service_address}\n\nלהנפקה: ${markUrl}`);
+    }
 
     return json(200, { ok: true });
   } catch (e) {
