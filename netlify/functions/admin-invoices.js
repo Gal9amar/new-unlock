@@ -24,7 +24,7 @@ exports.handler = async (event) => {
       }
 
       await db.execute({ sql: 'UPDATE invoices SET invoice_issued = ? WHERE id = ?', args: [issued, id] });
-      if (toNotify) await notifyOwnerWhatsapp(`✅ חשבונית הופקה\n${toNotify.name}\n₪${toNotify.amount} ${toNotify.vat_type}\n${toNotify.service_address}`);
+      if (toNotify) await notifyOwnerWhatsapp(`✅ נופקה בהצלחה חשבונית עבור:\n${toNotify.name}\n₪${toNotify.amount}`);
       return json(200, { ok: true });
     }
 

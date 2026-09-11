@@ -43,7 +43,7 @@ exports.handler = async (event) => {
     await db.execute({ sql: 'UPDATE invoices SET invoice_issued = 1 WHERE id = ?', args: [id] });
 
     if (!inv.is_test) {
-      await notifyOwnerWhatsapp(`✅ חשבונית הופקה\n${inv.name}\n₪${inv.amount} ${inv.vat_type}\n${inv.service_address}`);
+      await notifyOwnerWhatsapp(`✅ נופקה בהצלחה חשבונית עבור:\n${inv.name}\n₪${inv.amount}`);
     }
 
     const name = escapeHtml(inv.name);

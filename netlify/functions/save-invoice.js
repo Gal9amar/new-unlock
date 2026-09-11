@@ -180,7 +180,19 @@ exports.handler = async (event) => {
     ]);
 
     if (!data.is_test) {
-      await notifyOwnerWhatsapp(`📄 בקשת חשבונית חדשה\n${data.name}\n📞 ${data.phone}\n₪${data.amount} ${data.vat_type}\n${data.service_address}\n\nלהנפקה: ${markUrl}`);
+      await notifyOwnerWhatsapp([
+        '📄 בקשת חשבונית חדשה',
+        '',
+        `שם לקוח: ${data.name}`,
+        `טלפון: ${data.phone}`,
+        `מייל: ${data.email}`,
+        `ת.ז/ח.פ: ${data.id_number || '—'}`,
+        `כתובת: ${data.service_address}`,
+        `תיאור השירות: ${data.message}`,
+        `סכום: ₪${data.amount} ${data.vat_type}`,
+        `שיטת תשלום: ${data.payment_method}`,
+        `האם הגיע דרך מדרג: ${data.midrag_name ? `כן - ${data.midrag_name}` : 'לא'}`,
+      ].join('\n'));
     }
 
     return json(200, { ok: true });
