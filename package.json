@@ -1,26 +1,26 @@
 {
-  "name": "unluck_2025",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Gal9amar/new-unlock.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/Gal9amar/new-unlock/issues"
-  },
-  "homepage": "https://github.com/Gal9amar/new-unlock#readme",
-  "dependencies": {
-    "@libsql/client": "^0.15.15",
-    "jsonwebtoken": "^9.0.2",
-    "nodemailer": "^9.0.4"
-  }
+    "name": "unluck_2025",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+          "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+          "type": "git",
+          "url": "git+https://github.com/Gal9amar/new-unlock.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "type": "commonjs",
+    "bugs": {
+          "url": "https://github.com/Gal9amar/new-unlock/issues"
+    },
+    "homepage": "https://github.com/Gal9amar/new-unlock#readme",
+    "dependencies": {
+          "@libsql/client": "^0.15.15",
+          "jsonwebtoken": "^9.0.2",
+          "nodemailer": "^9.1.1"
+    }
 }
