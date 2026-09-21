@@ -102,10 +102,10 @@ exports.handler = async (event) => {
       ].join('\n');
 
       const pdfUrl = await resolvePdfUrl(url);
-      const fileSent = pdfUrl && await notifyCustomerWhatsappFile(phones[0], pdfUrl, `${docLabel}.pdf`, text);
+      const fileSent = pdfUrl && await notifyCustomerWhatsappFile(phones[0], pdfUrl, `${docLabel}.pdf`, text, { label: name });
       if (!fileSent) {
         // Couldn't attach the PDF: send the link instead so the customer still gets the document.
-        await notifyCustomerWhatsapp(phones[0], text.replace('מצורפת.', 'להורדה:\n' + url));
+        await notifyCustomerWhatsapp(phones[0], text.replace('מצורפת.', 'להורדה:\n' + url), { label: name });
       }
       return json(200, { ok: true, sent: 'customer', as: fileSent ? 'file' : 'link' });
     }

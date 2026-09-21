@@ -2,20 +2,48 @@
 // a QR-paired "WhatsApp Web" style instance, so it needs no business
 // verification and has no send waitlist. Silently no-ops until the three
 // env vars are configured, so it's safe to deploy before setup is finished.
-const { isEnabled } = require('./settings');
+const { isEnabled, getSettings } = require('./settings');
 
-async function sendWhatsapp(chatPhone, text) {
+function apiUrl(method) {
   const { GREEN_API_ID_INSTANCE: idInstance, GREEN_API_TOKEN_INSTANCE: apiToken } = process.env;
-  if (!idInstance || !apiToken || !chatPhone) return;
+  return idInstance && apiToken ? `https://api.green-api.com/waInstance${idInstance}/${method}/${apiToken}` : '';
+}
+
+// Returns true only if Green API accepted the message.
+async function sendWhatsapp(chatPhone, text) {
+  const url = apiUrl('sendMessage');
+  if (!url || !chatPhone) return false;
 
   try {
-    await fetch(`https://api.green-api.com/waInstance${idInstance}/sendMessage/${apiToken}`, {
+    const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ chatId: `${chatPhone}@c.us`, message: text }),
     });
+    return res.ok;
   } catch (e) {
     console.error('WhatsApp send failed:', e.message);
+    return false;
+  }
+}
+
+// Sends a file Green API downloads from `fileUrl` (must be publicly reachable),
+// with `caption` as its text. Returns true only if Green API accepted it.
+async function sendWhatsappFile(chatPhone, fileUrl, fileName, caption) {
+  const url = apiUrl('sendFileByUrl');
+  if (!url || !chatPhone) return false;
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chatId: `${chatPhone}@c.us`, urlFile: fileUrl, fileName, caption }),
+    });
+    if (!res.ok) return false;
+    const data = await res.json().catch(() => ({}));
+    return !!data.idMessage;
+  } catch (e) {
+    console.error('WhatsApp file send failed:', e.message);
+    return false;
   }
 }
 
@@ -37,34 +65,49 @@ function toWhatsappPhone(raw) {
   return /^972\d{8,9}$/.test(intl) ? intl : '';
 }
 
-// Customer-facing message; never throws and no-ops when the number is invalid.
-async function notifyCustomerWhatsapp(rawPhone, text) {
-  const phone = toWhatsappPhone(rawPhone);
-  if (!phone || !(await isEnabled('whatsapp_customers'))) return;
-  await sendWhatsapp(phone, text);
+// Where copies of customer messages go (admin settings: switch + number), or ''
+// when copies are off, no number is set, or the copy would go to the customer.
+async function getCopyPhone(customerPhone) {
+  try {
+    const s = await getSettings();
+    if (!s.whatsapp_copy) return '';
+    const phone = toWhatsappPhone(s.whatsapp_copy_phone);
+    return phone && phone !== customerPhone ? phone : '';
+  } catch (e) {
+    console.error('copy settings read failed:', e.message);
+    return '';
+  }
 }
 
-// Sends a file Green API downloads from `fileUrl` (must be publicly reachable),
-// with `caption` as its text. Returns true only if Green API accepted it, so the
-// caller can fall back to a plain link message.
-async function notifyCustomerWhatsappFile(rawPhone, fileUrl, fileName, caption) {
+function copyHeader(customerPhone, label) {
+  const local = '0' + customerPhone.slice(3);
+  return `📤 העתק של הודעה שנשלחה ללקוח${label ? ' ' + label : ''} (${local})`;
+}
+
+// Customer-facing message; never throws and no-ops when the number is invalid.
+// A copy goes to the admin-configured copy number unless opts.copy is false.
+// opts.label names the customer in the copy's header.
+async function notifyCustomerWhatsapp(rawPhone, text, opts = {}) {
   const phone = toWhatsappPhone(rawPhone);
-  const { GREEN_API_ID_INSTANCE: idInstance, GREEN_API_TOKEN_INSTANCE: apiToken } = process.env;
-  if (!phone || !idInstance || !apiToken) return false;
-  if (!(await isEnabled('whatsapp_customers'))) return false;
-  try {
-    const res = await fetch(`https://api.green-api.com/waInstance${idInstance}/sendFileByUrl/${apiToken}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ chatId: `${phone}@c.us`, urlFile: fileUrl, fileName, caption }),
-    });
-    if (!res.ok) return false;
-    const data = await res.json().catch(() => ({}));
-    return !!data.idMessage;
-  } catch (e) {
-    console.error('WhatsApp file send failed:', e.message);
-    return false;
+  if (!phone || !(await isEnabled('whatsapp_customers'))) return;
+  const sent = await sendWhatsapp(phone, text);
+  if (!sent || opts.copy === false) return;
+  const copyTo = await getCopyPhone(phone);
+  if (copyTo) await sendWhatsapp(copyTo, `${copyHeader(phone, opts.label)}\n\n${text}`);
+}
+
+// Sends a file to a customer. Returns true only if Green API accepted it, so the
+// caller can fall back to a plain link message. Same copy behaviour as above.
+async function notifyCustomerWhatsappFile(rawPhone, fileUrl, fileName, caption, opts = {}) {
+  const phone = toWhatsappPhone(rawPhone);
+  if (!phone || !(await isEnabled('whatsapp_customers'))) return false;
+  const sent = await sendWhatsappFile(phone, fileUrl, fileName, caption);
+  if (!sent) return false;
+  if (opts.copy !== false) {
+    const copyTo = await getCopyPhone(phone);
+    if (copyTo) await sendWhatsappFile(copyTo, fileUrl, fileName, `${copyHeader(phone, opts.label)}\n\n${caption}`);
   }
+  return true;
 }
 
 module.exports = { notifyOwnerWhatsapp, notifyCustomerWhatsapp, notifyCustomerWhatsappFile, toWhatsappPhone };

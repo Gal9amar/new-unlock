@@ -890,7 +890,31 @@
   const SETTING_ROWS = [
     { key: 'whatsapp_customers', title: 'הודעות וואטסאפ ללקוחות', desc: 'אישור אחרי מילוי טופס, והעתק חשבונית או הצעת מחיר. כשכבוי, ההעתק נשלח אליך בלבד כדי שתעביר ידנית.' },
     { key: 'whatsapp_owner', title: 'התראות וואטסאפ אליי', desc: 'הודעה על בקשת חשבונית חדשה ועל חשבונית שהופקה.' },
+    { key: 'whatsapp_copy', title: 'העתק של הודעות ללקוחות', desc: 'כל הודעה או קובץ שנשלחים ללקוח נשלחים גם למספר ההעתקים שמופיע למטה.' },
   ];
+
+  function toLocalPhone(intl) {
+    return intl && intl.startsWith('972') ? '0' + intl.slice(3) : (intl || '');
+  }
+
+  async function saveCopyPhone() {
+    const input = document.getElementById('copyPhoneInput');
+    const btn = document.getElementById('copyPhoneBtn');
+    btn.disabled = true;
+    try {
+      const res = await fetch(ADMIN_SETTINGS, {
+        method: 'PUT',
+        headers: await authHeader(),
+        body: JSON.stringify({ key: 'whatsapp_copy_phone', value: input.value })
+      });
+      const data = await res.json();
+      if (!res.ok) { alert(data.error || 'שמירת המספר נכשלה'); btn.disabled = false; return; }
+      renderSettings(data);
+    } catch (e) {
+      alert('שמירת המספר נכשלה, נסה שוב');
+      btn.disabled = false;
+    }
+  }
 
   async function loadSettings() {
     const container = document.getElementById('settingsContainer');
@@ -914,7 +938,17 @@
           <input type="checkbox" ${values[r.key] ? 'checked' : ''} onchange="saveSetting('${r.key}', this)"/>
           <span class="switch-slider"></span>
         </label>
-      </div>`).join('');
+      </div>`).join('') + `
+      <div class="setting-row">
+        <div class="setting-text">
+          <div class="setting-title">מספר לקבלת ההעתקים</div>
+          <div class="setting-desc">מספר וואטסאפ שאליו יישלחו ההעתקים. ריק = אין העתקים.</div>
+        </div>
+        <div class="setting-input">
+          <input type="tel" id="copyPhoneInput" dir="ltr" placeholder="052-0000000" value="${toLocalPhone(values.whatsapp_copy_phone)}"/>
+          <button class="btn btn-gold" id="copyPhoneBtn" onclick="saveCopyPhone()">שמור</button>
+        </div>
+      </div>`;
   }
 
   async function saveSetting(key, input) {

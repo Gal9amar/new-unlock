@@ -200,7 +200,8 @@ exports.handler = async (event) => {
       'לכל שאלה אנחנו זמינים עבורך 24/7 😊',
       'גבי המנעולן · 053-388-8381',
     ].join('\n');
-    await notifyCustomerWhatsapp(data.is_test ? process.env.OWNER_WHATSAPP_PHONE : data.phone, customerWaText);
+    await notifyCustomerWhatsapp(data.is_test ? process.env.OWNER_WHATSAPP_PHONE : data.phone, customerWaText,
+      { copy: !data.is_test, label: data.name });
 
     if (!data.is_test) {
       await notifyOwnerWhatsapp([
