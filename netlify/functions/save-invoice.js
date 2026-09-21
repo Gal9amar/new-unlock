@@ -198,7 +198,7 @@ exports.handler = async (event) => {
         : []),
       '',
       'לכל שאלה אנחנו זמינים עבורך 24/7 😊',
-      'UNLOCK מנעולנות · 053-388-8381',
+      'גבי המנעולן · 053-388-8381',
     ].join('\n');
     await notifyCustomerWhatsapp(data.is_test ? process.env.OWNER_WHATSAPP_PHONE : data.phone, customerWaText);
 

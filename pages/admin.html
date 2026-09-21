@@ -149,6 +149,7 @@
       <button class="topbar-nav-btn" id="tab-surveys" onclick="switchSection('surveys')">⭐ סקרי לקוח</button>
       <button class="topbar-nav-btn" id="tab-invoices" onclick="switchSection('invoices')">📄 חשבוניות</button>
       <button class="topbar-nav-btn" id="tab-stats" onclick="switchSection('stats')">📊 סטטיסטיקות</button>
+      <button class="topbar-nav-btn" id="tab-settings" onclick="switchSection('settings')">⚙️ הגדרות</button>
     </nav>
     <div class="topbar-actions">
       <a href="/" class="btn btn-outline" target="_blank" title="האתר">← <span class="btn-label">האתר</span></a>
@@ -186,6 +187,10 @@
         <button class="sidebar-item" id="nav-stats" onclick="switchSection('stats')">
           <span class="sidebar-icon">📊</span>
           <span class="sidebar-label">סטטיסטיקות</span>
+        </button>
+        <button class="sidebar-item" id="nav-settings" onclick="switchSection('settings')">
+          <span class="sidebar-icon">⚙️</span>
+          <span class="sidebar-label">הגדרות</span>
         </button>
       </nav>
     </aside>
@@ -234,6 +239,17 @@
         </div>
         <div id="statsContainer">
           <p class="empty-state">טוען נתונים...</p>
+        </div>
+      </div>
+
+      <!-- Settings section -->
+      <div class="admin-section hidden" id="section-settings">
+        <div class="section-header">
+          <h2>⚙️ הגדרות</h2>
+          <button class="btn btn-outline" onclick="loadSettings()">🔄 רענן</button>
+        </div>
+        <div class="settings-list" id="settingsContainer">
+          <p class="empty-state">טוען הגדרות...</p>
         </div>
       </div>
 
@@ -384,6 +400,7 @@
     if (section === 'surveys') loadSurveys();
     if (section === 'invoices') loadInvoices();
     if (section === 'stats') loadStats();
+    if (section === 'settings') loadSettings();
   }
 
   // ── Products ──
@@ -867,6 +884,56 @@
       console.error('triggerPublish error:', e);
     }
   };
+
+  // ── Settings (on/off switches) ──
+  const ADMIN_SETTINGS = '/.netlify/functions/admin-settings';
+  const SETTING_ROWS = [
+    { key: 'whatsapp_customers', title: 'הודעות וואטסאפ ללקוחות', desc: 'אישור אחרי מילוי טופס, והעתק חשבונית או הצעת מחיר. כשכבוי, ההעתק נשלח אליך בלבד כדי שתעביר ידנית.' },
+    { key: 'whatsapp_owner', title: 'התראות וואטסאפ אליי', desc: 'הודעה על בקשת חשבונית חדשה ועל חשבונית שהופקה.' },
+  ];
+
+  async function loadSettings() {
+    const container = document.getElementById('settingsContainer');
+    try {
+      const res = await fetch(ADMIN_SETTINGS, { headers: await authHeader() });
+      if (!res.ok) throw new Error();
+      renderSettings(await res.json());
+    } catch (e) {
+      container.innerHTML = '<p class="empty-state" style="color:red">שגיאה בטעינת הגדרות</p>';
+    }
+  }
+
+  function renderSettings(values) {
+    document.getElementById('settingsContainer').innerHTML = SETTING_ROWS.map(r => `
+      <div class="setting-row">
+        <div class="setting-text">
+          <div class="setting-title">${r.title}</div>
+          <div class="setting-desc">${r.desc}</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" ${values[r.key] ? 'checked' : ''} onchange="saveSetting('${r.key}', this)"/>
+          <span class="switch-slider"></span>
+        </label>
+      </div>`).join('');
+  }
+
+  async function saveSetting(key, input) {
+    const enabled = input.checked;
+    input.disabled = true;
+    try {
+      const res = await fetch(ADMIN_SETTINGS, {
+        method: 'PUT',
+        headers: await authHeader(),
+        body: JSON.stringify({ key, enabled })
+      });
+      if (!res.ok) throw new Error();
+      renderSettings(await res.json());
+    } catch (e) {
+      input.checked = !enabled;
+      input.disabled = false;
+      alert('שמירת ההגדרה נכשלה, נסה שוב');
+    }
+  }
 
   // ── Stats ──
   const ADMIN_STATS = '/.netlify/functions/admin-stats';

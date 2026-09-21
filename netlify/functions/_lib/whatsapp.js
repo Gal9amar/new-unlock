@@ -2,6 +2,8 @@
 // a QR-paired "WhatsApp Web" style instance, so it needs no business
 // verification and has no send waitlist. Silently no-ops until the three
 // env vars are configured, so it's safe to deploy before setup is finished.
+const { isEnabled } = require('./settings');
+
 async function sendWhatsapp(chatPhone, text) {
   const { GREEN_API_ID_INSTANCE: idInstance, GREEN_API_TOKEN_INSTANCE: apiToken } = process.env;
   if (!idInstance || !apiToken || !chatPhone) return;
@@ -18,6 +20,7 @@ async function sendWhatsapp(chatPhone, text) {
 }
 
 async function notifyOwnerWhatsapp(text) {
+  if (!(await isEnabled('whatsapp_owner'))) return;
   await sendWhatsapp(toWhatsappPhone(process.env.OWNER_WHATSAPP_PHONE), text);
 }
 
@@ -37,7 +40,7 @@ function toWhatsappPhone(raw) {
 // Customer-facing message; never throws and no-ops when the number is invalid.
 async function notifyCustomerWhatsapp(rawPhone, text) {
   const phone = toWhatsappPhone(rawPhone);
-  if (!phone) return;
+  if (!phone || !(await isEnabled('whatsapp_customers'))) return;
   await sendWhatsapp(phone, text);
 }
 
@@ -48,6 +51,7 @@ async function notifyCustomerWhatsappFile(rawPhone, fileUrl, fileName, caption) 
   const phone = toWhatsappPhone(rawPhone);
   const { GREEN_API_ID_INSTANCE: idInstance, GREEN_API_TOKEN_INSTANCE: apiToken } = process.env;
   if (!phone || !idInstance || !apiToken) return false;
+  if (!(await isEnabled('whatsapp_customers'))) return false;
   try {
     const res = await fetch(`https://api.green-api.com/waInstance${idInstance}/sendFileByUrl/${apiToken}`, {
       method: 'POST',

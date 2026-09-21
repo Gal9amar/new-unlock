@@ -1,5 +1,6 @@
 const crypto = require('crypto');
 const { getDb } = require('./_lib/db');
+const { isEnabled } = require('./_lib/settings');
 const { json, str } = require('./_lib/http');
 const { notifyOwnerWhatsapp, notifyCustomerWhatsapp, notifyCustomerWhatsappFile, toWhatsappPhone } = require('./_lib/whatsapp');
 
@@ -77,6 +78,17 @@ exports.handler = async (event) => {
   if (!name || !/^https:\/\/[^\s]+$/.test(url)) return json(400, { error: 'Missing name or https url' });
 
   try {
+    // Customer WhatsApp switched off in the admin page: don't message the customer,
+    // but still hand the owner the link so the document isn't lost.
+    if (!(await isEnabled('whatsapp_customers'))) {
+      await notifyOwnerWhatsapp([
+        `${docLabel} עבור ${name}`,
+        'שליחת וואטסאפ ללקוחות כבויה (הגדרות באדמין). העבר ידנית:',
+        url,
+      ].join('\n'));
+      return json(200, { ok: true, sent: 'disabled' });
+    }
+
     const phones = await findCustomerPhones(name);
 
     if (phones.length) {
@@ -85,7 +97,7 @@ exports.handler = async (event) => {
         '',
         `${docLabel} מצורפת.`,
         '',
-        'תודה שבחרת ב-UNLOCK מנעולנות! 🔐',
+        'תודה שבחרת בגבי המנעולן! 🔐',
         'לכל שאלה אנחנו זמינים 24/7: 053-388-8381',
       ].join('\n');
 

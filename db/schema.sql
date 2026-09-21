@@ -85,3 +85,9 @@ CREATE TABLE IF NOT EXISTS auth_codes (
   created_at    TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_auth_codes_email_created ON auth_codes(email, created_at);
+
+-- Admin on/off switches (e.g. WhatsApp sending), toggled from the admin page.
+CREATE TABLE IF NOT EXISTS settings (
+  key    TEXT PRIMARY KEY,
+  value  TEXT NOT NULL
+);
