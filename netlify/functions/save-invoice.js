@@ -7,7 +7,7 @@ const { escapeHtml } = require('./_lib/html-escape');
 const { SITE_URL, VALID_PAYMENT } = require('./_lib/constants');
 const { TEST_RECIPIENT_EMAIL, isProdOrigin } = require('./_lib/test-mode');
 const { emailWrapper, emailHeader, emailBadge, ctaButton, ctaRow, footerFull, footerAdmin } = require('./_lib/email-shell');
-const { notifyOwnerWhatsapp } = require('./_lib/whatsapp');
+const { notifyOwnerWhatsapp, notifyCustomerWhatsapp } = require('./_lib/whatsapp');
 
 const VALID_VAT = ['כולל מע"מ', 'לפני מע"מ'];
 
@@ -178,6 +178,28 @@ exports.handler = async (event) => {
         text: `בקשה חדשה מ-${data.name} (${data.phone})\nסכום: ₪${data.amount}\nלהנפקה: ${markUrl}`,
       }),
     ]);
+
+    // WhatsApp twin of the customer confirmation email. Test submissions go to
+    // the owner's own number (like the email goes to TEST_RECIPIENT_EMAIL), never a real customer.
+    const customerWaText = [
+      `${testPrefix}שלום ${data.name} 😊`,
+      '',
+      '✓ פנייתך התקבלה בהצלחה!',
+      'קיבלנו את בקשתך להפקת חשבונית. ניצור עבורך את החשבונית בהקדם האפשרי ונשלח אותה ישירות לתיבת המייל שלך.',
+      '',
+      'העתק הבקשה שלך:',
+      `כתובת שירות: ${data.service_address}`,
+      `תיאור השירות: ${data.message}`,
+      `סכום: ₪${data.amount} ${data.vat_type}`,
+      `אמצעי תשלום: ${data.payment_method}`,
+      ...(data.payment_method === 'העברה בנקאית'
+        ? ['', 'פרטי חשבון לביצוע ההעברה:', 'בנק: מזרחי טפחות', 'סניף: 540', 'חשבון: 121889', 'שם: גל עמר']
+        : []),
+      '',
+      'לכל שאלה אנחנו זמינים עבורך 24/7 😊',
+      'UNLOCK מנעולנות · 053-388-8381',
+    ].join('\n');
+    await notifyCustomerWhatsapp(data.is_test ? process.env.OWNER_WHATSAPP_PHONE : data.phone, customerWaText);
 
     if (!data.is_test) {
       await notifyOwnerWhatsapp([
