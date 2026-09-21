@@ -594,7 +594,7 @@
             <tbody>
               ${surveys.map(s => `
                 <tr class="accordion-row" onclick="toggleAccordion(this)">
-                  <td class="td-date">${s.createdAt ? esc(s.createdAt.slice(0,10)) : '—'}</td>
+                  <td class="td-date">${s.created_at ? esc(s.created_at.slice(0,10)) : '—'}</td>
                   <td>${esc(s.customer_name) || '—'}</td>
                   <td dir="ltr">${esc(s.phone) || '—'}</td>
                   <td class="td-stars">${'★'.repeat(Number(s.stars)||0)}</td>
@@ -624,7 +624,7 @@
               <div class="data-card-header">
                 <div>
                   <div class="data-card-name">${esc(s.customer_name) || '—'}</div>
-                  <div class="data-card-date">${s.createdAt ? esc(s.createdAt.slice(0,10)) : ''}</div>
+                  <div class="data-card-date">${s.created_at ? esc(s.created_at.slice(0,10)) : ''}</div>
                 </div>
                 <div class="data-card-stars">${'★'.repeat(Number(s.stars)||0)}</div>
               </div>
@@ -711,7 +711,7 @@
             <tbody>
               ${allInvoices.map((inv, idx) => `
                 <tr class="accordion-row" onclick="toggleAccordion(this)">
-                  <td class="td-date">${inv.createdAt ? esc(inv.createdAt.slice(0,10)) : '—'}</td>
+                  <td class="td-date">${inv.created_at ? esc(inv.created_at.slice(0,10)) : '—'}</td>
                   <td>${esc(inv.name) || '—'}</td>
                   <td dir="ltr">${esc(inv.phone) || '—'}</td>
                   <td>₪${esc(inv.amount) || '—'}</td>
@@ -748,7 +748,7 @@
               <div class="data-card-header">
                 <div>
                   <div class="data-card-name">${esc(inv.name) || '—'}</div>
-                  <div class="data-card-date">${inv.createdAt ? esc(inv.createdAt.slice(0,10)) : ''}</div>
+                  <div class="data-card-date">${inv.created_at ? esc(inv.created_at.slice(0,10)) : ''}</div>
                 </div>
                 <div class="data-card-amount">₪${esc(inv.amount) || '—'}</div>
               </div>
