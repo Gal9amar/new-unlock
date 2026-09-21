@@ -134,11 +134,12 @@ exports.handler = async (event) => {
             <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0;margin-bottom:28px;">
               <tr><td style="padding:20px 24px;">
                 ${[
+                  // Same order as the EZcount customer form, so details can be copied top to bottom.
                   ['שם', name, null],
-                  ['טלפון', phone, `tel:${phone}`],
                   ['מייל', email, `mailto:${email}`],
                   data.id_number ? ['ח.פ / ת.ז', idNumber, null] : null,
                   ['כתובת', serviceAddress, null],
+                  ['טלפון', phone, `tel:${phone}`],
                   ['שירות', messageBlocksHtml(data.message), null],
                   ['סכום', amountLabel, null],
                   ['תשלום', paymentMethod, null],

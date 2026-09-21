@@ -274,6 +274,11 @@
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      if (!(parseFloat(form.amount.value) > 0)) {
+        alert('יש להזין סכום גדול מ-0');
+        document.getElementById('amountInput').focus();
+        return;
+      }
       if (!selectedPayment) {
         alert('יש לבחור שיטת תשלום');
         return;
