@@ -18,7 +18,7 @@ async function sendWhatsapp(chatPhone, text) {
 }
 
 async function notifyOwnerWhatsapp(text) {
-  await sendWhatsapp(process.env.OWNER_WHATSAPP_PHONE, text);
+  await sendWhatsapp(toWhatsappPhone(process.env.OWNER_WHATSAPP_PHONE), text);
 }
 
 // Converts a customer-typed Israeli number (050-1234567, +972 50 123 4567,
