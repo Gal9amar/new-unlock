@@ -1,9 +1,16 @@
 {
-  "updatedAt": "2026-09-11T10:38:59.114Z",
+  "updatedAt": "2026-09-21T23:05:22.761Z",
   "overallRating": 9.84,
-  "totalReviews": 110,
+  "totalReviews": 112,
   "sourceUrl": "https://www.midrag.co.il/SpCard/Sp/138646?areaId=7&serviceId=1993&sortByCategory=343&isGeneric=false",
   "featured": [
+    {
+      "name": "דוד ל. רחובות.",
+      "rating": null,
+      "date": "14/09/2026",
+      "text": "הייתי מרוצה במאה אחוז!",
+      "source": "midrag"
+    },
     {
       "name": "ידידיה כהנא",
       "rating": 5,
@@ -44,13 +51,6 @@
       "rating": null,
       "date": "02/09/2026",
       "text": "הוא היה נהדר!",
-      "source": "midrag"
-    },
-    {
-      "name": "דנית גלשר, כפר הנגיד.",
-      "rating": null,
-      "date": "27/08/2026",
-      "text": "הוא היה מדהים!",
       "source": "midrag"
     },
     {
