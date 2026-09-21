@@ -8,9 +8,8 @@ const { notifyOwnerWhatsapp, notifyCustomerWhatsapp, toWhatsappPhone } = require
 // only carries the customer's name and a download link, so the phone number is
 // looked up here by name in the invoices + hilan_invoices tables.
 //
-// Protected by a shared secret (INVOICE_COPY_SECRET). Anything that can't be
-// matched to exactly one customer phone is sent to the owner instead, so a wrong
-// name match can never message the wrong customer.
+// Protected by a shared secret (INVOICE_COPY_SECRET). A name with no matching
+// request is sent to the owner instead of a customer.
 
 const LOOKBACK_DAYS = 90;
 
@@ -24,25 +23,25 @@ function normalizeName(s) {
   return String(s || '').replace(/["'׳״.,\-]/g, ' ').replace(/\s+/g, ' ').trim().toLowerCase();
 }
 
+// The copy email belongs to the most recent request under that name, so older
+// requests by the same name (returning customers, name collisions) are ignored:
+// the newest matching request with a valid phone wins. Returns [] when none.
 async function findCustomerPhones(name) {
   const db = getDb();
   const since = new Date(Date.now() - LOOKBACK_DAYS * 86400000).toISOString();
   const rows = [];
   for (const table of ['invoices', 'hilan_invoices']) {
     const res = await db.execute({
-      sql: `SELECT name, phone FROM ${table} WHERE is_test = 0 AND created_at >= ?`,
+      sql: `SELECT name, phone, created_at FROM ${table} WHERE is_test = 0 AND created_at >= ?`,
       args: [since],
     });
     rows.push(...res.rows);
   }
   const target = normalizeName(name);
-  const phones = new Set();
-  for (const r of rows) {
-    if (normalizeName(r.name) !== target) continue;
-    const p = toWhatsappPhone(r.phone);
-    if (p) phones.add(p);
-  }
-  return [...phones];
+  const matches = rows
+    .filter((r) => normalizeName(r.name) === target && toWhatsappPhone(r.phone))
+    .sort((x, y) => (x.created_at < y.created_at ? 1 : -1));
+  return matches.length ? [toWhatsappPhone(matches[0].phone)] : [];
 }
 
 exports.handler = async (event) => {
@@ -63,7 +62,7 @@ exports.handler = async (event) => {
   try {
     const phones = await findCustomerPhones(name);
 
-    if (phones.length === 1) {
+    if (phones.length) {
       await notifyCustomerWhatsapp(phones[0], [
         `שלום ${name} 😊`,
         '',
@@ -78,7 +77,7 @@ exports.handler = async (event) => {
 
     await notifyOwnerWhatsapp([
       `⚠️ ${docType} עבור ${name} לא נשלחה ללקוח אוטומטית`,
-      phones.length === 0 ? 'לא נמצא טלפון תואם לפי שם.' : 'נמצאו כמה טלפונים תואמים לשם.',
+      'לא נמצא טלפון תואם לפי שם.',
       'העבר ידנית:',
       url,
     ].join('\n'));
