@@ -67,7 +67,7 @@ exports.handler = async (event) => {
       await notifyCustomerWhatsapp(phones[0], [
         `שלום ${name} 😊`,
         '',
-        `ה${docType} שלך מוכנה להורדה:`,
+        `המסמך שלך (${docType}) מוכן להורדה:`,
         url,
         '',
         'תודה שבחרת ב-UNLOCK מנעולנות! 🔐',
