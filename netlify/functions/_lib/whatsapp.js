@@ -41,4 +41,26 @@ async function notifyCustomerWhatsapp(rawPhone, text) {
   await sendWhatsapp(phone, text);
 }
 
-module.exports = { notifyOwnerWhatsapp, notifyCustomerWhatsapp, toWhatsappPhone };
+// Sends a file Green API downloads from `fileUrl` (must be publicly reachable),
+// with `caption` as its text. Returns true only if Green API accepted it, so the
+// caller can fall back to a plain link message.
+async function notifyCustomerWhatsappFile(rawPhone, fileUrl, fileName, caption) {
+  const phone = toWhatsappPhone(rawPhone);
+  const { GREEN_API_ID_INSTANCE: idInstance, GREEN_API_TOKEN_INSTANCE: apiToken } = process.env;
+  if (!phone || !idInstance || !apiToken) return false;
+  try {
+    const res = await fetch(`https://api.green-api.com/waInstance${idInstance}/sendFileByUrl/${apiToken}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chatId: `${phone}@c.us`, urlFile: fileUrl, fileName, caption }),
+    });
+    if (!res.ok) return false;
+    const data = await res.json().catch(() => ({}));
+    return !!data.idMessage;
+  } catch (e) {
+    console.error('WhatsApp file send failed:', e.message);
+    return false;
+  }
+}
+
+module.exports = { notifyOwnerWhatsapp, notifyCustomerWhatsapp, notifyCustomerWhatsappFile, toWhatsappPhone };

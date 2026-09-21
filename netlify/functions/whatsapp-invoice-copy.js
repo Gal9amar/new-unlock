@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 const { getDb } = require('./_lib/db');
 const { json, str } = require('./_lib/http');
-const { notifyOwnerWhatsapp, notifyCustomerWhatsapp, toWhatsappPhone } = require('./_lib/whatsapp');
+const { notifyOwnerWhatsapp, notifyCustomerWhatsapp, notifyCustomerWhatsappFile, toWhatsappPhone } = require('./_lib/whatsapp');
 
 // Called by a Google Apps Script running in the owner's Gmail (not by a browser),
 // each time EZcount/Hyp's "download your document" copy email arrives. The email
@@ -44,6 +44,21 @@ async function findCustomerPhones(name) {
   return matches.length ? [toWhatsappPhone(matches[0].phone)] : [];
 }
 
+// EZcount's "copy" link 302-redirects to the PDF itself. Returns the final PDF
+// URL, or '' if the link isn't an EZcount link or doesn't lead to a PDF (the
+// caller then just sends the link as text).
+async function resolvePdfUrl(url) {
+  try {
+    if (!/^https:\/\/([a-z0-9-]+\.)*ezcount\.co\.il\//i.test(url)) return '';
+    const res = await fetch(url, { redirect: 'follow', signal: AbortSignal.timeout(8000) });
+    const isPdf = res.ok && /application\/pdf/i.test(res.headers.get('content-type') || '');
+    if (res.body) res.body.cancel().catch(() => {});
+    return isPdf ? res.url : '';
+  } catch {
+    return '';
+  }
+}
+
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') return json(405, { error: 'Method not allowed' });
 
@@ -55,7 +70,9 @@ exports.handler = async (event) => {
   if (!safeEqual(b.secret, secret)) return json(401, { error: 'Unauthorized' });
 
   const name = str(b.name, 100);
-  const docType = str(b.doc_type, 60) || 'חשבונית';
+  const docType = str(b.doc_type, 60) || 'מסמך';
+  const docNumber = str(b.doc_number, 20).replace(/[^\d]/g, '');
+  const docLabel = docNumber ? `${docType} מספר ${docNumber}` : docType;
   const url = str(b.url, 2000);
   if (!name || !/^https:\/\/[^\s]+$/.test(url)) return json(400, { error: 'Missing name or https url' });
 
@@ -63,20 +80,26 @@ exports.handler = async (event) => {
     const phones = await findCustomerPhones(name);
 
     if (phones.length) {
-      await notifyCustomerWhatsapp(phones[0], [
+      const text = [
         `שלום ${name} 😊`,
         '',
-        `המסמך שלך (${docType}) מוכן להורדה:`,
-        url,
+        `${docLabel} מצורפת.`,
         '',
         'תודה שבחרת ב-UNLOCK מנעולנות! 🔐',
         'לכל שאלה אנחנו זמינים 24/7: 053-388-8381',
-      ].join('\n'));
-      return json(200, { ok: true, sent: 'customer' });
+      ].join('\n');
+
+      const pdfUrl = await resolvePdfUrl(url);
+      const fileSent = pdfUrl && await notifyCustomerWhatsappFile(phones[0], pdfUrl, `${docLabel}.pdf`, text);
+      if (!fileSent) {
+        // Couldn't attach the PDF: send the link instead so the customer still gets the document.
+        await notifyCustomerWhatsapp(phones[0], text.replace('מצורפת.', 'להורדה:\n' + url));
+      }
+      return json(200, { ok: true, sent: 'customer', as: fileSent ? 'file' : 'link' });
     }
 
     await notifyOwnerWhatsapp([
-      `⚠️ ${docType} עבור ${name} לא נשלחה ללקוח אוטומטית`,
+      `⚠️ ${docLabel} עבור ${name} לא נשלחה ללקוח אוטומטית`,
       'לא נמצא טלפון תואם לפי שם.',
       'העבר ידנית:',
       url,
