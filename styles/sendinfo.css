@@ -214,6 +214,14 @@ textarea {
 .submit-btn:active { transform: translateY(0); }
 .submit-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
 
+.field-hint {
+  margin: 0.4rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.6);
+}
+.field-hint .req { color: #ef4444; margin-left: 2px; }
+
 .form-note {
   text-align: center;
   font-size: 0.78rem;
