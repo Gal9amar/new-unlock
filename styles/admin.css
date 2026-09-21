@@ -481,6 +481,35 @@ body {
   letter-spacing: 0.02em;
 }
 
+.stats-month-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.stats-month-nav .stats-month-label {
+  margin-bottom: 0;
+  min-width: 140px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.month-nav-btn {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  color: var(--text2);
+  border-radius: 8px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.78rem;
+  font-family: 'Heebo', sans-serif;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.month-nav-btn:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); background: var(--gold-dim); }
+.month-nav-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
