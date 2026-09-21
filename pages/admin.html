@@ -153,10 +153,10 @@
     </nav>
     <div class="topbar-actions">
       <a href="/" class="btn btn-outline" target="_blank" title="האתר">← <span class="btn-label">האתר</span></a>
-      <button class="btn btn-publish" id="publishBtn" onclick="triggerPublish()" title="מריץ build ב-Netlify ומפרסם שינויים באתר">
+      <button class="btn btn-publish js-publish-btn" id="publishBtn" onclick="triggerPublish()" title="מריץ build ב-Netlify ומפרסם שינויים באתר">
         🚀 <span class="btn-label">פרסם שינויים</span>
       </button>
-      <button class="btn btn-reviews" id="updateReviewsBtn" onclick="updateReviews()" title="מושך ביקורות עדכניות ממידרג ומעדכן את האתר">
+      <button class="btn btn-reviews js-reviews-btn" id="updateReviewsBtn" onclick="updateReviews()" title="מושך ביקורות עדכניות ממידרג ומעדכן את האתר">
         ⭐ <span class="btn-label">עדכן ביקורות</span>
       </button>
       <button class="btn btn-outline" onclick="doLogout()" title="יציאה">⏻ <span class="btn-label">יציאה</span></button>
@@ -193,6 +193,16 @@
           <span class="sidebar-label">הגדרות</span>
         </button>
       </nav>
+
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-actions">
+        <button class="btn btn-publish js-publish-btn" id="publishBtnMobile" onclick="triggerPublish()">
+          🚀 <span class="btn-label">פרסם שינויים</span>
+        </button>
+        <button class="btn btn-reviews js-reviews-btn" id="updateReviewsBtnMobile" onclick="updateReviews()">
+          ⭐ <span class="btn-label">עדכן ביקורות</span>
+        </button>
+      </div>
     </aside>
 
     <!-- Main content -->
@@ -820,15 +830,18 @@
 
   // ── Update Reviews from Midrag ──────────────────────────
   window.updateReviews = async function() {
-    const btn = document.getElementById('updateReviewsBtn');
+    const btns = Array.from(document.querySelectorAll('.js-reviews-btn'));
     const token = await window.getIdToken();
     if (!token) { alert('יש להתחבר תחילה'); return; }
 
-    const btnLabel = btn.querySelector('.btn-label');
-    const setLabel = (t) => { if (btnLabel) btnLabel.textContent = t; else btn.textContent = t; };
-    const reset = () => { setLabel('עדכן ביקורות'); btn.disabled = false; };
+    const setLabel = (t) => btns.forEach(btn => {
+      const lbl = btn.querySelector('.btn-label');
+      if (lbl) lbl.textContent = t; else btn.textContent = t;
+    });
+    const setDisabled = (v) => btns.forEach(btn => { btn.disabled = v; });
+    const reset = () => { setLabel('עדכן ביקורות'); setDisabled(false); };
 
-    btn.disabled = true;
+    setDisabled(true);
     setLabel('מעדכן...');
 
     try {
@@ -853,12 +866,15 @@
 
   // ── Publish / Netlify Build Hook ──────────────────────────
   window.triggerPublish = async function() {
-    const btn = document.getElementById('publishBtn');
+    const btns = Array.from(document.querySelectorAll('.js-publish-btn'));
     const token = await window.getIdToken();
     if (!token) { alert('יש להתחבר תחילה'); return; }
 
-    btn.disabled = true;
-    btn.textContent = '⏳ מפרסם...';
+    const setText = (t) => btns.forEach(btn => { btn.textContent = t; });
+    const setDisabled = (v) => btns.forEach(btn => { btn.disabled = v; });
+
+    setDisabled(true);
+    setText('⏳ מפרסם...');
 
     try {
       const res = await fetch(
@@ -867,19 +883,19 @@
       );
       const data = await res.json();
       if (data.ok) {
-        btn.textContent = '✅ פורסם! (~60 שנ׳)';
+        setText('✅ פורסם! (~60 שנ׳)');
         setTimeout(() => {
-          btn.textContent = '🚀 פרסם שינויים';
-          btn.disabled = false;
+          setText('🚀 פרסם שינויים');
+          setDisabled(false);
         }, 8000);
       } else {
         throw new Error(data.error || 'Unknown error');
       }
     } catch (e) {
-      btn.textContent = '❌ שגיאה';
+      setText('❌ שגיאה');
       setTimeout(() => {
-        btn.textContent = '🚀 פרסם שינויים';
-        btn.disabled = false;
+        setText('🚀 פרסם שינויים');
+        setDisabled(false);
       }, 4000);
       console.error('triggerPublish error:', e);
     }

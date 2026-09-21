@@ -229,6 +229,16 @@ body {
 .sidebar-item.active { background: var(--gold-dim); color: var(--gold); }
 .sidebar-icon { font-size: 1rem; }
 
+.sidebar-divider { height: 1px; background: var(--border); margin: 0.9rem 0.9rem; }
+
+.sidebar-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0 0.75rem;
+}
+.sidebar-actions .btn { width: 100%; justify-content: center; }
+
 .sidebar-overlay {
   display: none;
   position: fixed;
@@ -972,6 +982,8 @@ body {
   .topbar-actions { gap: 0.35rem; }
   .topbar-actions .btn { padding: 0.4rem 0.6rem; font-size: 0.76rem; }
   .topbar-actions .btn-label { display: none; }
+  .topbar-actions #publishBtn,
+  .topbar-actions #updateReviewsBtn { display: none; }
 
   .stats-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
   .stat-value { font-size: 1.5rem; }
