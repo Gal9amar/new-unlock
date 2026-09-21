@@ -15,14 +15,11 @@
 new-unlock/
 ├── index.html              ← דף הבית
 ├── product.html            ← דף מוצר בודד
-├── firebase.json           ← הגדרות Firebase (functions)
-├── .firebaserc             ← פרויקט Firebase: hamanulan-3bbc7
 ├── netlify.toml            ← הגדרות Netlify
 ├── CNAME                   ← hamanulan.com
 ├── robots.txt, sitemap.xml ← SEO
-├── functions/              ← Firebase Functions (Node.js)
-│   ├── index.js            ← products (public) + adminProducts (CRUD)
-│   └── package.json
+├── db/
+│   └── schema.sql          ← סכמת Turso (products, surveys, invoices, auth_codes)
 ├── pages/
 │   ├── admin.html          ← פאנל ניהול מוצרים
 │   ├── sendinfo.html       ← טופס שליחת פרטי לקוח לחשבונית
@@ -40,7 +37,7 @@ new-unlock/
 │   └── accessibility.js    ← ווידג'ט UserWay
 ├── netlify/
 │   └── functions/
-│       └── update-reviews.js ← Netlify Function: מושך ביקורות ממדרג ומעדכן GitHub
+│       └── *.js            ← Netlify Functions (products, admin-*, save-*, verify-code, update-reviews ועוד) + _lib/
 ├── data/
 │   └── reviews.json        ← ביקורות ממדרג (נוצר אוטומטית)
 └── images/                 ← תמונות, לוגו, אייקונים
@@ -55,11 +52,9 @@ new-unlock/
 - **אין build command** – הקבצים נפרסים as-is
 - CNAME: `hamanulan.com` → Netlify
 
-### Firebase Functions
-```bash
-firebase deploy --only functions --project hamanulan-3bbc7
-```
-- Node.js 20, region: `us-central1`
+### Netlify Functions
+- נפרסות אוטומטית עם ה-push, תיקייה: `netlify/functions/`
+- Node.js 22
 
 ---
 
@@ -77,27 +72,23 @@ firebase deploy --only functions --project hamanulan-3bbc7
 
 ---
 
-## Firebase
+## Backend (Netlify Functions + Turso)
 
-### פרויקט
-- **Project ID:** `hamanulan-3bbc7`
-- **Auth:** Google Sign-In בלבד – משתמש מורשה: `gal9amar@gmail.com`
-- **Firestore:** מסד נתונים מוצרים (region: europe-west1)
-
-### Firebase Functions
+- **מסד נתונים:** Turso (libSQL), סכמה ב-`db/schema.sql`. משתני סביבה: `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN`. בלי משתנים נעשה שימוש בקובץ מקומי ב-`.data/local.db`.
+- **Auth לאדמין:** קוד חד-פעמי במייל (`request-code` / `verify-code`), רק `gal9amar@gmail.com`.
 
 | Function | גישה | תיאור |
 |----------|------|-------|
 | `products` | ציבורי | GET כל המוצרים לפי סדר |
-| `adminProducts` | מוגן | GET/POST/PUT/DELETE מוצרים |
-| `saveSurvey` | ציבורי | POST שמירת סקר שביעות רצון |
-| `saveInvoice` | ציבורי | POST שמירת בקשת חשבונית |
-| `adminSurveys` | מוגן | GET/DELETE סקרים |
-| `adminInvoices` | מוגן | GET/PATCH/DELETE חשבוניות |
-| `adminStats` | מוגן | GET סטטיסטיקות dashboard |
-| `triggerBuild` | מוגן | POST הפעלת GitHub Action לבניית SSG |
+| `admin-products` | מוגן | GET/POST/PUT/DELETE מוצרים |
+| `save-survey` | ציבורי | POST שמירת סקר שביעות רצון |
+| `save-invoice` | ציבורי | POST שמירת בקשת חשבונית |
+| `admin-surveys` | מוגן | GET/DELETE סקרים |
+| `admin-invoices` | מוגן | GET/PATCH/DELETE חשבוניות |
+| `admin-stats` | מוגן | GET סטטיסטיקות dashboard |
+| `trigger-build` | מוגן | POST הפעלת GitHub Action לבניית SSG |
 
-### Firestore – מבנה Collection `products`
+### מבנה מוצר (טבלת `products`)
 
 ```json
 {
@@ -223,8 +214,8 @@ https://www.midrag.co.il/SpCard/Sp/138646?areaId=7&serviceId=1993&sortByCategory
 
 ## פאנל Admin (pages/admin.html)
 
-- **כניסה:** Google Sign-In – רק `gal9amar@gmail.com`
-- **נתונים:** Firestore דרך Firebase Function `adminProducts`
+- **כניסה:** קוד במייל – רק `gal9amar@gmail.com`
+- **נתונים:** Turso דרך Netlify Function `admin-products`
 - **פעולות:** הוספה / עריכה / מחיקה של מוצרים
 
 ---
@@ -259,9 +250,6 @@ index.html
 <!-- נגישות UserWay -->
 <script src="https://cdn.userway.org/widget.js" data-account="..."></script>
 
-<!-- Firebase (admin בלבד) -->
-<script type="module" src="https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js"></script>
-
 <!-- Web3Forms (sendinfo + survey) -->
 POST https://api.web3forms.com/submit
 ```
@@ -273,9 +261,9 @@ POST https://api.web3forms.com/submit
 
 ## כללים חשובים
 
-1. **Firestore = מקור האמת** למוצרים – שינוי דרך Admin בלבד
+1. **Turso = מקור האמת** למוצרים – שינוי דרך Admin בלבד
 2. עיצוב: כחול כהה `#0a1628` + זהב `#d4a853` בכל הדפים
 3. כל שינוי = push ל-GitHub → Netlify מתעדכן אוטומטית
-4. Firebase Functions = `firebase deploy --only functions`
+4. Netlify Functions נפרסות אוטומטית עם ה-push
 5. תמיד לבדוק RTL + מובייל אחרי שינויי CSS
 6. PAT לגיטהאב – לשלוח בכל session ולמחוק אחרי שימוש

@@ -30,7 +30,7 @@
   banner.setAttribute('aria-label', 'הסכמה לשימוש בעוגיות');
   banner.innerHTML =
     '<p class="cookie-consent-text">' +
-    'האתר משתמש בעוגיות הכרחיות ותפקודיות (כגון Firebase ו-UserWay) לתפעול תקין ולשיפור החוויה. ' +
+    'האתר משתמש בעוגיות הכרחיות ותפקודיות (כגון UserWay) לתפעול תקין ולשיפור החוויה. ' +
     'קראו את <a href="' + policyHref + '">מדיניות העוגיות שלנו</a>.' +
     '</p>' +
     '<div class="cookie-consent-actions">' +
