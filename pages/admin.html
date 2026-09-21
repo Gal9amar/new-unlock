@@ -971,12 +971,15 @@
 
   // ── Stats ──
   const ADMIN_STATS = '/.netlify/functions/admin-stats';
+  const statsNow = new Date();
+  let statsYear = statsNow.getFullYear();
+  let statsMonth = statsNow.getMonth() + 1; // 1-12
 
   async function loadStats() {
     const container = document.getElementById('statsContainer');
     container.innerHTML = '<p class="empty-state">טוען נתונים...</p>';
     try {
-      const res = await fetch(ADMIN_STATS, { headers: await authHeader() });
+      const res = await fetch(`${ADMIN_STATS}?year=${statsYear}&month=${statsMonth}`, { headers: await authHeader() });
       const data = await res.json();
       renderStats(data);
     } catch(e) {
@@ -984,11 +987,23 @@
     }
   }
 
+  function changeStatsMonth(delta) {
+    statsMonth += delta;
+    if (statsMonth > 12) { statsMonth = 1; statsYear++; }
+    if (statsMonth < 1) { statsMonth = 12; statsYear--; }
+    loadStats();
+  }
+
   function renderStats(d) {
     const container = document.getElementById('statsContainer');
-    const month = new Date().toLocaleString('he-IL', { month: 'long', year: 'numeric' });
+    const monthLabel = new Date(statsYear, statsMonth - 1, 1).toLocaleString('he-IL', { month: 'long', year: 'numeric' });
+    const isCurrentMonth = statsYear === statsNow.getFullYear() && statsMonth === statsNow.getMonth() + 1;
     container.innerHTML = `
-      <p class="stats-month-label">נתוני ${month}</p>
+      <div class="stats-month-nav">
+        <button class="month-nav-btn" onclick="changeStatsMonth(-1)">‹ קודם</button>
+        <span class="stats-month-label">${monthLabel}</span>
+        <button class="month-nav-btn" onclick="changeStatsMonth(1)" ${isCurrentMonth ? 'disabled' : ''}>הבא ›</button>
+      </div>
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-icon">📦</div>
