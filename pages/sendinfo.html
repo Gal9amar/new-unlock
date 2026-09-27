@@ -273,23 +273,34 @@
     const form = document.getElementById('contactForm');
     const btn = document.getElementById('submitBtn');
 
+    // Highlights a non-native field group (no HTML5 validity of its own) and
+    // scrolls it into view, mirroring what reportValidity() does natively.
+    function flagMissing(el) {
+      el.classList.add('field-missing');
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(() => el.classList.remove('field-missing'), 2500);
+    }
+
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+
+      // Native required-field check first: focuses + scrolls to the first
+      // empty/invalid input (name, phone, email, address, message, amount, consent).
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
       if (!(parseFloat(form.amount.value) > 0)) {
         alert('יש להזין סכום גדול מ-0');
         document.getElementById('amountInput').focus();
         return;
       }
       if (!selectedPayment) {
-        alert('יש לבחור שיטת תשלום');
+        flagMissing(document.querySelector('.payment-toggles'));
         return;
       }
       if (midragSelected === null) {
-        alert('יש לציין האם הגעת דרך מידרג');
-        return;
-      }
-      if (!document.getElementById('consentCheck').checked) {
-        alert('יש לאשר את מדיניות הפרטיות ותנאי השימוש כדי להמשיך');
+        flagMissing(document.querySelector('.yesno-btns'));
         return;
       }
       btn.disabled = true;
