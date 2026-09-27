@@ -251,6 +251,19 @@ textarea {
 .consent-label a { color: #d4a853; text-decoration: underline; }
 .consent-label a:hover { color: #e8c87a; }
 
+/* ── Missing-field highlight (payment / midrag button groups) ── */
+.field-missing {
+  outline: 2px solid #ef4444;
+  outline-offset: 6px;
+  border-radius: 12px;
+  animation: field-shake 0.4s ease;
+}
+@keyframes field-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
 /* ── Success screen ── */
 .success-screen {
   display: none;
