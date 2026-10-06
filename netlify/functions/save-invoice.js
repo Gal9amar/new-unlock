@@ -19,10 +19,10 @@ exports.handler = async (event) => {
   let b;
   try { b = JSON.parse(event.body || '{}'); } catch { return json(400, { error: 'Invalid body' }); }
 
-  if (!b.name || !b.phone || !b.email || !b.service_address || !b.message || !b.amount || !b.vat_type || !b.payment_method) {
+  if (!b.name || !b.phone || !b.service_address || !b.message || !b.amount || !b.vat_type || !b.payment_method) {
     return json(400, { error: 'Missing required fields' });
   }
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(b.email)) return json(400, { error: 'Invalid email' });
+  if (b.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(b.email)) return json(400, { error: 'Invalid email' });
   const amount = parseFloat(String(b.amount).replace(/[^0-9.]/g, ''));
   if (isNaN(amount) || amount <= 0 || amount > 999999) return json(400, { error: 'Invalid amount' });
   if (!VALID_VAT.includes(b.vat_type)) return json(400, { error: 'Invalid vat_type' });
@@ -32,7 +32,7 @@ exports.handler = async (event) => {
     id: crypto.randomUUID(),
     name: str(b.name, 100),
     phone: str(b.phone, 20).replace(/[^\d+\-() ]/g, ''),
-    email: str(b.email, 100).toLowerCase(),
+    email: str(b.email || '', 100).toLowerCase(),
     id_number: str(b.id_number, 20).replace(/[^\d]/g, ''),
     service_address: str(b.service_address, 200),
     message: str(b.message, 2000),
@@ -136,7 +136,7 @@ exports.handler = async (event) => {
                 ${[
                   // Same order as the EZcount customer form, so details can be copied top to bottom.
                   ['שם', name, null],
-                  ['מייל', email, `mailto:${email}`],
+                  data.email ? ['מייל', email, `mailto:${email}`] : null,
                   data.id_number ? ['ח.פ / ת.ז', idNumber, null] : null,
                   ['כתובת', serviceAddress, null],
                   ['טלפון', phone, `tel:${phone}`],
@@ -164,7 +164,8 @@ exports.handler = async (event) => {
         ${footerAdmin(`UNLOCK Admin · <a href="${SITE_URL}/pages/admin.html" style="color:#94a3b8;text-decoration:none;">כניסה לפאנל</a>`)}`);
 
     await Promise.all([
-      sendMail({
+      // Email is optional on the form: no address, no customer email (WhatsApp still goes out).
+      clientTo && sendMail({
         from: '"UNLOCK מנעולנות" <unlock.yavne@gmail.com>',
         to: clientTo,
         subject: `${testPrefix}✓ פנייתך התקבלה – UNLOCK מנעולנות`,
@@ -186,7 +187,7 @@ exports.handler = async (event) => {
       `${testPrefix}שלום ${data.name} 😊`,
       '',
       '✓ פנייתך התקבלה בהצלחה!',
-      'קיבלנו את בקשתך להפקת חשבונית. ניצור עבורך את החשבונית בהקדם האפשרי ונשלח אותה ישירות לתיבת המייל שלך.',
+      'קיבלנו את בקשתך להפקת חשבונית. ניצור עבורך את החשבונית בהקדם האפשרי ונשלח אותה אליך בהקדם.',
       '',
       'העתק הבקשה שלך:',
       `כתובת שירות: ${data.service_address}`,
@@ -209,7 +210,7 @@ exports.handler = async (event) => {
         '',
         `שם לקוח: ${data.name}`,
         `טלפון: ${data.phone}`,
-        `מייל: ${data.email}`,
+        `מייל: ${data.email || '—'}`,
         `ת.ז/ח.פ: ${data.id_number || '—'}`,
         `כתובת: ${data.service_address}`,
         `תיאור השירות: ${data.message}`,

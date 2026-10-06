@@ -74,7 +74,8 @@ exports.handler = async (event) => {
         </tr>
         ${footerFull()}`);
 
-    await sendMail({
+    // Email is optional on the form; without one the customer gets only the WhatsApp copy.
+    if (isTestMode || inv.email) await sendMail({
       from: '"UNLOCK מנעולנות" <unlock.yavne@gmail.com>',
       to: isTestMode ? TEST_RECIPIENT_EMAIL : inv.email,
       subject: `${isTestMode ? '[TEST] ' : ''}✓ החשבונית שלך הופקה בהצלחה – UNLOCK מנעולנות`,

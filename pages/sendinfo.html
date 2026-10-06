@@ -68,8 +68,8 @@
             </div>
 
             <div class="field">
-              <label>כתובת מייל <span class="req">*</span></label>
-              <input type="email" name="email" placeholder="mail@example.com" required/>
+              <label>כתובת מייל</label>
+              <input type="email" name="email" placeholder="mail@example.com"/>
             </div>
 
             <div class="field">
@@ -285,7 +285,7 @@
       e.preventDefault();
 
       // Native required-field check first: focuses + scrolls to the first
-      // empty/invalid input (name, phone, email, address, message, amount, consent).
+      // empty/invalid input (name, phone, address, message, amount, consent).
       if (!form.checkValidity()) {
         form.reportValidity();
         return;
