@@ -75,7 +75,8 @@ exports.handler = async (event) => {
         ${footerFull()}`);
 
     // Email is optional on the form; without one the customer gets only the WhatsApp copy.
-    if (isTestMode || inv.email) await sendMail({
+    const emailSent = !!(isTestMode || inv.email);
+    if (emailSent) await sendMail({
       from: '"UNLOCK מנעולנות" <unlock.yavne@gmail.com>',
       to: isTestMode ? TEST_RECIPIENT_EMAIL : inv.email,
       subject: `${isTestMode ? '[TEST] ' : ''}✓ החשבונית שלך הופקה בהצלחה – UNLOCK מנעולנות`,
@@ -83,7 +84,7 @@ exports.handler = async (event) => {
       text: `שלום ${inv.name}, החשבונית הופקה בהצלחה. תודה שבחרת ב-UNLOCK מנעולנות! לשאלות: 053-388-8381`,
     });
 
-    return htmlResponse(`<!DOCTYPE html><html dir="rtl" lang="he"><head><meta charset="utf-8"/><title>הופקה בהצלחה</title></head><body style="font-family:Arial;text-align:center;padding:60px;direction:rtl;"><h2 style="color:#16a34a;">✅ החשבונית הופקה ואישור נשלח ל-${name}</h2><p style="color:#64748b;">הסטטוס עודכן במערכת ומייל אישור נשלח ללקוח.</p></body></html>`);
+    return htmlResponse(`<!DOCTYPE html><html dir="rtl" lang="he"><head><meta charset="utf-8"/><title>הופקה בהצלחה</title></head><body style="font-family:Arial;text-align:center;padding:60px;direction:rtl;"><h2 style="color:#16a34a;">✅ החשבונית הופקה${emailSent ? ` ואישור נשלח ל-${name}` : ''}</h2><p style="color:#64748b;">${emailSent ? 'הסטטוס עודכן במערכת ומייל אישור נשלח ללקוח.' : `הסטטוס עודכן במערכת. ל-${name} אין כתובת מייל, ולכן לא נשלח מייל אישור.`}</p></body></html>`);
   } catch (e) {
     return { statusCode: 500, body: 'שגיאה: ' + escapeHtml(e.message) };
   }
