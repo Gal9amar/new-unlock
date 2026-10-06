@@ -99,6 +99,7 @@ exports.handler = async (event) => {
         '',
         'תודה שבחרת בגבי המנעולן! 🔐',
         'לכל שאלה אנחנו זמינים 24/7: 053-388-8381',
+        'https://hamanulan.com/',
       ].join('\n');
 
       const pdfUrl = await resolvePdfUrl(url);
