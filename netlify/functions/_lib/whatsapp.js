@@ -12,7 +12,10 @@ function apiUrl(method) {
 // Returns true only if Green API accepted the message.
 async function sendWhatsapp(chatPhone, text) {
   const url = apiUrl('sendMessage');
-  if (!url || !chatPhone) return false;
+  if (!url || !chatPhone) {
+    console.error('WhatsApp send skipped: missing', !url ? 'GREEN_API env vars' : 'phone');
+    return false;
+  }
 
   try {
     const res = await fetch(url, {
@@ -20,6 +23,7 @@ async function sendWhatsapp(chatPhone, text) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ chatId: `${chatPhone}@c.us`, message: text }),
     });
+    if (!res.ok) console.error('WhatsApp send rejected:', res.status, (await res.text().catch(() => '')).slice(0, 300));
     return res.ok;
   } catch (e) {
     console.error('WhatsApp send failed:', e.message);
@@ -38,7 +42,10 @@ async function sendWhatsappFile(chatPhone, fileUrl, fileName, caption) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ chatId: `${chatPhone}@c.us`, urlFile: fileUrl, fileName, caption }),
     });
-    if (!res.ok) return false;
+    if (!res.ok) {
+      console.error('WhatsApp file send rejected:', res.status, (await res.text().catch(() => '')).slice(0, 300));
+      return false;
+    }
     const data = await res.json().catch(() => ({}));
     return !!data.idMessage;
   } catch (e) {
