@@ -964,7 +964,38 @@
           <input type="tel" id="copyPhoneInput" dir="ltr" placeholder="052-0000000" value="${toLocalPhone(values.whatsapp_copy_phone)}"/>
           <button class="btn btn-gold" id="copyPhoneBtn" onclick="saveCopyPhone()">שמור</button>
         </div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-text">
+          <div class="setting-title">הודעת בדיקה</div>
+          <div class="setting-desc">מדמה מילוי של טופס שליחת הפרטים ושולח את הודעת האישור בוואטסאפ למספר שתזין. לא נשמר דבר במערכת ולא נשלחים מיילים.</div>
+        </div>
+        <div class="setting-input">
+          <input type="tel" id="testPhoneInput" dir="ltr" placeholder="052-0000000"/>
+          <button class="btn btn-gold" id="testPhoneBtn" onclick="sendTestWhatsapp()">שלח בדיקה</button>
+        </div>
       </div>`;
+  }
+
+  async function sendTestWhatsapp() {
+    const input = document.getElementById('testPhoneInput');
+    const btn = document.getElementById('testPhoneBtn');
+    if (!input.value.trim()) { input.focus(); return; }
+    btn.disabled = true;
+    btn.textContent = '⏳ שולח...';
+    try {
+      const res = await fetch('/.netlify/functions/admin-test-whatsapp', {
+        method: 'POST',
+        headers: await authHeader(),
+        body: JSON.stringify({ phone: input.value })
+      });
+      const data = await res.json().catch(() => ({}));
+      alert(res.ok ? '✅ הודעת הבדיקה נשלחה. בדוק את הוואטסאפ במספר שהוזן.' : '❌ השליחה נכשלה: ' + (data.error || res.status));
+    } catch (e) {
+      alert('❌ השליחה נכשלה: ' + e.message);
+    }
+    btn.disabled = false;
+    btn.textContent = 'שלח בדיקה';
   }
 
   async function saveSetting(key, input) {

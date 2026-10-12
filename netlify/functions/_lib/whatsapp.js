@@ -12,12 +12,13 @@ function apiUrl(method) {
   return idInstance && apiToken ? `${base}/waInstance${idInstance}/${method}/${apiToken}` : '';
 }
 
-// Returns true only if Green API accepted the message.
-async function sendWhatsapp(chatPhone, text) {
+// Returns {ok, error}; `error` says why a send failed (shown by the admin test).
+async function sendWhatsappDetailed(chatPhone, text) {
   const url = apiUrl('sendMessage');
   if (!url || !chatPhone) {
-    console.error('WhatsApp send skipped: missing', !url ? 'GREEN_API env vars' : 'phone');
-    return false;
+    const error = !url ? 'חסרים משתני GREEN_API ב-Netlify' : 'מספר לא תקין';
+    console.error('WhatsApp send skipped:', error);
+    return { ok: false, error };
   }
 
   try {
@@ -27,12 +28,22 @@ async function sendWhatsapp(chatPhone, text) {
       signal: AbortSignal.timeout(8000),
       body: JSON.stringify({ chatId: `${chatPhone}@c.us`, message: text }),
     });
-    if (!res.ok) console.error('WhatsApp send rejected:', res.status, (await res.text().catch(() => '')).slice(0, 300));
-    return res.ok;
+    if (!res.ok) {
+      const body = (await res.text().catch(() => '')).slice(0, 300);
+      console.error('WhatsApp send rejected:', res.status, body);
+      return { ok: false, error: `Green API דחה את ההודעה (${res.status}) ${body}`.trim() };
+    }
+    return { ok: true };
   } catch (e) {
-    console.error('WhatsApp send failed:', e.message, e.cause && (e.cause.code || e.cause.message));
-    return false;
+    const cause = e.cause && (e.cause.code || e.cause.message);
+    console.error('WhatsApp send failed:', e.message, cause);
+    return { ok: false, error: `אין חיבור ל-Green API: ${e.message}${cause ? ' (' + cause + ')' : ''}` };
   }
+}
+
+// Returns true only if Green API accepted the message.
+async function sendWhatsapp(chatPhone, text) {
+  return (await sendWhatsappDetailed(chatPhone, text)).ok;
 }
 
 // Sends a file Green API downloads from `fileUrl` (must be publicly reachable),
@@ -122,4 +133,4 @@ async function notifyCustomerWhatsappFile(rawPhone, fileUrl, fileName, caption, 
   return true;
 }
 
-module.exports = { notifyOwnerWhatsapp, notifyCustomerWhatsapp, notifyCustomerWhatsappFile, toWhatsappPhone };
+module.exports = { sendWhatsappDetailed, notifyOwnerWhatsapp, notifyCustomerWhatsapp, notifyCustomerWhatsappFile, toWhatsappPhone };
