@@ -6,7 +6,10 @@ const { isEnabled, getSettings } = require('./settings');
 
 function apiUrl(method) {
   const { GREEN_API_ID_INSTANCE: idInstance, GREEN_API_TOKEN_INSTANCE: apiToken } = process.env;
-  return idInstance && apiToken ? `https://api.green-api.com/waInstance${idInstance}/${method}/${apiToken}` : '';
+  // Newer Green API instances have their own host (shown in the console as "apiUrl",
+  // e.g. https://7103.api.greenapi.com); GREEN_API_URL overrides the default one.
+  const base = (process.env.GREEN_API_URL || 'https://api.green-api.com').replace(/\/+$/, '');
+  return idInstance && apiToken ? `${base}/waInstance${idInstance}/${method}/${apiToken}` : '';
 }
 
 // Returns true only if Green API accepted the message.
@@ -21,12 +24,13 @@ async function sendWhatsapp(chatPhone, text) {
     const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      signal: AbortSignal.timeout(8000),
       body: JSON.stringify({ chatId: `${chatPhone}@c.us`, message: text }),
     });
     if (!res.ok) console.error('WhatsApp send rejected:', res.status, (await res.text().catch(() => '')).slice(0, 300));
     return res.ok;
   } catch (e) {
-    console.error('WhatsApp send failed:', e.message);
+    console.error('WhatsApp send failed:', e.message, e.cause && (e.cause.code || e.cause.message));
     return false;
   }
 }
@@ -40,6 +44,7 @@ async function sendWhatsappFile(chatPhone, fileUrl, fileName, caption) {
     const res = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      signal: AbortSignal.timeout(8000),
       body: JSON.stringify({ chatId: `${chatPhone}@c.us`, urlFile: fileUrl, fileName, caption }),
     });
     if (!res.ok) {
@@ -49,7 +54,7 @@ async function sendWhatsappFile(chatPhone, fileUrl, fileName, caption) {
     const data = await res.json().catch(() => ({}));
     return !!data.idMessage;
   } catch (e) {
-    console.error('WhatsApp file send failed:', e.message);
+    console.error('WhatsApp file send failed:', e.message, e.cause && (e.cause.code || e.cause.message));
     return false;
   }
 }
