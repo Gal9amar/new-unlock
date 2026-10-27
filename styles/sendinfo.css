@@ -251,6 +251,67 @@ textarea {
 .consent-label a { color: #d4a853; text-decoration: underline; }
 .consent-label a:hover { color: #e8c87a; }
 
+/* ── Inline validation ── */
+.field-error {
+  margin: 0.3rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: #f87171;
+}
+.field-error:empty { display: none; }
+input.invalid, textarea.invalid {
+  border-color: #ef4444;
+  background: rgba(239,68,68,0.08);
+}
+
+/* Submit stays clickable (so it can scroll to the problem) but looks unfinished */
+.submit-btn.not-ready { opacity: 0.6; box-shadow: none; }
+.submit-status {
+  margin: 0.6rem 0 0;
+  text-align: center;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #fbbf24;
+}
+.submit-status:empty { display: none; }
+
+/* ₪ prefix inside the amount field */
+.amount-input-wrap { position: relative; }
+.amount-input-wrap input { padding-right: 2.2rem; }
+.amount-currency {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255,255,255,0.55);
+  font-weight: 600;
+  pointer-events: none;
+}
+
+/* ── Confirm-before-send popup ── */
+.summary-list {
+  text-align: right;
+  background: #f1f5f9;
+  border-radius: 12px;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1.25rem;
+}
+html.dark .summary-list { background: #1e293b; }
+.summary-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+html.dark .summary-row { border-color: #334155; }
+.summary-row:last-child { border-bottom: none; }
+.summary-label { font-size: 0.75rem; color: #64748b; }
+.summary-value { font-size: 0.95rem; font-weight: 600; color: #0f172a; word-break: break-word; }
+html.dark .summary-value { color: #f1f5f9; }
+.confirm-actions { display: flex; flex-direction: column; gap: 0.5rem; }
+.popup-btn-secondary { background: transparent; color: #64748b; border: 1.5px solid #cbd5e1; }
+
 /* ── Missing-field highlight (payment / midrag button groups) ── */
 .field-missing {
   outline: 2px solid #ef4444;
@@ -550,3 +611,88 @@ html.dark .bank-details {
 html.dark .bank-row { color: #93c5fd; border-bottom-color: #1e3a8a; }
 .bank-row:last-child { border-bottom: none; }
 .bank-label { font-weight: 700; }
+
+/* ── Button redesign: dark, gold-accent, larger tap targets ── */
+body .form-card .vat-btn,
+body .form-card .pay-btn,
+body .form-card .yesno-btn {
+  background: rgba(255,255,255,0.07);
+  border: 1.5px solid rgba(255,255,255,0.14);
+  color: #cbd5e1;
+  min-width: 0;
+  box-shadow: none;
+}
+body .form-card .vat-btn:hover,
+body .form-card .pay-btn:hover,
+body .form-card .yesno-btn:hover {
+  background: rgba(212,168,83,0.12);
+  border-color: rgba(212,168,83,0.5);
+  color: #f1f5f9;
+}
+body .form-card .vat-btn.active,
+body .form-card .pay-btn.active,
+body .form-card .yesno-btn.active {
+  background: linear-gradient(135deg, #d4a853, #e8c87a);
+  border-color: #d4a853;
+  color: #0a1628;
+  box-shadow: 0 4px 14px rgba(212,168,83,0.3);
+}
+
+/* VAT: one segmented control */
+.vat-toggles { gap: 0; flex-wrap: nowrap; }
+body .form-card .vat-btn { border-radius: 0; }
+body .form-card .vat-btn:first-child { border-radius: 0 10px 10px 0; }
+body .form-card .vat-btn:last-child { border-radius: 10px 0 0 10px; border-right-width: 0; }
+
+/* Payment: even grid, icon above label */
+.payment-toggles {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+@media (min-width: 560px) {
+  .payment-toggles { grid-template-columns: repeat(3, 1fr); }
+}
+body .form-card .pay-btn {
+  flex-direction: column;
+  min-height: 74px;
+  gap: 0.35rem;
+  padding: 0.7rem 0.5rem;
+}
+.pay-btn .pay-icon { font-size: 1.4rem; line-height: 1; }
+.pay-btn img { height: 24px !important; }
+
+/* Midrag: prominent, full-width choice */
+.midrag-field {
+  border: 1.5px solid rgba(212,168,83,0.45);
+  background: rgba(212,168,83,0.06);
+  border-radius: 14px;
+  padding: 1rem;
+}
+.midrag-field > label { font-size: 1rem; color: #f1f5f9; }
+body .form-card .yesno-btn {
+  min-height: 48px;
+  font-size: 1.05rem;
+}
+
+/* Submit: sticky at the bottom of the screen on mobile */
+@media (max-width: 640px) {
+  .submit-btn {
+    position: sticky;
+    bottom: 0.75rem;
+    z-index: 20;
+    padding: 1rem;
+    font-size: 1.05rem;
+  }
+}
+
+/* Five payment options: no orphan button in the last row */
+.payment-toggles { grid-template-columns: repeat(6, 1fr); }
+.payment-toggles .pay-btn { grid-column: span 3; }
+.payment-toggles .pay-btn:last-child { grid-column: span 6; }
+@media (min-width: 560px) {
+  .payment-toggles { grid-template-columns: repeat(6, 1fr); }
+  .payment-toggles .pay-btn { grid-column: span 2; }
+  .payment-toggles .pay-btn:nth-child(4),
+  .payment-toggles .pay-btn:nth-child(5) { grid-column: span 3; }
+}
