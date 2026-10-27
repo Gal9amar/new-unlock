@@ -56,6 +56,8 @@
 
           <form id="contactForm" novalidate>
 
+            <h2 class="section-title">פרטי הלקוח</h2>
+
             <div class="field">
               <label for="f-name">שם מלא <span class="req">*</span></label>
               <input type="text" id="f-name" name="name" placeholder="ישראל ישראלי" autocomplete="name" required/>
@@ -64,7 +66,7 @@
             <div class="field">
               <label for="f-phone">טלפון <span class="req">*</span></label>
               <input type="tel" id="f-phone" name="phone" placeholder="050-0000000" autocomplete="tel" inputmode="tel" required/>
-              <p class="field-hint"><span class="req">*</span> למספר זה יישלח העתק החשבונית באופן אוטומטי בוואטסאפ, לכן יש לוודא שהמספר נכון</p>
+              <p class="field-hint hint-strong"><span class="req">*</span> למספר זה יישלח העתק החשבונית באופן אוטומטי בוואטסאפ, לכן יש לוודא שהמספר נכון</p>
             </div>
 
             <div class="field">
@@ -77,6 +79,8 @@
               <label for="f-id">ח.פ / ת.ז</label>
               <input type="text" id="f-id" name="id_number" placeholder="000000000" inputmode="numeric" autocomplete="off"/>
             </div>
+
+            <h2 class="section-title">פרטי השירות</h2>
 
             <div class="field">
               <label for="f-address">כתובת קבלת השירות <span class="req">*</span></label>
@@ -96,32 +100,34 @@
                   <span class="amount-currency">₪</span>
                   <input type="text" name="amount" id="amountInput" placeholder="0.00" inputmode="decimal" autocomplete="off" required/>
                 </div>
-                <div class="vat-toggles">
-                  <button type="button" class="vat-btn active" id="vatIncluded" onclick="selectVat('included')">כולל מע"מ</button>
-                  <button type="button" class="vat-btn" id="vatExcluded" onclick="selectVat('excluded')">לפני מע"מ</button>
+                <div class="vat-toggles" role="radiogroup" aria-label="סוג המע&quot;מ">
+                  <button type="button" class="vat-btn active" id="vatIncluded" role="radio" aria-checked="true" onclick="selectVat('included')">כולל מע"מ</button>
+                  <button type="button" class="vat-btn" id="vatExcluded" role="radio" aria-checked="false" onclick="selectVat('excluded')">לפני מע"מ</button>
                 </div>
               </div>
               <input type="hidden" name="vat_type" id="vatType" value='כולל מע"מ'/>
             </div>
 
+            <h2 class="section-title">תשלום</h2>
+
             <!-- Payment method -->
             <div class="field" id="paymentField">
-              <label>שיטת תשלום <span class="req">*</span></label>
-              <div class="payment-toggles">
-                <button type="button" class="pay-btn" id="payBit" onclick="selectPayment('bit')">
-                  <img src="../images/Bit-logo2024.png" alt="Bit" style="height:18px;vertical-align:middle;border-radius:15px;"/> ביט
+              <div class="field-label" id="payLabel">שיטת תשלום <span class="req">*</span></div>
+              <div class="payment-toggles" role="radiogroup" aria-labelledby="payLabel">
+                <button type="button" class="pay-btn" id="payBit" role="radio" aria-checked="false" onclick="selectPayment('bit')">
+                  <img src="../images/Bit-logo2024.png" alt="" style="height:18px;vertical-align:middle;border-radius:15px;"/> ביט
                 </button>
-                <button type="button" class="pay-btn" id="payCheck" onclick="selectPayment('check')">
-                  <span class="pay-icon">📝</span> המחאה
+                <button type="button" class="pay-btn" id="payCheck" role="radio" aria-checked="false" onclick="selectPayment('check')">
+                  <span class="pay-icon" aria-hidden="true">📝</span> המחאה
                 </button>
-                <button type="button" class="pay-btn" id="payTransfer" onclick="selectPayment('transfer')">
-                  <span class="pay-icon">🏦</span> העברה בנקאית
+                <button type="button" class="pay-btn" id="payTransfer" role="radio" aria-checked="false" onclick="selectPayment('transfer')">
+                  <span class="pay-icon" aria-hidden="true">🏦</span> העברה בנקאית
                 </button>
-                <button type="button" class="pay-btn" id="payCash" onclick="selectPayment('cash')">
-                  <span class="pay-icon">💵</span> מזומן
+                <button type="button" class="pay-btn" id="payCash" role="radio" aria-checked="false" onclick="selectPayment('cash')">
+                  <span class="pay-icon" aria-hidden="true">💵</span> מזומן
                 </button>
-                <button type="button" class="pay-btn" id="payCredit" onclick="selectPayment('credit')">
-                  <span class="pay-icon">💳</span> אשראי
+                <button type="button" class="pay-btn" id="payCredit" role="radio" aria-checked="false" onclick="selectPayment('credit')">
+                  <span class="pay-icon" aria-hidden="true">💳</span> אשראי
                 </button>
               </div>
               <input type="hidden" name="payment_method" id="paymentMethod" value=""/>
@@ -136,18 +142,18 @@
               <!-- Bank details (shown only for transfer) -->
               <div class="bank-details" id="bankDetails">
                 <div class="bank-row"><span class="bank-label">בנק</span><span>מזרחי טפחות</span></div>
-                <div class="bank-row"><span class="bank-label">סניף</span><span class="bank-value"><button type="button" class="copy-btn" onclick="copyText('540', this)">&#10697;</button>540</span></div>
-                <div class="bank-row"><span class="bank-label">חשבון</span><span class="bank-value"><button type="button" class="copy-btn" onclick="copyText('121889', this)">&#10697;</button>121889</span></div>
+                <div class="bank-row"><span class="bank-label">סניף</span><span class="bank-value"><button type="button" class="copy-btn" aria-label="העתק" onclick="copyText('540', this)">&#10697;</button>540</span></div>
+                <div class="bank-row"><span class="bank-label">חשבון</span><span class="bank-value"><button type="button" class="copy-btn" aria-label="העתק" onclick="copyText('121889', this)">&#10697;</button>121889</span></div>
                 <div class="bank-row"><span class="bank-label">שם</span><span>גל עמר</span></div>
               </div>
             </div>
 
             <!-- Midrag field: no default, the customer must choose explicitly -->
             <div class="field midrag-field" id="midragField" style="margin-top:1.2rem">
-              <label style="font-weight:600">הגעת דרך מידרג? <span class="req">*</span></label>
-              <div class="yesno-btns" style="display:flex;gap:0.5rem;margin-top:0.5rem">
-                <button type="button" class="yesno-btn" id="midragYes" onclick="toggleMidrag(true)">כן</button>
-                <button type="button" class="yesno-btn" id="midragNo" onclick="toggleMidrag(false)">לא</button>
+              <div class="field-label" id="midragLabel" style="font-weight:600">הגעת דרך מידרג? <span class="req">*</span></div>
+              <div class="yesno-btns" role="radiogroup" aria-labelledby="midragLabel" style="display:flex;gap:0.5rem;margin-top:0.5rem">
+                <button type="button" class="yesno-btn" id="midragYes" role="radio" aria-checked="false" onclick="toggleMidrag(true)">כן</button>
+                <button type="button" class="yesno-btn" id="midragNo" role="radio" aria-checked="false" onclick="toggleMidrag(false)">לא</button>
               </div>
               <div id="midragNameField" style="display:none;margin-top:0.75rem">
                 <p style="font-size:0.82rem;color:#94a3b8;margin-bottom:0.5rem;line-height:1.5">אנא הזן את הפרטים שסיפקת בעת קבלת מספר הטלפון באתר מידרג (יש למלא לפחות אחד מהשניים)</p>
@@ -167,8 +173,8 @@
               </label>
             </div>
 
-            <button type="submit" class="submit-btn" id="submitBtn">📨 שלח פרטים</button>
-            <p class="submit-status" id="submitStatus" aria-live="polite"></p>
+            <button type="submit" class="submit-btn" id="submitBtn"><span aria-hidden="true">📨</span> שלח פרטים</button>
+            <div class="submit-status" id="submitStatus"></div>
             <p class="form-note">הפרטים נמסרים לגבי ולספקי שירות טכניים לצורך מתן השירות בלבד · פירוט במדיניות הפרטיות</p>
           </form>
 
@@ -190,7 +196,7 @@
     <footer class="site-footer">
   <!-- Popups -->
   <div class="popup-overlay" id="popupLoading">
-    <div class="popup-box">
+    <div class="popup-box" role="status">
       <div class="spinner"></div>
       <div class="popup-title">שולח פרטים...</div>
       <div class="popup-msg">אנא המתן, הפרטים בדרך לגבי</div>
@@ -198,7 +204,7 @@
   </div>
 
   <div class="popup-overlay" id="popupSuccess">
-    <div class="popup-box">
+    <div class="popup-box" role="dialog" aria-modal="true" aria-labelledby="successTitle">
       <span class="popup-icon">✅</span>
       <div class="popup-title" id="successTitle">הפרטים נשלחו בהצלחה!</div>
       <div class="popup-msg" id="successMsg">קיבלנו את הפרטים. המסמך יונפק וישלח אליך בהקדם האפשרי — תודה שבחרת בשירות שלנו.</div>
@@ -208,17 +214,17 @@
   </div>
 
   <div class="popup-overlay" id="popupError">
-    <div class="popup-box">
+    <div class="popup-box" role="alertdialog" aria-modal="true" aria-labelledby="popupErrorTitle">
       <span class="popup-icon">❌</span>
-      <div class="popup-title">שגיאה בשליחה</div>
+      <div class="popup-title" id="popupErrorTitle">שגיאה בשליחה</div>
       <div class="popup-msg">משהו השתבש. בדוק את החיבור לאינטרנט ונסה שוב.</div>
       <button class="popup-btn popup-btn-error" onclick="closePopup('popupError')">נסה שוב</button>
     </div>
   </div>
 
   <div class="popup-overlay" id="popupConfirm">
-    <div class="popup-box">
-      <div class="popup-title">לאשר ולשלוח?</div>
+    <div class="popup-box" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+      <div class="popup-title" id="confirmTitle">לאשר ולשלוח?</div>
       <div class="popup-msg" style="margin-bottom:1rem">בדקו שהפרטים נכונים, במיוחד מספר הטלפון.</div>
       <div class="summary-list" id="confirmSummary"></div>
       <div class="confirm-actions">
@@ -231,12 +237,33 @@
   <script src="../scripts/security-warning.js"></script>
   <script src="../scripts/cookie-consent.js"></script>
   <script>
+    // Dialog popups: focus moves in, Tab stays inside, Esc closes, focus returns on close.
+    // The loading popup has nothing to focus and is announced as a status instead.
+    const MODALS = ['popupConfirm', 'popupSuccess', 'popupError'];
+    const FOCUSABLE = 'button, a[href]';
+    let lastFocus = null;
     function showPopup(id) {
-      document.getElementById(id).classList.add('visible');
+      const overlay = document.getElementById(id);
+      overlay.classList.add('visible');
+      if (!MODALS.includes(id)) return;
+      lastFocus = document.activeElement;
+      const first = overlay.querySelector(FOCUSABLE);
+      if (first) first.focus();
     }
     function closePopup(id) {
       document.getElementById(id).classList.remove('visible');
+      if (MODALS.includes(id) && lastFocus && lastFocus.focus) lastFocus.focus();
     }
+    document.addEventListener('keydown', (e) => {
+      const open = MODALS.map(i => document.getElementById(i)).find(o => o.classList.contains('visible'));
+      if (!open) return;
+      if (e.key === 'Escape') { closePopup(open.id); return; }
+      if (e.key !== 'Tab') return;
+      const items = [...open.querySelectorAll(FOCUSABLE)];
+      const first = items[0], last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
 
     // Copy to clipboard
     function copyText(text, btn) {
@@ -253,6 +280,7 @@
     const form = document.getElementById('contactForm');
     const btn = document.getElementById('submitBtn');
     const statusEl = document.getElementById('submitStatus');
+    const SUBMIT_LABEL = '<span aria-hidden="true">📨</span> שלח פרטים';
 
     let selectedPayment = '';
     let midragSelected = null; // null=לא נבחר, true=כן, false=לא
@@ -293,13 +321,20 @@
       email: 'מייל', id_number: 'ח.פ / ת.ז', consent: 'אישור מדיניות', midrag_name: 'פרטי מידרג', midrag_phone: 'טלפון מידרג',
     };
 
+    let a11yId = 0;
     function errorEl(field) {
       let p = field.querySelector(':scope > .field-error');
       if (!p) {
         p = document.createElement('p');
         p.className = 'field-error';
+        p.id = 'err-' + (++a11yId);
         p.setAttribute('role', 'alert');
         field.appendChild(p);
+        // Tie the hint and the error to the control so screen readers read them with it.
+        const target = field.querySelector('[role="radiogroup"]') || field.querySelector('input:not([type="hidden"]), textarea');
+        const hint = field.querySelector(':scope > .field-hint');
+        if (hint && !hint.id) hint.id = 'hint-' + a11yId;
+        if (target) target.setAttribute('aria-describedby', [hint && hint.id, p.id].filter(Boolean).join(' '));
       }
       return p;
     }
@@ -341,8 +376,16 @@
     }
     function updateStatus() {
       const missing = missingLabels();
-      statusEl.textContent = missing.length ? 'עדיין חסר: ' + missing.join(', ') : '';
+      statusEl.replaceChildren();
+      if (missing.length) {
+        statusEl.append('עדיין חסר:');
+        const list = document.createElement('ul');
+        list.className = 'status-list';
+        missing.forEach(m => { const li = document.createElement('li'); li.textContent = m; list.append(li); });
+        statusEl.append(list);
+      }
       btn.classList.toggle('not-ready', missing.length > 0);
+      syncRadios();
       return missing;
     }
 
@@ -363,10 +406,35 @@
     form.elements.consent.addEventListener('change', () => { checkField('consent'); updateStatus(); });
 
     // ── Toggles ────────────────────────────────────────────────
+    // The toggle buttons form radio groups: mirror .active into aria-checked, keep a
+    // single tab stop per group and move/select with the arrow keys.
+    function syncRadios() {
+      document.querySelectorAll('[role="radiogroup"]').forEach(group => {
+        const radios = [...group.querySelectorAll('[role="radio"]')];
+        const checked = radios.find(r => r.classList.contains('active'));
+        radios.forEach(r => {
+          r.setAttribute('aria-checked', r === checked ? 'true' : 'false');
+          r.tabIndex = r === (checked || radios[0]) ? 0 : -1;
+        });
+      });
+    }
+    document.querySelectorAll('[role="radiogroup"]').forEach(group => {
+      group.addEventListener('keydown', (e) => {
+        const keys = { ArrowRight: -1, ArrowUp: -1, ArrowLeft: 1, ArrowDown: 1 }; // RTL: right = previous
+        if (!(e.key in keys)) return;
+        const radios = [...group.querySelectorAll('[role="radio"]')];
+        const next = radios[(radios.indexOf(document.activeElement) + keys[e.key] + radios.length) % radios.length];
+        e.preventDefault();
+        next.focus();
+        next.click();
+      });
+    });
+
     function selectVat(type) {
       document.getElementById('vatIncluded').classList.toggle('active', type === 'included');
       document.getElementById('vatExcluded').classList.toggle('active', type === 'excluded');
       document.getElementById('vatType').value = type === 'included' ? 'כולל מע"מ' : 'לפני מע"מ';
+      syncRadios();
     }
 
     function toggleMidrag(v) {
@@ -495,13 +563,13 @@
         } else {
           showPopup('popupError');
           btn.disabled = false;
-          btn.textContent = '📨 שלח פרטים';
+          btn.innerHTML = SUBMIT_LABEL;
         }
       } catch {
         closePopup('popupLoading');
         showPopup('popupError');
         btn.disabled = false;
-        btn.textContent = '📨 שלח פרטים';
+        btn.innerHTML = SUBMIT_LABEL;
       }
     });
 

@@ -696,3 +696,65 @@ body .form-card .yesno-btn {
   .payment-toggles .pay-btn:nth-child(4),
   .payment-toggles .pay-btn:nth-child(5) { grid-column: span 3; }
 }
+
+/* ══ Accessibility & readability pass ══ */
+html { scroll-padding-bottom: 6rem; }
+
+/* 16px+ in inputs: stops iOS zooming the page on focus */
+input[type="text"], input[type="tel"], input[type="email"], textarea { font-size: 1rem; }
+label, .field-label { font-size: 0.92rem; font-weight: 600; color: #cbd5e1; }
+label .req, .field-label .req { color: #f87171; }
+
+/* Contrast (>= 4.5:1 on the dark card) */
+input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.55); }
+.field-hint { color: rgba(255,255,255,0.75); }
+.field-hint.hint-strong { color: #e8c87a; font-weight: 500; }
+.form-note { color: rgba(255,255,255,0.65); }
+.submit-btn.not-ready { opacity: 0.8; }
+
+/* Visible keyboard focus */
+button:focus-visible, a:focus-visible, [role="radio"]:focus-visible {
+  outline: 3px solid #e8c87a;
+  outline-offset: 2px;
+}
+.submit-btn:focus-visible { outline-color: #fff; }
+
+/* Section headings */
+.section-title {
+  margin: 1.4rem 0 0.9rem;
+  padding-bottom: 0.4rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #e8c87a;
+  border-bottom: 1px solid rgba(212,168,83,0.25);
+}
+.section-title:first-of-type { margin-top: 0; }
+
+/* Missing-fields summary as chips */
+.status-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.35rem;
+  margin: 0.4rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.status-list li {
+  padding: 0.15rem 0.6rem;
+  border: 1px solid rgba(251,191,36,0.5);
+  border-radius: 999px;
+  font-size: 0.78rem;
+}
+
+/* Bigger tap target for the copy buttons */
+.copy-btn { min-width: 44px; min-height: 44px; }
+
+/* Hidden popups must not be reachable by keyboard */
+.popup-overlay { visibility: hidden; transition: opacity 0.25s ease, visibility 0s linear 0.25s; }
+.popup-overlay.visible { visibility: visible; transition-delay: 0s; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+.section-title::before, .section-title::after { content: none; display: none; }
