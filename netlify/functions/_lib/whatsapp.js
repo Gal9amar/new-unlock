@@ -33,7 +33,8 @@ async function sendWhatsappDetailed(chatPhone, text) {
       console.error('WhatsApp send rejected:', res.status, body);
       return { ok: false, error: `Green API דחה את ההודעה (${res.status}) ${body}`.trim() };
     }
-    return { ok: true };
+    const data = await res.json().catch(() => ({}));
+    return { ok: true, id: data.idMessage || '' };
   } catch (e) {
     const cause = e.cause && (e.cause.code || e.cause.message);
     console.error('WhatsApp send failed:', e.message, cause);
