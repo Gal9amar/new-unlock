@@ -1,11 +1,12 @@
 const { verifyAdmin } = require('./_lib/verify-admin');
 const { json, preflight } = require('./_lib/http');
-const { sendWhatsappDetailed, toWhatsappPhone } = require('./_lib/whatsapp');
+const { sendWhatsappDetailed, notifyOwnerWhatsapp, toWhatsappPhone } = require('./_lib/whatsapp');
 const { buildInvoiceConfirmationText } = require('./_lib/invoice-wa-text');
 
 // Admin: simulates a sendinfo form submission by sending the customer
 // confirmation WhatsApp, with sample details, to the given number. Writes
-// nothing to the database and sends no emails. Body: {phone}.
+// nothing to the database and sends no emails. Body: {phone}, or {target:'owner'}
+// to send a sample new-request alert to OWNER_WHATSAPP_PHONE (honours the admin switch).
 exports.handler = async (event) => {
   if (event.httpMethod === 'OPTIONS') return preflight();
   if (event.httpMethod !== 'POST') return json(405, { error: 'Method not allowed' });
@@ -13,6 +14,10 @@ exports.handler = async (event) => {
 
   let b;
   try { b = JSON.parse(event.body || '{}'); } catch { return json(400, { error: 'Invalid body' }); }
+  if (b.target === 'owner') {
+    const r = await notifyOwnerWhatsapp('📄 [TEST] בקשת חשבונית חדשה\n\nזו הודעת בדיקה מהאדמין. אם הגיעה אליך, התראות המנהל עובדות.\nהאם הגיע דרך מדרג: לא');
+    return r.ok ? json(200, { ok: true }) : json(502, { error: r.error });
+  }
   const phone = toWhatsappPhone(b.phone);
   if (!phone) return json(400, { error: 'מספר טלפון לא תקין' });
 

@@ -182,12 +182,7 @@ exports.handler = async (event) => {
       }),
     ]);
 
-    // WhatsApp twin of the customer confirmation email. Test submissions go to
-    // the owner's own number (like the email goes to TEST_RECIPIENT_EMAIL), never a real customer.
-    const customerWaText = buildInvoiceConfirmationText(data, testPrefix);
-    await notifyCustomerWhatsapp(data.is_test ? process.env.OWNER_WHATSAPP_PHONE : data.phone, customerWaText,
-      { copy: !data.is_test, label: data.name });
-
+    // Owner alert goes first so a slow or failing customer send can't hold it up.
     if (!data.is_test) {
       await notifyOwnerWhatsapp([
         '📄 בקשת חשבונית חדשה',
@@ -203,6 +198,12 @@ exports.handler = async (event) => {
         `האם הגיע דרך מדרג: ${data.midrag_name ? `כן - ${data.midrag_name}` : 'לא'}`,
       ].join('\n'));
     }
+
+    // WhatsApp twin of the customer confirmation email. Test submissions go to
+    // the owner's own number (like the email goes to TEST_RECIPIENT_EMAIL), never a real customer.
+    const customerWaText = buildInvoiceConfirmationText(data, testPrefix);
+    await notifyCustomerWhatsapp(data.is_test ? process.env.OWNER_WHATSAPP_PHONE : data.phone, customerWaText,
+      { copy: !data.is_test, label: data.name });
 
     return json(200, { ok: true });
   } catch (e) {

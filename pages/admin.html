@@ -973,29 +973,31 @@
         <div class="setting-input">
           <input type="tel" id="testPhoneInput" dir="ltr" placeholder="052-0000000"/>
           <button class="btn btn-gold" id="testPhoneBtn" onclick="sendTestWhatsapp()">שלח בדיקה</button>
+          <button class="btn btn-gold" id="testOwnerBtn" onclick="sendTestWhatsapp(true)">בדוק התראת מנהל</button>
         </div>
       </div>`;
   }
 
-  async function sendTestWhatsapp() {
+  async function sendTestWhatsapp(toOwner) {
     const input = document.getElementById('testPhoneInput');
-    const btn = document.getElementById('testPhoneBtn');
-    if (!input.value.trim()) { input.focus(); return; }
+    const btn = document.getElementById(toOwner ? 'testOwnerBtn' : 'testPhoneBtn');
+    const label = btn.textContent;
+    if (!toOwner && !input.value.trim()) { input.focus(); return; }
     btn.disabled = true;
     btn.textContent = '⏳ שולח...';
     try {
       const res = await fetch('/.netlify/functions/admin-test-whatsapp', {
         method: 'POST',
         headers: await authHeader(),
-        body: JSON.stringify({ phone: input.value })
+        body: JSON.stringify(toOwner ? { target: 'owner' } : { phone: input.value })
       });
       const data = await res.json().catch(() => ({}));
-      alert(res.ok ? '✅ הודעת הבדיקה נשלחה. בדוק את הוואטסאפ במספר שהוזן.' : '❌ השליחה נכשלה: ' + (data.error || res.status));
+      alert(res.ok ? (toOwner ? '✅ התראת המנהל נשלחה. בדוק את הוואטסאפ שלך.' : '✅ הודעת הבדיקה נשלחה. בדוק את הוואטסאפ במספר שהוזן.') : '❌ השליחה נכשלה: ' + (data.error || res.status));
     } catch (e) {
       alert('❌ השליחה נכשלה: ' + e.message);
     }
     btn.disabled = false;
-    btn.textContent = 'שלח בדיקה';
+    btn.textContent = label;
   }
 
   async function saveSetting(key, input) {

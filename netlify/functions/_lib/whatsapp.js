@@ -70,9 +70,18 @@ async function sendWhatsappFile(chatPhone, fileUrl, fileName, caption) {
   }
 }
 
+// Returns {ok, error} and logs why when nothing was sent (setting off, number missing).
 async function notifyOwnerWhatsapp(text) {
-  if (!(await isEnabled('whatsapp_owner'))) return;
-  await sendWhatsapp(toWhatsappPhone(process.env.OWNER_WHATSAPP_PHONE), text);
+  if (!(await isEnabled('whatsapp_owner'))) {
+    console.error('Owner WhatsApp skipped: switched off in admin settings');
+    return { ok: false, error: 'התראות וואטסאפ אליי כבויות בהגדרות האדמין' };
+  }
+  const phone = toWhatsappPhone(process.env.OWNER_WHATSAPP_PHONE);
+  if (!phone) {
+    console.error('Owner WhatsApp skipped: OWNER_WHATSAPP_PHONE missing or invalid');
+    return { ok: false, error: 'OWNER_WHATSAPP_PHONE חסר או לא תקין ב-Netlify' };
+  }
+  return sendWhatsappDetailed(phone, text);
 }
 
 // Converts a customer-typed Israeli number (050-1234567, +972 50 123 4567,
