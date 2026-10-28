@@ -8,6 +8,7 @@ const { SITE_URL, VALID_PAYMENT } = require('./_lib/constants');
 const { TEST_RECIPIENT_EMAIL, isProdOrigin } = require('./_lib/test-mode');
 const { emailWrapper, emailHeader, emailBadge, ctaButton, ctaRow, footerFull, footerAdmin } = require('./_lib/email-shell');
 const { notifyOwnerWhatsapp, notifyCustomerWhatsapp } = require('./_lib/whatsapp');
+const { getManagerEmail } = require('./_lib/settings');
 const { buildInvoiceConfirmationText } = require('./_lib/invoice-wa-text');
 
 const VALID_VAT = ['כולל מע"מ', 'לפני מע"מ'];
@@ -66,7 +67,7 @@ exports.handler = async (event) => {
       ],
     });
 
-    const adminEmail = (process.env.ADMIN_EMAIL || '').trim();
+    const adminEmail = await getManagerEmail();
     const markUrl = `${SITE_URL}/.netlify/functions/mark-invoice-issued?id=${data.id}`;
     const testPrefix = data.is_test ? '[TEST] ' : '';
     const clientTo = data.is_test ? TEST_RECIPIENT_EMAIL : data.email;
@@ -183,7 +184,8 @@ exports.handler = async (event) => {
         html: clientHtml,
         text: `שלום ${data.name}, פנייתך התקבלה. ניצור את החשבונית בהקדם. לשאלות: 053-388-8381`,
       }),
-      sendMail({
+      // Manager email can be switched off (or have no address) in admin settings.
+      adminEmail && sendMail({
         from: '"UNLOCK מנעולנות" <unlock.yavne@gmail.com>',
         to: adminEmail,
         subject: `${testPrefix}📄 בקשת חשבונית חדשה – ${data.name}`,

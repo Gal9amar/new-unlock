@@ -906,6 +906,7 @@
   const SETTING_ROWS = [
     { key: 'whatsapp_customers', title: 'הודעות וואטסאפ ללקוחות', desc: 'אישור שהלקוח מקבל אחרי מילוי טופס, והעתק חשבונית או הצעת מחיר. כשכבוי, ההעתק נשלח אליך בלבד כדי שתעביר ידנית.' },
     { key: 'whatsapp_owner', title: 'הודעות וואטסאפ למנהל', desc: 'הודעה אליך על בקשת חשבונית חדשה (כולל אם הגיע דרך מידרג) ועל חשבונית שהופקה.' },
+    { key: 'email_manager', title: 'מייל למנהל', desc: 'מייל אליך על בקשת חשבונית חדשה, עם כפתור אישור הפקה. כשכבוי, ההודעה מגיעה רק בוואטסאפ ובעמוד החשבוניות.' },
     { key: 'whatsapp_copy', title: 'קבלת העתק הודעה ללקוח', desc: 'כל הודעה או קובץ שנשלחים ללקוח נשלחים גם אליך, למספר שמופיע למטה.' },
   ];
 
@@ -924,10 +925,10 @@
         body: JSON.stringify({ key, value: input.value })
       });
       const data = await res.json();
-      if (!res.ok) { alert(data.error || 'שמירת המספר נכשלה'); btn.disabled = false; return; }
+      if (!res.ok) { alert(data.error || 'השמירה נכשלה'); btn.disabled = false; return; }
       renderSettings(data);
     } catch (e) {
-      alert('שמירת המספר נכשלה, נסה שוב');
+      alert('השמירה נכשלה, נסה שוב');
       btn.disabled = false;
     }
   }
@@ -973,6 +974,16 @@
         <div class="setting-input">
           <input type="tel" id="ownerPhoneInput" dir="ltr" placeholder="052-0000000" value="${toLocalPhone(values.owner_whatsapp_phone)}"/>
           <button class="btn btn-gold" id="ownerPhoneBtn" onclick="saveTextSetting('owner_whatsapp_phone', 'ownerPhoneInput', 'ownerPhoneBtn')">שמור</button>
+        </div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-text">
+          <div class="setting-title">כתובת המייל למנהל</div>
+          <div class="setting-desc">לכאן יישלח המייל על בקשת חשבונית חדשה. ריק = הכתובת שמוגדרת ב-Netlify. הכניסה לאדמין לא מושפעת מהשדה הזה.</div>
+        </div>
+        <div class="setting-input">
+          <input type="email" id="managerEmailInput" dir="ltr" placeholder="name@example.com" value="${(values.manager_email || '').replace(/"/g, '&quot;')}"/>
+          <button class="btn btn-gold" id="managerEmailBtn" onclick="saveTextSetting('manager_email', 'managerEmailInput', 'managerEmailBtn')">שמור</button>
         </div>
       </div>
       <div class="setting-row">

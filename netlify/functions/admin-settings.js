@@ -22,9 +22,14 @@ exports.handler = async (event) => {
       } else if (b.key in TEXT_DEFAULTS) {
         if (typeof b.value !== 'string') return json(400, { error: 'Invalid value' });
         const raw = b.value.trim();
-        const phone = raw ? toWhatsappPhone(raw) : '';
-        if (raw && !phone) return json(400, { error: 'מספר טלפון לא תקין' });
-        await setSetting(b.key, phone);
+        if (b.key === 'manager_email') {
+          if (raw && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw)) return json(400, { error: 'כתובת מייל לא תקינה' });
+          await setSetting(b.key, raw.toLowerCase());
+        } else {
+          const phone = raw ? toWhatsappPhone(raw) : '';
+          if (raw && !phone) return json(400, { error: 'מספר טלפון לא תקין' });
+          await setSetting(b.key, phone);
+        }
       } else {
         return json(400, { error: 'Unknown setting' });
       }

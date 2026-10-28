@@ -7,10 +7,12 @@ const DEFAULTS = {
   whatsapp_customers: true, // WhatsApp messages sent to customers
   whatsapp_owner: true,     // WhatsApp alerts sent to the owner
   whatsapp_copy: true,      // copy of each customer message to whatsapp_copy_phone
+  email_manager: true,      // new-invoice-request email to the manager
 };
 const TEXT_DEFAULTS = {
   whatsapp_copy_phone: '',  // international format, e.g. 972529070000; '' = no copies
   owner_whatsapp_phone: '', // owner alerts go here; '' = fall back to OWNER_WHATSAPP_PHONE env var
+  manager_email: '',        // new-request emails go here; '' = fall back to ADMIN_EMAIL env var
 };
 
 let tableReady;
@@ -45,6 +47,21 @@ async function isEnabled(key) {
   }
 }
 
+// Where new-invoice-request emails go, or '' when the manager email is switched
+// off or no address is known. Only for notifications: admin login still uses the
+// ADMIN_EMAIL env var. Never throws; on a settings error it falls back to the env var.
+async function getManagerEmail() {
+  const fallback = (process.env.ADMIN_EMAIL || '').trim();
+  try {
+    const s = await getSettings();
+    if (!s.email_manager) return '';
+    return (s.manager_email || '').trim() || fallback;
+  } catch (e) {
+    console.error('settings read failed:', e.message);
+    return fallback;
+  }
+}
+
 // `value` is a boolean for on/off settings and a string for text settings.
 async function setSetting(key, value) {
   let stored;
@@ -59,4 +76,4 @@ async function setSetting(key, value) {
   });
 }
 
-module.exports = { DEFAULTS, TEXT_DEFAULTS, getSettings, isEnabled, setSetting };
+module.exports = { DEFAULTS, TEXT_DEFAULTS, getSettings, isEnabled, setSetting, getManagerEmail };

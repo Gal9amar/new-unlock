@@ -8,6 +8,7 @@ const { escapeHtml } = require('./_lib/html-escape');
 const { SITE_URL, VALID_PAYMENT } = require('./_lib/constants');
 const { emailWrapper, emailHeader, ctaButton, ctaRow, footerAdmin } = require('./_lib/email-shell');
 const { notifyOwnerWhatsapp } = require('./_lib/whatsapp');
+const { getManagerEmail } = require('./_lib/settings');
 
 // Public: mirrors functions/index.js's `saveHilanInvoice` (hilan.html flow).
 exports.handler = async (event) => {
@@ -64,7 +65,7 @@ exports.handler = async (event) => {
       ],
     });
 
-    const adminEmail = (process.env.ADMIN_EMAIL || '').trim();
+    const adminEmail = await getManagerEmail();
     const markUrl = `${SITE_URL}/.netlify/functions/mark-hilan-invoice-issued?id=${data.id}`;
     const invoiceTableHtml = hilanInvoiceHtml(data);
     const name = escapeHtml(data.name);
@@ -93,7 +94,7 @@ exports.handler = async (event) => {
 
     const testPrefix = data.is_test ? '[TEST] ' : '';
 
-    await sendMail({
+    if (adminEmail) await sendMail({
       from: '"UNLOCK מנעולנות" <unlock.yavne@gmail.com>',
       to: adminEmail,
       subject: `${testPrefix}📄 בקשת חשבונית חדשה — ${data.name} (₪${total.toFixed(2)})`,
