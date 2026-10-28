@@ -23,7 +23,11 @@ exports.handler = async (event) => {
   if (!b.name || !b.phone || !b.service_address || !b.message || !b.amount || !b.vat_type || !b.payment_method) {
     return json(400, { error: 'Missing required fields' });
   }
-  if (b.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(b.email)) return json(400, { error: 'Invalid email' });
+  if (b.email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(b.email)) return json(400, { error: 'Invalid email' });
+  const isValidPhone = (v) => /^(0\d{8,9}|\+?972\d{8,9})$/.test(String(v || '').replace(/[\s\-().]/g, ''));
+  if (!isValidPhone(b.phone)) return json(400, { error: 'Invalid phone' });
+  if (b.midrag_phone && !isValidPhone(b.midrag_phone)) return json(400, { error: 'Invalid Midrag phone' });
+  if (b.id_number && !/^\d{9}$/.test(String(b.id_number).trim())) return json(400, { error: 'Invalid id_number' });
   const amount = parseFloat(String(b.amount).replace(/[^0-9.]/g, ''));
   if (isNaN(amount) || amount <= 0 || amount > 999999) return json(400, { error: 'Invalid amount' });
   if (!VALID_VAT.includes(b.vat_type)) return json(400, { error: 'Invalid vat_type' });
@@ -40,9 +44,15 @@ exports.handler = async (event) => {
     amount: amount.toString(),
     vat_type: b.vat_type,
     payment_method: b.payment_method,
-    midrag_name: str(b.midrag_name, 100),
+    // Stored in the single midrag_name column as "name · phone" (no schema change).
+    midrag_name: b.from_midrag === false ? '' : [
+      str(b.midrag_name, 100).trim(),
+      str(b.midrag_phone, 20).replace(/[^\d+\-() ]/g, '').trim(),
+    ].filter(Boolean).join(' · '),
     is_test: !isProdOrigin(event),
   };
+
+  if (b.from_midrag === true && !data.midrag_name) return json(400, { error: 'Missing Midrag details' });
 
   try {
     const db = getDb();
@@ -186,6 +196,8 @@ exports.handler = async (event) => {
     if (!data.is_test) {
       await notifyOwnerWhatsapp([
         '📄 בקשת חשבונית חדשה',
+        data.midrag_name ? '⭐ לקוח הופנה דרך מידרג' : 'לקוח לא הגיע דרך מידרג',
+        ...(data.midrag_name ? [`פרטי מידרג: ${data.midrag_name}`] : []),
         '',
         `שם לקוח: ${data.name}`,
         `טלפון: ${data.phone}`,
@@ -195,7 +207,6 @@ exports.handler = async (event) => {
         `תיאור השירות: ${data.message}`,
         `סכום: ₪${data.amount} ${data.vat_type}`,
         `שיטת תשלום: ${data.payment_method}`,
-        `האם הגיע דרך מדרג: ${data.midrag_name ? `כן - ${data.midrag_name}` : 'לא'}`,
       ].join('\n'));
     }
 

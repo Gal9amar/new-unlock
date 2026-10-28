@@ -54,70 +54,80 @@
         <!-- Card -->
         <div class="form-card">
 
-          <form id="contactForm">
+          <form id="contactForm" novalidate>
+
+            <h2 class="section-title">פרטי הלקוח</h2>
 
             <div class="field">
-              <label>שם מלא <span class="req">*</span></label>
-              <input type="text" name="name" placeholder="ישראל ישראלי" required/>
+              <label for="f-name">שם מלא <span class="req">*</span></label>
+              <input type="text" id="f-name" name="name" placeholder="ישראל ישראלי" autocomplete="name" required/>
             </div>
 
             <div class="field">
-              <label>טלפון <span class="req">*</span></label>
-              <input type="tel" name="phone" placeholder="050-0000000" required/>
-              <p class="field-hint"><span class="req">*</span> למספר זה יישלח העתק החשבונית באופן אוטומטי בוואטסאפ, לכן יש לוודא שהמספר נכון</p>
+              <label for="f-phone">טלפון <span class="req">*</span></label>
+              <input type="tel" id="f-phone" name="phone" placeholder="050-0000000" autocomplete="tel" inputmode="tel" required/>
+              <p class="field-hint hint-strong"><span class="req">*</span> למספר זה יישלח העתק החשבונית באופן אוטומטי בוואטסאפ, לכן יש לוודא שהמספר נכון</p>
             </div>
 
             <div class="field">
-              <label>כתובת מייל</label>
-              <input type="email" name="email" placeholder="mail@example.com"/>
+              <label for="f-email">כתובת מייל</label>
+              <input type="email" id="f-email" name="email" placeholder="mail@example.com" autocomplete="email"/>
+              <p class="field-hint">שימו לב: ללא מילוי כתובת מייל, לא תתקבל העתק חשבונית במייל במקרה ששליחת החשבונית בוואטסאפ נכשלה</p>
             </div>
 
             <div class="field">
-              <label>ח.פ / ת.ז</label>
-              <input type="text" name="id_number" placeholder="000000000"/>
+              <label for="f-id">ח.פ / ת.ז</label>
+              <input type="text" id="f-id" name="id_number" placeholder="000000000" inputmode="numeric" autocomplete="off"/>
+            </div>
+
+            <h2 class="section-title">פרטי השירות</h2>
+
+            <div class="field">
+              <label for="f-address">כתובת קבלת השירות <span class="req">*</span></label>
+              <input type="text" id="f-address" name="service_address" placeholder="רחוב, מספר, עיר" autocomplete="street-address" required/>
             </div>
 
             <div class="field">
-              <label>כתובת קבלת השירות <span class="req">*</span></label>
-              <input type="text" name="service_address" placeholder="רחוב, מספר, עיר" required/>
-            </div>
-
-            <div class="field">
-              <label>תיאור השירות <span class="req">*</span></label>
-              <textarea name="message" placeholder="תארו את השירות שבוצע..." required></textarea>
+              <label for="f-message">תיאור השירות <span class="req">*</span></label>
+              <textarea id="f-message" name="message" placeholder="תארו את השירות שבוצע..." required></textarea>
             </div>
 
             <!-- Amount + VAT -->
             <div class="field">
-              <label>סכום <span class="req">*</span></label>
+              <label for="amountInput">סכום <span class="req">*</span></label>
               <div class="amount-row">
-                <input type="text" name="amount" id="amountInput" placeholder="0.00" inputmode="decimal" pattern="[0-9]*\.?[0-9]*" required/>
-                <div class="vat-toggles">
-                  <button type="button" class="vat-btn active" id="vatIncluded" onclick="selectVat('included')">כולל מע"מ</button>
-                  <button type="button" class="vat-btn" id="vatExcluded" onclick="selectVat('excluded')">לפני מע"מ</button>
+                <div class="amount-input-wrap">
+                  <span class="amount-currency">₪</span>
+                  <input type="text" name="amount" id="amountInput" placeholder="0.00" inputmode="decimal" autocomplete="off" required/>
+                </div>
+                <div class="vat-toggles" role="radiogroup" aria-label="סוג המע&quot;מ">
+                  <button type="button" class="vat-btn active" id="vatIncluded" role="radio" aria-checked="true" onclick="selectVat('included')">כולל מע"מ</button>
+                  <button type="button" class="vat-btn" id="vatExcluded" role="radio" aria-checked="false" onclick="selectVat('excluded')">לפני מע"מ</button>
                 </div>
               </div>
               <input type="hidden" name="vat_type" id="vatType" value='כולל מע"מ'/>
             </div>
 
+            <h2 class="section-title">תשלום</h2>
+
             <!-- Payment method -->
-            <div class="field">
-              <label>שיטת תשלום <span class="req">*</span></label>
-              <div class="payment-toggles">
-                <button type="button" class="pay-btn" id="payBit" onclick="selectPayment('bit')">
-                  <img src="../images/Bit-logo2024.png" alt="Bit" style="height:18px;vertical-align:middle;border-radius:15px;"/> ביט
+            <div class="field" id="paymentField">
+              <div class="field-label" id="payLabel">שיטת תשלום <span class="req">*</span></div>
+              <div class="payment-toggles" role="radiogroup" aria-labelledby="payLabel">
+                <button type="button" class="pay-btn" id="payBit" role="radio" aria-checked="false" onclick="selectPayment('bit')">
+                  <img src="../images/Bit-logo2024.png" alt="" style="height:18px;vertical-align:middle;border-radius:15px;"/> ביט
                 </button>
-                <button type="button" class="pay-btn" id="payCheck" onclick="selectPayment('check')">
-                  <span class="pay-icon">📝</span> המחאה
+                <button type="button" class="pay-btn" id="payCheck" role="radio" aria-checked="false" onclick="selectPayment('check')">
+                  <span class="pay-icon" aria-hidden="true">📝</span> המחאה
                 </button>
-                <button type="button" class="pay-btn" id="payTransfer" onclick="selectPayment('transfer')">
-                  <span class="pay-icon">🏦</span> העברה בנקאית
+                <button type="button" class="pay-btn" id="payTransfer" role="radio" aria-checked="false" onclick="selectPayment('transfer')">
+                  <span class="pay-icon" aria-hidden="true">🏦</span> העברה בנקאית
                 </button>
-                <button type="button" class="pay-btn" id="payCash" onclick="selectPayment('cash')">
-                  <span class="pay-icon">💵</span> מזומן
+                <button type="button" class="pay-btn" id="payCash" role="radio" aria-checked="false" onclick="selectPayment('cash')">
+                  <span class="pay-icon" aria-hidden="true">💵</span> מזומן
                 </button>
-                <button type="button" class="pay-btn" id="payCredit" onclick="selectPayment('credit')">
-                  <span class="pay-icon">💳</span> אשראי
+                <button type="button" class="pay-btn" id="payCredit" role="radio" aria-checked="false" onclick="selectPayment('credit')">
+                  <span class="pay-icon" aria-hidden="true">💳</span> אשראי
                 </button>
               </div>
               <input type="hidden" name="payment_method" id="paymentMethod" value=""/>
@@ -132,22 +142,27 @@
               <!-- Bank details (shown only for transfer) -->
               <div class="bank-details" id="bankDetails">
                 <div class="bank-row"><span class="bank-label">בנק</span><span>מזרחי טפחות</span></div>
-                <div class="bank-row"><span class="bank-label">סניף</span><span class="bank-value"><button type="button" class="copy-btn" onclick="copyText('540', this)">&#10697;</button>540</span></div>
-                <div class="bank-row"><span class="bank-label">חשבון</span><span class="bank-value"><button type="button" class="copy-btn" onclick="copyText('121889', this)">&#10697;</button>121889</span></div>
+                <div class="bank-row"><span class="bank-label">סניף</span><span class="bank-value"><button type="button" class="copy-btn" aria-label="העתק" onclick="copyText('540', this)">&#10697;</button>540</span></div>
+                <div class="bank-row"><span class="bank-label">חשבון</span><span class="bank-value"><button type="button" class="copy-btn" aria-label="העתק" onclick="copyText('121889', this)">&#10697;</button>121889</span></div>
                 <div class="bank-row"><span class="bank-label">שם</span><span>גל עמר</span></div>
               </div>
             </div>
 
-            <!-- Midrag field -->
-            <div class="field" style="margin-top:1.2rem">
-              <label style="font-weight:600">הגעת דרך מידרג?</label>
-              <div class="yesno-btns" style="display:flex;gap:0.5rem;margin-top:0.5rem">
-                <button type="button" class="yesno-btn" id="midragYes" onclick="toggleMidrag(true)">כן</button>
-                <button type="button" class="yesno-btn" id="midragNo" onclick="toggleMidrag(false)">לא</button>
+            <!-- Midrag field: no default, the customer must choose explicitly -->
+            <div class="field midrag-field" id="midragField" style="margin-top:1.2rem">
+              <div class="field-label" id="midragLabel" style="font-weight:600">הגעת דרך מידרג? <span class="req">*</span></div>
+              <div class="yesno-btns" role="radiogroup" aria-labelledby="midragLabel" style="display:flex;gap:0.5rem;margin-top:0.5rem">
+                <button type="button" class="yesno-btn" id="midragYes" role="radio" aria-checked="false" onclick="toggleMidrag(true)">כן</button>
+                <button type="button" class="yesno-btn" id="midragNo" role="radio" aria-checked="false" onclick="toggleMidrag(false)">לא</button>
               </div>
               <div id="midragNameField" style="display:none;margin-top:0.75rem">
-                <p style="font-size:0.82rem;color:#94a3b8;margin-bottom:0.5rem;line-height:1.5">אנא הזן את הפרט המזהה שסיפקת בעת קבלת מספר הטלפון באתר מידרג</p>
-                <input type="text" name="midrag_name" id="midragNameInput" placeholder="שם פרטי / שם משפחה / טלפון נייד"/>
+                <p style="font-size:0.82rem;color:#94a3b8;margin-bottom:0.5rem;line-height:1.5">אנא הזן את הפרטים שסיפקת בעת קבלת מספר הטלפון באתר מידרג (יש למלא לפחות אחד מהשניים)</p>
+                <div class="field" style="margin-bottom:0.5rem">
+                  <input type="text" name="midrag_name" id="midragNameInput" placeholder="שם (כפי שהוזן במידרג)" autocomplete="off"/>
+                </div>
+                <div class="field" style="margin-bottom:0">
+                  <input type="tel" name="midrag_phone" id="midragPhoneInput" placeholder="טלפון (כפי שהוזן במידרג)" autocomplete="off" inputmode="tel"/>
+                </div>
               </div>
             </div>
 
@@ -158,7 +173,8 @@
               </label>
             </div>
 
-            <button type="submit" class="submit-btn" id="submitBtn">📨 שלח פרטים</button>
+            <button type="submit" class="submit-btn" id="submitBtn"><span aria-hidden="true">📨</span> שלח פרטים</button>
+            <div class="submit-status" id="submitStatus"></div>
             <p class="form-note">הפרטים נמסרים לגבי ולספקי שירות טכניים לצורך מתן השירות בלבד · פירוט במדיניות הפרטיות</p>
           </form>
 
@@ -180,7 +196,7 @@
     <footer class="site-footer">
   <!-- Popups -->
   <div class="popup-overlay" id="popupLoading">
-    <div class="popup-box">
+    <div class="popup-box" role="status">
       <div class="spinner"></div>
       <div class="popup-title">שולח פרטים...</div>
       <div class="popup-msg">אנא המתן, הפרטים בדרך לגבי</div>
@@ -188,7 +204,7 @@
   </div>
 
   <div class="popup-overlay" id="popupSuccess">
-    <div class="popup-box">
+    <div class="popup-box" role="dialog" aria-modal="true" aria-labelledby="successTitle">
       <span class="popup-icon">✅</span>
       <div class="popup-title" id="successTitle">הפרטים נשלחו בהצלחה!</div>
       <div class="popup-msg" id="successMsg">קיבלנו את הפרטים. המסמך יונפק וישלח אליך בהקדם האפשרי — תודה שבחרת בשירות שלנו.</div>
@@ -198,23 +214,56 @@
   </div>
 
   <div class="popup-overlay" id="popupError">
-    <div class="popup-box">
+    <div class="popup-box" role="alertdialog" aria-modal="true" aria-labelledby="popupErrorTitle">
       <span class="popup-icon">❌</span>
-      <div class="popup-title">שגיאה בשליחה</div>
+      <div class="popup-title" id="popupErrorTitle">שגיאה בשליחה</div>
       <div class="popup-msg">משהו השתבש. בדוק את החיבור לאינטרנט ונסה שוב.</div>
       <button class="popup-btn popup-btn-error" onclick="closePopup('popupError')">נסה שוב</button>
+    </div>
+  </div>
+
+  <div class="popup-overlay" id="popupConfirm">
+    <div class="popup-box" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+      <div class="popup-title" id="confirmTitle">לאשר ולשלוח?</div>
+      <div class="popup-msg" style="margin-bottom:1rem">בדקו שהפרטים נכונים, במיוחד מספר הטלפון.</div>
+      <div class="summary-list" id="confirmSummary"></div>
+      <div class="confirm-actions">
+        <button type="button" class="popup-btn popup-btn-success" id="confirmSend">אישור ושליחה</button>
+        <button type="button" class="popup-btn popup-btn-secondary" onclick="closePopup('popupConfirm')">חזרה לעריכה</button>
+      </div>
     </div>
   </div>
 
   <script src="../scripts/security-warning.js"></script>
   <script src="../scripts/cookie-consent.js"></script>
   <script>
+    // Dialog popups: focus moves in, Tab stays inside, Esc closes, focus returns on close.
+    // The loading popup has nothing to focus and is announced as a status instead.
+    const MODALS = ['popupConfirm', 'popupSuccess', 'popupError'];
+    const FOCUSABLE = 'button, a[href]';
+    let lastFocus = null;
     function showPopup(id) {
-      document.getElementById(id).classList.add('visible');
+      const overlay = document.getElementById(id);
+      overlay.classList.add('visible');
+      if (!MODALS.includes(id)) return;
+      lastFocus = document.activeElement;
+      const first = overlay.querySelector(FOCUSABLE);
+      if (first) first.focus();
     }
     function closePopup(id) {
       document.getElementById(id).classList.remove('visible');
+      if (MODALS.includes(id) && lastFocus && lastFocus.focus) lastFocus.focus();
     }
+    document.addEventListener('keydown', (e) => {
+      const open = MODALS.map(i => document.getElementById(i)).find(o => o.classList.contains('visible'));
+      if (!open) return;
+      if (e.key === 'Escape') { closePopup(open.id); return; }
+      if (e.key !== 'Tab') return;
+      const items = [...open.querySelectorAll(FOCUSABLE)];
+      const first = items[0], last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
 
     // Copy to clipboard
     function copyText(text, btn) {
@@ -228,31 +277,181 @@
       });
     }
 
-    // VAT toggle
+    const form = document.getElementById('contactForm');
+    const btn = document.getElementById('submitBtn');
+    const statusEl = document.getElementById('submitStatus');
+    const SUBMIT_LABEL = '<span aria-hidden="true">📨</span> שלח פרטים';
+
+    let selectedPayment = '';
+    let midragSelected = null; // null=לא נבחר, true=כן, false=לא
+
+    // ── Validation ─────────────────────────────────────────────
+    // Israeli phone: mobile/landline, with optional +972 / 972 prefix and separators.
+    function isValidPhone(v) {
+      return /^(0\d{8,9}|\+?972\d{8,9})$/.test(v.replace(/[\s\-().]/g, ''));
+    }
+    // 972-50-1234567 / +972501234567 -> 050-1234567
+    function formatPhone(v) {
+      let d = v.replace(/[^\d+]/g, '');
+      if (d.startsWith('+972')) d = '0' + d.slice(4);
+      else if (d.startsWith('972')) d = '0' + d.slice(3);
+      return /^05\d{8}$/.test(d) ? d.slice(0, 3) + '-' + d.slice(3) : v.trim();
+    }
+
+    const val = (el) => el.value.trim();
+    // Each rule returns an error message, or '' when the field is fine.
+    const rules = {
+      name: (el) => val(el).length < 2 ? 'יש להזין שם מלא' : /\d/.test(val(el)) ? 'השם לא יכול להכיל ספרות' : '',
+      phone: (el) => !val(el) ? 'יש להזין מספר טלפון' : isValidPhone(val(el)) ? '' : 'מספר טלפון לא תקין (לדוגמה 050-0000000)',
+      service_address: (el) => val(el).length < 5 ? 'יש להזין כתובת מלאה (רחוב, מספר, עיר)' : '',
+      message: (el) => val(el).length < 3 ? 'יש להזין תיאור שירות' : '',
+      amount: (el) => parseFloat(val(el)) > 0 ? '' : 'יש להזין סכום גדול מ-0',
+      email: (el) => !val(el) || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(val(el)) ? '' : 'כתובת מייל לא תקינה',
+      id_number: (el) => !val(el) || /^\d{9}$/.test(val(el)) ? '' : 'ח.פ / ת.ז חייבים להכיל 9 ספרות',
+      consent: (el) => el.checked ? '' : 'יש לאשר את מדיניות הפרטיות ותנאי השימוש',
+      midrag_name: (el) => {
+        if (!midragSelected) return '';
+        if (!val(el) && !val(form.midrag_phone)) return 'יש למלא שם או טלפון כפי שהוזנו במידרג';
+        return !val(el) || (val(el).length >= 2 && !/\d/.test(val(el))) ? '' : 'שם לא תקין (ללא ספרות)';
+      },
+      midrag_phone: (el) => !midragSelected || !val(el) || isValidPhone(val(el)) ? '' : 'מספר טלפון לא תקין',
+    };
+    const labels = {
+      name: 'שם', phone: 'טלפון', service_address: 'כתובת', message: 'תיאור השירות', amount: 'סכום',
+      email: 'מייל', id_number: 'ח.פ / ת.ז', consent: 'אישור מדיניות', midrag_name: 'פרטי מידרג', midrag_phone: 'טלפון מידרג',
+    };
+
+    let a11yId = 0;
+    function errorEl(field) {
+      let p = field.querySelector(':scope > .field-error');
+      if (!p) {
+        p = document.createElement('p');
+        p.className = 'field-error';
+        p.id = 'err-' + (++a11yId);
+        p.setAttribute('role', 'alert');
+        field.appendChild(p);
+        // Tie the hint and the error to the control so screen readers read them with it.
+        const target = field.querySelector('[role="radiogroup"]') || field.querySelector('input:not([type="hidden"]), textarea');
+        const hint = field.querySelector(':scope > .field-hint');
+        if (hint && !hint.id) hint.id = 'hint-' + a11yId;
+        if (target) target.setAttribute('aria-describedby', [hint && hint.id, p.id].filter(Boolean).join(' '));
+      }
+      return p;
+    }
+    function setError(el, msg) {
+      const field = el.closest('.field');
+      errorEl(field).textContent = msg;
+      el.classList.toggle('invalid', !!msg);
+      el.setAttribute('aria-invalid', msg ? 'true' : 'false');
+    }
+    // Validates one field; shows or clears its inline error. Returns true when valid.
+    function checkField(name, show = true) {
+      const el = form.elements[name];
+      const msg = rules[name](el);
+      if (show) setError(el, msg);
+      return !msg;
+    }
+
+    // Groups that are buttons rather than inputs.
+    function checkPayment(show = true) {
+      const ok = !!selectedPayment;
+      if (show) errorEl(document.getElementById('paymentField')).textContent = ok ? '' : 'יש לבחור שיטת תשלום';
+      return ok;
+    }
+    function checkMidrag(show = true) {
+      const ok = midragSelected !== null;
+      if (show) errorEl(document.getElementById('midragField')).textContent = ok ? '' : 'יש לבחור כן או לא';
+      return ok;
+    }
+
+    // Labels of everything still missing/invalid, in page order.
+    function missingLabels() {
+      const out = [];
+      ['name', 'phone', 'email', 'id_number', 'service_address', 'message', 'amount'].forEach(n => { if (!checkField(n, false)) out.push(labels[n]); });
+      if (!checkPayment(false)) out.push('שיטת תשלום');
+      if (!checkMidrag(false)) out.push('הגעת דרך מידרג');
+      else if (midragSelected) ['midrag_name', 'midrag_phone'].forEach(n => { if (!checkField(n, false)) { if (!out.includes('פרטי מידרג')) out.push('פרטי מידרג'); } });
+      if (!checkField('consent', false)) out.push(labels.consent);
+      return out;
+    }
+    function updateStatus() {
+      const missing = missingLabels();
+      statusEl.replaceChildren();
+      if (missing.length) {
+        statusEl.append('עדיין חסר:');
+        const list = document.createElement('ul');
+        list.className = 'status-list';
+        missing.forEach(m => { const li = document.createElement('li'); li.textContent = m; list.append(li); });
+        statusEl.append(list);
+      }
+      btn.classList.toggle('not-ready', missing.length > 0);
+      syncRadios();
+      return missing;
+    }
+
+    // Validate when leaving a field; clear the error live while typing.
+    ['name', 'phone', 'service_address', 'message', 'amount', 'email', 'id_number', 'midrag_name', 'midrag_phone'].forEach(n => {
+      const el = form.elements[n];
+      el.addEventListener('blur', () => {
+        if (n === 'phone' || n === 'midrag_phone') el.value = formatPhone(el.value);
+        if (val(el) || n === 'phone' || n === 'name' || n === 'amount' || n === 'service_address' || n === 'message') checkField(n);
+        if (n === 'midrag_phone') checkField('midrag_name', val(form.midrag_name) || val(el));
+        updateStatus();
+      });
+      el.addEventListener('input', () => {
+        if (el.classList.contains('invalid')) checkField(n);
+        updateStatus();
+      });
+    });
+    form.elements.consent.addEventListener('change', () => { checkField('consent'); updateStatus(); });
+
+    // ── Toggles ────────────────────────────────────────────────
+    // The toggle buttons form radio groups: mirror .active into aria-checked, keep a
+    // single tab stop per group and move/select with the arrow keys.
+    function syncRadios() {
+      document.querySelectorAll('[role="radiogroup"]').forEach(group => {
+        const radios = [...group.querySelectorAll('[role="radio"]')];
+        const checked = radios.find(r => r.classList.contains('active'));
+        radios.forEach(r => {
+          r.setAttribute('aria-checked', r === checked ? 'true' : 'false');
+          r.tabIndex = r === (checked || radios[0]) ? 0 : -1;
+        });
+      });
+    }
+    document.querySelectorAll('[role="radiogroup"]').forEach(group => {
+      group.addEventListener('keydown', (e) => {
+        const keys = { ArrowRight: -1, ArrowUp: -1, ArrowLeft: 1, ArrowDown: 1 }; // RTL: right = previous
+        if (!(e.key in keys)) return;
+        const radios = [...group.querySelectorAll('[role="radio"]')];
+        const next = radios[(radios.indexOf(document.activeElement) + keys[e.key] + radios.length) % radios.length];
+        e.preventDefault();
+        next.focus();
+        next.click();
+      });
+    });
+
     function selectVat(type) {
       document.getElementById('vatIncluded').classList.toggle('active', type === 'included');
       document.getElementById('vatExcluded').classList.toggle('active', type === 'excluded');
       document.getElementById('vatType').value = type === 'included' ? 'כולל מע"מ' : 'לפני מע"מ';
+      syncRadios();
     }
 
-    // Payment toggle
-    let selectedPayment = '';
-    let midragSelected = null; // null=לא נבחר, true=כן, false=לא
-
-    function toggleMidrag(val) {
-      midragSelected = val;
-      document.getElementById('midragYes').classList.toggle('active', val === true);
-      document.getElementById('midragNo').classList.toggle('active', val === false);
-      const field = document.getElementById('midragNameField');
-      const input = document.getElementById('midragNameInput');
-      field.style.display = val ? 'block' : 'none';
-      if (val) {
-        input.required = true;
-        input.focus();
+    function toggleMidrag(v) {
+      midragSelected = v;
+      document.getElementById('midragYes').classList.toggle('active', v === true);
+      document.getElementById('midragNo').classList.toggle('active', v === false);
+      document.getElementById('midragNameField').style.display = v ? 'block' : 'none';
+      if (v) {
+        form.midrag_name.focus();
       } else {
-        input.required = false;
-        input.value = '';
+        form.midrag_name.value = '';
+        form.midrag_phone.value = '';
+        setError(form.midrag_name, '');
+        setError(form.midrag_phone, '');
       }
+      checkMidrag();
+      updateStatus();
     }
     function selectPayment(type) {
       ['bit','check','transfer','cash','credit'].forEach(t => {
@@ -263,6 +462,8 @@
       document.getElementById('paymentMethod').value = type === 'bit' ? 'ביט' : type === 'check' ? 'המחאה' : type === 'transfer' ? 'העברה בנקאית' : type === 'cash' ? 'מזומן' : 'אשראי';
       document.getElementById('bankDetails').classList.toggle('visible', type === 'transfer');
       document.getElementById('creditDetails').style.display = type === 'credit' ? 'block' : 'none';
+      checkPayment();
+      updateStatus();
     }
 
     // Amount: numbers and dot only
@@ -270,39 +471,68 @@
       this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
     });
 
-    const form = document.getElementById('contactForm');
-    const btn = document.getElementById('submitBtn');
-
-    // Highlights a non-native field group (no HTML5 validity of its own) and
-    // scrolls it into view, mirroring what reportValidity() does natively.
+    // ── Submit ─────────────────────────────────────────────────
+    // Scrolls to and highlights the first problem, like native validation would.
+    function focusFirstProblem() {
+      const order = [
+        ['name'], ['phone'], ['email'], ['id_number'], ['service_address'], ['message'], ['amount'],
+        ['#paymentField'], ['#midragField'], ['midrag_name'], ['midrag_phone'], ['consent'],
+      ];
+      for (const [target] of order) {
+        if (target.startsWith('#')) {
+          const group = document.querySelector(target);
+          const bad = target === '#paymentField' ? !checkPayment(false) : !checkMidrag(false);
+          if (bad) { flagMissing(group); return; }
+        } else if (!checkField(target, false)) {
+          const el = form.elements[target];
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          el.focus({ preventScroll: true });
+          return;
+        }
+      }
+    }
     function flagMissing(el) {
       el.classList.add('field-missing');
       el.scrollIntoView({ behavior: 'smooth', block: 'center' });
       setTimeout(() => el.classList.remove('field-missing'), 2500);
     }
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
+    function row(label, value) {
+      const r = document.createElement('div');
+      r.className = 'summary-row';
+      const l = document.createElement('span');
+      l.className = 'summary-label';
+      l.textContent = label;
+      const v = document.createElement('span');
+      v.className = 'summary-value';
+      v.textContent = value;
+      r.append(l, v);
+      return r;
+    }
 
-      // Native required-field check first: focuses + scrolls to the first
-      // empty/invalid input (name, phone, address, message, amount, consent).
-      if (!form.checkValidity()) {
-        form.reportValidity();
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      // Show every error at once, then jump to the first one.
+      Object.keys(rules).forEach(n => { if (n !== 'midrag_name' || midragSelected) checkField(n); });
+      checkPayment();
+      checkMidrag();
+      if (updateStatus().length) {
+        focusFirstProblem();
         return;
       }
-      if (!(parseFloat(form.amount.value) > 0)) {
-        alert('יש להזין סכום גדול מ-0');
-        document.getElementById('amountInput').focus();
-        return;
-      }
-      if (!selectedPayment) {
-        flagMissing(document.querySelector('.payment-toggles'));
-        return;
-      }
-      if (midragSelected === null) {
-        flagMissing(document.querySelector('.yesno-btns'));
-        return;
-      }
+      const summary = document.getElementById('confirmSummary');
+      summary.replaceChildren(
+        row('שם', val(form.name)),
+        row('טלפון (לכאן יישלח וואטסאפ)', val(form.phone)),
+        row('כתובת', val(form.service_address)),
+        row('סכום', '₪' + val(form.amount) + ' ' + document.getElementById('vatType').value),
+        row('תשלום', document.getElementById('paymentMethod').value),
+      );
+      showPopup('popupConfirm');
+    });
+
+    document.getElementById('confirmSend').addEventListener('click', async () => {
+      closePopup('popupConfirm');
       btn.disabled = true;
       btn.textContent = '⏳ שולח...';
       showPopup('popupLoading');
@@ -311,35 +541,39 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            name: form.name.value,
-            phone: form.phone.value,
-            email: form.email.value,
-            id_number: form.id_number.value,
-            service_address: form.service_address.value,
-            message: form.message.value,
-            amount: form.amount.value,
+            name: val(form.name),
+            phone: val(form.phone),
+            email: val(form.email),
+            id_number: val(form.id_number),
+            service_address: val(form.service_address),
+            message: val(form.message),
+            amount: val(form.amount),
             vat_type: document.getElementById('vatType').value,
             payment_method: document.getElementById('paymentMethod').value,
-            midrag_name: form.midrag_name.value
+            from_midrag: midragSelected === true,
+            midrag_name: val(form.midrag_name),
+            midrag_phone: val(form.midrag_phone)
           })
         });
         const json = await res.json();
         closePopup('popupLoading');
         if (json.ok) {
-          const customerName = encodeURIComponent((form.name.value || '').trim());
+          const customerName = encodeURIComponent(val(form.name));
           window.location.href = '/pages/thankyou.html' + (customerName ? '?name=' + customerName : '');
         } else {
           showPopup('popupError');
           btn.disabled = false;
-          btn.textContent = '📨 שלח פרטים';
+          btn.innerHTML = SUBMIT_LABEL;
         }
       } catch {
         closePopup('popupLoading');
         showPopup('popupError');
         btn.disabled = false;
-        btn.textContent = '📨 שלח פרטים';
+        btn.innerHTML = SUBMIT_LABEL;
       }
     });
+
+    updateStatus();
   </script>
 </body>
 </html>
