@@ -10,6 +10,7 @@ const DEFAULTS = {
 };
 const TEXT_DEFAULTS = {
   whatsapp_copy_phone: '',  // international format, e.g. 972529070000; '' = no copies
+  owner_whatsapp_phone: '', // owner alerts go here; '' = fall back to OWNER_WHATSAPP_PHONE env var
 };
 
 let tableReady;

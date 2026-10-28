@@ -77,10 +77,12 @@ async function notifyOwnerWhatsapp(text) {
     console.error('Owner WhatsApp skipped: switched off in admin settings');
     return { ok: false, error: 'התראות וואטסאפ אליי כבויות בהגדרות האדמין' };
   }
-  const phone = toWhatsappPhone(process.env.OWNER_WHATSAPP_PHONE);
+  let configured = '';
+  try { configured = (await getSettings()).owner_whatsapp_phone; } catch (e) { console.error('settings read failed:', e.message); }
+  const phone = toWhatsappPhone(configured) || toWhatsappPhone(process.env.OWNER_WHATSAPP_PHONE);
   if (!phone) {
-    console.error('Owner WhatsApp skipped: OWNER_WHATSAPP_PHONE missing or invalid');
-    return { ok: false, error: 'OWNER_WHATSAPP_PHONE חסר או לא תקין ב-Netlify' };
+    console.error('Owner WhatsApp skipped: no owner number in admin settings or OWNER_WHATSAPP_PHONE');
+    return { ok: false, error: 'לא הוגדר מספר להתראות מנהל (באדמין או ב-OWNER_WHATSAPP_PHONE)' };
   }
   return { ...(await sendWhatsappDetailed(phone, text)), to: phone };
 }

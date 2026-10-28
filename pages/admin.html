@@ -913,15 +913,15 @@
     return intl && intl.startsWith('972') ? '0' + intl.slice(3) : (intl || '');
   }
 
-  async function saveCopyPhone() {
-    const input = document.getElementById('copyPhoneInput');
-    const btn = document.getElementById('copyPhoneBtn');
+  async function saveTextSetting(key, inputId, btnId) {
+    const input = document.getElementById(inputId);
+    const btn = document.getElementById(btnId);
     btn.disabled = true;
     try {
       const res = await fetch(ADMIN_SETTINGS, {
         method: 'PUT',
         headers: await authHeader(),
-        body: JSON.stringify({ key: 'whatsapp_copy_phone', value: input.value })
+        body: JSON.stringify({ key, value: input.value })
       });
       const data = await res.json();
       if (!res.ok) { alert(data.error || 'שמירת המספר נכשלה'); btn.disabled = false; return; }
@@ -962,7 +962,17 @@
         </div>
         <div class="setting-input">
           <input type="tel" id="copyPhoneInput" dir="ltr" placeholder="052-0000000" value="${toLocalPhone(values.whatsapp_copy_phone)}"/>
-          <button class="btn btn-gold" id="copyPhoneBtn" onclick="saveCopyPhone()">שמור</button>
+          <button class="btn btn-gold" id="copyPhoneBtn" onclick="saveTextSetting('whatsapp_copy_phone', 'copyPhoneInput', 'copyPhoneBtn')">שמור</button>
+        </div>
+      </div>
+      <div class="setting-row">
+        <div class="setting-text">
+          <div class="setting-title">מספר לקבלת התראות מנהל</div>
+          <div class="setting-desc">מספר וואטסאפ שאליו יישלחו ההתראות עליך (בקשת חשבונית חדשה, חשבונית שהופקה). ריק = המספר שמוגדר ב-Netlify.</div>
+        </div>
+        <div class="setting-input">
+          <input type="tel" id="ownerPhoneInput" dir="ltr" placeholder="052-0000000" value="${toLocalPhone(values.owner_whatsapp_phone)}"/>
+          <button class="btn btn-gold" id="ownerPhoneBtn" onclick="saveTextSetting('owner_whatsapp_phone', 'ownerPhoneInput', 'ownerPhoneBtn')">שמור</button>
         </div>
       </div>
       <div class="setting-row">
