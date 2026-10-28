@@ -904,9 +904,9 @@
   // ── Settings (on/off switches) ──
   const ADMIN_SETTINGS = '/.netlify/functions/admin-settings';
   const SETTING_ROWS = [
-    { key: 'whatsapp_customers', title: 'הודעות וואטסאפ ללקוחות', desc: 'אישור אחרי מילוי טופס, והעתק חשבונית או הצעת מחיר. כשכבוי, ההעתק נשלח אליך בלבד כדי שתעביר ידנית.' },
-    { key: 'whatsapp_owner', title: 'התראות וואטסאפ אליי', desc: 'הודעה על בקשת חשבונית חדשה ועל חשבונית שהופקה.' },
-    { key: 'whatsapp_copy', title: 'העתק של הודעות ללקוחות', desc: 'כל הודעה או קובץ שנשלחים ללקוח נשלחים גם למספר ההעתקים שמופיע למטה.' },
+    { key: 'whatsapp_customers', title: 'הודעות וואטסאפ ללקוחות', desc: 'אישור שהלקוח מקבל אחרי מילוי טופס, והעתק חשבונית או הצעת מחיר. כשכבוי, ההעתק נשלח אליך בלבד כדי שתעביר ידנית.' },
+    { key: 'whatsapp_owner', title: 'הודעות וואטסאפ למנהל', desc: 'הודעה אליך על בקשת חשבונית חדשה (כולל אם הגיע דרך מידרג) ועל חשבונית שהופקה.' },
+    { key: 'whatsapp_copy', title: 'קבלת העתק הודעה ללקוח', desc: 'כל הודעה או קובץ שנשלחים ללקוח נשלחים גם אליך, למספר שמופיע למטה.' },
   ];
 
   function toLocalPhone(intl) {
@@ -957,8 +957,8 @@
       </div>`).join('') + `
       <div class="setting-row">
         <div class="setting-text">
-          <div class="setting-title">מספר לקבלת ההעתקים</div>
-          <div class="setting-desc">מספר וואטסאפ שאליו יישלחו ההעתקים. ריק = אין העתקים.</div>
+          <div class="setting-title">מספר לקבלת העתק הודעה ללקוח</div>
+          <div class="setting-desc">מספר וואטסאפ שאליו יישלח העתק של מה שהלקוח קיבל. ריק = אין העתקים.</div>
         </div>
         <div class="setting-input">
           <input type="tel" id="copyPhoneInput" dir="ltr" placeholder="052-0000000" value="${toLocalPhone(values.whatsapp_copy_phone)}"/>
@@ -967,8 +967,8 @@
       </div>
       <div class="setting-row">
         <div class="setting-text">
-          <div class="setting-title">מספר לקבלת התראות מנהל</div>
-          <div class="setting-desc">מספר וואטסאפ שאליו יישלחו ההתראות עליך (בקשת חשבונית חדשה, חשבונית שהופקה). ריק = המספר שמוגדר ב-Netlify.</div>
+          <div class="setting-title">מספר לקבלת הודעות למנהל</div>
+          <div class="setting-desc">מספר וואטסאפ שאליו יישלחו ההודעות אליך (בקשת חשבונית חדשה, חשבונית שהופקה). ריק = המספר שמוגדר ב-Netlify.</div>
         </div>
         <div class="setting-input">
           <input type="tel" id="ownerPhoneInput" dir="ltr" placeholder="052-0000000" value="${toLocalPhone(values.owner_whatsapp_phone)}"/>
@@ -983,7 +983,7 @@
         <div class="setting-input">
           <input type="tel" id="testPhoneInput" dir="ltr" placeholder="052-0000000"/>
           <button class="btn btn-gold" id="testPhoneBtn" onclick="sendTestWhatsapp()">שלח בדיקה</button>
-          <button class="btn btn-gold" id="testOwnerBtn" onclick="sendTestWhatsapp(true)">בדוק התראת מנהל</button>
+          <button class="btn btn-gold" id="testOwnerBtn" onclick="sendTestWhatsapp(true)">בדוק הודעה למנהל</button>
         </div>
       </div>`;
   }
