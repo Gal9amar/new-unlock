@@ -16,7 +16,7 @@ exports.handler = async (event) => {
   try { b = JSON.parse(event.body || '{}'); } catch { return json(400, { error: 'Invalid body' }); }
   if (b.target === 'owner') {
     const r = await notifyOwnerWhatsapp('📄 [TEST] בקשת חשבונית חדשה\n\nזו הודעת בדיקה מהאדמין. אם הגיעה אליך, התראות המנהל עובדות.\nהאם הגיע דרך מדרג: לא');
-    return r.ok ? json(200, { ok: true }) : json(502, { error: r.error });
+    return r.ok ? json(200, { ok: true, to: '0' + r.to.slice(3) }) : json(502, { error: r.error });
   }
   const phone = toWhatsappPhone(b.phone);
   if (!phone) return json(400, { error: 'מספר טלפון לא תקין' });

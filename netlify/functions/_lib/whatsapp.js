@@ -81,7 +81,7 @@ async function notifyOwnerWhatsapp(text) {
     console.error('Owner WhatsApp skipped: OWNER_WHATSAPP_PHONE missing or invalid');
     return { ok: false, error: 'OWNER_WHATSAPP_PHONE חסר או לא תקין ב-Netlify' };
   }
-  return sendWhatsappDetailed(phone, text);
+  return { ...(await sendWhatsappDetailed(phone, text)), to: phone };
 }
 
 // Converts a customer-typed Israeli number (050-1234567, +972 50 123 4567,

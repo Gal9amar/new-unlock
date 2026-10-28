@@ -992,7 +992,7 @@
         body: JSON.stringify(toOwner ? { target: 'owner' } : { phone: input.value })
       });
       const data = await res.json().catch(() => ({}));
-      alert(res.ok ? (toOwner ? '✅ התראת המנהל נשלחה. בדוק את הוואטסאפ שלך.' : '✅ הודעת הבדיקה נשלחה. בדוק את הוואטסאפ במספר שהוזן.') : '❌ השליחה נכשלה: ' + (data.error || res.status));
+      alert(res.ok ? (toOwner ? '✅ התראת המנהל נשלחה למספר ' + (data.to || '') + '. אם לא הגיעה, בדוק שזה המספר הנכון.' : '✅ הודעת הבדיקה נשלחה. בדוק את הוואטסאפ במספר שהוזן.') : '❌ השליחה נכשלה: ' + (data.error || res.status));
     } catch (e) {
       alert('❌ השליחה נכשלה: ' + e.message);
     }
