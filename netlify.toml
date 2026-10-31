@@ -17,9 +17,3 @@
     X-Content-Type-Options = "nosniff"
     X-Frame-Options = "SAMEORIGIN"
     Cache-Control = "no-cache, no-store, must-revalidate"
-
-[[headers]]
-  for = "/unlock.vcf"
-  [headers.values]
-    Content-Type = "text/vcard; charset=utf-8"
-    Content-Disposition = "inline; filename=\"unlock.vcf\""
