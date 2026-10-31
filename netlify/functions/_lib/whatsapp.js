@@ -47,7 +47,7 @@ async function sendWhatsapp(chatPhone, text) {
   return (await sendWhatsappDetailed(chatPhone, text)).ok;
 }
 
-// Sends `text` with one link button (Green API sendInteractiveButtons, beta). If that
+// Sends `text` with one button (link or call) (Green API sendInteractiveButtons, beta). If that
 // is rejected, falls back to a plain message with the link inline, so it never gets lost.
 async function sendWhatsappWithButton(chatPhone, text, button) {
   const url = apiUrl('sendInteractiveButtons');
@@ -60,7 +60,9 @@ async function sendWhatsappWithButton(chatPhone, text, button) {
         body: JSON.stringify({
           chatId: `${chatPhone}@c.us`,
           body: text,
-          buttons: [{ type: 'url', buttonId: '1', buttonText: button.text, url: button.url }],
+          buttons: [button.type === 'call'
+            ? { type: 'call', buttonId: '1', buttonText: button.text, phoneNumber: button.phoneNumber }
+            : { type: 'url', buttonId: '1', buttonText: button.text, url: button.url }],
         }),
       });
       if (res.ok) return { ok: true, buttons: true };
@@ -71,7 +73,26 @@ async function sendWhatsappWithButton(chatPhone, text, button) {
   }
   return sendWhatsappDetailed(chatPhone, button ? `${text}
 
-${button.text}: ${button.url}` : text);
+${button.text}: ${button.display || button.url}` : text);
+}
+
+// Sends a contact card (tap to save to the phone). Returns true only if accepted.
+async function sendWhatsappContact(chatPhone, contact) {
+  const url = apiUrl('sendContact');
+  if (!url || !chatPhone) return false;
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      signal: AbortSignal.timeout(8000),
+      body: JSON.stringify({ chatId: `${chatPhone}@c.us`, contact }),
+    });
+    if (!res.ok) console.error('WhatsApp contact rejected:', res.status, (await res.text().catch(() => '')).slice(0, 300));
+    return res.ok;
+  } catch (e) {
+    console.error('WhatsApp contact failed:', e.message, e.cause && (e.cause.code || e.cause.message));
+    return false;
+  }
 }
 
 // Sends a file Green API downloads from `fileUrl` (must be publicly reachable),
@@ -155,7 +176,9 @@ async function notifyCustomerWhatsapp(rawPhone, text, opts = {}) {
   const sent = opts.button
     ? (await sendWhatsappWithButton(phone, text, opts.button)).ok
     : await sendWhatsapp(phone, text);
-  if (!sent || opts.copy === false) return;
+  if (!sent) return;
+  if (opts.contactCard) await sendWhatsappContact(phone, opts.contactCard);
+  if (opts.copy === false) return;
   const copyTo = await getCopyPhone(phone);
   if (copyTo) await sendWhatsapp(copyTo, `${copyHeader(phone, opts.label)}\n\n${text}`);
 }
@@ -174,4 +197,4 @@ async function notifyCustomerWhatsappFile(rawPhone, fileUrl, fileName, caption, 
   return true;
 }
 
-module.exports = { sendWhatsappDetailed, sendWhatsappWithButton, notifyOwnerWhatsapp, notifyCustomerWhatsapp, notifyCustomerWhatsappFile, toWhatsappPhone };
+module.exports = { sendWhatsappDetailed, sendWhatsappWithButton, sendWhatsappContact, notifyOwnerWhatsapp, notifyCustomerWhatsapp, notifyCustomerWhatsappFile, toWhatsappPhone };

@@ -9,7 +9,7 @@ const { TEST_RECIPIENT_EMAIL, isProdOrigin } = require('./_lib/test-mode');
 const { emailWrapper, emailHeader, emailBadge, ctaButton, ctaRow, footerFull, footerAdmin } = require('./_lib/email-shell');
 const { notifyOwnerWhatsapp, notifyCustomerWhatsapp } = require('./_lib/whatsapp');
 const { getManagerEmail } = require('./_lib/settings');
-const { buildInvoiceConfirmationText, SAVE_CONTACT_BUTTON } = require('./_lib/invoice-wa-text');
+const { buildInvoiceConfirmationText, CALL_BUTTON, OWNER_CONTACT_CARD } = require('./_lib/invoice-wa-text');
 
 const VALID_VAT = ['כולל מע"מ', 'לפני מע"מ'];
 
@@ -216,7 +216,7 @@ exports.handler = async (event) => {
     // the owner's own number (like the email goes to TEST_RECIPIENT_EMAIL), never a real customer.
     const customerWaText = buildInvoiceConfirmationText(data, testPrefix);
     await notifyCustomerWhatsapp(data.is_test ? process.env.OWNER_WHATSAPP_PHONE : data.phone, customerWaText,
-      { copy: !data.is_test, label: data.name, button: SAVE_CONTACT_BUTTON });
+      { copy: !data.is_test, label: data.name, button: CALL_BUTTON, contactCard: OWNER_CONTACT_CARD });
 
     return json(200, { ok: true });
   } catch (e) {

@@ -17,11 +17,14 @@ function buildInvoiceConfirmationText(data, testPrefix = '') {
       : []),
     '',
     'לכל שאלה אנחנו זמינים עבורך 24/7 😊',
-    'גבי המנעולן · 053-388-8381',
+    'גבי המנעולן',
   ].join('\n');
 }
 
-// Button on the confirmation: opens unlock.vcf so the customer can save our number.
-const SAVE_CONTACT_BUTTON = { text: 'שמור את המספר שלנו', url: 'https://www.hamanulan.com/unlock.vcf' };
+// Button on the confirmation: dials us through the phone's own dialer (not a WhatsApp call).
+const CALL_BUTTON = { type: 'call', text: 'התקשר אל גבי', phoneNumber: '0533888381', display: '053-388-8381' };
 
-module.exports = { buildInvoiceConfirmationText, SAVE_CONTACT_BUTTON };
+// Contact card sent right after the confirmation, so the customer can save our number.
+const OWNER_CONTACT_CARD = { phoneContact: 972533888381, firstName: 'גבי', lastName: 'המנעולן' };
+
+module.exports = { buildInvoiceConfirmationText, CALL_BUTTON, OWNER_CONTACT_CARD };
