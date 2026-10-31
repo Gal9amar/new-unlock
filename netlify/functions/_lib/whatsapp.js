@@ -47,6 +47,33 @@ async function sendWhatsapp(chatPhone, text) {
   return (await sendWhatsappDetailed(chatPhone, text)).ok;
 }
 
+// Sends `text` with one link button (Green API sendInteractiveButtons, beta). If that
+// is rejected, falls back to a plain message with the link inline, so it never gets lost.
+async function sendWhatsappWithButton(chatPhone, text, button) {
+  const url = apiUrl('sendInteractiveButtons');
+  if (url && chatPhone && button) {
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        signal: AbortSignal.timeout(8000),
+        body: JSON.stringify({
+          chatId: `${chatPhone}@c.us`,
+          body: text,
+          buttons: [{ type: 'url', buttonId: '1', buttonText: button.text, url: button.url }],
+        }),
+      });
+      if (res.ok) return { ok: true, buttons: true };
+      console.error('WhatsApp buttons rejected:', res.status, (await res.text().catch(() => '')).slice(0, 300));
+    } catch (e) {
+      console.error('WhatsApp buttons failed:', e.message, e.cause && (e.cause.code || e.cause.message));
+    }
+  }
+  return sendWhatsappDetailed(chatPhone, button ? `${text}
+
+${button.text}: ${button.url}` : text);
+}
+
 // Sends a file Green API downloads from `fileUrl` (must be publicly reachable),
 // with `caption` as its text. Returns true only if Green API accepted it.
 async function sendWhatsappFile(chatPhone, fileUrl, fileName, caption) {
@@ -125,7 +152,9 @@ function copyHeader(customerPhone, label) {
 async function notifyCustomerWhatsapp(rawPhone, text, opts = {}) {
   const phone = toWhatsappPhone(rawPhone);
   if (!phone || !(await isEnabled('whatsapp_customers'))) return;
-  const sent = await sendWhatsapp(phone, text);
+  const sent = opts.button
+    ? (await sendWhatsappWithButton(phone, text, opts.button)).ok
+    : await sendWhatsapp(phone, text);
   if (!sent || opts.copy === false) return;
   const copyTo = await getCopyPhone(phone);
   if (copyTo) await sendWhatsapp(copyTo, `${copyHeader(phone, opts.label)}\n\n${text}`);
@@ -145,4 +174,4 @@ async function notifyCustomerWhatsappFile(rawPhone, fileUrl, fileName, caption, 
   return true;
 }
 
-module.exports = { sendWhatsappDetailed, notifyOwnerWhatsapp, notifyCustomerWhatsapp, notifyCustomerWhatsappFile, toWhatsappPhone };
+module.exports = { sendWhatsappDetailed, sendWhatsappWithButton, notifyOwnerWhatsapp, notifyCustomerWhatsapp, notifyCustomerWhatsappFile, toWhatsappPhone };

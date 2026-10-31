@@ -1,7 +1,7 @@
 const { verifyAdmin } = require('./_lib/verify-admin');
 const { json, preflight } = require('./_lib/http');
-const { sendWhatsappDetailed, notifyOwnerWhatsapp, toWhatsappPhone } = require('./_lib/whatsapp');
-const { buildInvoiceConfirmationText } = require('./_lib/invoice-wa-text');
+const { sendWhatsappWithButton, notifyOwnerWhatsapp, toWhatsappPhone } = require('./_lib/whatsapp');
+const { buildInvoiceConfirmationText, SAVE_CONTACT_BUTTON } = require('./_lib/invoice-wa-text');
 
 // Admin: simulates a sendinfo form submission by sending the customer
 // confirmation WhatsApp, with sample details, to the given number. Writes
@@ -31,7 +31,7 @@ exports.handler = async (event) => {
     payment_method: 'ביט',
   }, '[TEST] ');
 
-  const result = await sendWhatsappDetailed(phone, text);
+  const result = await sendWhatsappWithButton(phone, text, SAVE_CONTACT_BUTTON);
   if (!result.ok) return json(502, { error: result.error });
   return json(200, { ok: true });
 };

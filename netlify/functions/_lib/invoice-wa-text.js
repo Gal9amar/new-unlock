@@ -21,4 +21,7 @@ function buildInvoiceConfirmationText(data, testPrefix = '') {
   ].join('\n');
 }
 
-module.exports = { buildInvoiceConfirmationText };
+// Button on the confirmation: opens unlock.vcf so the customer can save our number.
+const SAVE_CONTACT_BUTTON = { text: 'שמור את המספר שלנו', url: 'https://www.hamanulan.com/unlock.vcf' };
+
+module.exports = { buildInvoiceConfirmationText, SAVE_CONTACT_BUTTON };
