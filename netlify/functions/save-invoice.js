@@ -7,7 +7,7 @@ const { escapeHtml } = require('./_lib/html-escape');
 const { SITE_URL, VALID_PAYMENT } = require('./_lib/constants');
 const { TEST_RECIPIENT_EMAIL, isProdOrigin } = require('./_lib/test-mode');
 const { emailWrapper, emailHeader, emailBadge, ctaButton, ctaRow, footerFull, footerAdmin } = require('./_lib/email-shell');
-const { notifyOwnerWhatsapp, notifyCustomerWhatsapp } = require('./_lib/whatsapp');
+const { notifyOwnerWhatsapp, notifyCustomerWhatsapp, saveCustomerContact } = require('./_lib/whatsapp');
 const { getManagerEmail } = require('./_lib/settings');
 const { buildInvoiceConfirmationText } = require('./_lib/invoice-wa-text');
 
@@ -217,6 +217,8 @@ exports.handler = async (event) => {
     const customerWaText = buildInvoiceConfirmationText(data, testPrefix);
     await notifyCustomerWhatsapp(data.is_test ? process.env.OWNER_WHATSAPP_PHONE : data.phone, customerWaText,
       { copy: !data.is_test, label: data.name });
+
+    if (!data.is_test) await saveCustomerContact(data.phone, data.name);
 
     return json(200, { ok: true });
   } catch (e) {

@@ -71,6 +71,45 @@ async function sendWhatsappFile(chatPhone, fileUrl, fileName, caption) {
   }
 }
 
+// Saves a customer into the connected phone's address book (Green API addContact;
+// needs "WhatsApp Contacts" on in the phone's WhatsApp privacy settings). Best-effort:
+// never throws, and always reports the outcome to the owner on WhatsApp.
+async function saveCustomerContact(rawPhone, fullName) {
+  const phone = toWhatsappPhone(rawPhone);
+  const url = apiUrl('addContact');
+  const [firstName, ...rest] = String(fullName || '').trim().split(/\s+/).filter(Boolean);
+  if (!(await isEnabled('whatsapp_customers'))) return false;
+  const localPhone = phone ? '0' + phone.slice(3) : String(rawPhone || '—');
+  const report = (icon, status) => notifyOwnerWhatsapp(
+    `${icon} שמירת איש קשר: ${status}\nשם: ${fullName || '—'}\nטלפון: ${localPhone}`);
+
+  if (!url) { await report('❌', 'חסרים משתני GREEN_API ב-Netlify'); return false; }
+  if (!phone || !firstName) { await report('⚠️', 'דולג - מספר או שם לא תקינים'); return false; }
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      signal: AbortSignal.timeout(8000),
+      body: JSON.stringify({
+        chatId: `${phone}@c.us`, firstName, lastName: rest.join(' '), saveInAddressbook: true,
+      }),
+    });
+    if (res.ok) { await report('✅', 'נשמר בטלפון'); return true; }
+    const body = (await res.text().catch(() => '')).slice(0, 300);
+    if (res.status === 400 && /exist/i.test(body)) await report('ℹ️', 'כבר קיים בטלפון');
+    else if (res.status === 404) await report('⚠️', 'המספר לא רשום בוואטסאפ');
+    else {
+      console.error('WhatsApp addContact rejected:', res.status, body);
+      await report('❌', `Green API דחה (${res.status}) ${body}`.trim());
+    }
+    return false;
+  } catch (e) {
+    console.error('WhatsApp addContact failed:', e.message, e.cause && (e.cause.code || e.cause.message));
+    await report('❌', `אין חיבור ל-Green API: ${e.message}`);
+    return false;
+  }
+}
+
 // Returns {ok, error} and logs why when nothing was sent (setting off, number missing).
 async function notifyOwnerWhatsapp(text) {
   if (!(await isEnabled('whatsapp_owner'))) {
@@ -145,4 +184,4 @@ async function notifyCustomerWhatsappFile(rawPhone, fileUrl, fileName, caption, 
   return true;
 }
 
-module.exports = { sendWhatsappDetailed, notifyOwnerWhatsapp, notifyCustomerWhatsapp, notifyCustomerWhatsappFile, toWhatsappPhone };
+module.exports = { sendWhatsappDetailed, notifyOwnerWhatsapp, notifyCustomerWhatsapp, notifyCustomerWhatsappFile, saveCustomerContact, toWhatsappPhone };
