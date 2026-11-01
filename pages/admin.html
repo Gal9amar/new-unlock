@@ -1029,10 +1029,12 @@
           <div class="setting-title">הודעת בדיקה</div>
           <div class="setting-desc">מדמה מילוי של טופס שליחת הפרטים ושולח את הודעת האישור בוואטסאפ למספר שתזין. לא נשמר דבר במערכת ולא נשלחים מיילים.</div>
         </div>
-        <div class="setting-input">
+        <div class="setting-input setting-input-stack">
           <input type="tel" id="testPhoneInput" dir="ltr" placeholder="052-0000000"/>
-          <button class="btn btn-gold" id="testPhoneBtn" onclick="sendTestWhatsapp()">שלח בדיקה</button>
-          <button class="btn btn-gold" id="testOwnerBtn" onclick="sendTestWhatsapp(true)">בדוק הודעה למנהל</button>
+          <div class="setting-input-buttons">
+            <button class="btn btn-gold" id="testPhoneBtn" onclick="sendTestWhatsapp()">שלח בדיקה</button>
+            <button class="btn btn-gold" id="testOwnerBtn" onclick="sendTestWhatsapp(true)">בדוק הודעה למנהל</button>
+          </div>
         </div>
       </div>`;
   }
