@@ -148,17 +148,19 @@ function toWhatsappPhone(raw) {
   return /^972\d{8,9}$/.test(intl) ? intl : '';
 }
 
-// Where copies of customer messages go (admin settings: switch + number), or ''
-// when copies are off, no number is set, or the copy would go to the customer.
-async function getCopyPhone(customerPhone) {
+// Where copies of customer messages go (admin settings: switch + numbers, stored
+// comma-separated), or [] when copies are off, no number is set. The customer's
+// own number is skipped.
+async function getCopyPhones(customerPhone) {
   try {
     const s = await getSettings();
-    if (!s.whatsapp_copy) return '';
-    const phone = toWhatsappPhone(s.whatsapp_copy_phone);
-    return phone && phone !== customerPhone ? phone : '';
+    if (!s.whatsapp_copy) return [];
+    return String(s.whatsapp_copy_phone || '').split(',')
+      .map((x) => toWhatsappPhone(x))
+      .filter((ph, i, arr) => ph && ph !== customerPhone && arr.indexOf(ph) === i);
   } catch (e) {
     console.error('copy settings read failed:', e.message);
-    return '';
+    return [];
   }
 }
 
@@ -179,8 +181,9 @@ async function notifyCustomerWhatsapp(rawPhone, text, opts = {}) {
   if (!sent) return;
   if (opts.contactCard) await sendWhatsappContact(phone, opts.contactCard);
   if (opts.copy === false) return;
-  const copyTo = await getCopyPhone(phone);
-  if (copyTo) await sendWhatsapp(copyTo, `${copyHeader(phone, opts.label)}\n\n${text}`);
+  for (const copyTo of await getCopyPhones(phone)) {
+    await sendWhatsapp(copyTo, `${copyHeader(phone, opts.label)}\n\n${text}`);
+  }
 }
 
 // Sends a file to a customer. Returns true only if Green API accepted it, so the
@@ -191,8 +194,9 @@ async function notifyCustomerWhatsappFile(rawPhone, fileUrl, fileName, caption, 
   const sent = await sendWhatsappFile(phone, fileUrl, fileName, caption);
   if (!sent) return false;
   if (opts.copy !== false) {
-    const copyTo = await getCopyPhone(phone);
-    if (copyTo) await sendWhatsappFile(copyTo, fileUrl, fileName, `${copyHeader(phone, opts.label)}\n\n${caption}`);
+    for (const copyTo of await getCopyPhones(phone)) {
+      await sendWhatsappFile(copyTo, fileUrl, fileName, `${copyHeader(phone, opts.label)}\n\n${caption}`);
+    }
   }
   return true;
 }

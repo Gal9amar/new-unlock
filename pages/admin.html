@@ -914,6 +914,43 @@
     return intl && intl.startsWith('972') ? '0' + intl.slice(3) : (intl || '');
   }
 
+  let copyPhonesCurrent = [];
+  function copyPhonesList(csv) {
+    copyPhonesCurrent = String(csv || '').split(',').filter(Boolean);
+    if (!copyPhonesCurrent.length) return '<div class="setting-desc">אין מספרים שמורים</div>';
+    return copyPhonesCurrent.map((p, i) => `
+      <div style="display:flex;align-items:center;gap:8px;margin-top:6px">
+        <span dir="ltr">${toLocalPhone(p)}</span>
+        <button class="btn" style="padding:2px 8px" onclick="removeCopyPhone(${i})" title="הסר">✕</button>
+      </div>`).join('');
+  }
+
+  async function saveCopyPhones(list) {
+    const res = await fetch(ADMIN_SETTINGS, {
+      method: 'PUT',
+      headers: await authHeader(),
+      body: JSON.stringify({ key: 'whatsapp_copy_phone', value: list.join(',') })
+    });
+    const data = await res.json();
+    if (!res.ok) { alert(data.error || 'השמירה נכשלה'); return; }
+    renderSettings(data);
+  }
+
+  async function addCopyPhone() {
+    const input = document.getElementById('copyPhoneInput');
+    const val = input.value.trim();
+    if (!val) { input.focus(); return; }
+    document.getElementById('copyPhoneBtn').disabled = true;
+    try { await saveCopyPhones([...copyPhonesCurrent, val]); }
+    catch (e) { alert('השמירה נכשלה, נסה שוב'); }
+    document.getElementById('copyPhoneBtn') && (document.getElementById('copyPhoneBtn').disabled = false);
+  }
+
+  async function removeCopyPhone(i) {
+    try { await saveCopyPhones(copyPhonesCurrent.filter((_, j) => j !== i)); }
+    catch (e) { alert('השמירה נכשלה, נסה שוב'); }
+  }
+
   async function saveTextSetting(key, inputId, btnId) {
     const input = document.getElementById(inputId);
     const btn = document.getElementById(btnId);
@@ -958,12 +995,13 @@
       </div>`).join('') + `
       <div class="setting-row">
         <div class="setting-text">
-          <div class="setting-title">מספר לקבלת העתק הודעה ללקוח</div>
-          <div class="setting-desc">מספר וואטסאפ שאליו יישלח העתק של מה שהלקוח קיבל. ריק = אין העתקים.</div>
+          <div class="setting-title">מספרים לקבלת העתק הודעה ללקוח</div>
+          <div class="setting-desc">מספרי וואטסאפ שאליהם יישלח העתק של מה שהלקוח קיבל. אפשר להוסיף כמה מספרים. ריק = אין העתקים.</div>
+          <div class="copy-phones">${copyPhonesList(values.whatsapp_copy_phone)}</div>
         </div>
         <div class="setting-input">
-          <input type="tel" id="copyPhoneInput" dir="ltr" placeholder="052-0000000" value="${toLocalPhone(values.whatsapp_copy_phone)}"/>
-          <button class="btn btn-gold" id="copyPhoneBtn" onclick="saveTextSetting('whatsapp_copy_phone', 'copyPhoneInput', 'copyPhoneBtn')">שמור</button>
+          <input type="tel" id="copyPhoneInput" dir="ltr" placeholder="052-0000000" onkeydown="if(event.key==='Enter'){addCopyPhone();}"/>
+          <button class="btn btn-gold" id="copyPhoneBtn" onclick="addCopyPhone()">הוסף</button>
         </div>
       </div>
       <div class="setting-row">
