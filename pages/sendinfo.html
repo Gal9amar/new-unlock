@@ -301,7 +301,7 @@
     const val = (el) => el.value.trim();
     // Each rule returns an error message, or '' when the field is fine.
     const rules = {
-      name: (el) => val(el).length < 2 ? 'יש להזין שם מלא' : /\d/.test(val(el)) ? 'השם לא יכול להכיל ספרות' : '',
+      name: (el) => val(el).length < 2 ? 'יש להזין שם מלא' : '',
       phone: (el) => !val(el) ? 'יש להזין מספר טלפון' : isValidPhone(val(el)) ? '' : 'מספר טלפון לא תקין (לדוגמה 050-0000000)',
       service_address: (el) => val(el).length < 5 ? 'יש להזין כתובת מלאה (רחוב, מספר, עיר)' : '',
       message: (el) => val(el).length < 3 ? 'יש להזין תיאור שירות' : '',
