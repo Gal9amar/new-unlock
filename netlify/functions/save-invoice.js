@@ -83,16 +83,17 @@ exports.handler = async (event) => {
 
     const clientHtml = emailWrapper(560, `
         ${emailHeader({ logoWidth: 140, tagline: 'שירותי מנעולנות מקצועיים · 24/7' })}
-        ${emailBadge({ bg: '#eff6ff', border: '#bfdbfe', color: '#1d4ed8', text: '✓ &nbsp;פנייתך התקבלה בהצלחה!' })}
+        ${emailBadge({ bg: '#eff6ff', border: '#bfdbfe', color: '#1d4ed8', text: '✓ &nbsp;קיבלנו את הפרטים, תודה!' })}
         <tr>
           <td style="padding:28px 40px 32px;">
             <p style="margin:0 0 6px;font-size:21px;font-weight:700;color:#1e293b;">שלום ${name} 😊</p>
             <p style="margin:0 0 24px;font-size:15px;color:#64748b;line-height:1.8;">
-              קיבלנו את בקשתך להפקת חשבונית.<br/>
-              ניצור עבורך את החשבונית בהקדם האפשרי ונשלח אותה ישירות לתיבת המייל שלך.
+              תודה רבה, קיבלנו את הפרטים! 🙏<br/>
+              שמחנו לתת לך שירות.<br/>
+              את החשבונית נפיק ונשלח אליך בהקדם.
             </p>
             <hr style="border:none;border-top:1px solid #f1f5f9;margin:0 0 24px;"/>
-            <p style="margin:0 0 14px;font-size:14px;font-weight:700;color:#94a3b8;letter-spacing:1px;">העתק הבקשה שלך</p>
+            <p style="margin:0 0 14px;font-size:14px;font-weight:700;color:#94a3b8;letter-spacing:1px;">סיכום השירות</p>
             <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8fafc;border-radius:12px;border:1px solid #e2e8f0;margin-bottom:28px;">
               <tr><td style="padding:20px 24px;">
                 ${[
@@ -180,9 +181,9 @@ exports.handler = async (event) => {
       clientTo && sendMail({
         from: '"UNLOCK מנעולנות" <unlock.yavne@gmail.com>',
         to: clientTo,
-        subject: `${testPrefix}✓ פנייתך התקבלה – UNLOCK מנעולנות`,
+        subject: `${testPrefix}✓ קיבלנו את הפרטים – UNLOCK מנעולנות`,
         html: clientHtml,
-        text: `שלום ${data.name}, פנייתך התקבלה. ניצור את החשבונית בהקדם. לשאלות: 053-388-8381`,
+        text: `שלום ${data.name}, תודה רבה, קיבלנו את הפרטים! שמחנו לתת לך שירות. את החשבונית נפיק ונשלח אליך בהקדם. לשאלות: 053-388-8381`,
       }),
       // Manager email can be switched off (or have no address) in admin settings.
       adminEmail && sendMail({
